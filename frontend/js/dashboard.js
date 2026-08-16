@@ -1,4 +1,3 @@
-
 /* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
@@ -54,14 +53,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        RECUPERAÇÃO DO USUÁRIO
+       
+       O LOGIN SALVA EM:
+       
+       sessionStorage:
+       "usuario"
     ====================================================== */
 
     let user = null;
 
+
     try {
 
         const savedUser =
-            localStorage.getItem("user");
+            sessionStorage.getItem("usuario");
+
 
         if (savedUser) {
 
@@ -72,11 +78,46 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
 
         console.warn(
-            "Não foi possível ler os dados do usuário.",
+            "Não foi possível ler os dados da sessão.",
             error
         );
 
+        sessionStorage.removeItem("usuario");
+
         user = null;
+
+    }
+
+
+    /* =====================================================
+       FALLBACK PARA SISTEMAS ANTIGOS
+       
+       Mantemos esta parte para evitar problemas caso
+       existam dados antigos no localStorage.
+    ====================================================== */
+
+    if (!user) {
+
+        try {
+
+            const oldUser =
+                localStorage.getItem("user");
+
+
+            if (oldUser) {
+
+                user = JSON.parse(oldUser);
+
+            }
+
+        } catch (error) {
+
+            console.warn(
+                "Não foi possível ler dados antigos.",
+                error
+            );
+
+        }
 
     }
 
@@ -98,9 +139,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         user = {
 
-            name: storedName,
+            nome_completo: storedName,
 
-            email: storedEmail || ""
+            email: storedEmail || "",
+
+            plano: "gratuito"
 
         };
 
@@ -113,7 +156,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (user) {
 
+        /*
+         * O backend atualmente retorna:
+         *
+         * nome_completo
+         * email
+         * plano
+         *
+         * Também mantemos compatibilidade com nomes
+         * usados em versões anteriores.
+         */
+
         const name =
+            user.nome_completo ||
             user.name ||
             user.nome ||
             user.fullName ||
@@ -130,8 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const plan =
-            user.plan ||
             user.plano ||
+            user.plan ||
             "GRATUITO";
 
 
@@ -139,7 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
             getInitials(name);
 
 
-        /* HEADER */
+        /* =================================================
+           HEADER
+        ================================================== */
 
         if (userNameElement) {
 
@@ -165,7 +222,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* BOAS-VINDAS */
+        /* =================================================
+           BOAS-VINDAS
+           
+           Exemplo:
+           
+           Olá, Aldemar! 👋
+        ================================================== */
 
         if (welcomeNameElement) {
 
@@ -175,7 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* PERFIL */
+        /* =================================================
+           PERFIL
+        ================================================== */
 
         if (profileNameElement) {
 
@@ -205,6 +270,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
             profileAvatarElement.textContent =
                 initials;
+
+        }
+
+
+    } else {
+
+        /*
+         * Caso não exista sessão, mantemos os valores
+         * padrão da interface.
+         */
+
+        if (userNameElement) {
+
+            userNameElement.textContent =
+                "Usuário";
+
+        }
+
+
+        if (welcomeNameElement) {
+
+            welcomeNameElement.textContent =
+                "usuário";
+
+        }
+
+
+        if (userAvatarElement) {
+
+            userAvatarElement.textContent =
+                "AS";
+
+        }
+
+
+        if (profileNameElement) {
+
+            profileNameElement.textContent =
+                "—";
+
+        }
+
+
+        if (profileEmailElement) {
+
+            profileEmailElement.textContent =
+                "—";
+
+        }
+
+
+        if (profilePlanElement) {
+
+            profilePlanElement.textContent =
+                "GRATUITO";
+
+        }
+
+
+        if (userPlanElement) {
+
+            userPlanElement.textContent =
+                "GRATUITO";
+
+        }
+
+
+        if (profileAvatarElement) {
+
+            profileAvatarElement.textContent =
+                "AS";
 
         }
 
@@ -249,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             /* =================================================
                CURSOS
-               ================================================= */
+            ================================================= */
 
             if (sectionName === "cursos") {
 
@@ -318,38 +454,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function openCourses() {
 
-        /*
-         * O dashboard funciona como porta de entrada.
-         *
-         * Estrutura esperada:
-         *
-         * ALDEMAR STUDIOS/
-         *
-         * dashboard.html
-         *
-         * cursos/
-         *    index.html
-         *    ...
-         *
-         */
-
         window.location.href =
             "cursos/index.html";
 
     }
 
 
-    /*
-       Disponibilizamos também globalmente
-       caso outro botão precise chamar a função.
-    */
-
     window.openCourses =
         openCourses;
 
 
     /* =====================================================
-       NAVEGAÇÃO ENTRE SEÇÕES DO DASHBOARD
+       NAVEGAÇÃO ENTRE SEÇÕES
     ====================================================== */
 
     window.showSection =
@@ -455,6 +571,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             inclusivos:
                 "Inclusivos",
+
+            cursos:
+                "Cursos",
 
             feedback:
                 "Feedback",
@@ -738,8 +857,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /*
-                 * Remove apenas os dados
-                 * relacionados à sessão.
+                 * Sessão atual criada pelo login.
+                 */
+
+                sessionStorage.removeItem(
+                    "usuario"
+                );
+
+
+                /*
+                 * Dados antigos de versões anteriores.
                  */
 
                 localStorage.removeItem(
@@ -752,6 +879,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 localStorage.removeItem(
                     "userEmail"
+                );
+
+                localStorage.removeItem(
+                    "name"
+                );
+
+                localStorage.removeItem(
+                    "email"
                 );
 
                 localStorage.removeItem(
