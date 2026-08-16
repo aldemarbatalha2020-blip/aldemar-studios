@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>English Checkers</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top,#243b55 0%,#101827 45%,#070b12 100%);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+}
+
+.game{
+    width:min(1200px,100%);
+}
+
+header{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+header h1{
+    font-size:42px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+header p{
+    margin-top:7px;
+    color:#b9c7d8;
+    font-size:15px;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:220px minmax(500px,680px) 220px;
+    gap:25px;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =========================
+   PAINÉIS
+========================= */
+
+.panel{
+    background:rgba(13,21,34,.88);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.player{
+    text-align:center;
+}
+
+.player-title{
+    font-size:14px;
+    letter-spacing:2px;
+    color:#aebbd0;
+    margin-bottom:12px;
+}
+
+.player-name{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.player-piece{
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    margin:0 auto 15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.red-piece{
+    background:radial-gradient(circle at 35% 30%,#ff8585,#c51f2d 60%,#75101b);
+    box-shadow:0 0 20px rgba(255,50,70,.35);
+}
+
+.blue-piece{
+    background:radial-gradient(circle at 35% 30%,#82c9ff,#1762ae 60%,#0c3560);
+    box-shadow:0 0 20px rgba(40,140,255,.35);
+}
+
+.count{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.count-label{
+    color:#8796aa;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.turn-box{
+    margin-top:20px;
+    padding:12px;
+    border-radius:10px;
+    background:rgba(255,255,255,.05);
+    font-size:13px;
+}
+
+/* =========================
+   TABULEIRO
+========================= */
+
+.board-wrapper{
+    position:relative;
+}
+
+.board{
+    width:min(680px,80vw);
+    aspect-ratio:1;
+    margin:auto;
+    padding:10px;
+    background:#171d27;
+    border-radius:18px;
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.5),
+        inset 0 0 0 2px rgba(255,255,255,.08);
+
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    overflow:hidden;
+}
+
+.square{
+    position:relative;
+    aspect-ratio:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.light{
+    background:#d9c6a1;
+}
+
+.dark{
+    background:#6c4934;
+}
+
+.square.selected{
+    box-shadow:inset 0 0 0 5px #ffd84d;
+}
+
+.square.possible{
+    box-shadow:inset 0 0 0 5px rgba(75,255,151,.65);
+}
+
+.square.capture-target{
+    box-shadow:inset 0 0 0 5px rgba(255,82,82,.85);
+}
+
+/* =========================
+   PEÇAS
+========================= */
+
+.piece{
+    width:76%;
+    height:76%;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.18);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:clamp(16px,3vw,25px);
+    font-weight:bold;
+
+    transition:
+        transform .15s ease,
+        filter .15s ease;
+}
+
+.piece:hover{
+    transform:scale(1.06);
+}
+
+.piece.red{
+    background:
+        radial-gradient(circle at 32% 25%,
+        #ff9a9a 0%,
+        #e62f40 35%,
+        #a80f1e 75%,
+        #620914 100%);
+    box-shadow:
+        inset 0 3px 5px rgba(255,255,255,.25),
+        0 5px 10px rgba(0,0,0,.4);
+}
+
+.piece.blue{
+    background:
+        radial-gradient(circle at 32% 25%,
+        #9bd7ff 0%,
+        #3288d5 35%,
+        #15599b 75%,
+        #0a3158 100%);
+    box-shadow:
+        inset 0 3px 5px rgba(255,255,255,.25),
+        0 5px 10px rgba(0,0,0,.4);
+}
+
+.piece.king::after{
+    content:"♛";
+    color:#ffe27a;
+    text-shadow:0 2px 4px #000;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+button{
+    width:100%;
+    border:0;
+    border-radius:10px;
+    padding:13px;
+    margin-top:12px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.reset{
+    background:#e7b93b;
+    color:#171717;
+}
+
+.reset:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.question-box{
+    width:min(540px,100%);
+    background:#101a29;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:22px;
+    padding:30px;
+    box-shadow:0 25px 80px rgba(0,0,0,.6);
+}
+
+.question-header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.question-header .flag{
+    font-size:42px;
+}
+
+.question-header h2{
+    margin-top:8px;
+    font-size:25px;
+}
+
+.question{
+    background:#182538;
+    border-radius:13px;
+    padding:20px;
+    font-size:19px;
+    line-height:1.5;
+    margin-bottom:18px;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.answer{
+    margin:0;
+    background:#22344c;
+    color:white;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.answer:hover{
+    background:#2d4665;
+}
+
+.feedback{
+    margin-top:15px;
+    text-align:center;
+    min-height:24px;
+    font-weight:bold;
+}
+
+.correct{
+    color:#54e88b;
+}
+
+.wrong{
+    color:#ff6974;
+}
+
+/* =========================
+   VITÓRIA
+========================= */
+
+.win-box{
+    text-align:center;
+}
+
+.win-box .trophy{
+    font-size:70px;
+}
+
+.win-box h2{
+    margin:12px 0;
+    font-size:32px;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:950px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        width:min(680px,90vw);
+        margin:auto;
+    }
+
+    .player{
+        display:grid;
+        grid-template-columns:auto 1fr auto;
+        align-items:center;
+        gap:15px;
+        text-align:left;
+    }
+
+    .player-piece{
+        margin:0;
+    }
+
+    .turn-box{
+        margin-top:0;
+    }
+
+    .board{
+        width:min(680px,94vw);
+    }
+}
+
+@media(max-width:550px){
+
+    body{
+        padding:10px;
+    }
+
+    header h1{
+        font-size:28px;
+    }
+
+    .board{
+        padding:5px;
+        border-radius:10px;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    .question-box{
+        padding:20px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<header>
+    <h1>♟ English Checkers</h1>
+    <p>Capture all enemy pieces by answering English questions.</p>
+</header>
+
+<div class="layout">
+
+    <!-- PLAYER 1 -->
+    <div class="panel player">
+
+        <div>
+            <div class="player-title">PLAYER 1</div>
+            <div class="player-name">🔴 RED</div>
+        </div>
+
+        <div class="player-piece red-piece">
+            ♟
+        </div>
+
+        <div>
+            <div class="count" id="redCount">12</div>
+            <div class="count-label">Pieces</div>
+        </div>
+
+        <div class="turn-box" id="redTurn">
+            Current player
+        </div>
+
+    </div>
+
+
+    <!-- TABULEIRO -->
+    <div class="board-wrapper">
+
+        <div id="board" class="board"></div>
+
+    </div>
+
+
+    <!-- PLAYER 2 -->
+    <div class="panel player">
+
+        <div>
+            <div class="player-title">PLAYER 2</div>
+            <div class="player-name">🔵 BLUE</div>
+        </div>
+
+        <div class="player-piece blue-piece">
+            ♟
+        </div>
+
+        <div>
+            <div class="count" id="blueCount">12</div>
+            <div class="count-label">Pieces</div>
+        </div>
+
+        <div class="turn-box" id="blueTurn">
+            Waiting...
+        </div>
+
+        <button class="reset" onclick="newGame()">
+            NEW GAME
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     MODAL DE PERGUNTA
+========================= -->
+
+<div class="modal" id="questionModal">
+
+    <div class="question-box">
+
+        <div class="question-header">
+
+            <div class="flag">🇬🇧</div>
+
+            <h2>ENGLISH CHALLENGE</h2>
+
+            <p>
+                Answer correctly to capture!
+            </p>
+
+        </div>
+
+        <div class="question" id="questionText">
+            Question
+        </div>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MODAL DE VITÓRIA
+========================= -->
+
+<div class="modal" id="winModal">
+
+    <div class="question-box win-box">
+
+        <div class="trophy">🏆</div>
+
+        <h2 id="winnerText">
+            PLAYER WINS!
+        </h2>
+
+        <p>
+            All enemy pieces have been captured.
+        </p>
+
+        <button class="reset" onclick="newGame()">
+            PLAY AGAIN
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ENGLISH CHECKERS
+   VERSÃO 1
+========================================================= */
+
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+const SIZE = 8;
+
+const RED = "red";
+const BLUE = "blue";
+
+
+/* =========================================================
+   ESTADO DO JOGO
+========================================================= */
+
+let board = [];
+
+let currentPlayer = RED;
+
+let selectedPiece = null;
+
+let possibleMoves = [];
+
+let pendingCapture = null;
+
+let multipleCapture = false;
+
+
+/* =========================================================
+   BANCO DE PERGUNTAS
+========================================================= */
+
+const questions = [
+
+    {
+        question:"What is the opposite of 'big'?",
+        answers:["Small","Tall","Fast","Long"],
+        correct:0
+    },
+
+    {
+        question:"What is the past of 'go'?",
+        answers:["Goed","Went","Goes","Going"],
+        correct:1
+    },
+
+    {
+        question:"Complete: I ___ a student.",
+        answers:["am","is","are","be"],
+        correct:0
+    },
+
+    {
+        question:"What color is the sky on a clear day?",
+        answers:["Green","Blue","Red","Black"],
+        correct:1
+    },
+
+    {
+        question:"What is the plural of 'child'?",
+        answers:["Childs","Childes","Children","Childrens"],
+        correct:2
+    },
+
+    {
+        question:"Choose the correct sentence.",
+        answers:[
+            "She are happy.",
+            "She is happy.",
+            "She am happy.",
+            "She be happy."
+        ],
+        correct:1
+    },
+
+    {
+        question:"What does 'dog' mean?",
+        answers:["Gato","Cachorro","Pássaro","Peixe"],
+        correct:1
+    },
+
+    {
+        question:"Complete: They ___ playing.",
+        answers:["is","am","are","be"],
+        correct:2
+    },
+
+    {
+        question:"What is the opposite of 'hot'?",
+        answers:["Cold","Big","High","Fast"],
+        correct:0
+    },
+
+    {
+        question:"What number is 'seven'?",
+        answers:["5","6","7","8"],
+        correct:2
+    },
+
+    {
+        question:"Choose the correct article: ___ apple.",
+        answers:["A","An","Thee","No article"],
+        correct:1
+    },
+
+    {
+        question:"What does 'book' mean?",
+        answers:["Livro","Mesa","Caneta","Cadeira"],
+        correct:0
+    }
+
+];
+
+
+/* =========================================================
+   INICIAR JOGO
+========================================================= */
+
+function newGame(){
+
+    board = [];
+
+    currentPlayer = RED;
+
+    selectedPiece = null;
+
+    possibleMoves = [];
+
+    pendingCapture = null;
+
+    multipleCapture = false;
+
+    document
+        .getElementById("winModal")
+        .classList.remove("show");
+
+    createBoard();
+
+    render();
+
+}
+
+
+/* =========================================================
+   CRIAR TABULEIRO
+========================================================= */
+
+function createBoard(){
+
+    for(let row = 0; row < SIZE; row++){
+
+        board[row] = [];
+
+        for(let col = 0; col < SIZE; col++){
+
+            board[row][col] = null;
+
+        }
+
+    }
+
+
+    /*
+        RED começa nas três primeiras linhas
+    */
+
+    for(let row = 0; row < 3; row++){
+
+        for(let col = 0; col < SIZE; col++){
+
+            if((row + col) % 2 === 1){
+
+                board[row][col] = {
+
+                    player:BLUE,
+                    king:false
+
+                };
+
+            }
+
+        }
+
+    }
+
+
+    /*
+        BLUE começa nas três últimas linhas
+    */
+
+    for(let row = 5; row < 8; row++){
+
+        for(let col = 0; col < SIZE; col++){
+
+            if((row + col) % 2 === 1){
+
+                board[row][col] = {
+
+                    player:RED,
+                    king:false
+
+                };
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDERIZAR TABULEIRO
+========================================================= */
+
+function render(){
+
+    const boardElement =
+        document.getElementById("board");
+
+    boardElement.innerHTML = "";
+
+
+    for(let row = 0; row < SIZE; row++){
+
+        for(let col = 0; col < SIZE; col++){
+
+            const square =
+                document.createElement("div");
+
+            square.classList.add("square");
+
+            if((row + col) % 2 === 0){
+
+                square.classList.add("light");
+
+            }else{
+
+                square.classList.add("dark");
+
+            }
+
+
+            square.dataset.row = row;
+            square.dataset.col = col;
+
+
+            if(
+                selectedPiece &&
+                selectedPiece.row === row &&
+                selectedPiece.col === col
+            ){
+
+                square.classList.add("selected");
+
+            }
+
+
+            const possible =
+                possibleMoves.find(
+                    move =>
+                        move.row === row &&
+                        move.col === col
+                );
+
+
+            if(possible){
+
+                if(possible.capture){
+
+                    square.classList.add("capture-target");
+
+                }else{
+
+                    square.classList.add("possible");
+
+                }
+
+            }
+
+
+            square.addEventListener(
+                "click",
+                () => handleSquareClick(row,col)
+            );
+
+
+            const piece = board[row][col];
+
+
+            if(piece){
+
+                const pieceElement =
+                    document.createElement("div");
+
+                pieceElement.classList.add(
+                    "piece",
+                    piece.player
+                );
+
+
+                if(piece.king){
+
+                    pieceElement.classList.add("king");
+
+                }
+
+
+                square.appendChild(pieceElement);
+
+            }
+
+
+            boardElement.appendChild(square);
+
+        }
+
+    }
+
+
+    updateCounters();
+
+    updateTurn();
+
+}
+
+
+/* =========================================================
+   CLIQUE NO TABULEIRO
+========================================================= */
+
+function handleSquareClick(row,col){
+
+    const piece = board[row][col];
+
+
+    /*
+       Se já existe uma peça selecionada,
+       verificamos se o destino é válido.
+    */
+
+    if(selectedPiece){
+
+        const move =
+            possibleMoves.find(
+                m =>
+                    m.row === row &&
+                    m.col === col
+            );
+
+
+        if(move){
+
+            /*
+                Captura precisa de pergunta
+            */
+
+            if(move.capture){
+
+                pendingCapture = {
+
+                    from:selectedPiece,
+                    to:{
+                        row,
+                        col
+                    },
+                    move
+
+                };
+
+
+                openQuestion();
+
+                return;
+
+            }
+
+
+            executeMove(
+                selectedPiece,
+                {
+                    row,
+                    col
+                },
+                false
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+       Selecionar peça
+    */
+
+    if(
+        piece &&
+        piece.player === currentPlayer
+    ){
+
+        selectPiece(row,col);
+
+    }
+
+}
+
+
+/* =========================================================
+   SELECIONAR PEÇA
+========================================================= */
+
+function selectPiece(row,col){
+
+    selectedPiece = {
+
+        row,
+        col
+
+    };
+
+
+    const captures =
+        getAllCaptures(currentPlayer);
+
+
+    const pieceCaptures =
+        getMoves(row,col)
+        .filter(move => move.capture);
+
+
+    /*
+       Se existe captura obrigatória,
+       só podemos selecionar peças que capturam.
+    */
+
+    if(captures.length > 0){
+
+        if(pieceCaptures.length === 0){
+
+            selectedPiece = null;
+
+            possibleMoves = [];
+
+            render();
+
+            return;
+
+        }
+
+        possibleMoves = pieceCaptures;
+
+    }else{
+
+        possibleMoves =
+            getMoves(row,col);
+
+    }
+
+
+    render();
+
+}
+
+
+/* =========================================================
+   MOVIMENTOS POSSÍVEIS
+========================================================= */
+
+function getMoves(row,col){
+
+    const piece = board[row][col];
+
+    if(!piece){
+
+        return [];
+
+    }
+
+
+    const moves = [];
+
+
+    /*
+       Dama pode andar em todas as diagonais.
+    */
+
+    if(piece.king){
+
+        return getKingMoves(row,col);
+
+    }
+
+
+    /*
+       RED anda para cima
+       BLUE anda para baixo
+    */
+
+    const direction =
+        piece.player === RED ? -1 : 1;
+
+
+    /*
+       Movimento simples
+    */
+
+    for(const dc of [-1,1]){
+
+        const nr = row + direction;
+        const nc = col + dc;
+
+
+        if(inBounds(nr,nc) && !board[nr][nc]){
+
+            moves.push({
+
+                row:nr,
+                col:nc,
+                capture:false
+
+            });
+
+        }
+
+    }
+
+
+    /*
+       Captura
+    */
+
+    for(const dc of [-1,1]){
+
+        const middleRow =
+            row + direction;
+
+        const middleCol =
+            col + dc;
+
+        const landingRow =
+            row + direction * 2;
+
+        const landingCol =
+            col + dc * 2;
+
+
+        if(
+            inBounds(landingRow,landingCol) &&
+            board[middleRow]?.[middleCol] &&
+            board[middleRow][middleCol].player !== piece.player &&
+            !board[landingRow][landingCol]
+        ){
+
+            moves.push({
+
+                row:landingRow,
+                col:landingCol,
+
+                capture:true,
+
+                captured:{
+                    row:middleRow,
+                    col:middleCol
+                }
+
+            });
+
+        }
+
+    }
+
+
+    return moves;
+
+}
+
+
+/* =========================================================
+   MOVIMENTOS DA DAMA
+========================================================= */
+
+function getKingMoves(row,col){
+
+    const piece = board[row][col];
+
+    const moves = [];
+
+    const directions = [
+
+        [-1,-1],
+        [-1,1],
+        [1,-1],
+        [1,1]
+
+    ];
+
+
+    for(const [dr,dc] of directions){
+
+        let nr = row + dr;
+        let nc = col + dc;
+
+        let enemyFound = null;
+
+
+        while(inBounds(nr,nc)){
+
+            const target = board[nr][nc];
+
+
+            if(!target){
+
+                if(enemyFound){
+
+                    moves.push({
+
+                        row:nr,
+                        col:nc,
+                        capture:true,
+
+                        captured:enemyFound
+
+                    });
+
+                }else{
+
+                    moves.push({
+
+                        row:nr,
+                        col:nc,
+                        capture:false
+
+                    });
+
+                }
+
+            }else{
+
+                if(target.player === piece.player){
+
+                    break;
+
+                }
+
+
+                if(enemyFound){
+
+                    break;
+
+                }
+
+
+                enemyFound = {
+
+                    row:nr,
+                    col:nc
+
+                };
+
+            }
+
+
+            nr += dr;
+            nc += dc;
+
+        }
+
+    }
+
+
+    return moves;
+
+}
+
+
+/* =========================================================
+   VERIFICAR TODAS AS CAPTURAS
+========================================================= */
+
+function getAllCaptures(player){
+
+    const captures = [];
+
+
+    for(let row = 0; row < SIZE; row++){
+
+        for(let col = 0; col < SIZE; col++){
+
+            const piece = board[row][col];
+
+
+            if(
+                piece &&
+                piece.player === player
+            ){
+
+                const moves =
+                    getMoves(row,col);
+
+
+                moves
+                    .filter(move => move.capture)
+                    .forEach(move => {
+
+                        captures.push({
+
+                            from:{
+                                row,
+                                col
+                            },
+
+                            ...move
+
+                        });
+
+                    });
+
+            }
+
+        }
+
+    }
+
+
+    return captures;
+
+}
+
+
+/* =========================================================
+   EXECUTAR MOVIMENTO
+========================================================= */
+
+function executeMove(from,to,isCapture){
+
+    const piece =
+        board[from.row][from.col];
+
+
+    board[to.row][to.col] = piece;
+
+    board[from.row][from.col] = null;
+
+
+    /*
+       Captura
+    */
+
+    if(isCapture){
+
+        const move =
+            possibleMoves.find(
+                m =>
+                    m.row === to.row &&
+                    m.col === to.col
+            );
+
+
+        if(move?.captured){
+
+            board[
+                move.captured.row
+            ][
+                move.captured.col
+            ] = null;
+
+        }
+
+    }
+
+
+    /*
+       Promoção
+    */
+
+    if(
+        piece.player === RED &&
+        to.row === 0
+    ){
+
+        piece.king = true;
+
+    }
+
+
+    if(
+        piece.player === BLUE &&
+        to.row === 7
+    ){
+
+        piece.king = true;
+
+    }
+
+
+    selectedPiece = null;
+
+    possibleMoves = [];
+
+
+    /*
+       Verificar vitória
+    */
+
+    if(checkVictory()){
+
+        render();
+
+        return;
+
+    }
+
+
+    /*
+       Se houve captura,
+       verificar outra captura.
+    */
+
+    if(isCapture){
+
+        const nextCaptures =
+            getMoves(to.row,to.col)
+            .filter(move => move.capture);
+
+
+        if(nextCaptures.length > 0){
+
+            selectedPiece = {
+
+                row:to.row,
+                col:to.col
+
+            };
+
+            possibleMoves = nextCaptures;
+
+            render();
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+       Passar turno
+    */
+
+    currentPlayer =
+        currentPlayer === RED
+        ? BLUE
+        : RED;
+
+
+    render();
+
+}
+
+
+/* =========================================================
+   PERGUNTAS
+========================================================= */
+
+function openQuestion(){
+
+    const question =
+        questions[
+            Math.floor(
+                Math.random() *
+                questions.length
+            )
+        ];
+
+
+    document
+        .getElementById("questionModal")
+        .classList.add("show");
+
+
+    document
+        .getElementById("questionText")
+        .textContent =
+            question.question;
+
+
+    const answers =
+        document.getElementById("answers");
+
+
+    answers.innerHTML = "";
+
+
+    document
+        .getElementById("feedback")
+        .textContent = "";
+
+
+    question.answers.forEach(
+        (answer,index) => {
+
+            const button =
+                document.createElement("button");
+
+            button.className = "answer";
+
+            button.textContent =
+                `${String.fromCharCode(65+index)}) ${answer}`;
+
+
+            button.onclick = () => {
+
+                answerQuestion(
+                    index,
+                    question.correct
+                );
+
+            };
+
+
+            answers.appendChild(button);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   RESPONDER PERGUNTA
+========================================================= */
+
+function answerQuestion(selected,correct){
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    if(selected === correct){
+
+        feedback.textContent =
+            "✓ CORRECT! Capture successful!";
+
+        feedback.className =
+            "feedback correct";
+
+
+        setTimeout(() => {
+
+            document
+                .getElementById("questionModal")
+                .classList.remove("show");
+
+
+            executeCapture();
+
+        },700);
+
+
+    }else{
+
+        feedback.textContent =
+            "✗ WRONG! Turn passed!";
+
+        feedback.className =
+            "feedback wrong";
+
+
+        setTimeout(() => {
+
+            document
+                .getElementById("questionModal")
+                .classList.remove("show");
+
+
+            /*
+               Não captura.
+
+               A vez passa para o adversário.
+            */
+
+            selectedPiece = null;
+
+            possibleMoves = [];
+
+            pendingCapture = null;
+
+            currentPlayer =
+                currentPlayer === RED
+                ? BLUE
+                : RED;
+
+
+            render();
+
+        },1000);
+
+    }
+
+}
+
+
+/* =========================================================
+   EXECUTAR CAPTURA APÓS ACERTO
+========================================================= */
+
+function executeCapture(){
+
+    if(!pendingCapture){
+
+        return;
+
+    }
+
+
+    const {
+
+        from,
+        to,
+        move
+
+    } = pendingCapture;
+
+
+    const piece =
+        board[from.row][from.col];
+
+
+    board[to.row][to.col] = piece;
+
+    board[from.row][from.col] = null;
+
+
+    /*
+       Remove peça capturada
+    */
+
+    if(move.captured){
+
+        board[
+            move.captured.row
+        ][
+            move.captured.col
+        ] = null;
+
+    }
+
+
+    /*
+       Promoção
+    */
+
+    if(
+        piece.player === RED &&
+        to.row === 0
+    ){
+
+        piece.king = true;
+
+    }
+
+
+    if(
+        piece.player === BLUE &&
+        to.row === 7
+    ){
+
+        piece.king = true;
+
+    }
+
+
+    pendingCapture = null;
+
+
+    /*
+       Vitória
+    */
+
+    if(checkVictory()){
+
+        render();
+
+        return;
+
+    }
+
+
+    /*
+       Procurar outra captura.
+    */
+
+    const nextCaptures =
+        getMoves(to.row,to.col)
+        .filter(move => move.capture);
+
+
+    if(nextCaptures.length > 0){
+
+        selectedPiece = {
+
+            row:to.row,
+            col:to.col
+
+        };
+
+        possibleMoves = nextCaptures;
+
+        render();
+
+        return;
+
+    }
+
+
+    /*
+       Não há mais captura:
+       passa o turno.
+    */
+
+    selectedPiece = null;
+
+    possibleMoves = [];
+
+
+    currentPlayer =
+        currentPlayer === RED
+        ? BLUE
+        : RED;
+
+
+    render();
+
+}
+
+
+/* =========================================================
+   VITÓRIA
+========================================================= */
+
+function checkVictory(){
+
+    const redPieces =
+        countPieces(RED);
+
+    const bluePieces =
+        countPieces(BLUE);
+
+
+    if(redPieces === 0){
+
+        showVictory(BLUE);
+
+        return true;
+
+    }
+
+
+    if(bluePieces === 0){
+
+        showVictory(RED);
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   CONTAR PEÇAS
+========================================================= */
+
+function countPieces(player){
+
+    let count = 0;
+
+
+    for(let row = 0; row < SIZE; row++){
+
+        for(let col = 0; col < SIZE; col++){
+
+            if(
+                board[row][col]?.player === player
+            ){
+
+                count++;
+
+            }
+
+        }
+
+    }
+
+
+    return count;
+
+}
+
+
+/* =========================================================
+   MOSTRAR VITÓRIA
+========================================================= */
+
+function showVictory(player){
+
+    document
+        .getElementById("winnerText")
+        .textContent =
+            player === RED
+            ? "🔴 RED PLAYER WINS!"
+            : "🔵 BLUE PLAYER WINS!";
+
+
+    document
+        .getElementById("winModal")
+        .classList.add("show");
+
+}
+
+
+/* =========================================================
+   CONTADORES
+========================================================= */
+
+function updateCounters(){
+
+    document
+        .getElementById("redCount")
+        .textContent =
+            countPieces(RED);
+
+
+    document
+        .getElementById("blueCount")
+        .textContent =
+            countPieces(BLUE);
+
+}
+
+
+/* =========================================================
+   TURNO
+========================================================= */
+
+function updateTurn(){
+
+    const red =
+        document.getElementById("redTurn");
+
+    const blue =
+        document.getElementById("blueTurn");
+
+
+    if(currentPlayer === RED){
+
+        red.textContent =
+            "🎯 YOUR TURN";
+
+        blue.textContent =
+            "Waiting...";
+
+    }else{
+
+        red.textContent =
+            "Waiting...";
+
+        blue.textContent =
+            "🎯 YOUR TURN";
+
+    }
+
+}
+
+
+/* =========================================================
+   LIMITES DO TABULEIRO
+========================================================= */
+
+function inBounds(row,col){
+
+    return (
+        row >= 0 &&
+        row < SIZE &&
+        col >= 0 &&
+        col < SIZE
+    );
+
+}
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+newGame();
+
+</script>
+
+</body>
+</html>
+
