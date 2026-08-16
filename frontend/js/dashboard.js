@@ -1,6 +1,8 @@
+
 /* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
+   Sistema de navegação do painel
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,50 +11,114 @@ document.addEventListener("DOMContentLoaded", () => {
        ELEMENTOS PRINCIPAIS
     ====================================================== */
 
-    const menuItems = document.querySelectorAll(".menu-item[data-section]");
-    const sections = document.querySelectorAll(".content-section");
-    const pageTitle = document.getElementById("pageTitle");
+    const menuItems = document.querySelectorAll(
+        ".menu-item[data-section]"
+    );
+
+    const sections = document.querySelectorAll(
+        ".content-section"
+    );
+
+    const pageTitle = document.getElementById(
+        "pageTitle"
+    );
+
 
     /* =====================================================
-       USUÁRIO
+       ELEMENTOS DO USUÁRIO
     ====================================================== */
 
-    const userNameElement = document.getElementById("userName");
-    const welcomeNameElement = document.getElementById("welcomeName");
-    const userAvatarElement = document.getElementById("userAvatar");
+    const userNameElement =
+        document.getElementById("userName");
 
-    const profileNameElement = document.getElementById("profileName");
-    const profileEmailElement = document.getElementById("profileEmail");
-    const profileAvatarElement = document.getElementById("profileAvatar");
-    const profilePlanElement = document.getElementById("profilePlan");
+    const welcomeNameElement =
+        document.getElementById("welcomeName");
+
+    const userAvatarElement =
+        document.getElementById("userAvatar");
+
+    const profileNameElement =
+        document.getElementById("profileName");
+
+    const profileEmailElement =
+        document.getElementById("profileEmail");
+
+    const profileAvatarElement =
+        document.getElementById("profileAvatar");
+
+    const profilePlanElement =
+        document.getElementById("profilePlan");
+
+
+    /* =====================================================
+       RECUPERAÇÃO DO USUÁRIO
+    ====================================================== */
 
     let user = null;
 
-    try {
-        user = JSON.parse(localStorage.getItem("user"));
-    } catch (error) {
-        user = null;
-    }
 
     /*
-       Caso o sistema tenha salvo os dados com outro nome,
-       tentamos também recuperar informações individuais.
+       Primeiro tentamos recuperar o objeto completo.
+    */
+
+    try {
+
+        const storedUser =
+            localStorage.getItem("user");
+
+        if (storedUser) {
+
+            user = JSON.parse(storedUser);
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Não foi possível ler os dados do usuário.",
+            error
+        );
+
+        user = null;
+
+    }
+
+
+    /*
+       Recuperação alternativa.
+       Isso ajuda caso o login tenha salvo os dados
+       separadamente.
     */
 
     const storedName =
         localStorage.getItem("userName") ||
-        localStorage.getItem("name");
+        localStorage.getItem("name") ||
+        localStorage.getItem("nome") ||
+        "";
 
     const storedEmail =
         localStorage.getItem("userEmail") ||
-        localStorage.getItem("email");
+        localStorage.getItem("email") ||
+        "";
 
-    if (!user && storedName) {
+
+    /*
+       Caso não exista objeto "user", criamos um
+       usando os dados individuais.
+    */
+
+    if (!user && (storedName || storedEmail)) {
+
         user = {
+
             name: storedName,
-            email: storedEmail || ""
+
+            email: storedEmail
+
         };
+
     }
+
 
     /* =====================================================
        CONFIGURAÇÃO DO USUÁRIO
@@ -60,49 +126,143 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (user) {
 
+        /*
+           Aceitamos diferentes nomes de propriedades
+           para manter compatibilidade com o sistema.
+        */
+
         const name =
             user.name ||
             user.nome ||
+            user.fullName ||
+            user.fullname ||
+            user.displayName ||
             storedName ||
             "Usuário";
+
 
         const email =
             user.email ||
             user.emailAddress ||
+            user.mail ||
             storedEmail ||
             "—";
 
-        const initials = getInitials(name);
+
+        const plan =
+            user.plan ||
+            user.plano ||
+            user.subscription ||
+            "GRATUITO";
+
+
+        const initials =
+            getInitials(name);
+
+
+        /*
+           Nome no topo
+        */
 
         if (userNameElement) {
-            userNameElement.textContent = name;
+
+            userNameElement.textContent =
+                name;
+
+        }
+
+
+        /*
+           Nome na mensagem de boas-vindas
+        */
+
+        if (welcomeNameElement) {
+
+            welcomeNameElement.textContent =
+                firstName(name);
+
+        }
+
+
+        /*
+           Avatar do topo
+        */
+
+        if (userAvatarElement) {
+
+            userAvatarElement.textContent =
+                initials;
+
+        }
+
+
+        /*
+           Perfil
+        */
+
+        if (profileNameElement) {
+
+            profileNameElement.textContent =
+                name;
+
+        }
+
+
+        if (profileEmailElement) {
+
+            profileEmailElement.textContent =
+                email;
+
+        }
+
+
+        if (profileAvatarElement) {
+
+            profileAvatarElement.textContent =
+                initials;
+
+        }
+
+
+        if (profilePlanElement) {
+
+            profilePlanElement.textContent =
+                plan.toUpperCase();
+
+        }
+
+    } else {
+
+        /*
+           Caso realmente não exista nenhum dado.
+        */
+
+        if (userNameElement) {
+
+            userNameElement.textContent =
+                "Visitante";
+
         }
 
         if (welcomeNameElement) {
-            welcomeNameElement.textContent = firstName(name);
-        }
 
-        if (userAvatarElement) {
-            userAvatarElement.textContent = initials;
+            welcomeNameElement.textContent =
+                "Visitante";
+
         }
 
         if (profileNameElement) {
-            profileNameElement.textContent = name;
+
+            profileNameElement.textContent =
+                "Não informado";
+
         }
 
         if (profileEmailElement) {
-            profileEmailElement.textContent = email;
-        }
 
-        if (profileAvatarElement) {
-            profileAvatarElement.textContent = initials;
-        }
+            profileEmailElement.textContent =
+                "Não informado";
 
-        if (profilePlanElement) {
-            profilePlanElement.textContent =
-                user.plan ||
-                user.plano ||
-                "GRATUITO";
         }
 
     }
@@ -116,8 +276,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         item.addEventListener("click", () => {
 
+            /*
+               Áreas bloqueadas
+            */
+
             const locked =
                 item.dataset.locked === "true";
+
 
             if (locked) {
 
@@ -126,12 +291,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
                 return;
+
             }
+
 
             const sectionName =
                 item.dataset.section;
 
-            if (!sectionName) return;
+
+            if (!sectionName) {
+
+                return;
+
+            }
+
 
             showSection(sectionName);
 
@@ -145,7 +318,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     const accessCards =
-        document.querySelectorAll("[data-section-link]");
+        document.querySelectorAll(
+            "[data-section-link]"
+        );
+
 
     accessCards.forEach(card => {
 
@@ -154,8 +330,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const section =
                 card.dataset.sectionLink;
 
+
             if (section) {
+
                 showSection(section);
+
             }
 
         });
@@ -164,90 +343,152 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FUNÇÃO PRINCIPAL DE NAVEGAÇÃO
+       NAVEGAÇÃO ENTRE SEÇÕES
     ====================================================== */
 
-    window.showSection = function(sectionName) {
+    window.showSection =
+        function(sectionName) {
 
-        sections.forEach(section => {
+            /*
+               Esconde todas as seções
+            */
 
-            section.classList.remove("active");
+            sections.forEach(section => {
 
-        });
+                section.classList.remove(
+                    "active"
+                );
 
-
-        menuItems.forEach(item => {
-
-            item.classList.remove("active");
-
-        });
+            });
 
 
-        const target =
-            document.getElementById(sectionName);
+            /*
+               Remove menu ativo
+            */
 
-        if (!target) {
+            menuItems.forEach(item => {
 
-            console.warn(
-                `Seção "${sectionName}" não encontrada.`
+                item.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            /*
+               Procura a seção desejada
+            */
+
+            const target =
+                document.getElementById(
+                    sectionName
+                );
+
+
+            if (!target) {
+
+                console.warn(
+                    `Seção "${sectionName}" não encontrada.`
+                );
+
+                return;
+
+            }
+
+
+            /*
+               Ativa a seção
+            */
+
+            target.classList.add(
+                "active"
             );
+
+
+            /*
+               Ativa o botão correspondente
+            */
+
+            const activeMenu =
+                document.querySelector(
+                    `.menu-item[data-section="${sectionName}"]`
+                );
+
+
+            if (activeMenu) {
+
+                activeMenu.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            /*
+               Atualiza título
+            */
+
+            updatePageTitle(
+                sectionName
+            );
+
+
+            /*
+               Volta para o topo
+            */
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+        };
+
+
+    /* =====================================================
+       TÍTULOS DAS SEÇÕES
+    ====================================================== */
+
+    function updatePageTitle(sectionName) {
+
+        if (!pageTitle) {
 
             return;
 
         }
 
 
-        target.classList.add("active");
-
-
-        const activeMenu =
-            document.querySelector(
-                `.menu-item[data-section="${sectionName}"]`
-            );
-
-        if (activeMenu) {
-            activeMenu.classList.add("active");
-        }
-
-
-        updatePageTitle(sectionName);
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    };
-
-
-    /* =====================================================
-       TÍTULOS
-    ====================================================== */
-
-    function updatePageTitle(sectionName) {
-
-        if (!pageTitle) return;
-
         const titles = {
 
-            inicio: "Início",
+            inicio:
+                "Início",
 
-            jogos: "Jogos",
+            jogos:
+                "Jogos",
 
-            cursos: "Cursos",
+            cursos:
+                "Cursos",
 
-            ingles: "Inglês",
+            ingles:
+                "Inglês",
 
-            musica: "Música",
+            musica:
+                "Música",
 
-            inclusivos: "Inclusivos",
+            inclusivos:
+                "Inclusivos",
 
-            feedback: "Feedback",
+            feedback:
+                "Feedback",
 
-            perfil: "Meu Perfil"
+            perfil:
+                "Meu Perfil"
 
         };
+
 
         pageTitle.textContent =
             titles[sectionName] ||
@@ -260,164 +501,238 @@ document.addEventListener("DOMContentLoaded", () => {
        CATEGORIAS DE JOGOS
     ====================================================== */
 
-    window.openGameCategory = function(category) {
+    window.openGameCategory =
+        function(category) {
 
-        const categories =
-            document.getElementById("gamesCategories");
+            const categories =
+                document.getElementById(
+                    "gamesCategories"
+                );
 
-        const passatempo =
-            document.getElementById("passatempoArea");
+            const passatempo =
+                document.getElementById(
+                    "passatempoArea"
+                );
 
-        const educativos =
-            document.getElementById("educativosArea");
+            const educativos =
+                document.getElementById(
+                    "educativosArea"
+                );
 
 
-        if (categories) {
-            categories.style.display = "none";
-        }
+            if (categories) {
 
-        if (passatempo) {
-            passatempo.style.display =
-                category === "passatempo"
-                    ? "block"
-                    : "none";
-        }
+                categories.style.display =
+                    "none";
 
-        if (educativos) {
-            educativos.style.display =
-                category === "educativos"
-                    ? "block"
-                    : "none";
-        }
+            }
 
-    };
+
+            if (passatempo) {
+
+                passatempo.style.display =
+                    category === "passatempo"
+                        ? "block"
+                        : "none";
+
+            }
+
+
+            if (educativos) {
+
+                educativos.style.display =
+                    category === "educativos"
+                        ? "block"
+                        : "none";
+
+            }
+
+        };
 
 
     /* =====================================================
        VOLTAR PARA CATEGORIAS DE JOGOS
     ====================================================== */
 
-    window.backToGameCategories = function() {
+    window.backToGameCategories =
+        function() {
 
-        const categories =
-            document.getElementById("gamesCategories");
+            const categories =
+                document.getElementById(
+                    "gamesCategories"
+                );
 
-        const passatempo =
-            document.getElementById("passatempoArea");
+            const passatempo =
+                document.getElementById(
+                    "passatempoArea"
+                );
 
-        const educativos =
-            document.getElementById("educativosArea");
+            const educativos =
+                document.getElementById(
+                    "educativosArea"
+                );
 
 
-        if (categories) {
-            categories.style.display = "block";
-        }
+            if (categories) {
 
-        if (passatempo) {
-            passatempo.style.display = "none";
-        }
+                categories.style.display =
+                    "block";
 
-        if (educativos) {
-            educativos.style.display = "none";
-        }
+            }
 
-    };
+
+            if (passatempo) {
+
+                passatempo.style.display =
+                    "none";
+
+            }
+
+
+            if (educativos) {
+
+                educativos.style.display =
+                    "none";
+
+            }
+
+        };
 
 
     /* =====================================================
        FILTRO DOS JOGOS EDUCATIVOS
     ====================================================== */
 
-    window.filterGames = function(filter, button) {
+    window.filterGames =
+        function(filter, button) {
 
-        const games =
-            document.querySelectorAll(
-                ".educational-game"
-            );
-
-        const filters =
-            document.querySelectorAll(
-                ".game-filter"
-            );
+            const games =
+                document.querySelectorAll(
+                    ".educational-game"
+                );
 
 
-        filters.forEach(item => {
-            item.classList.remove("active");
-        });
+            const filters =
+                document.querySelectorAll(
+                    ".game-filter"
+                );
 
 
-        if (button) {
-            button.classList.add("active");
-        }
+            filters.forEach(item => {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            });
 
 
-        games.forEach(game => {
+            if (button) {
 
-            const subject =
-                game.dataset.subject;
-
-            if (
-                filter === "todos" ||
-                subject === filter
-            ) {
-
-                game.style.display = "";
-
-            } else {
-
-                game.style.display = "none";
+                button.classList.add(
+                    "active"
+                );
 
             }
 
-        });
 
-    };
+            games.forEach(game => {
+
+                const subject =
+                    game.dataset.subject;
+
+
+                if (
+                    filter === "todos" ||
+                    subject === filter
+                ) {
+
+                    game.style.display =
+                        "";
+
+                } else {
+
+                    game.style.display =
+                        "none";
+
+                }
+
+            });
+
+        };
 
 
     /* =====================================================
-       BOTÃO COMEÇAR CURSO
+       ABERTURA DE CURSO
     ====================================================== */
 
-    document.addEventListener("click", event => {
+    document.addEventListener(
+        "click",
+        event => {
 
-        const button =
-            event.target.closest(
-                "[data-open-course]"
+            const button =
+                event.target.closest(
+                    "[data-open-course]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            showSection(
+                "cursos"
             );
 
-        if (!button) return;
-
-        showSection("cursos");
-
-    });
+        }
+    );
 
 
     /* =====================================================
-       BOTÕES DE CURSO
+       MÓDULOS DO CURSO
     ====================================================== */
 
-    document.addEventListener("click", event => {
+    document.addEventListener(
+        "click",
+        event => {
 
-        const moduleButton =
-            event.target.closest(
-                "[data-module]"
+            const moduleButton =
+                event.target.closest(
+                    "[data-module]"
+                );
+
+
+            if (!moduleButton) {
+
+                return;
+
+            }
+
+
+            const module =
+                moduleButton.dataset.module;
+
+
+            /*
+               Quando a estrutura das aulas estiver pronta,
+               esta função poderá abrir o módulo diretamente.
+            */
+
+            console.log(
+                "Módulo selecionado:",
+                module
             );
 
-        if (!moduleButton) return;
 
-        const module =
-            moduleButton.dataset.module;
+            showNotification(
+                `Módulo ${module} selecionado.`
+            );
 
-        console.log(
-            "Módulo selecionado:",
-            module
-        );
-
-        showNotification(
-            `Módulo ${module} selecionado.`
-        );
-
-    });
+        }
+    );
 
 
     /* =====================================================
@@ -425,23 +740,41 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     const stars =
-        document.querySelectorAll(".stars button");
+        document.querySelectorAll(
+            ".stars button"
+        );
+
 
     stars.forEach((star, index) => {
 
-        star.addEventListener("click", () => {
+        star.addEventListener(
+            "click",
+            () => {
 
-            stars.forEach((item, starIndex) => {
+                stars.forEach(
+                    (item, starIndex) => {
 
-                if (starIndex <= index) {
-                    item.classList.add("selected");
-                } else {
-                    item.classList.remove("selected");
-                }
+                        if (
+                            starIndex <= index
+                        ) {
 
-            });
+                            item.classList.add(
+                                "selected"
+                            );
 
-        });
+                        } else {
+
+                            item.classList.remove(
+                                "selected"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
 
     });
 
@@ -451,41 +784,75 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     const logoutButton =
-        document.getElementById("logoutButton");
+        document.getElementById(
+            "logoutButton"
+        );
+
 
     if (logoutButton) {
 
-        logoutButton.addEventListener("click", () => {
+        logoutButton.addEventListener(
+            "click",
+            () => {
 
-            const confirmed =
-                confirm(
-                    "Deseja realmente sair da sua conta?"
+                const confirmed =
+                    confirm(
+                        "Deseja realmente sair da sua conta?"
+                    );
+
+
+                if (!confirmed) {
+
+                    return;
+
+                }
+
+
+                /*
+                   Remove somente os dados relacionados
+                   à sessão.
+                */
+
+                localStorage.removeItem(
+                    "user"
                 );
 
-            if (!confirmed) return;
+                localStorage.removeItem(
+                    "userName"
+                );
+
+                localStorage.removeItem(
+                    "userEmail"
+                );
+
+                localStorage.removeItem(
+                    "name"
+                );
+
+                localStorage.removeItem(
+                    "nome"
+                );
+
+                localStorage.removeItem(
+                    "email"
+                );
+
+                localStorage.removeItem(
+                    "token"
+                );
 
 
-            /*
-               Mantemos somente dados que não sejam
-               relacionados à sessão.
-            */
+                window.location.href =
+                    "index.html";
 
-            localStorage.removeItem("user");
-            localStorage.removeItem("userName");
-            localStorage.removeItem("userEmail");
-            localStorage.removeItem("token");
-
-
-            window.location.href =
-                "index.html";
-
-        });
+            }
+        );
 
     }
 
 
     /* =====================================================
-       NOTIFICAÇÃO
+       NOTIFICAÇÕES
     ====================================================== */
 
     function showNotification(message) {
@@ -499,13 +866,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!notification) {
 
             notification =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             notification.id =
                 "dashboardNotification";
 
+
             notification.className =
                 "dashboard-notification";
+
 
             document.body.appendChild(
                 notification
@@ -516,6 +888,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         notification.textContent =
             message;
+
 
         notification.classList.add(
             "show"
@@ -528,26 +901,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         window.dashboardNotificationTimer =
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                notification.classList.remove(
-                    "show"
-                );
+                    notification.classList.remove(
+                        "show"
+                    );
 
-            }, 3000);
+                },
+                3000
+            );
 
     }
 
 
     /* =====================================================
-       FUNÇÕES AUXILIARES
+       PRIMEIRO NOME
     ====================================================== */
 
     function firstName(name) {
 
         if (!name) {
+
             return "usuário";
+
         }
+
 
         return name
             .trim()
@@ -556,10 +935,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =====================================================
+       INICIAIS
+    ====================================================== */
+
     function getInitials(name) {
 
         if (!name) {
+
             return "AS";
+
         }
 
 
@@ -594,3 +979,4 @@ document.addEventListener("DOMContentLoaded", () => {
     showSection("inicio");
 
 });
+
