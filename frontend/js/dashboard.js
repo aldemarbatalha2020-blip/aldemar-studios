@@ -55,19 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
        RECUPERAÇÃO DO USUÁRIO
        
        O LOGIN SALVA EM:
-       
-       sessionStorage:
-       "usuario"
+       sessionStorage → "usuario"
     ====================================================== */
 
     let user = null;
-
 
     try {
 
         const savedUser =
             sessionStorage.getItem("usuario");
-
 
         if (savedUser) {
 
@@ -78,46 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
 
         console.warn(
-            "Não foi possível ler os dados da sessão.",
+            "Não foi possível ler os dados do usuário.",
             error
         );
 
-        sessionStorage.removeItem("usuario");
-
         user = null;
-
-    }
-
-
-    /* =====================================================
-       FALLBACK PARA SISTEMAS ANTIGOS
-       
-       Mantemos esta parte para evitar problemas caso
-       existam dados antigos no localStorage.
-    ====================================================== */
-
-    if (!user) {
-
-        try {
-
-            const oldUser =
-                localStorage.getItem("user");
-
-
-            if (oldUser) {
-
-                user = JSON.parse(oldUser);
-
-            }
-
-        } catch (error) {
-
-            console.warn(
-                "Não foi possível ler dados antigos.",
-                error
-            );
-
-        }
 
     }
 
@@ -141,9 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             nome_completo: storedName,
 
-            email: storedEmail || "",
-
-            plano: "gratuito"
+            email: storedEmail || ""
 
         };
 
@@ -157,14 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (user) {
 
         /*
-         * O backend atualmente retorna:
+         * O backend retorna:
          *
          * nome_completo
          * email
          * plano
          *
-         * Também mantemos compatibilidade com nomes
-         * usados em versões anteriores.
+         * Também mantemos compatibilidade
+         * com nomes antigos.
          */
 
         const name =
@@ -187,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const plan =
             user.plano ||
             user.plan ||
-            "GRATUITO";
+            "gratuito";
 
 
         const initials =
@@ -224,10 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* =================================================
            BOAS-VINDAS
-           
-           Exemplo:
-           
-           Olá, Aldemar! 👋
         ================================================== */
 
         if (welcomeNameElement) {
@@ -270,77 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             profileAvatarElement.textContent =
                 initials;
-
-        }
-
-
-    } else {
-
-        /*
-         * Caso não exista sessão, mantemos os valores
-         * padrão da interface.
-         */
-
-        if (userNameElement) {
-
-            userNameElement.textContent =
-                "Usuário";
-
-        }
-
-
-        if (welcomeNameElement) {
-
-            welcomeNameElement.textContent =
-                "usuário";
-
-        }
-
-
-        if (userAvatarElement) {
-
-            userAvatarElement.textContent =
-                "AS";
-
-        }
-
-
-        if (profileNameElement) {
-
-            profileNameElement.textContent =
-                "—";
-
-        }
-
-
-        if (profileEmailElement) {
-
-            profileEmailElement.textContent =
-                "—";
-
-        }
-
-
-        if (profilePlanElement) {
-
-            profilePlanElement.textContent =
-                "GRATUITO";
-
-        }
-
-
-        if (userPlanElement) {
-
-            userPlanElement.textContent =
-                "GRATUITO";
-
-        }
-
-
-        if (profileAvatarElement) {
-
-            profileAvatarElement.textContent =
-                "AS";
 
         }
 
@@ -857,7 +741,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /*
-                 * Sessão atual criada pelo login.
+                 * Remove a sessão atual.
                  */
 
                 sessionStorage.removeItem(
@@ -866,7 +750,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /*
-                 * Dados antigos de versões anteriores.
+                 * Remove possíveis dados
+                 * antigos da sessão.
                  */
 
                 localStorage.removeItem(
@@ -879,14 +764,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 localStorage.removeItem(
                     "userEmail"
-                );
-
-                localStorage.removeItem(
-                    "name"
-                );
-
-                localStorage.removeItem(
-                    "email"
                 );
 
                 localStorage.removeItem(
