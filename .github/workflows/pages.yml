@@ -1,27 +1,19 @@
 name: Deploy Frontend to GitHub Pages
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+on: [push, workflow_dispatch]
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
   deploy:
+    runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
 
     steps:
       - name: Baixar projeto
@@ -35,11 +27,11 @@ jobs:
           mkdir _site
           cp -R frontend/. _site/
 
-      - name: Upload do frontend
+      - name: Enviar arquivos
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./_site
 
-      - name: Publicar
+      - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
