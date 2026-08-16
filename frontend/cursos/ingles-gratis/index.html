@@ -1,583 +1,1140 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Curso de Inglês Grátis | Aldemar Studios</title>
 
     <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #172033;
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #101827,
+                    #162235,
+                    #1b2a3d
+                );
+
+            color: #edf4f8;
+
+            min-height: 100vh;
+
         }
 
-        header {
-            background: linear-gradient(135deg, #111827, #1e3a8a);
-            color: white;
-            padding: 50px 20px;
+
+        button,
+        a {
+
+            font-family: inherit;
+
         }
 
-        .header-content {
-            max-width: 1100px;
-            margin: auto;
+
+        /* =====================================================
+           APP
+        ===================================================== */
+
+        .course-app {
+
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
         }
 
-        .back-button {
-            display: inline-block;
-            margin-bottom: 35px;
-            padding: 10px 18px;
-            border-radius: 10px;
-            background: rgba(255,255,255,.12);
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .topbar {
+
+            width: 100%;
+
+            padding: 18px 6%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            background:
+                rgba(13, 24, 39, 0.88);
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(12px);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
         }
 
-        .back-button:hover {
-            background: rgba(255,255,255,.22);
-        }
 
         .brand {
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            opacity: .8;
-            margin-bottom: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
         }
 
-        h1 {
-            font-size: clamp(32px, 5vw, 56px);
-            margin-bottom: 15px;
+
+        .brand-icon {
+
+            width: 44px;
+            height: 44px;
+
+            border-radius: 13px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #79a9c2,
+                    #5d849d
+                );
+
+            color: white;
+
+            font-weight: 800;
+
+            font-size: 15px;
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,.20);
+
         }
 
-        .subtitle {
-            font-size: 18px;
-            line-height: 1.6;
+
+        .brand-text {
+
+            display: flex;
+            flex-direction: column;
+
+        }
+
+
+        .brand-text strong {
+
+            font-size: 16px;
+
+            letter-spacing: .3px;
+
+        }
+
+
+        .brand-text span {
+
+            font-size: 12px;
+
+            color: #9fb2c0;
+
+        }
+
+
+        .back-button {
+
+            border: 1px solid rgba(255,255,255,.10);
+
+            background:
+                rgba(255,255,255,.05);
+
+            color: #dce8ef;
+
+            padding: 10px 16px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition: .25s;
+
+        }
+
+
+        .back-button:hover {
+
+            background:
+                rgba(255,255,255,.10);
+
+            transform: translateY(-1px);
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            width: min(1150px, 90%);
+
+            margin: 60px auto 35px;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.4fr)
+                minmax(280px, .8fr);
+
+            gap: 35px;
+
+            align-items: stretch;
+
+        }
+
+
+        .hero-content {
+
+            padding: 42px;
+
+            border-radius: 26px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(91, 126, 149, .25),
+                    rgba(255,255,255,.045)
+                );
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            box-shadow:
+                0 25px 60px rgba(0,0,0,.18);
+
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            padding: 7px 12px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(120,169,194,.13);
+
+            border:
+                1px solid rgba(120,169,194,.18);
+
+            color: #a9cfdf;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(34px, 5vw, 58px);
+
+            line-height: 1.05;
+
+            margin-bottom: 20px;
+
+            letter-spacing: -1.5px;
+
+        }
+
+
+        .hero h1 span {
+
+            color: #8fc0d7;
+
+        }
+
+
+        .hero p {
+
+            color: #afc0cc;
+
+            font-size: 17px;
+
+            line-height: 1.75;
+
             max-width: 700px;
-            opacity: .9;
+
         }
 
-        main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px 70px;
+
+        .hero-buttons {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 30px;
+
         }
+
+
+        .primary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 48px;
+
+            padding: 0 23px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #78a9c2,
+                    #5e879f
+                );
+
+            color: white;
+
+            font-weight: 750;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 12px 25px rgba(52,92,112,.25);
+
+            transition: .25s;
+
+        }
+
+
+        .primary-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 16px 30px rgba(52,92,112,.32);
+
+        }
+
+
+        .secondary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 48px;
+
+            padding: 0 23px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid rgba(255,255,255,.10);
+
+            background:
+                rgba(255,255,255,.045);
+
+            color: #dce8ef;
+
+            text-decoration: none;
+
+            transition: .25s;
+
+        }
+
+
+        .secondary-button:hover {
+
+            background:
+                rgba(255,255,255,.08);
+
+        }
+
+
+        /* =====================================================
+           COURSE INFO
+        ===================================================== */
 
         .course-info {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-bottom: 45px;
+
+            padding: 30px;
+
+            border-radius: 26px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
         }
 
-        .info-card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,.06);
-            text-align: center;
+
+        .course-icon {
+
+            font-size: 65px;
+
+            margin-bottom: 20px;
+
         }
 
-        .info-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
 
-        .info-card strong {
-            display: block;
+        .course-info h2 {
+
             font-size: 25px;
-            margin-bottom: 5px;
+
+            margin-bottom: 18px;
+
         }
 
-        .info-card span {
-            color: #64748b;
+
+        .info-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+
         }
+
+
+        .info-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            color: #b7c7d1;
+
+            font-size: 14px;
+
+        }
+
+
+        .info-item span:first-child {
+
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background:
+                rgba(120,169,194,.10);
+
+        }
+
+
+        /* =====================================================
+           SEÇÕES
+        ===================================================== */
+
+        .content {
+
+            width: min(1150px, 90%);
+
+            margin: 0 auto 70px;
+
+        }
+
 
         .section-title {
-            margin-bottom: 25px;
+
+            margin: 35px 0 22px;
+
         }
+
 
         .section-title span {
-            color: #2563eb;
-            font-size: 13px;
-            font-weight: bold;
-            letter-spacing: 1.5px;
+
+            color: #8fb7ca;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
         }
+
 
         .section-title h2 {
-            font-size: 32px;
-            margin-top: 8px;
+
+            font-size: 28px;
+
+            margin: 7px 0;
+
         }
 
-        .modules {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
 
-        .module-card {
-            background: white;
-            border-radius: 18px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,.06);
-            border: 1px solid #e5e7eb;
-            transition: .2s;
-        }
+        .section-title p {
 
-        .module-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 30px rgba(0,0,0,.1);
-        }
+            color: #9fb1bd;
 
-        .module-number {
-            display: inline-block;
-            background: #dbeafe;
-            color: #1d4ed8;
-            padding: 7px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 14px;
-        }
-
-        .module-card h3 {
-            font-size: 21px;
-            margin-bottom: 8px;
-        }
-
-        .module-card p {
-            color: #64748b;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .module-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .module-button {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 12px;
-            border-radius: 10px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .module-button:hover {
-            background: #1d4ed8;
-        }
-
-        .course-notice {
-            margin-top: 40px;
-            padding: 22px;
-            border-radius: 15px;
-            background: #fff7ed;
-            border: 1px solid #fed7aa;
-            color: #9a3412;
             line-height: 1.6;
+
         }
+
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
+
+        .features-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+        }
+
+
+        .feature-card {
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            transition: .25s;
+
+        }
+
+
+        .feature-card:hover {
+
+            transform: translateY(-3px);
+
+            background:
+                rgba(255,255,255,.065);
+
+        }
+
+
+        .feature-icon {
+
+            font-size: 30px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .feature-card h3 {
+
+            font-size: 18px;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .feature-card p {
+
+            color: #9eafbb;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+
+        }
+
+
+        /* =====================================================
+           CTA
+        ===================================================== */
+
+        .cta {
+
+            margin-top: 35px;
+
+            padding: 35px;
+
+            border-radius: 24px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(100,145,169,.18),
+                    rgba(255,255,255,.04)
+                );
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+        }
+
+
+        .cta h2 {
+
+            font-size: 27px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .cta p {
+
+            color: #a7b8c3;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
 
         footer {
+
+            margin-top: auto;
+
+            padding: 25px 6%;
+
             text-align: center;
-            padding: 30px 20px;
-            background: #111827;
-            color: #94a3b8;
-            font-size: 14px;
+
+            border-top:
+                1px solid rgba(255,255,255,.06);
+
+            color: #7f929f;
+
+            font-size: 13px;
+
         }
 
-        @media (max-width: 700px) {
+
+        /* =====================================================
+           RESPONSIVIDADE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .hero {
+
+                grid-template-columns: 1fr;
+
+                margin-top: 35px;
+
+            }
+
+
+            .features-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .topbar {
+
+                padding: 14px 5%;
+
+            }
+
+
+            .brand-text {
+
+                display: none;
+
+            }
+
+
+            .hero-content {
+
+                padding: 28px 22px;
+
+            }
+
+
+            .hero h1 {
+
+                font-size: 35px;
+
+            }
+
+
+            .hero p {
+
+                font-size: 15px;
+
+            }
+
 
             .course-info {
+
+                padding: 25px 20px;
+
+            }
+
+
+            .features-grid {
+
                 grid-template-columns: 1fr;
+
             }
 
-            .modules {
-                grid-template-columns: 1fr;
+
+            .hero-buttons {
+
+                flex-direction: column;
+
             }
 
-            header {
-                padding: 35px 20px;
+
+            .hero-buttons a {
+
+                width: 100%;
+
             }
 
-            h1 {
-                font-size: 36px;
+
+            .content {
+
+                width: 90%;
+
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-<header>
+<div class="course-app">
 
-    <div class="header-content">
 
-        <a href="../../index.html" class="back-button">
-            ← VOLTAR
-        </a>
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <header class="topbar">
 
         <div class="brand">
-            ALDEMAR STUDIOS
-        </div>
 
-        <h1>🇺🇸 Curso de Inglês Grátis</h1>
+            <div class="brand-icon">
+                AS
+            </div>
 
-        <p class="subtitle">
-            Aprenda inglês de forma progressiva através de
-            10 módulos e 100 aulas interativas.
-        </p>
+            <div class="brand-text">
 
-    </div>
+                <strong>
+                    Aldemar Studios
+                </strong>
 
-</header>
+                <span>
+                    Plataforma Educacional
+                </span>
 
-
-<main>
-
-    <section class="course-info">
-
-        <div class="info-card">
-
-            <div class="info-icon">📚</div>
-
-            <strong>10</strong>
-
-            <span>Módulos</span>
+            </div>
 
         </div>
 
 
-        <div class="info-card">
+        <button
+            type="button"
+            class="back-button"
+            onclick="voltarDashboard()"
+        >
+            ← Voltar
+        </button>
 
-            <div class="info-icon">🎓</div>
+    </header>
 
-            <strong>100</strong>
 
-            <span>Aulas</span>
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+            <span class="eyebrow">
+                CURSO GRATUITO
+            </span>
+
+
+            <h1>
+                Inglês para
+                <span>Iniciantes</span>
+            </h1>
+
+
+            <p>
+                Comece sua jornada no inglês através de
+                um curso completo, organizado e acessível.
+                Estude no seu ritmo e avance aula após aula.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a
+                    href="modulos.html"
+                    class="primary-button"
+                >
+                    📚 VER MÓDULOS
+                </a>
+
+
+                <a
+                    href="#sobre"
+                    class="secondary-button"
+                >
+                    CONHECER O CURSO
+                </a>
+
+            </div>
 
         </div>
 
 
-        <div class="info-card">
 
-            <div class="info-icon">🆓</div>
+        <!-- =================================================
+             INFORMAÇÕES
+        ================================================== -->
 
-            <strong>Grátis</strong>
+        <div class="course-info">
 
-            <span>Sem certificado</span>
-
-        </div>
-
-    </section>
-
-
-    <section>
-
-        <div class="section-title">
-
-            <span>APRENDA INGLÊS</span>
-
-            <h2>Escolha um módulo</h2>
-
-        </div>
+            <div class="course-icon">
+                🇺🇸
+            </div>
 
 
-        <div class="modules">
+            <h2>
+                Curso Livre de Inglês
+            </h2>
 
 
-            <article class="module-card">
+            <div class="info-list">
 
-                <span class="module-number">
-                    MÓDULO 01
-                </span>
 
-                <h3>English Basics</h3>
+                <div class="info-item">
 
-                <p>
-                    Os fundamentos do inglês para começar
-                    sua jornada de aprendizagem.
-                </p>
+                    <span>📚</span>
 
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
+                    <span>
+                        10 módulos
+                    </span>
+
                 </div>
 
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
 
-            </article>
+                <div class="info-item">
 
+                    <span>🎓</span>
 
-            <article class="module-card">
+                    <span>
+                        10 aulas por módulo
+                    </span>
 
-                <span class="module-number">
-                    MÓDULO 02
-                </span>
-
-                <h3>Personal Information</h3>
-
-                <p>
-                    Aprenda a falar sobre você,
-                    sua identidade e informações pessoais.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
                 </div>
 
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
 
-            </article>
+                <div class="info-item">
 
+                    <span>🆓</span>
 
-            <article class="module-card">
+                    <span>
+                        100% gratuito
+                    </span>
 
-                <span class="module-number">
-                    MÓDULO 03
-                </span>
-
-                <h3>Daily Life</h3>
-
-                <p>
-                    Vocabulário e estruturas para falar
-                    sobre rotina e atividades diárias.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
                 </div>
 
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
 
-            </article>
+                <div class="info-item">
 
+                    <span>📱</span>
 
-            <article class="module-card">
+                    <span>
+                        PC, tablet e celular
+                    </span>
 
-                <span class="module-number">
-                    MÓDULO 04
-                </span>
-
-                <h3>Family & People</h3>
-
-                <p>
-                    Aprenda a falar sobre família,
-                    pessoas e relacionamentos.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
                 </div>
 
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
 
-            </article>
+                <div class="info-item">
 
+                    <span>📜</span>
 
-            <article class="module-card">
+                    <span>
+                        Sem certificado
+                    </span>
 
-                <span class="module-number">
-                    MÓDULO 05
-                </span>
-
-                <h3>Places & Directions</h3>
-
-                <p>
-                    Aprenda lugares, localização,
-                    direções e expressões úteis.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
                 </div>
 
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
-
-            </article>
-
-
-            <article class="module-card">
-
-                <span class="module-number">
-                    MÓDULO 06
-                </span>
-
-                <h3>Food & Drinks</h3>
-
-                <p>
-                    Vocabulário e situações relacionadas
-                    a alimentos, bebidas e refeições.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
-                </div>
-
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
-
-            </article>
-
-
-            <article class="module-card">
-
-                <span class="module-number">
-                    MÓDULO 07
-                </span>
-
-                <h3>Shopping & Services</h3>
-
-                <p>
-                    Inglês para compras, lojas,
-                    preços e situações do cotidiano.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
-                </div>
-
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
-
-            </article>
-
-
-            <article class="module-card">
-
-                <span class="module-number">
-                    MÓDULO 08
-                </span>
-
-                <h3>Travel & Transportation</h3>
-
-                <p>
-                    Prepare-se para situações envolvendo
-                    viagens e meios de transporte.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
-                </div>
-
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
-
-            </article>
-
-
-            <article class="module-card">
-
-                <span class="module-number">
-                    MÓDULO 09
-                </span>
-
-                <h3>Past, Present & Future</h3>
-
-                <p>
-                    Conheça estruturas para falar sobre
-                    acontecimentos no presente, passado e futuro.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
-                </div>
-
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
-
-            </article>
-
-
-            <article class="module-card">
-
-                <span class="module-number">
-                    MÓDULO 10
-                </span>
-
-                <h3>Communication & Final Challenge</h3>
-
-                <p>
-                    Coloque seus conhecimentos em prática
-                    através de desafios de comunicação.
-                </p>
-
-                <div class="module-meta">
-                    <span>📖 10 aulas</span>
-                    <span>🔒 Em breve</span>
-                </div>
-
-                <a href="#" class="module-button">
-                    ACESSAR MÓDULO
-                </a>
-
-            </article>
-
-        </div>
-
-
-        <div class="course-notice">
-
-            <strong>ℹ️ Sobre este curso</strong><br>
-
-            Este é um curso gratuito disponibilizado pelo
-            <strong>Aldemar Studios</strong> para auxiliar
-            estudantes no aprendizado da língua inglesa.
-
-            O curso possui 10 módulos e 100 aulas.
-            <strong>Não há emissão de certificado.</strong>
+            </div>
 
         </div>
 
     </section>
 
-</main>
 
 
-<footer>
+    <!-- =================================================
+         CONTEÚDO
+    ================================================== -->
 
-    © 2026 Aldemar Studios —
-    Curso de Inglês Grátis
+    <main class="content">
 
-</footer>
+
+        <section id="sobre">
+
+            <div class="section-title">
+
+                <span>
+                    SOBRE O CURSO
+                </span>
+
+                <h2>
+                    Aprenda inglês passo a passo
+                </h2>
+
+                <p>
+                    O curso foi desenvolvido para quem está
+                    começando a estudar inglês e precisa de
+                    uma sequência clara de aprendizagem.
+                </p>
+
+            </div>
+
+
+            <div class="features-grid">
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        📖
+                    </div>
+
+                    <h3>
+                        Conteúdo organizado
+                    </h3>
+
+                    <p>
+                        Os conteúdos são distribuídos em
+                        módulos e aulas para facilitar
+                        sua evolução.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Aprendizagem progressiva
+                    </h3>
+
+                    <p>
+                        Comece pelos fundamentos e avance
+                        gradualmente para conteúdos mais
+                        completos.
+                    </p>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Materiais didáticos
+                    </h3>
+
+                    <p>
+                        Cada aula poderá contar com material
+                        didático para estudo e impressão.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CTA
+        ================================================== -->
+
+        <section class="cta">
+
+            <h2>
+                Pronto para começar?
+            </h2>
+
+            <p>
+                Acesse os módulos e comece sua jornada
+                no inglês.
+            </p>
+
+
+            <a
+                href="modulos.html"
+                class="primary-button"
+            >
+                🚀 ACESSAR MÓDULOS
+            </a>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <footer>
+
+        © <span id="year"></span>
+        Aldemar Studios —
+        Curso de Inglês Gratuito
+
+    </footer>
+
+</div>
+
+
+
+<script>
+
+    /* =====================================================
+       ANO
+    ===================================================== */
+
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+
+
+
+    /* =====================================================
+       VOLTAR PARA O DASHBOARD
+    ===================================================== */
+
+    function voltarDashboard() {
+
+        /*
+           Como cursos está dentro da estrutura do frontend,
+           voltamos para o dashboard principal.
+        */
+
+        window.location.href =
+            "../dashboard.html";
+
+    }
+
+</script>
+
 
 </body>
+
 </html>
