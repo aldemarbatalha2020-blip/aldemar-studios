@@ -1,8 +1,6 @@
-
 /* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
-   Sistema de navegação do painel
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,21 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
        ELEMENTOS PRINCIPAIS
     ====================================================== */
 
-    const menuItems = document.querySelectorAll(
-        ".menu-item[data-section]"
-    );
-
-    const sections = document.querySelectorAll(
-        ".content-section"
-    );
-
-    const pageTitle = document.getElementById(
-        "pageTitle"
-    );
+    const menuItems = document.querySelectorAll(".menu-item[data-section]");
+    const sections = document.querySelectorAll(".content-section");
+    const pageTitle = document.getElementById("pageTitle");
 
 
     /* =====================================================
-       ELEMENTOS DO USUÁRIO
+       USUÁRIO
     ====================================================== */
 
     const userNameElement =
@@ -50,70 +40,48 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("profilePlan");
 
 
-    /* =====================================================
-       RECUPERAÇÃO DO USUÁRIO
-    ====================================================== */
-
     let user = null;
 
 
-    /*
-       Primeiro tentamos recuperar o objeto completo.
-    */
+    /* =====================================================
+       RECUPERAR USUÁRIO
+    ====================================================== */
 
     try {
 
-        const storedUser =
-            localStorage.getItem("user");
-
-        if (storedUser) {
-
-            user = JSON.parse(storedUser);
-
-        }
+        user = JSON.parse(
+            localStorage.getItem("user")
+        );
 
     } catch (error) {
-
-        console.warn(
-            "Não foi possível ler os dados do usuário.",
-            error
-        );
 
         user = null;
 
     }
 
 
-    /*
-       Recuperação alternativa.
-       Isso ajuda caso o login tenha salvo os dados
-       separadamente.
-    */
-
     const storedName =
         localStorage.getItem("userName") ||
-        localStorage.getItem("name") ||
-        localStorage.getItem("nome") ||
-        "";
+        localStorage.getItem("name");
+
 
     const storedEmail =
         localStorage.getItem("userEmail") ||
-        localStorage.getItem("email") ||
-        "";
+        localStorage.getItem("email");
 
 
     /*
-       Caso não exista objeto "user", criamos um
-       usando os dados individuais.
+       Caso o sistema tenha salvo os dados
+       separadamente.
     */
 
-    if (!user && (storedName || storedEmail)) {
+    if (!user && storedName) {
 
         user = {
 
             name: storedName,
 
-            email: storedEmail
+            email: storedEmail || ""
 
         };
 
@@ -121,22 +89,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CONFIGURAÇÃO DO USUÁRIO
+       CONFIGURAR USUÁRIO
     ====================================================== */
 
     if (user) {
-
-        /*
-           Aceitamos diferentes nomes de propriedades
-           para manter compatibilidade com o sistema.
-        */
 
         const name =
             user.name ||
             user.nome ||
             user.fullName ||
-            user.fullname ||
-            user.displayName ||
             storedName ||
             "Usuário";
 
@@ -144,25 +105,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const email =
             user.email ||
             user.emailAddress ||
-            user.mail ||
             storedEmail ||
             "—";
-
-
-        const plan =
-            user.plan ||
-            user.plano ||
-            user.subscription ||
-            "GRATUITO";
 
 
         const initials =
             getInitials(name);
 
-
-        /*
-           Nome no topo
-        */
 
         if (userNameElement) {
 
@@ -172,10 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-           Nome na mensagem de boas-vindas
-        */
-
         if (welcomeNameElement) {
 
             welcomeNameElement.textContent =
@@ -184,10 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-           Avatar do topo
-        */
-
         if (userAvatarElement) {
 
             userAvatarElement.textContent =
@@ -195,10 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
-        /*
-           Perfil
-        */
 
         if (profileNameElement) {
 
@@ -227,41 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (profilePlanElement) {
 
             profilePlanElement.textContent =
-                plan.toUpperCase();
-
-        }
-
-    } else {
-
-        /*
-           Caso realmente não exista nenhum dado.
-        */
-
-        if (userNameElement) {
-
-            userNameElement.textContent =
-                "Visitante";
-
-        }
-
-        if (welcomeNameElement) {
-
-            welcomeNameElement.textContent =
-                "Visitante";
-
-        }
-
-        if (profileNameElement) {
-
-            profileNameElement.textContent =
-                "Não informado";
-
-        }
-
-        if (profileEmailElement) {
-
-            profileEmailElement.textContent =
-                "Não informado";
+                user.plan ||
+                user.plano ||
+                "GRATUITO";
 
         }
 
@@ -275,10 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
     menuItems.forEach(item => {
 
         item.addEventListener("click", () => {
-
-            /*
-               Áreas bloqueadas
-            */
 
             const locked =
                 item.dataset.locked === "true";
@@ -299,11 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.dataset.section;
 
 
-            if (!sectionName) {
-
-                return;
-
-            }
+            if (!sectionName) return;
 
 
             showSection(sectionName);
@@ -343,109 +240,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       NAVEGAÇÃO ENTRE SEÇÕES
+       FUNÇÃO PRINCIPAL DE NAVEGAÇÃO
     ====================================================== */
 
-    window.showSection =
-        function(sectionName) {
+    window.showSection = function(sectionName) {
 
-            /*
-               Esconde todas as seções
-            */
+        sections.forEach(section => {
 
-            sections.forEach(section => {
+            section.classList.remove("active");
 
-                section.classList.remove(
-                    "active"
-                );
-
-            });
+        });
 
 
-            /*
-               Remove menu ativo
-            */
+        menuItems.forEach(item => {
 
-            menuItems.forEach(item => {
+            item.classList.remove("active");
 
-                item.classList.remove(
-                    "active"
-                );
-
-            });
+        });
 
 
-            /*
-               Procura a seção desejada
-            */
-
-            const target =
-                document.getElementById(
-                    sectionName
-                );
+        const target =
+            document.getElementById(sectionName);
 
 
-            if (!target) {
+        if (!target) {
 
-                console.warn(
-                    `Seção "${sectionName}" não encontrada.`
-                );
+            console.warn(
+                `Seção "${sectionName}" não encontrada.`
+            );
 
-                return;
+            return;
 
-            }
+        }
 
 
-            /*
-               Ativa a seção
-            */
+        target.classList.add("active");
 
-            target.classList.add(
-                "active"
+
+        const activeMenu =
+            document.querySelector(
+                `.menu-item[data-section="${sectionName}"]`
             );
 
 
-            /*
-               Ativa o botão correspondente
-            */
+        if (activeMenu) {
 
-            const activeMenu =
-                document.querySelector(
-                    `.menu-item[data-section="${sectionName}"]`
-                );
+            activeMenu.classList.add("active");
+
+        }
 
 
-            if (activeMenu) {
-
-                activeMenu.classList.add(
-                    "active"
-                );
-
-            }
+        updatePageTitle(sectionName);
 
 
-            /*
-               Atualiza título
-            */
+        window.scrollTo({
 
-            updatePageTitle(
-                sectionName
-            );
+            top: 0,
 
+            behavior: "smooth"
 
-            /*
-               Volta para o topo
-            */
+        });
 
-            window.scrollTo({
-
-                top: 0,
-
-                behavior: "smooth"
-
-            });
-
-        };
+    };
 
 
     /* =====================================================
@@ -454,38 +310,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updatePageTitle(sectionName) {
 
-        if (!pageTitle) {
-
-            return;
-
-        }
+        if (!pageTitle) return;
 
 
         const titles = {
 
-            inicio:
-                "Início",
+            inicio: "Início",
 
-            jogos:
-                "Jogos",
+            jogos: "Jogos",
 
-            cursos:
-                "Cursos",
+            cursos: "Cursos",
 
-            ingles:
-                "Inglês",
+            ingles: "Inglês",
 
-            musica:
-                "Música",
+            musica: "Música",
 
-            inclusivos:
-                "Inclusivos",
+            inclusivos: "Inclusivos",
 
-            feedback:
-                "Feedback",
+            feedback: "Feedback",
 
-            perfil:
-                "Meu Perfil"
+            perfil: "Meu Perfil"
 
         };
 
@@ -501,242 +345,254 @@ document.addEventListener("DOMContentLoaded", () => {
        CATEGORIAS DE JOGOS
     ====================================================== */
 
-    window.openGameCategory =
-        function(category) {
+    window.openGameCategory = function(category) {
 
-            const categories =
-                document.getElementById(
-                    "gamesCategories"
-                );
-
-            const passatempo =
-                document.getElementById(
-                    "passatempoArea"
-                );
-
-            const educativos =
-                document.getElementById(
-                    "educativosArea"
-                );
+        const categories =
+            document.getElementById(
+                "gamesCategories"
+            );
 
 
-            if (categories) {
-
-                categories.style.display =
-                    "none";
-
-            }
+        const passatempo =
+            document.getElementById(
+                "passatempoArea"
+            );
 
 
-            if (passatempo) {
-
-                passatempo.style.display =
-                    category === "passatempo"
-                        ? "block"
-                        : "none";
-
-            }
+        const educativos =
+            document.getElementById(
+                "educativosArea"
+            );
 
 
-            if (educativos) {
+        if (categories) {
 
-                educativos.style.display =
-                    category === "educativos"
-                        ? "block"
-                        : "none";
+            categories.style.display =
+                "none";
 
-            }
+        }
 
-        };
+
+        if (passatempo) {
+
+            passatempo.style.display =
+                category === "passatempo"
+                    ? "block"
+                    : "none";
+
+        }
+
+
+        if (educativos) {
+
+            educativos.style.display =
+                category === "educativos"
+                    ? "block"
+                    : "none";
+
+        }
+
+    };
 
 
     /* =====================================================
        VOLTAR PARA CATEGORIAS DE JOGOS
     ====================================================== */
 
-    window.backToGameCategories =
-        function() {
+    window.backToGameCategories = function() {
 
-            const categories =
-                document.getElementById(
-                    "gamesCategories"
-                );
-
-            const passatempo =
-                document.getElementById(
-                    "passatempoArea"
-                );
-
-            const educativos =
-                document.getElementById(
-                    "educativosArea"
-                );
+        const categories =
+            document.getElementById(
+                "gamesCategories"
+            );
 
 
-            if (categories) {
-
-                categories.style.display =
-                    "block";
-
-            }
+        const passatempo =
+            document.getElementById(
+                "passatempoArea"
+            );
 
 
-            if (passatempo) {
-
-                passatempo.style.display =
-                    "none";
-
-            }
+        const educativos =
+            document.getElementById(
+                "educativosArea"
+            );
 
 
-            if (educativos) {
+        if (categories) {
 
-                educativos.style.display =
-                    "none";
+            categories.style.display =
+                "block";
 
-            }
+        }
 
-        };
+
+        if (passatempo) {
+
+            passatempo.style.display =
+                "none";
+
+        }
+
+
+        if (educativos) {
+
+            educativos.style.display =
+                "none";
+
+        }
+
+    };
 
 
     /* =====================================================
        FILTRO DOS JOGOS EDUCATIVOS
     ====================================================== */
 
-    window.filterGames =
-        function(filter, button) {
+    window.filterGames = function(filter, button) {
 
-            const games =
-                document.querySelectorAll(
-                    ".educational-game"
-                );
-
-
-            const filters =
-                document.querySelectorAll(
-                    ".game-filter"
-                );
+        const games =
+            document.querySelectorAll(
+                ".educational-game"
+            );
 
 
-            filters.forEach(item => {
-
-                item.classList.remove(
-                    "active"
-                );
-
-            });
+        const filters =
+            document.querySelectorAll(
+                ".game-filter"
+            );
 
 
-            if (button) {
+        filters.forEach(item => {
 
-                button.classList.add(
-                    "active"
-                );
+            item.classList.remove(
+                "active"
+            );
 
-            }
-
-
-            games.forEach(game => {
-
-                const subject =
-                    game.dataset.subject;
+        });
 
 
-                if (
-                    filter === "todos" ||
-                    subject === filter
-                ) {
+        if (button) {
 
-                    game.style.display =
-                        "";
-
-                } else {
-
-                    game.style.display =
-                        "none";
-
-                }
-
-            });
-
-        };
-
-
-    /* =====================================================
-       ABERTURA DE CURSO
-    ====================================================== */
-
-    document.addEventListener(
-        "click",
-        event => {
-
-            const button =
-                event.target.closest(
-                    "[data-open-course]"
-                );
-
-
-            if (!button) {
-
-                return;
-
-            }
-
-
-            showSection(
-                "cursos"
+            button.classList.add(
+                "active"
             );
 
         }
-    );
 
 
-    /* =====================================================
-       MÓDULOS DO CURSO
-    ====================================================== */
+        games.forEach(game => {
 
-    document.addEventListener(
-        "click",
-        event => {
-
-            const moduleButton =
-                event.target.closest(
-                    "[data-module]"
-                );
+            const subject =
+                game.dataset.subject;
 
 
-            if (!moduleButton) {
+            if (
+                filter === "todos" ||
+                subject === filter
+            ) {
 
-                return;
+                game.style.display = "";
+
+            } else {
+
+                game.style.display =
+                    "none";
 
             }
 
+        });
 
-            const module =
-                moduleButton.dataset.module;
-
-
-            /*
-               Quando a estrutura das aulas estiver pronta,
-               esta função poderá abrir o módulo diretamente.
-            */
-
-            console.log(
-                "Módulo selecionado:",
-                module
-            );
-
-
-            showNotification(
-                `Módulo ${module} selecionado.`
-            );
-
-        }
-    );
+    };
 
 
     /* =====================================================
-       FEEDBACK
+       ABRIR CURSO
+    ====================================================== */
+
+    document.addEventListener("click", event => {
+
+        const button =
+            event.target.closest(
+                "[data-open-course]"
+            );
+
+
+        if (!button) return;
+
+
+        /*
+           Caminho do curso dentro do GitHub Pages:
+
+           /cursos/index.html
+        */
+
+        window.location.href =
+            "cursos/index.html";
+
+    });
+
+
+    /* =====================================================
+       ABRIR CURSO POR BOTÃO NORMAL
+       Caso algum botão tenha classe específica.
+    ====================================================== */
+
+    const courseButtons =
+        document.querySelectorAll(
+            ".open-course-button"
+        );
+
+
+    courseButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "cursos/index.html";
+
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       BOTÕES DOS MÓDULOS
+    ====================================================== */
+
+    document.addEventListener("click", event => {
+
+        const moduleButton =
+            event.target.closest(
+                "[data-module]"
+            );
+
+
+        if (!moduleButton) return;
+
+
+        const module =
+            moduleButton.dataset.module;
+
+
+        console.log(
+            "Módulo selecionado:",
+            module
+        );
+
+
+        showNotification(
+            `Módulo ${module} selecionado.`
+        );
+
+    });
+
+
+    /* =====================================================
+       FEEDBACK — ESTRELAS
     ====================================================== */
 
     const stars =
@@ -801,16 +657,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                if (!confirmed) {
-
-                    return;
-
-                }
+                if (!confirmed) return;
 
 
                 /*
-                   Remove somente os dados relacionados
-                   à sessão.
+                   Limpa os dados da sessão.
                 */
 
                 localStorage.removeItem(
@@ -823,18 +674,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 localStorage.removeItem(
                     "userEmail"
-                );
-
-                localStorage.removeItem(
-                    "name"
-                );
-
-                localStorage.removeItem(
-                    "nome"
-                );
-
-                localStorage.removeItem(
-                    "email"
                 );
 
                 localStorage.removeItem(
@@ -852,7 +691,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       NOTIFICAÇÕES
+       NOTIFICAÇÃO
     ====================================================== */
 
     function showNotification(message) {
@@ -979,4 +818,3 @@ document.addEventListener("DOMContentLoaded", () => {
     showSection("inicio");
 
 });
-
