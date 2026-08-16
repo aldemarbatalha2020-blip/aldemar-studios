@@ -1,227 +1,195 @@
-// =========================================
-// USUÁRIO
-// =========================================
+/* =========================================================
+   ALDEMAR STUDIOS
+   DASHBOARD.JS
+   ========================================================= */
 
-const usuarioSalvo =
-    sessionStorage.getItem("usuario");
+document.addEventListener("DOMContentLoaded", () => {
 
+    /* =====================================================
+       ELEMENTOS PRINCIPAIS
+    ====================================================== */
 
-// =========================================
-// PROTEGER PAINEL
-// =========================================
+    const menuItems = document.querySelectorAll(".menu-item[data-section]");
+    const sections = document.querySelectorAll(".content-section");
+    const pageTitle = document.getElementById("pageTitle");
 
-if (!usuarioSalvo) {
+    /* =====================================================
+       USUÁRIO
+    ====================================================== */
 
-    window.location.href = "index.html";
+    const userNameElement = document.getElementById("userName");
+    const welcomeNameElement = document.getElementById("welcomeName");
+    const userAvatarElement = document.getElementById("userAvatar");
 
-}
+    const profileNameElement = document.getElementById("profileName");
+    const profileEmailElement = document.getElementById("profileEmail");
+    const profileAvatarElement = document.getElementById("profileAvatar");
+    const profilePlanElement = document.getElementById("profilePlan");
 
+    let user = null;
 
-// =========================================
-// CARREGAR USUÁRIO
-// =========================================
-
-let usuario = null;
-
-try {
-
-    usuario = JSON.parse(usuarioSalvo);
-
-} catch (error) {
-
-    sessionStorage.removeItem("usuario");
-
-    window.location.href = "index.html";
-
-}
-
-
-// =========================================
-// ELEMENTOS
-// =========================================
-
-const userName =
-    document.getElementById("userName");
-
-const welcomeName =
-    document.getElementById("welcomeName");
-
-const userPlan =
-    document.getElementById("userPlan");
-
-const userAvatar =
-    document.getElementById("userAvatar");
-
-const profileAvatar =
-    document.getElementById("profileAvatar");
-
-const profileName =
-    document.getElementById("profileName");
-
-const profileEmail =
-    document.getElementById("profileEmail");
-
-const profilePlan =
-    document.getElementById("profilePlan");
-
-const pageTitle =
-    document.getElementById("pageTitle");
-
-
-// =========================================
-// INFORMAÇÕES DO USUÁRIO
-// =========================================
-
-if (usuario) {
-
-    const nome =
-        usuario.nome_completo || "Usuário";
-
-    const iniciais =
-        nome
-            .split(" ")
-            .filter(Boolean)
-            .slice(0, 2)
-            .map(nome => nome.charAt(0))
-            .join("")
-            .toUpperCase();
-
-
-    if (userName)
-        userName.textContent = nome;
-
-
-    if (welcomeName)
-        welcomeName.textContent =
-            nome.split(" ")[0];
-
-
-    if (userPlan)
-        userPlan.textContent =
-            (usuario.plano || "gratuito").toUpperCase();
-
-
-    if (userAvatar)
-        userAvatar.textContent = iniciais;
-
-
-    if (profileAvatar)
-        profileAvatar.textContent = iniciais;
-
-
-    if (profileName)
-        profileName.textContent =
-            usuario.nome_completo;
-
-
-    if (profileEmail)
-        profileEmail.textContent =
-            usuario.email;
-
-
-    if (profilePlan)
-        profilePlan.textContent =
-            (usuario.plano || "gratuito").toUpperCase();
-
-}
-
-
-// =========================================
-// MENU
-// =========================================
-
-const menuItems =
-    document.querySelectorAll(".menu-item");
-
-const sections =
-    document.querySelectorAll(".content-section");
-
-
-// =========================================
-// FUNÇÃO PRINCIPAL DE NAVEGAÇÃO
-// =========================================
-
-function showSection(sectionId) {
-
-    const section =
-        document.getElementById(sectionId);
-
-
-    if (!section) {
-        return;
+    try {
+        user = JSON.parse(localStorage.getItem("user"));
+    } catch (error) {
+        user = null;
     }
 
+    /*
+       Caso o sistema tenha salvo os dados com outro nome,
+       tentamos também recuperar informações individuais.
+    */
 
-    // Fechar áreas internas dos jogos
-    resetGameAreas();
+    const storedName =
+        localStorage.getItem("userName") ||
+        localStorage.getItem("name");
 
+    const storedEmail =
+        localStorage.getItem("userEmail") ||
+        localStorage.getItem("email");
 
-    // Remover ativos
-    menuItems.forEach(menu => {
+    if (!user && storedName) {
+        user = {
+            name: storedName,
+            email: storedEmail || ""
+        };
+    }
 
-        menu.classList.remove("active");
+    /* =====================================================
+       CONFIGURAÇÃO DO USUÁRIO
+    ====================================================== */
 
-    });
+    if (user) {
 
+        const name =
+            user.name ||
+            user.nome ||
+            storedName ||
+            "Usuário";
 
-    sections.forEach(section => {
+        const email =
+            user.email ||
+            user.emailAddress ||
+            storedEmail ||
+            "—";
 
-        section.classList.remove("active");
+        const initials = getInitials(name);
 
-    });
+        if (userNameElement) {
+            userNameElement.textContent = name;
+        }
 
+        if (welcomeNameElement) {
+            welcomeNameElement.textContent = firstName(name);
+        }
 
-    // Ativar seção
-    section.classList.add("active");
+        if (userAvatarElement) {
+            userAvatarElement.textContent = initials;
+        }
 
+        if (profileNameElement) {
+            profileNameElement.textContent = name;
+        }
 
-    // Encontrar item correspondente
-    const menu =
-        document.querySelector(
-            `.menu-item[data-section="${sectionId}"]`
-        );
+        if (profileEmailElement) {
+            profileEmailElement.textContent = email;
+        }
 
+        if (profileAvatarElement) {
+            profileAvatarElement.textContent = initials;
+        }
 
-    if (menu) {
-
-        menu.classList.add("active");
-
-
-        const texto =
-            menu.querySelector("span:nth-child(2)");
-
-
-        if (texto && pageTitle) {
-
-            pageTitle.textContent =
-                texto.textContent.trim();
-
+        if (profilePlanElement) {
+            profilePlanElement.textContent =
+                user.plan ||
+                user.plano ||
+                "GRATUITO";
         }
 
     }
 
-}
+
+    /* =====================================================
+       NAVEGAÇÃO PRINCIPAL
+    ====================================================== */
+
+    menuItems.forEach(item => {
+
+        item.addEventListener("click", () => {
+
+            const locked =
+                item.dataset.locked === "true";
+
+            if (locked) {
+
+                showNotification(
+                    "Esta área ainda está em desenvolvimento."
+                );
+
+                return;
+            }
+
+            const sectionName =
+                item.dataset.section;
+
+            if (!sectionName) return;
+
+            showSection(sectionName);
+
+        });
+
+    });
 
 
-// =========================================
-// EVENTOS DO MENU
-// =========================================
+    /* =====================================================
+       CARDS DE ACESSO RÁPIDO
+    ====================================================== */
 
-menuItems.forEach(item => {
+    const accessCards =
+        document.querySelectorAll("[data-section-link]");
 
-    item.addEventListener("click", () => {
+    accessCards.forEach(card => {
+
+        card.addEventListener("click", () => {
+
+            const section =
+                card.dataset.sectionLink;
+
+            if (section) {
+                showSection(section);
+            }
+
+        });
+
+    });
 
 
-        // =====================================
-        // ÁREA BLOQUEADA
-        // =====================================
+    /* =====================================================
+       FUNÇÃO PRINCIPAL DE NAVEGAÇÃO
+    ====================================================== */
 
-        if (item.dataset.locked === "true") {
+    window.showSection = function(sectionName) {
 
-            alert(
-                "🔒 Esta área está em desenvolvimento.\n\n" +
-                "Estamos preparando novos conteúdos para " +
-                "as próximas atualizações do Aldemar Studios!"
+        sections.forEach(section => {
+
+            section.classList.remove("active");
+
+        });
+
+
+        menuItems.forEach(item => {
+
+            item.classList.remove("active");
+
+        });
+
+
+        const target =
+            document.getElementById(sectionName);
+
+        if (!target) {
+
+            console.warn(
+                `Seção "${sectionName}" não encontrada.`
             );
 
             return;
@@ -229,305 +197,400 @@ menuItems.forEach(item => {
         }
 
 
-        const sectionId =
-            item.dataset.section;
+        target.classList.add("active");
 
 
-        if (!sectionId) {
-            return;
+        const activeMenu =
+            document.querySelector(
+                `.menu-item[data-section="${sectionName}"]`
+            );
+
+        if (activeMenu) {
+            activeMenu.classList.add("active");
         }
 
 
-        showSection(sectionId);
-
-    });
-
-});
+        updatePageTitle(sectionName);
 
 
-// =========================================
-// CARDS DA HOME
-// =========================================
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
 
-const accessCards =
-    document.querySelectorAll(
-        "[data-section-link]"
-    );
+    };
 
 
-accessCards.forEach(card => {
+    /* =====================================================
+       TÍTULOS
+    ====================================================== */
 
-    card.addEventListener("click", () => {
+    function updatePageTitle(sectionName) {
 
-        const sectionId =
-            card.dataset.sectionLink;
+        if (!pageTitle) return;
+
+        const titles = {
+
+            inicio: "Início",
+
+            jogos: "Jogos",
+
+            cursos: "Cursos",
+
+            ingles: "Inglês",
+
+            musica: "Música",
+
+            inclusivos: "Inclusivos",
+
+            feedback: "Feedback",
+
+            perfil: "Meu Perfil"
+
+        };
+
+        pageTitle.textContent =
+            titles[sectionName] ||
+            "Aldemar Studios";
+
+    }
 
 
-        if (!sectionId) {
-            return;
+    /* =====================================================
+       CATEGORIAS DE JOGOS
+    ====================================================== */
+
+    window.openGameCategory = function(category) {
+
+        const categories =
+            document.getElementById("gamesCategories");
+
+        const passatempo =
+            document.getElementById("passatempoArea");
+
+        const educativos =
+            document.getElementById("educativosArea");
+
+
+        if (categories) {
+            categories.style.display = "none";
+        }
+
+        if (passatempo) {
+            passatempo.style.display =
+                category === "passatempo"
+                    ? "block"
+                    : "none";
+        }
+
+        if (educativos) {
+            educativos.style.display =
+                category === "educativos"
+                    ? "block"
+                    : "none";
+        }
+
+    };
+
+
+    /* =====================================================
+       VOLTAR PARA CATEGORIAS DE JOGOS
+    ====================================================== */
+
+    window.backToGameCategories = function() {
+
+        const categories =
+            document.getElementById("gamesCategories");
+
+        const passatempo =
+            document.getElementById("passatempoArea");
+
+        const educativos =
+            document.getElementById("educativosArea");
+
+
+        if (categories) {
+            categories.style.display = "block";
+        }
+
+        if (passatempo) {
+            passatempo.style.display = "none";
+        }
+
+        if (educativos) {
+            educativos.style.display = "none";
+        }
+
+    };
+
+
+    /* =====================================================
+       FILTRO DOS JOGOS EDUCATIVOS
+    ====================================================== */
+
+    window.filterGames = function(filter, button) {
+
+        const games =
+            document.querySelectorAll(
+                ".educational-game"
+            );
+
+        const filters =
+            document.querySelectorAll(
+                ".game-filter"
+            );
+
+
+        filters.forEach(item => {
+            item.classList.remove("active");
+        });
+
+
+        if (button) {
+            button.classList.add("active");
         }
 
 
-        showSection(sectionId);
+        games.forEach(game => {
 
-    });
+            const subject =
+                game.dataset.subject;
 
-});
+            if (
+                filter === "todos" ||
+                subject === filter
+            ) {
 
+                game.style.display = "";
 
-// =========================================================
-// JOGOS
-// =========================================================
+            } else {
 
+                game.style.display = "none";
 
-// =========================================
-// ABRIR CATEGORIA
-// =========================================
+            }
 
-function openGameCategory(category) {
+        });
 
-    const categories =
-        document.querySelector(
-            ".game-category-grid"
-        );
+    };
 
-    const passatempo =
-        document.getElementById(
-            "passatempoArea"
-        );
 
-    const educativos =
-        document.getElementById(
-            "educativosArea"
-        );
+    /* =====================================================
+       BOTÃO COMEÇAR CURSO
+    ====================================================== */
 
+    document.addEventListener("click", event => {
 
-    if (
-        !categories ||
-        !passatempo ||
-        !educativos
-    ) {
+        const button =
+            event.target.closest(
+                "[data-open-course]"
+            );
 
-        return;
+        if (!button) return;
 
-    }
-
-
-    // Esconder categorias
-    categories.style.display = "none";
-
-
-    // Esconder áreas
-    passatempo.style.display = "none";
-
-    educativos.style.display = "none";
-
-
-    // Abrir categoria escolhida
-    if (category === "passatempo") {
-
-        passatempo.style.display = "block";
-
-    }
-
-
-    if (category === "educativos") {
-
-        educativos.style.display = "block";
-
-    }
-
-}
-
-
-// =========================================
-// VOLTAR PARA CATEGORIAS DE JOGOS
-// =========================================
-
-function backToGameCategories() {
-
-    const categories =
-        document.querySelector(
-            ".game-category-grid"
-        );
-
-    const passatempo =
-        document.getElementById(
-            "passatempoArea"
-        );
-
-    const educativos =
-        document.getElementById(
-            "educativosArea"
-        );
-
-
-    if (
-        !categories ||
-        !passatempo ||
-        !educativos
-    ) {
-
-        return;
-
-    }
-
-
-    // Fechar áreas
-    passatempo.style.display = "none";
-
-    educativos.style.display = "none";
-
-
-    // Mostrar categorias
-    categories.style.display = "grid";
-
-}
-
-
-// =========================================
-// RESETAR ÁREAS DOS JOGOS
-// =========================================
-
-function resetGameAreas() {
-
-    const categories =
-        document.querySelector(
-            ".game-category-grid"
-        );
-
-    const passatempo =
-        document.getElementById(
-            "passatempoArea"
-        );
-
-    const educativos =
-        document.getElementById(
-            "educativosArea"
-        );
-
-
-    if (categories) {
-
-        categories.style.display = "grid";
-
-    }
-
-
-    if (passatempo) {
-
-        passatempo.style.display = "none";
-
-    }
-
-
-    if (educativos) {
-
-        educativos.style.display = "none";
-
-    }
-
-}
-
-
-// =========================================
-// FILTRO DOS JOGOS EDUCATIVOS
-// =========================================
-
-function filterGames(subject, button) {
-
-    const games =
-        document.querySelectorAll(
-            ".educational-game"
-        );
-
-    const filters =
-        document.querySelectorAll(
-            ".game-filter"
-        );
-
-
-    // Remover seleção
-    filters.forEach(filter => {
-
-        filter.classList.remove("active");
+        showSection("cursos");
 
     });
 
 
-    // Ativar botão escolhido
-    if (button) {
+    /* =====================================================
+       BOTÕES DE CURSO
+    ====================================================== */
 
-        button.classList.add("active");
+    document.addEventListener("click", event => {
 
-    }
+        const moduleButton =
+            event.target.closest(
+                "[data-module]"
+            );
 
+        if (!moduleButton) return;
 
-    // Filtrar jogos
-    games.forEach(game => {
+        const module =
+            moduleButton.dataset.module;
 
-        if (subject === "todos") {
+        console.log(
+            "Módulo selecionado:",
+            module
+        );
 
-            game.style.display = "block";
-
-            return;
-
-        }
-
-
-        if (
-            game.dataset.subject === subject
-        ) {
-
-            game.style.display = "block";
-
-        } else {
-
-            game.style.display = "none";
-
-        }
+        showNotification(
+            `Módulo ${module} selecionado.`
+        );
 
     });
 
-}
+
+    /* =====================================================
+       FEEDBACK
+    ====================================================== */
+
+    const stars =
+        document.querySelectorAll(".stars button");
+
+    stars.forEach((star, index) => {
+
+        star.addEventListener("click", () => {
+
+            stars.forEach((item, starIndex) => {
+
+                if (starIndex <= index) {
+                    item.classList.add("selected");
+                } else {
+                    item.classList.remove("selected");
+                }
+
+            });
+
+        });
+
+    });
 
 
-// =========================================================
-// LOGOUT
-// =========================================================
+    /* =====================================================
+       LOGOUT
+    ====================================================== */
 
-const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
+    const logoutButton =
+        document.getElementById("logoutButton");
 
+    if (logoutButton) {
 
-if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
 
-    logoutButton.addEventListener(
-        "click",
-        () => {
-
-            const confirmar =
+            const confirmed =
                 confirm(
                     "Deseja realmente sair da sua conta?"
                 );
 
-
-            if (!confirmar) {
-                return;
-            }
+            if (!confirmed) return;
 
 
-            sessionStorage.removeItem(
-                "usuario"
-            );
+            /*
+               Mantemos somente dados que não sejam
+               relacionados à sessão.
+            */
+
+            localStorage.removeItem("user");
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userEmail");
+            localStorage.removeItem("token");
 
 
             window.location.href =
                 "index.html";
 
-        }
-    );
+        });
 
-}
+    }
+
+
+    /* =====================================================
+       NOTIFICAÇÃO
+    ====================================================== */
+
+    function showNotification(message) {
+
+        let notification =
+            document.getElementById(
+                "dashboardNotification"
+            );
+
+
+        if (!notification) {
+
+            notification =
+                document.createElement("div");
+
+            notification.id =
+                "dashboardNotification";
+
+            notification.className =
+                "dashboard-notification";
+
+            document.body.appendChild(
+                notification
+            );
+
+        }
+
+
+        notification.textContent =
+            message;
+
+        notification.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            window.dashboardNotificationTimer
+        );
+
+
+        window.dashboardNotificationTimer =
+            setTimeout(() => {
+
+                notification.classList.remove(
+                    "show"
+                );
+
+            }, 3000);
+
+    }
+
+
+    /* =====================================================
+       FUNÇÕES AUXILIARES
+    ====================================================== */
+
+    function firstName(name) {
+
+        if (!name) {
+            return "usuário";
+        }
+
+        return name
+            .trim()
+            .split(/\s+/)[0];
+
+    }
+
+
+    function getInitials(name) {
+
+        if (!name) {
+            return "AS";
+        }
+
+
+        const parts =
+            name
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+
+
+        if (parts.length === 1) {
+
+            return parts[0]
+                .substring(0, 2)
+                .toUpperCase();
+
+        }
+
+
+        return (
+            parts[0][0] +
+            parts[parts.length - 1][0]
+        ).toUpperCase();
+
+    }
+
+
+    /* =====================================================
+       INICIALIZAÇÃO
+    ====================================================== */
+
+    showSection("inicio");
+
+});
