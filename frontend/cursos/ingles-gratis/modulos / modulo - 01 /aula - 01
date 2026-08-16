@@ -1,0 +1,983 @@
+# Aula 01 — Greetings
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aldemar Studios | Aula 01 - Greetings</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef5f6;
+            color: #30434a;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #315c67, #47727b);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        header .brand {
+            font-size: 14px;
+            letter-spacing: 2px;
+            opacity: .9;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: clamp(28px, 5vw, 44px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 17px;
+            opacity: .9;
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: 30px auto 60px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: white;
+            color: #315c67;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        }
+
+        .back:hover {
+            background: #dcecef;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 25px rgba(49, 92, 103, .08);
+        }
+
+        .card h2 {
+            color: #315c67;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .card h3 {
+            color: #47727b;
+            margin: 20px 0 8px;
+        }
+
+        .objectives li {
+            margin-left: 22px;
+            margin-bottom: 6px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: #dcecef;
+            color: #315c67;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            border: 1px solid #cbdde0;
+        }
+
+        tr:nth-child(even) {
+            background: #f6fafb;
+        }
+
+        .highlight {
+            background: #eef6f7;
+            border-left: 5px solid #47727b;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff8e8;
+            border-left: 5px solid #d2a74a;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .dialogue {
+            background: #f3f8f8;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .dialogue p {
+            margin-bottom: 8px;
+        }
+
+        .question {
+            background: #f8fbfb;
+            border: 1px solid #d8e5e7;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 14px 0;
+        }
+
+        .question strong {
+            color: #315c67;
+        }
+
+        .answer-line {
+            display: block;
+            border-bottom: 1px solid #8ca2a8;
+            margin-top: 15px;
+            height: 28px;
+        }
+
+        .checklist label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .challenge {
+            background: linear-gradient(135deg, #e4f1f2, #f5fafa);
+            border: 1px solid #cbdfe2;
+        }
+
+        .complete-button {
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            background: #315c67;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .complete-button:hover {
+            background: #244a54;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #315c67;
+            color: white;
+        }
+
+        footer strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 700px) {
+
+            .card {
+                padding: 20px;
+                border-radius: 14px;
+            }
+
+            .card h2 {
+                font-size: 21px;
+            }
+
+            header {
+                padding: 28px 15px;
+            }
+
+            .container {
+                width: 94%;
+            }
+        }
+
+        @media print {
+
+            body {
+                background: white;
+            }
+
+            header {
+                background: white;
+                color: black;
+                border-bottom: 2px solid #315c67;
+            }
+
+            .back,
+            .complete-button {
+                display: none;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+
+            footer {
+                background: white;
+                color: black;
+                border-top: 1px solid #ddd;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        ALDEMAR STUDIOS
+    </div>
+
+    <h1>🇺🇸 GREETINGS 👋</h1>
+
+    <p>
+        Curso de Inglês Gratuito • Módulo 1 • Aula 01
+    </p>
+
+</header>
+
+
+<main class="container">
+
+    <a href="../../index.html" class="back">
+        ← Voltar para o curso
+    </a>
+
+
+    <!-- OBJETIVOS -->
+
+    <section class="card">
+
+        <h2>🎯 1. Objetivos da Aula</h2>
+
+        <p>
+            Ao terminar esta aula, você será capaz de:
+        </p>
+
+        <ul class="objectives">
+
+            <li>cumprimentar pessoas em inglês;</li>
+
+            <li>dizer "bom dia", "boa tarde" e "boa noite";</li>
+
+            <li>utilizar cumprimentos formais e informais;</li>
+
+            <li>despedir-se de alguém;</li>
+
+            <li>compreender pequenos diálogos em inglês.</li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- VOCABULÁRIO -->
+
+    <section class="card">
+
+        <h2>📚 2. Vocabulário Principal</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>English</th>
+                        <th>Português</th>
+                        <th>Uso</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Hello</td>
+                        <td>Olá</td>
+                        <td>Cumprimento geral</td>
+                    </tr>
+
+                    <tr>
+                        <td>Hi</td>
+                        <td>Oi</td>
+                        <td>Informal</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good morning</td>
+                        <td>Bom dia</td>
+                        <td>Manhã</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good afternoon</td>
+                        <td>Boa tarde</td>
+                        <td>Tarde</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good evening</td>
+                        <td>Boa noite</td>
+                        <td>Cumprimento à noite</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good night</td>
+                        <td>Boa noite</td>
+                        <td>Despedida / dormir</td>
+                    </tr>
+
+                    <tr>
+                        <td>Goodbye</td>
+                        <td>Tchau / Adeus</td>
+                        <td>Despedida</td>
+                    </tr>
+
+                    <tr>
+                        <td>Bye</td>
+                        <td>Tchau</td>
+                        <td>Despedida informal</td>
+                    </tr>
+
+                    <tr>
+                        <td>See you</td>
+                        <td>Até mais</td>
+                        <td>Despedida</td>
+                    </tr>
+
+                    <tr>
+                        <td>See you later</td>
+                        <td>Até mais tarde</td>
+                        <td>Despedida</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXPLICAÇÃO -->
+
+    <section class="card">
+
+        <h2>🌅 3. Entendendo os Cumprimentos</h2>
+
+        <h3>Good morning</h3>
+
+        <p>
+            Significa <strong>"Bom dia"</strong>.
+            Usamos principalmente durante a manhã.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Good morning, teacher!</strong>
+
+            <br>
+
+            Bom dia, professor(a)!
+
+        </div>
+
+
+        <h3>Good afternoon</h3>
+
+        <p>
+            Significa <strong>"Boa tarde"</strong>.
+            Usamos durante a tarde.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Good afternoon, students!</strong>
+
+            <br>
+
+            Boa tarde, alunos!
+
+        </div>
+
+
+        <h3>Good evening</h3>
+
+        <p>
+            Usamos para cumprimentar alguém à noite.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Good evening, Mr. John.</strong>
+
+            <br>
+
+            Boa noite, Sr. John.
+
+        </div>
+
+
+        <div class="warning">
+
+            <strong>⚠️ Atenção!</strong>
+
+            <br><br>
+
+            <strong>Good evening</strong> é utilizado
+            para cumprimentar.
+
+            <br><br>
+
+            <strong>Good night</strong> normalmente é utilizado
+            para despedir-se ou desejar boa noite antes de dormir.
+
+        </div>
+
+    </section>
+
+
+    <!-- EXEMPLOS -->
+
+    <section class="card">
+
+        <h2>💬 4. Exemplos</h2>
+
+        <div class="highlight">
+
+            <strong>Hello!</strong>
+            — Olá!
+
+            <br><br>
+
+            <strong>Hi, Maria!</strong>
+            — Oi, Maria!
+
+            <br><br>
+
+            <strong>Good morning!</strong>
+            — Bom dia!
+
+            <br><br>
+
+            <strong>Good afternoon!</strong>
+            — Boa tarde!
+
+            <br><br>
+
+            <strong>Good evening!</strong>
+            — Boa noite!
+
+            <br><br>
+
+            <strong>Goodbye!</strong>
+            — Tchau!
+
+            <br><br>
+
+            <strong>See you later!</strong>
+            — Até mais tarde!
+
+        </div>
+
+    </section>
+
+
+    <!-- DIÁLOGO -->
+
+    <section class="card">
+
+        <h2>🗣️ 5. Diálogo</h2>
+
+        <div class="dialogue">
+
+            <p>
+                <strong>Anna:</strong>
+                Good morning!
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                Good morning!
+            </p>
+
+            <p>
+                <strong>Anna:</strong>
+                How are you?
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                I'm fine, thank you.
+            </p>
+
+            <p>
+                <strong>Anna:</strong>
+                Goodbye!
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                See you!
+            </p>
+
+        </div>
+
+        <h3>Tradução</h3>
+
+        <div class="highlight">
+
+            Anna: Bom dia!
+
+            <br>
+
+            John: Bom dia!
+
+            <br>
+
+            Anna: Como você está?
+
+            <br>
+
+            John: Estou bem, obrigado.
+
+            <br>
+
+            Anna: Tchau!
+
+            <br>
+
+            John: Até mais!
+
+        </div>
+
+    </section>
+
+
+    <!-- ATIVIDADES -->
+
+    <section class="card">
+
+        <h2>✏️ 6. Atividades</h2>
+
+
+        <div class="question">
+
+            <strong>1. Relacione:</strong>
+
+            <p>
+                1. Good morning<br>
+                2. Goodbye<br>
+                3. Hi<br>
+                4. Good afternoon<br>
+                5. Good night
+            </p>
+
+            <p>
+                a) Oi<br>
+                b) Boa tarde<br>
+                c) Tchau<br>
+                d) Boa noite<br>
+                e) Bom dia
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>2. Complete:</strong>
+
+            <p>
+                Complete com:
+                <br>
+                <strong>Hello — Hi — Goodbye — Good morning</strong>
+            </p>
+
+            <p>
+                1. __________! My name is John.
+            </p>
+
+            <p>
+                2. __________! How are you?
+            </p>
+
+            <p>
+                3. __________! Have a nice day.
+            </p>
+
+            <p>
+                4. __________! It's 8:00 a.m.
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>3. Escolha a alternativa correta.</strong>
+
+            <p>
+                <strong>Como dizemos "Oi" em inglês?</strong>
+            </p>
+
+            <p>
+                ( &nbsp; ) A) Goodbye
+                <br>
+                ( &nbsp; ) B) Hi
+                <br>
+                ( &nbsp; ) C) Good night
+                <br>
+                ( &nbsp; ) D) See you
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <p>
+                <strong>4. Como dizemos "Bom dia"?</strong>
+            </p>
+
+            <p>
+                ( &nbsp; ) A) Good evening
+                <br>
+                ( &nbsp; ) B) Good afternoon
+                <br>
+                ( &nbsp; ) C) Good morning
+                <br>
+                ( &nbsp; ) D) Goodbye
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <p>
+                <strong>
+                    5. Qual expressão usamos para nos despedirmos
+                    à noite?
+                </strong>
+            </p>
+
+            <p>
+                ( &nbsp; ) A) Good night
+                <br>
+                ( &nbsp; ) B) Good morning
+                <br>
+                ( &nbsp; ) C) Hi
+                <br>
+                ( &nbsp; ) D) Good afternoon
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>6. Traduza para o inglês:</strong>
+
+            <p>
+                Olá!
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Bom dia!
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Boa tarde!
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Tchau!
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Até mais!
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUÇÃO -->
+
+    <section class="card">
+
+        <h2>📝 7. Produção</h2>
+
+        <p>
+            Imagine que você encontrou um colega na escola
+            pela manhã.
+        </p>
+
+        <p>
+            Crie um pequeno diálogo utilizando pelo menos
+            quatro expressões em inglês que você aprendeu.
+        </p>
+
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+
+    </section>
+
+
+    <!-- DESAFIO -->
+
+    <section class="card challenge">
+
+        <h2>⭐ 8. Desafio da Aula</h2>
+
+        <p>
+            Leia as expressões abaixo em voz alta três vezes:
+        </p>
+
+        <div class="highlight">
+
+            Hello!
+
+            <br>
+
+            Good morning!
+
+            <br>
+
+            How are you?
+
+            <br>
+
+            I'm fine, thank you.
+
+            <br>
+
+            Goodbye!
+
+            <br>
+
+            See you later!
+
+        </div>
+
+        <p>
+            Tente utilizar essas expressões durante o seu dia.
+        </p>
+
+    </section>
+
+
+    <!-- CHECKLIST -->
+
+    <section class="card">
+
+        <h2>✅ 9. Checklist</h2>
+
+        <div class="checklist">
+
+            <label>
+                <input type="checkbox">
+                Sei dizer "Olá" em inglês.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Sei dizer "Bom dia".
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Sei dizer "Boa tarde".
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Sei dizer "Boa noite".
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Sei diferenciar Good evening e Good night.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Sei dizer "Tchau".
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Sei dizer "Até mais".
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Consigo compreender um diálogo simples.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Fiz todas as atividades.
+            </label>
+
+            <label>
+                <input type="checkbox">
+                Fiz o desafio da aula.
+            </label>
+
+        </div>
+
+        <button
+            class="complete-button"
+            onclick="completeLesson()"
+        >
+            ✅ CONCLUIR AULA
+        </button>
+
+    </section>
+
+
+    <!-- GABARITO -->
+
+    <section class="card">
+
+        <h2>🔑 10. Gabarito</h2>
+
+        <div class="highlight">
+
+            <strong>Atividade 1:</strong>
+            1-e • 2-c • 3-a • 4-b • 5-d
+
+            <br><br>
+
+            <strong>Atividade 2:</strong>
+            1. Hello • 2. Hi • 3. Goodbye •
+            4. Good morning
+
+            <br><br>
+
+            <strong>Atividade 3:</strong>
+            5. B • 6. C • 7. A
+
+            <br><br>
+
+            <strong>Traduções:</strong>
+            <br>
+            Hello / Hi
+            <br>
+            Good morning
+            <br>
+            Good afternoon
+            <br>
+            Goodbye / Bye
+            <br>
+            See you
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <strong>
+        ALDEMAR STUDIOS
+    </strong>
+
+    Curso de Inglês Gratuito
+
+    <br>
+
+    Módulo 1 • Aula 01 — Greetings
+
+</footer>
+
+
+<script>
+
+function completeLesson() {
+
+    localStorage.setItem(
+        "ingles_modulo1_aula1",
+        "concluida"
+    );
+
+    alert(
+        "🎉 Parabéns! A Aula 01 foi concluída!"
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>
+```
+
+**Arquivo:** `index.html`
+
+**Caminho no GitHub:**
+`cursos/ingles-gratuito/modulo-01/aula-01/index.html`
+
+Esse primeiro HTML já está **responsivo para PC, tablet e celular**, possui **modo de impressão**, atividades e uma primeira mecânica de **conclusão da aula** via `localStorage`.
