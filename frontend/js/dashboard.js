@@ -1,7 +1,7 @@
 /* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
-   VERSÃO ATUALIZADA
+   VERSÃO COMPLETA
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -52,10 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       RECUPERAÇÃO DO USUÁRIO
-       
-       O LOGIN SALVA EM:
-       sessionStorage → "usuario"
+       RECUPERAR USUÁRIO
     ====================================================== */
 
     let user = null;
@@ -73,10 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } catch (error) {
 
-        console.warn(
-            "Não foi possível ler os dados do usuário.",
+        console.error(
+            "Erro ao recuperar usuário:",
             error
         );
+
+        sessionStorage.removeItem("usuario");
 
         user = null;
 
@@ -84,78 +83,198 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FALLBACK PARA DADOS INDIVIDUAIS
+       FALLBACK
     ====================================================== */
 
-    const storedName =
-        localStorage.getItem("userName") ||
-        localStorage.getItem("name");
+    if (!user) {
 
-    const storedEmail =
-        localStorage.getItem("userEmail") ||
-        localStorage.getItem("email");
+        const localUser =
+            localStorage.getItem("user");
 
+        if (localUser) {
 
-    if (!user && storedName) {
+            try {
 
-        user = {
+                user = JSON.parse(localUser);
 
-            nome_completo: storedName,
+            } catch (error) {
 
-            email: storedEmail || ""
+                console.warn(
+                    "Dados antigos de usuário inválidos."
+                );
 
-        };
+            }
+
+        }
 
     }
 
 
     /* =====================================================
-       CONFIGURAÇÃO DO USUÁRIO
+       SE NÃO EXISTIR USUÁRIO
     ====================================================== */
 
-    if (user) {
+    if (!user) {
 
-        /*
-         * O backend retorna:
-         *
-         * nome_completo
-         * email
-         * plano
-         *
-         * Também mantemos compatibilidade
-         * com nomes antigos.
-         */
+        console.warn(
+            "Nenhum usuário encontrado."
+        );
 
-        const name =
+    }
+
+
+    /* =====================================================
+       NORMALIZAÇÃO DOS DADOS
+    ====================================================== */
+
+    function getUserName() {
+
+        if (!user) {
+            return "Usuário";
+        }
+
+        return (
             user.nome_completo ||
             user.name ||
             user.nome ||
             user.fullName ||
-            user.fullname ||
-            storedName ||
-            "Usuário";
+            "Usuário"
+        );
+
+    }
 
 
-        const email =
+    function getUserEmail() {
+
+        if (!user) {
+            return "—";
+        }
+
+        return (
             user.email ||
             user.emailAddress ||
-            storedEmail ||
-            "—";
+            "—"
+        );
+
+    }
 
 
-        const plan =
+    function getUserPlan() {
+
+        if (!user) {
+            return "gratuito";
+        }
+
+        return (
             user.plano ||
             user.plan ||
-            "gratuito";
+            "gratuito"
+        );
 
+    }
+
+
+    function getUserNick() {
+
+        if (!user) {
+            return "";
+        }
+
+        return (
+            user.nick ||
+            user.nickname ||
+            ""
+        );
+
+    }
+
+
+    /* =====================================================
+       PRIMEIRO NOME
+    ====================================================== */
+
+    function firstName(name) {
+
+        if (!name) {
+
+            return "usuário";
+
+        }
+
+        return name
+            .trim()
+            .split(/\s+/)[0];
+
+    }
+
+
+    /* =====================================================
+       INICIAIS
+    ====================================================== */
+
+    function getInitials(name) {
+
+        if (!name) {
+
+            return "AS";
+
+        }
+
+
+        const parts =
+            name
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+
+
+        if (parts.length === 1) {
+
+            return parts[0]
+                .substring(0, 2)
+                .toUpperCase();
+
+        }
+
+
+        return (
+            parts[0][0] +
+            parts[parts.length - 1][0]
+        ).toUpperCase();
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAR INTERFACE DO USUÁRIO
+    ====================================================== */
+
+    function updateUserInterface() {
+
+        if (!user) {
+            return;
+        }
+
+
+        const name =
+            getUserName();
+
+        const email =
+            getUserEmail();
+
+        const plan =
+            getUserPlan();
+
+        const nick =
+            getUserNick();
 
         const initials =
             getInitials(name);
 
 
-        /* =================================================
+        /* =============================================
            HEADER
-        ================================================== */
+        ============================================== */
 
         if (userNameElement) {
 
@@ -175,15 +294,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (userAvatarElement) {
 
-            userAvatarElement.textContent =
-                initials;
+            updateAvatarElement(
+                userAvatarElement,
+                initials
+            );
 
         }
 
 
-        /* =================================================
+        /* =============================================
            BOAS-VINDAS
-        ================================================== */
+        ============================================== */
 
         if (welcomeNameElement) {
 
@@ -193,9 +314,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =================================================
+        /* =============================================
            PERFIL
-        ================================================== */
+        ============================================== */
 
         if (profileNameElement) {
 
@@ -223,12 +344,198 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (profileAvatarElement) {
 
-            profileAvatarElement.textContent =
+            updateAvatarElement(
+                profileAvatarElement,
+                initials
+            );
+
+        }
+
+
+        /* =============================================
+           CAMPOS DE EDIÇÃO
+        ============================================== */
+
+        const editName =
+            document.getElementById("editProfileName");
+
+        const editNick =
+            document.getElementById("editProfileNick");
+
+        const editEmail =
+            document.getElementById("editProfileEmail");
+
+
+        if (editName) {
+
+            editName.value =
+                name;
+
+        }
+
+
+        if (editNick) {
+
+            editNick.value =
+                nick;
+
+        }
+
+
+        if (editEmail) {
+
+            editEmail.value =
+                email === "—"
+                    ? ""
+                    : email;
+
+        }
+
+
+        /* =============================================
+           FOTO DO USUÁRIO
+        ============================================== */
+
+        if (user.foto) {
+
+            applyUserPhoto(
+                user.foto
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       AVATAR
+    ====================================================== */
+
+    function updateAvatarElement(
+        element,
+        initials
+    ) {
+
+        if (!element) {
+            return;
+        }
+
+
+        if (user && user.foto) {
+
+            element.style.backgroundImage =
+                `url("${user.foto}")`;
+
+            element.style.backgroundSize =
+                "cover";
+
+            element.style.backgroundPosition =
+                "center";
+
+            element.style.backgroundRepeat =
+                "no-repeat";
+
+            element.textContent =
+                "";
+
+        } else {
+
+            element.style.backgroundImage =
+                "";
+
+            element.textContent =
                 initials;
 
         }
 
     }
+
+
+    /* =====================================================
+       APLICAR FOTO
+    ====================================================== */
+
+    function applyUserPhoto(photo) {
+
+        if (!photo) {
+            return;
+        }
+
+
+        const avatars = [
+            userAvatarElement,
+            profileAvatarElement
+        ];
+
+
+        avatars.forEach(avatar => {
+
+            if (!avatar) {
+                return;
+            }
+
+
+            avatar.style.backgroundImage =
+                `url("${photo}")`;
+
+            avatar.style.backgroundSize =
+                "cover";
+
+            avatar.style.backgroundPosition =
+                "center";
+
+            avatar.style.backgroundRepeat =
+                "no-repeat";
+
+            avatar.textContent =
+                "";
+
+        });
+
+    }
+
+
+    /* =====================================================
+       SALVAR USUÁRIO NA SESSÃO
+    ====================================================== */
+
+    function saveUser() {
+
+        try {
+
+            sessionStorage.setItem(
+                "usuario",
+                JSON.stringify(user)
+            );
+
+            /*
+             * Mantemos também uma cópia local
+             * para compatibilidade com versões
+             * anteriores do sistema.
+             */
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(user)
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao salvar usuário:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       INICIALIZAR USUÁRIO
+    ====================================================== */
+
+    updateUserInterface();
 
 
     /* =====================================================
@@ -242,8 +549,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const locked =
                 item.dataset.locked === "true";
 
-
-            /* ÁREA BLOQUEADA */
 
             if (locked) {
 
@@ -261,15 +566,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (!sectionName) {
-
                 return;
-
             }
 
-
-            /* =================================================
-               CURSOS
-            ================================================= */
 
             if (sectionName === "cursos") {
 
@@ -279,8 +578,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
-            /* OUTRAS SEÇÕES */
 
             showSection(sectionName);
 
@@ -308,13 +605,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (!section) {
-
                 return;
-
             }
 
-
-            /* CURSOS */
 
             if (section === "cursos") {
 
@@ -333,7 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ABRIR PROJETO DE CURSOS
+       ABRIR CURSOS
     ====================================================== */
 
     function openCourses() {
@@ -349,7 +642,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       NAVEGAÇÃO ENTRE SEÇÕES
+       MOSTRAR SEÇÃO
     ====================================================== */
 
     window.showSection =
@@ -415,6 +708,18 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
+            /*
+             * Se abrir o perfil,
+             * atualizamos os dados novamente.
+             */
+
+            if (sectionName === "perfil") {
+
+                updateUserInterface();
+
+            }
+
+
             window.scrollTo({
 
                 top: 0,
@@ -427,15 +732,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       TÍTULOS DAS SEÇÕES
+       TÍTULOS
     ====================================================== */
 
     function updatePageTitle(sectionName) {
 
         if (!pageTitle) {
-
             return;
-
         }
 
 
@@ -529,7 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       VOLTAR PARA CATEGORIAS DOS JOGOS
+       VOLTAR PARA CATEGORIAS
     ====================================================== */
 
     window.backToGameCategories =
@@ -641,7 +944,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       BOTÕES QUE POSSAM ABRIR CURSOS
+       BOTÕES DE CURSO
     ====================================================== */
 
     document.addEventListener(
@@ -655,9 +958,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (!button) {
-
                 return;
-
             }
 
 
@@ -712,6 +1013,673 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       =====================================================
+       PERFIL DO USUÁRIO
+       =====================================================
+       ===================================================== */
+
+
+    /* =====================================================
+       BOTÃO EDITAR PERFIL
+    ====================================================== */
+
+    const editProfileButton =
+        document.getElementById(
+            "editProfileButton"
+        );
+
+
+    if (editProfileButton) {
+
+        editProfileButton.addEventListener(
+            "click",
+            () => {
+
+                openProfileEditor();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ABRIR EDITOR DE PERFIL
+    ====================================================== */
+
+    function openProfileEditor() {
+
+        const editor =
+            document.getElementById(
+                "profileEditArea"
+            );
+
+
+        if (!editor) {
+
+            showNotification(
+                "Área de edição não encontrada."
+            );
+
+            return;
+
+        }
+
+
+        updateUserInterface();
+
+
+        editor.style.display =
+            "block";
+
+
+        editor.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "start"
+
+        });
+
+    }
+
+
+    /* =====================================================
+       BOTÃO CANCELAR EDIÇÃO
+    ====================================================== */
+
+    const cancelProfileButton =
+        document.getElementById(
+            "cancelProfileEdit"
+        );
+
+
+    if (cancelProfileButton) {
+
+        cancelProfileButton.addEventListener(
+            "click",
+            () => {
+
+                const editor =
+                    document.getElementById(
+                        "profileEditArea"
+                    );
+
+
+                if (editor) {
+
+                    editor.style.display =
+                        "none";
+
+                }
+
+
+                updateUserInterface();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SALVAR PERFIL
+    ====================================================== */
+
+    const profileForm =
+        document.getElementById(
+            "profileEditForm"
+        );
+
+
+    if (profileForm) {
+
+        profileForm.addEventListener(
+            "submit",
+            event => {
+
+                event.preventDefault();
+
+
+                if (!user) {
+
+                    showNotification(
+                        "Usuário não encontrado."
+                    );
+
+                    return;
+
+                }
+
+
+                const nameInput =
+                    document.getElementById(
+                        "editProfileName"
+                    );
+
+                const nickInput =
+                    document.getElementById(
+                        "editProfileNick"
+                    );
+
+                const emailInput =
+                    document.getElementById(
+                        "editProfileEmail"
+                    );
+
+
+                const newName =
+                    nameInput
+                        ? nameInput.value.trim()
+                        : "";
+
+
+                const newNick =
+                    nickInput
+                        ? nickInput.value.trim()
+                        : "";
+
+
+                const newEmail =
+                    emailInput
+                        ? emailInput.value.trim()
+                        : "";
+
+
+                /* =====================================
+                   VALIDAÇÃO DO NOME
+                ====================================== */
+
+                if (!newName) {
+
+                    showNotification(
+                        "Digite seu nome completo."
+                    );
+
+                    if (nameInput) {
+                        nameInput.focus();
+                    }
+
+                    return;
+
+                }
+
+
+                /* =====================================
+                   VALIDAÇÃO DO E-MAIL
+                ====================================== */
+
+                if (!newEmail) {
+
+                    showNotification(
+                        "Digite seu e-mail."
+                    );
+
+                    if (emailInput) {
+                        emailInput.focus();
+                    }
+
+                    return;
+
+                }
+
+
+                if (
+                    !isValidEmail(newEmail)
+                ) {
+
+                    showNotification(
+                        "Digite um e-mail válido."
+                    );
+
+                    if (emailInput) {
+                        emailInput.focus();
+                    }
+
+                    return;
+
+                }
+
+
+                /* =====================================
+                   ATUALIZAR OBJETO
+                ====================================== */
+
+                user.nome_completo =
+                    newName;
+
+                user.email =
+                    newEmail;
+
+                user.nick =
+                    newNick;
+
+
+                /* =====================================
+                   SALVAR
+                ====================================== */
+
+                saveUser();
+
+
+                /* =====================================
+                   ATUALIZAR INTERFACE
+                ====================================== */
+
+                updateUserInterface();
+
+
+                /* =====================================
+                   FECHAR EDITOR
+                ====================================== */
+
+                const editor =
+                    document.getElementById(
+                        "profileEditArea"
+                    );
+
+
+                if (editor) {
+
+                    editor.style.display =
+                        "none";
+
+                }
+
+
+                showNotification(
+                    "Perfil atualizado com sucesso!"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       VALIDAÇÃO DE E-MAIL
+    ====================================================== */
+
+    function isValidEmail(email) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(email);
+
+    }
+
+
+    /* =====================================================
+       FOTO DE PERFIL
+    ====================================================== */
+
+    const profilePhotoInput =
+        document.getElementById(
+            "profilePhotoInput"
+        );
+
+
+    if (profilePhotoInput) {
+
+        profilePhotoInput.addEventListener(
+            "change",
+            event => {
+
+                const file =
+                    event.target.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                /* =====================================
+                   VERIFICAR TIPO
+                ====================================== */
+
+                if (
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ) {
+
+                    showNotification(
+                        "Selecione uma imagem válida."
+                    );
+
+                    profilePhotoInput.value =
+                        "";
+
+                    return;
+
+                }
+
+
+                /* =====================================
+                   LIMITE DE TAMANHO
+                ====================================== */
+
+                const maxSize =
+                    5 * 1024 * 1024;
+
+
+                if (file.size > maxSize) {
+
+                    showNotification(
+                        "A imagem deve ter no máximo 5 MB."
+                    );
+
+                    profilePhotoInput.value =
+                        "";
+
+                    return;
+
+                }
+
+
+                /* =====================================
+                   LER IMAGEM
+                ====================================== */
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function(readerEvent) {
+
+                        const photo =
+                            readerEvent.target.result;
+
+
+                        if (!user) {
+                            return;
+                        }
+
+
+                        user.foto =
+                            photo;
+
+
+                        saveUser();
+
+
+                        applyUserPhoto(
+                            photo
+                        );
+
+
+                        showNotification(
+                            "Foto de perfil atualizada!"
+                        );
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       BOTÃO ALTERAR FOTO
+    ====================================================== */
+
+    const changePhotoButton =
+        document.getElementById(
+            "changeProfilePhoto"
+        );
+
+
+    if (
+        changePhotoButton &&
+        profilePhotoInput
+    ) {
+
+        changePhotoButton.addEventListener(
+            "click",
+            () => {
+
+                profilePhotoInput.click();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       REMOVER FOTO
+    ====================================================== */
+
+    const removePhotoButton =
+        document.getElementById(
+            "removeProfilePhoto"
+        );
+
+
+    if (removePhotoButton) {
+
+        removePhotoButton.addEventListener(
+            "click",
+            () => {
+
+                if (!user) {
+                    return;
+                }
+
+
+                user.foto =
+                    "";
+
+
+                saveUser();
+
+
+                updateUserInterface();
+
+
+                if (profilePhotoInput) {
+
+                    profilePhotoInput.value =
+                        "";
+
+                }
+
+
+                showNotification(
+                    "Foto de perfil removida."
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ALTERAR SENHA
+    ====================================================== */
+
+    const passwordForm =
+        document.getElementById(
+            "changePasswordForm"
+        );
+
+
+    if (passwordForm) {
+
+        passwordForm.addEventListener(
+            "submit",
+            event => {
+
+                event.preventDefault();
+
+
+                const currentPassword =
+                    document.getElementById(
+                        "currentPassword"
+                    );
+
+                const newPassword =
+                    document.getElementById(
+                        "newPassword"
+                    );
+
+                const confirmPassword =
+                    document.getElementById(
+                        "confirmPassword"
+                    );
+
+
+                const currentValue =
+                    currentPassword
+                        ? currentPassword.value
+                        : "";
+
+
+                const newValue =
+                    newPassword
+                        ? newPassword.value
+                        : "";
+
+
+                const confirmValue =
+                    confirmPassword
+                        ? confirmPassword.value
+                        : "";
+
+
+                /* =====================================
+                   VALIDAÇÃO
+                ====================================== */
+
+                if (!currentValue) {
+
+                    showNotification(
+                        "Digite sua senha atual."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    newValue.length < 8
+                ) {
+
+                    showNotification(
+                        "A nova senha deve possuir pelo menos 8 caracteres."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    newValue !==
+                    confirmValue
+                ) {
+
+                    showNotification(
+                        "As senhas não coincidem."
+                    );
+
+                    return;
+
+                }
+
+
+                /* =====================================
+                   IMPORTANTE
+                ======================================
+
+                   A senha NÃO será salva no navegador.
+
+                   A alteração real será feita
+                   posteriormente através da API/backend.
+                ====================================== */
+
+                showNotification(
+                    "A alteração de senha será concluída pelo servidor."
+                );
+
+
+                passwordForm.reset();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       MOSTRAR / OCULTAR SENHAS
+    ====================================================== */
+
+    const passwordToggles =
+        document.querySelectorAll(
+            "[data-toggle-password]"
+        );
+
+
+    passwordToggles.forEach(toggle => {
+
+        toggle.addEventListener(
+            "click",
+            () => {
+
+                const targetId =
+                    toggle.dataset.togglePassword;
+
+
+                const input =
+                    document.getElementById(
+                        targetId
+                    );
+
+
+                if (!input) {
+                    return;
+                }
+
+
+                if (
+                    input.type ===
+                    "password"
+                ) {
+
+                    input.type =
+                        "text";
+
+                    toggle.textContent =
+                        "🙈";
+
+                } else {
+
+                    input.type =
+                        "password";
+
+                    toggle.textContent =
+                        "👁️";
+
+                }
+
+            }
+        );
+
+    });
+
+
+    /* =====================================================
        LOGOUT
     ====================================================== */
 
@@ -734,25 +1702,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (!confirmed) {
-
                     return;
-
                 }
 
-
-                /*
-                 * Remove a sessão atual.
-                 */
 
                 sessionStorage.removeItem(
                     "usuario"
                 );
 
-
-                /*
-                 * Remove possíveis dados
-                 * antigos da sessão.
-                 */
 
                 localStorage.removeItem(
                     "user"
@@ -838,65 +1795,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                 },
-                3000
+                3500
             );
-
-    }
-
-
-    /* =====================================================
-       PRIMEIRO NOME
-    ====================================================== */
-
-    function firstName(name) {
-
-        if (!name) {
-
-            return "usuário";
-
-        }
-
-
-        return name
-            .trim()
-            .split(/\s+/)[0];
-
-    }
-
-
-    /* =====================================================
-       INICIAIS
-    ====================================================== */
-
-    function getInitials(name) {
-
-        if (!name) {
-
-            return "AS";
-
-        }
-
-
-        const parts =
-            name
-                .trim()
-                .split(/\s+/)
-                .filter(Boolean);
-
-
-        if (parts.length === 1) {
-
-            return parts[0]
-                .substring(0, 2)
-                .toUpperCase();
-
-        }
-
-
-        return (
-            parts[0][0] +
-            parts[parts.length - 1][0]
-        ).toUpperCase();
 
     }
 
