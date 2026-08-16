@@ -136,25 +136,21 @@
 
 
                 <div class="menu-title">
-                    EM DESENVOLVIMENTO
+                    EDUCAÇÃO
                 </div>
 
 
                 <!-- CURSOS -->
 
                 <button
-                    class="menu-item locked"
-                    data-locked="true"
+                    class="menu-item"
+                    data-section="cursos"
                 >
 
                     <span>📚</span>
 
                     <span>
                         Cursos
-                    </span>
-
-                    <span class="lock">
-                        🔒
                     </span>
 
                 </button>
@@ -365,15 +361,15 @@
                         </h2>
 
                         <p>
-                            Explore jogos, conteúdos educativos
-                            e muito mais.
+                            Explore jogos, cursos, conteúdos
+                            educativos e muito mais.
                         </p>
 
                     </div>
 
 
                     <div class="welcome-icon">
-                        🎮
+                        🎓
                     </div>
 
                 </div>
@@ -422,6 +418,33 @@
                     </article>
 
 
+                    <!-- CURSOS -->
+
+                    <article
+                        class="access-card"
+                        data-section-link="cursos"
+                    >
+
+                        <div class="card-icon">
+                            📚
+                        </div>
+
+                        <h3>
+                            Cursos
+                        </h3>
+
+                        <p>
+                            Cursos gratuitos para
+                            aprender no seu ritmo.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </article>
+
+
                     <!-- INGLÊS -->
 
                     <article
@@ -438,8 +461,8 @@
                         </h3>
 
                         <p>
-                            Aprenda inglês gratuitamente
-                            através de aulas e atividades.
+                            Conteúdos e atividades
+                            para aprender inglês.
                         </p>
 
                         <span class="card-link">
@@ -527,31 +550,6 @@
                     <div class="coming-card">
 
                         <span>
-                            📚
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Cursos
-                            </strong>
-
-                            <p>
-                                Novos cursos em desenvolvimento.
-                            </p>
-
-                        </div>
-
-                        <b>
-                            🔒
-                        </b>
-
-                    </div>
-
-
-                    <div class="coming-card">
-
-                        <span>
                             📂
                         </span>
 
@@ -599,6 +597,31 @@
                     </div>
 
 
+                    <div class="coming-card">
+
+                        <span>
+                            ⭐
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Premium
+                            </strong>
+
+                            <p>
+                                Recursos exclusivos.
+                            </p>
+
+                        </div>
+
+                        <b>
+                            🔒
+                        </b>
+
+                    </div>
+
+
                 </div>
 
 
@@ -614,10 +637,6 @@
                 class="content-section"
             >
 
-
-                <!-- =================================
-                     CATEGORIAS PRINCIPAIS
-                ================================== -->
 
                 <div id="gamesCategories">
 
@@ -643,8 +662,6 @@
                     <div class="category-grid">
 
 
-                        <!-- PASSATEMPO -->
-
                         <div
                             class="category-card game-category-card"
                             onclick="openGameCategory('passatempo')"
@@ -669,8 +686,6 @@
 
                         </div>
 
-
-                        <!-- EDUCATIVOS -->
 
                         <div
                             class="category-card game-category-card"
@@ -702,16 +717,13 @@
                 </div>
 
 
-                <!-- =================================
-                     PASSATEMPO
-                ================================== -->
+                <!-- PASSATEMPO -->
 
                 <div
                     id="passatempoArea"
                     class="games-area"
                     style="display:none;"
                 >
-
 
                     <button
                         type="button"
@@ -740,9 +752,6 @@
 
 
                     <div class="games-grid">
-
-
-                        <!-- JOGO 01 -->
 
                         <article class="game-card">
 
@@ -778,8 +787,6 @@
                         </article>
 
 
-                        <!-- JOGO 02 -->
-
                         <article class="game-card">
 
                             <div class="game-cover">
@@ -813,22 +820,18 @@
 
                         </article>
 
-
                     </div>
 
                 </div>
 
 
-                <!-- =================================
-                     EDUCATIVOS
-                ================================== -->
+                <!-- EDUCATIVOS -->
 
                 <div
                     id="educativosArea"
                     class="games-area"
                     style="display:none;"
                 >
-
 
                     <button
                         type="button"
@@ -856,10 +859,7 @@
                     </div>
 
 
-                    <!-- FILTROS -->
-
                     <div class="game-filters">
-
 
                         <button
                             type="button"
@@ -869,7 +869,6 @@
                             TODOS
                         </button>
 
-
                         <button
                             type="button"
                             class="game-filter"
@@ -877,7 +876,6 @@
                         >
                             🇺🇸 INGLÊS
                         </button>
-
 
                         <button
                             type="button"
@@ -887,7 +885,6 @@
                             📖 PORTUGUÊS
                         </button>
 
-
                         <button
                             type="button"
                             class="game-filter"
@@ -895,7 +892,6 @@
                         >
                             🔢 MATEMÁTICA
                         </button>
-
 
                         <button
                             type="button"
@@ -905,7 +901,6 @@
                             🏛️ HISTÓRIA
                         </button>
 
-
                         <button
                             type="button"
                             class="game-filter"
@@ -914,14 +909,11 @@
                             🌎 GEOGRAFIA
                         </button>
 
-
                     </div>
 
 
                     <div class="games-grid">
 
-
-                        <!-- INGLÊS -->
 
                         <article
                             class="game-card educational-game"
@@ -960,8 +952,6 @@
                         </article>
 
 
-                        <!-- PORTUGUÊS -->
-
                         <article
                             class="game-card educational-game"
                             data-subject="portugues"
@@ -998,8 +988,6 @@
 
                         </article>
 
-
-                        <!-- MATEMÁTICA -->
 
                         <article
                             class="game-card educational-game"
@@ -1038,8 +1026,6 @@
                         </article>
 
 
-                        <!-- HISTÓRIA -->
-
                         <article
                             class="game-card educational-game"
                             data-subject="historia"
@@ -1076,8 +1062,6 @@
 
                         </article>
 
-
-                        <!-- GEOGRAFIA -->
 
                         <article
                             class="game-card educational-game"
@@ -1120,7 +1104,6 @@
 
                 </div>
 
-
             </section>
 
 
@@ -1133,62 +1116,255 @@
                 class="content-section"
             >
 
-
                 <div class="section-title">
 
+                    <span class="welcome-label">
+                        CONTEÚDOS
+                    </span>
+
                     <h2>
-                        🇺🇸 Mini Curso de Inglês
+                        🇺🇸 Inglês
                     </h2>
 
                     <p>
-                        Conteúdo gratuito para você começar.
+                        Explore conteúdos, atividades e
+                        recursos para aprender inglês.
                     </p>
 
                 </div>
 
 
-                <div class="course-card">
+                <div class="category-grid">
 
-                    <div class="course-icon">
-                        🇺🇸
-                    </div>
 
-                    <div class="course-info">
+                    <div class="category-card">
 
-                        <span>
-                            CURSO GRATUITO
+                        <span class="category-big-icon">
+                            📚
                         </span>
 
                         <h3>
-                            Inglês para Iniciantes
+                            Conteúdos de Inglês
                         </h3>
 
                         <p>
-                            Comece sua jornada no inglês.
+                            Materiais e atividades de inglês
+                            serão adicionados nesta área.
                         </p>
 
-                        <div class="progress">
-
-                            <div
-                                class="progress-bar"
-                                style="width: 0%"
-                            ></div>
-
-                        </div>
-
-                        <small>
-                            0% concluído
-                        </small>
+                        <span class="card-link">
+                            Em desenvolvimento
+                        </span>
 
                     </div>
 
 
-                    <button
-                        type="button"
-                        class="primary-small"
-                    >
-                        COMEÇAR
-                    </button>
+                    <div class="category-card">
+
+                        <span class="category-big-icon">
+                            🎮
+                        </span>
+
+                        <h3>
+                            Jogos de Inglês
+                        </h3>
+
+                        <p>
+                            Aprenda inglês de maneira
+                            divertida através dos jogos.
+                        </p>
+
+                        <span
+                            class="card-link"
+                            data-section-link="jogos"
+                        >
+                            Acessar jogos →
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 CURSOS
+            ====================================== -->
+
+            <section
+                id="cursos"
+                class="content-section"
+            >
+
+
+                <button
+                    type="button"
+                    class="back-button"
+                    onclick="showSection('inicio')"
+                >
+                    ← VOLTAR
+                </button>
+
+
+                <div class="section-title">
+
+                    <span class="welcome-label">
+                        FORMAÇÃO
+                    </span>
+
+                    <h2>
+                        📚 Cursos
+                    </h2>
+
+                    <p>
+                        Aprenda no seu ritmo através dos
+                        cursos do Aldemar Studios.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================
+                     CURSOS GRATUITOS
+                ================================== -->
+
+                <div class="section-title">
+
+                    <h2>
+                        🎓 Cursos Gratuitos
+                    </h2>
+
+                    <p>
+                        Cursos gratuitos, completos e
+                        acessíveis para todos.
+                    </p>
+
+                </div>
+
+
+                <div class="course-grid">
+
+
+                    <!-- CURSO DE INGLÊS -->
+
+                    <article class="course-card">
+
+
+                        <div class="course-icon">
+                            🇺🇸
+                        </div>
+
+
+                        <div class="course-info">
+
+                            <span class="game-tag">
+                                CURSO GRATUITO
+                            </span>
+
+                            <h3>
+                                Inglês para Iniciantes
+                            </h3>
+
+                            <p>
+                                Aprenda os fundamentos da língua
+                                inglesa desde o início.
+                            </p>
+
+
+                            <div class="course-details">
+
+                                <span>
+                                    📚 10 módulos
+                                </span>
+
+                                <span>
+                                    📝 10 aulas por módulo
+                                </span>
+
+                                <span>
+                                    🎓 100 aulas no total
+                                </span>
+
+                                <span>
+                                    🆓 Gratuito
+                                </span>
+
+                                <span>
+                                    🚫 Sem certificado
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-bar"
+                                    style="width: 0%"
+                                ></div>
+
+                            </div>
+
+
+                            <small>
+                                0% concluído
+                            </small>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="primary-small"
+                            onclick="openCourse('ingles-gratis')"
+                        >
+                            COMEÇAR
+                        </button>
+
+
+                    </article>
+
+
+                </div>
+
+
+                <!-- =================================
+                     INFORMAÇÕES DO PROJETO
+                ================================== -->
+
+                <div class="course-intro-card">
+
+
+                    <div class="course-intro-icon">
+                        🎯
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Nossa proposta
+                        </h3>
+
+                        <p>
+                            O Aldemar Studios está desenvolvendo
+                            uma plataforma de cursos gratuitos
+                            para ampliar o acesso à educação.
+                        </p>
+
+                        <p>
+                            O primeiro projeto será o curso
+                            <strong>
+                                Inglês para Iniciantes
+                            </strong>,
+                            organizado em 10 módulos com 10 aulas
+                            cada.
+                        </p>
+
+                    </div>
+
 
                 </div>
 
@@ -1204,7 +1380,6 @@
                 id="musica"
                 class="content-section"
             >
-
 
                 <div class="section-title">
 
@@ -1258,7 +1433,6 @@
 
                 </div>
 
-
             </section>
 
 
@@ -1270,7 +1444,6 @@
                 id="inclusivos"
                 class="content-section"
             >
-
 
                 <div class="section-title">
 
@@ -1325,7 +1498,6 @@
 
                 </div>
 
-
             </section>
 
 
@@ -1337,7 +1509,6 @@
                 id="feedback"
                 class="content-section"
             >
-
 
                 <div class="section-title">
 
@@ -1367,13 +1538,9 @@
                     <div class="stars">
 
                         <button type="button">★</button>
-
                         <button type="button">★</button>
-
                         <button type="button">★</button>
-
                         <button type="button">★</button>
-
                         <button type="button">★</button>
 
                     </div>
@@ -1394,7 +1561,6 @@
 
                 </div>
 
-
             </section>
 
 
@@ -1406,7 +1572,6 @@
                 id="perfil"
                 class="content-section"
             >
-
 
                 <div class="section-title">
 
@@ -1478,7 +1643,6 @@
 
 
                 </div>
-
 
             </section>
 
