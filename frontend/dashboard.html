@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Aldemar Studios | Painel</title>
+
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="dashboard">
+
+
+        <!-- =====================================
+             SIDEBAR
+        ====================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+
+                <div class="brand-icon">
+                    AS
+                </div>
+
+                <div>
+
+                    <strong>
+                        Aldemar
+                    </strong>
+
+                    <span>
+                        Studios
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <nav class="menu">
+
+
+                <!-- INÍCIO -->
+
+                <button
+                    class="menu-item active"
+                    data-section="inicio"
+                >
+
+                    <span>🏠</span>
+
+                    <span>
+                        Início
+                    </span>
+
+                </button>
+
+
+                <!-- JOGOS -->
+
+                <button
+                    class="menu-item"
+                    data-section="jogos"
+                >
+
+                    <span>🎮</span>
+
+                    <span>
+                        Jogos
+                    </span>
+
+                </button>
+
+
+                <!-- INGLÊS -->
+
+                <button
+                    class="menu-item"
+                    data-section="ingles"
+                >
+
+                    <span>🇺🇸</span>
+
+                    <span>
+                        Inglês
+                    </span>
+
+                </button>
+
+
+                <!-- MÚSICA -->
+
+                <button
+                    class="menu-item"
+                    data-section="musica"
+                >
+
+                    <span>🎵</span>
+
+                    <span>
+                        Música
+                    </span>
+
+                </button>
+
+
+                <!-- INCLUSIVOS -->
+
+                <button
+                    class="menu-item"
+                    data-section="inclusivos"
+                >
+
+                    <span>♿</span>
+
+                    <span>
+                        Inclusivos
+                    </span>
+
+                </button>
+
+
+                <div class="menu-title">
+                    EM DESENVOLVIMENTO
+                </div>
+
+
+                <!-- CURSOS -->
+
+                <button
+                    class="menu-item locked"
+                    data-locked="true"
+                >
+
+                    <span>📚</span>
+
+                    <span>
+                        Cursos
+                    </span>
+
+                    <span class="lock">
+                        🔒
+                    </span>
+
+                </button>
+
+
+                <!-- MATERIAIS -->
+
+                <button
+                    class="menu-item locked"
+                    data-locked="true"
+                >
+
+                    <span>📂</span>
+
+                    <span>
+                        Materiais
+                    </span>
+
+                    <span class="lock">
+                        🔒
+                    </span>
+
+                </button>
+
+
+                <!-- SIMULADOS -->
+
+                <button
+                    class="menu-item locked"
+                    data-locked="true"
+                >
+
+                    <span>📝</span>
+
+                    <span>
+                        Simulados
+                    </span>
+
+                    <span class="lock">
+                        🔒
+                    </span>
+
+                </button>
+
+
+                <!-- PREMIUM -->
+
+                <button
+                    class="menu-item locked"
+                    data-locked="true"
+                >
+
+                    <span>⭐</span>
+
+                    <span>
+                        Premium
+                    </span>
+
+                    <span class="lock">
+                        🔒
+                    </span>
+
+                </button>
+
+
+            </nav>
+
+
+            <!-- PARTE INFERIOR -->
+
+            <div class="sidebar-bottom">
+
+
+                <!-- FEEDBACK -->
+
+                <button
+                    class="menu-item"
+                    data-section="feedback"
+                >
+
+                    <span>💬</span>
+
+                    <span>
+                        Feedback
+                    </span>
+
+                </button>
+
+
+                <!-- PERFIL -->
+
+                <button
+                    class="menu-item"
+                    data-section="perfil"
+                >
+
+                    <span>👤</span>
+
+                    <span>
+                        Meu Perfil
+                    </span>
+
+                </button>
+
+
+                <!-- SAIR -->
+
+                <button
+                    id="logoutButton"
+                    class="menu-item logout"
+                >
+
+                    <span>🚪</span>
+
+                    <span>
+                        Sair
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================
+             CONTEÚDO PRINCIPAL
+        ====================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================
+                 HEADER
+            ================================== -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <span class="topbar-small">
+                        ALDEMAR STUDIOS
+                    </span>
+
+                    <h1 id="pageTitle">
+                        Início
+                    </h1>
+
+                </div>
+
+
+                <div class="user-area">
+
+                    <div class="user-info">
+
+                        <strong id="userName">
+                            Usuário
+                        </strong>
+
+                        <span id="userPlan">
+                            GRATUITO
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="user-avatar"
+                        id="userAvatar"
+                    >
+                        AS
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 INÍCIO
+            ====================================== -->
+
+            <section
+                id="inicio"
+                class="content-section active"
+            >
+
+
+                <div class="welcome-card">
+
+                    <div>
+
+                        <span class="welcome-label">
+                            BEM-VINDO AO ALDEMAR STUDIOS
+                        </span>
+
+                        <h2>
+
+                            Olá,
+
+                            <span id="welcomeName">
+                                usuário
+                            </span>!
+
+                            👋
+
+                        </h2>
+
+                        <p>
+                            Explore jogos, conteúdos educativos
+                            e muito mais.
+                        </p>
+
+                    </div>
+
+
+                    <div class="welcome-icon">
+                        🎮
+                    </div>
+
+                </div>
+
+
+                <div class="section-title">
+
+                    <h2>
+                        Acesso rápido
+                    </h2>
+
+                    <p>
+                        Comece por onde quiser.
+                    </p>
+
+                </div>
+
+
+                <div class="cards-grid">
+
+
+                    <!-- JOGOS -->
+
+                    <article
+                        class="access-card"
+                        data-section-link="jogos"
+                    >
+
+                        <div class="card-icon">
+                            🎮
+                        </div>
+
+                        <h3>
+                            Jogos
+                        </h3>
+
+                        <p>
+                            Diversos jogos para
+                            diversão e aprendizado.
+                        </p>
+
+                        <span class="card-link">
+                            Explorar →
+                        </span>
+
+                    </article>
+
+
+                    <!-- INGLÊS -->
+
+                    <article
+                        class="access-card"
+                        data-section-link="ingles"
+                    >
+
+                        <div class="card-icon">
+                            🇺🇸
+                        </div>
+
+                        <h3>
+                            Inglês
+                        </h3>
+
+                        <p>
+                            Aprenda inglês gratuitamente
+                            através de aulas e atividades.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </article>
+
+
+                    <!-- MÚSICA -->
+
+                    <article
+                        class="access-card"
+                        data-section-link="musica"
+                    >
+
+                        <div class="card-icon">
+                            🎵
+                        </div>
+
+                        <h3>
+                            Música
+                        </h3>
+
+                        <p>
+                            Teoria, prática e conteúdos
+                            musicais.
+                        </p>
+
+                        <span class="card-link">
+                            Explorar →
+                        </span>
+
+                    </article>
+
+
+                    <!-- INCLUSIVOS -->
+
+                    <article
+                        class="access-card"
+                        data-section-link="inclusivos"
+                    >
+
+                        <div class="card-icon">
+                            ♿
+                        </div>
+
+                        <h3>
+                            Inclusivos
+                        </h3>
+
+                        <p>
+                            Conteúdos pensados para
+                            diferentes necessidades.
+                        </p>
+
+                        <span class="card-link">
+                            Explorar →
+                        </span>
+
+                    </article>
+
+
+                </div>
+
+
+                <!-- EM BREVE -->
+
+                <div class="section-title">
+
+                    <h2>
+                        Em breve
+                    </h2>
+
+                    <p>
+                        Estamos preparando novas áreas.
+                    </p>
+
+                </div>
+
+
+                <div class="coming-grid">
+
+
+                    <div class="coming-card">
+
+                        <span>
+                            📚
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Cursos
+                            </strong>
+
+                            <p>
+                                Novos cursos em desenvolvimento.
+                            </p>
+
+                        </div>
+
+                        <b>
+                            🔒
+                        </b>
+
+                    </div>
+
+
+                    <div class="coming-card">
+
+                        <span>
+                            📂
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Materiais
+                            </strong>
+
+                            <p>
+                                Biblioteca educacional.
+                            </p>
+
+                        </div>
+
+                        <b>
+                            🔒
+                        </b>
+
+                    </div>
+
+
+                    <div class="coming-card">
+
+                        <span>
+                            📝
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Simulados
+                            </strong>
+
+                            <p>
+                                Avaliações e exercícios.
+                            </p>
+
+                        </div>
+
+                        <b>
+                            🔒
+                        </b>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =====================================
+                 JOGOS
+            ====================================== -->
+
+            <section
+                id="jogos"
+                class="content-section"
+            >
+
+
+                <!-- =================================
+                     CATEGORIAS PRINCIPAIS
+                ================================== -->
+
+                <div id="gamesCategories">
+
+
+                    <div class="section-title">
+
+                        <span class="welcome-label">
+                            ALDEMAR STUDIOS
+                        </span>
+
+                        <h2>
+                            🎮 Central de Jogos
+                        </h2>
+
+                        <p>
+                            Diversão, desafios e aprendizado
+                            em um só lugar.
+                        </p>
+
+                    </div>
+
+
+                    <div class="category-grid">
+
+
+                        <!-- PASSATEMPO -->
+
+                        <div
+                            class="category-card game-category-card"
+                            onclick="openGameCategory('passatempo')"
+                        >
+
+                            <span class="category-big-icon">
+                                🎮
+                            </span>
+
+                            <h3>
+                                Jogos de Passatempo
+                            </h3>
+
+                            <p>
+                                Jogos para diversão,
+                                desafios e entretenimento.
+                            </p>
+
+                            <span class="card-link">
+                                Explorar →
+                            </span>
+
+                        </div>
+
+
+                        <!-- EDUCATIVOS -->
+
+                        <div
+                            class="category-card game-category-card"
+                            onclick="openGameCategory('educativos')"
+                        >
+
+                            <span class="category-big-icon">
+                                📚
+                            </span>
+
+                            <h3>
+                                Jogos Educativos
+                            </h3>
+
+                            <p>
+                                Aprenda enquanto joga com
+                                conteúdos de diversas áreas.
+                            </p>
+
+                            <span class="card-link">
+                                Explorar →
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     PASSATEMPO
+                ================================== -->
+
+                <div
+                    id="passatempoArea"
+                    class="games-area"
+                    style="display:none;"
+                >
+
+
+                    <button
+                        type="button"
+                        class="back-button"
+                        onclick="backToGameCategories()"
+                    >
+                        ← VOLTAR
+                    </button>
+
+
+                    <div class="section-title">
+
+                        <span class="welcome-label">
+                            ENTRETENIMENTO
+                        </span>
+
+                        <h2>
+                            🎮 Jogos de Passatempo
+                        </h2>
+
+                        <p>
+                            Escolha um jogo e divirta-se.
+                        </p>
+
+                    </div>
+
+
+                    <div class="games-grid">
+
+
+                        <!-- JOGO 01 -->
+
+                        <article class="game-card">
+
+                            <div class="game-cover">
+                                🎮
+                            </div>
+
+                            <div class="game-card-content">
+
+                                <span class="game-tag">
+                                    PASSATEMPO
+                                </span>
+
+                                <h3>
+                                    Jogo em breve
+                                </h3>
+
+                                <p>
+                                    Nosso primeiro jogo será
+                                    disponibilizado aqui.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="primary-small"
+                                    disabled
+                                >
+                                    EM BREVE
+                                </button>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- JOGO 02 -->
+
+                        <article class="game-card">
+
+                            <div class="game-cover">
+                                🧩
+                            </div>
+
+                            <div class="game-card-content">
+
+                                <span class="game-tag">
+                                    PASSATEMPO
+                                </span>
+
+                                <h3>
+                                    Mais jogos chegando
+                                </h3>
+
+                                <p>
+                                    Novos jogos serão adicionados
+                                    ao Aldemar Studios.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="primary-small"
+                                    disabled
+                                >
+                                    EM BREVE
+                                </button>
+
+                            </div>
+
+                        </article>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     EDUCATIVOS
+                ================================== -->
+
+                <div
+                    id="educativosArea"
+                    class="games-area"
+                    style="display:none;"
+                >
+
+
+                    <button
+                        type="button"
+                        class="back-button"
+                        onclick="backToGameCategories()"
+                    >
+                        ← VOLTAR
+                    </button>
+
+
+                    <div class="section-title">
+
+                        <span class="welcome-label">
+                            APRENDIZAGEM
+                        </span>
+
+                        <h2>
+                            📚 Jogos Educativos
+                        </h2>
+
+                        <p>
+                            Aprenda através de jogos interativos.
+                        </p>
+
+                    </div>
+
+
+                    <!-- FILTROS -->
+
+                    <div class="game-filters">
+
+
+                        <button
+                            type="button"
+                            class="game-filter active"
+                            onclick="filterGames('todos', this)"
+                        >
+                            TODOS
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="game-filter"
+                            onclick="filterGames('ingles', this)"
+                        >
+                            🇺🇸 INGLÊS
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="game-filter"
+                            onclick="filterGames('portugues', this)"
+                        >
+                            📖 PORTUGUÊS
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="game-filter"
+                            onclick="filterGames('matematica', this)"
+                        >
+                            🔢 MATEMÁTICA
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="game-filter"
+                            onclick="filterGames('historia', this)"
+                        >
+                            🏛️ HISTÓRIA
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="game-filter"
+                            onclick="filterGames('geografia', this)"
+                        >
+                            🌎 GEOGRAFIA
+                        </button>
+
+
+                    </div>
+
+
+                    <div class="games-grid">
+
+
+                        <!-- INGLÊS -->
+
+                        <article
+                            class="game-card educational-game"
+                            data-subject="ingles"
+                        >
+
+                            <div class="game-cover">
+                                🇺🇸
+                            </div>
+
+                            <div class="game-card-content">
+
+                                <span class="game-tag">
+                                    INGLÊS
+                                </span>
+
+                                <h3>
+                                    Jogos de Inglês
+                                </h3>
+
+                                <p>
+                                    Aprenda inglês através
+                                    de desafios interativos.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="primary-small"
+                                    disabled
+                                >
+                                    EM BREVE
+                                </button>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- PORTUGUÊS -->
+
+                        <article
+                            class="game-card educational-game"
+                            data-subject="portugues"
+                        >
+
+                            <div class="game-cover">
+                                📖
+                            </div>
+
+                            <div class="game-card-content">
+
+                                <span class="game-tag">
+                                    PORTUGUÊS
+                                </span>
+
+                                <h3>
+                                    Jogos de Português
+                                </h3>
+
+                                <p>
+                                    Leitura, escrita e
+                                    interpretação.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="primary-small"
+                                    disabled
+                                >
+                                    EM BREVE
+                                </button>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- MATEMÁTICA -->
+
+                        <article
+                            class="game-card educational-game"
+                            data-subject="matematica"
+                        >
+
+                            <div class="game-cover">
+                                🔢
+                            </div>
+
+                            <div class="game-card-content">
+
+                                <span class="game-tag">
+                                    MATEMÁTICA
+                                </span>
+
+                                <h3>
+                                    Jogos de Matemática
+                                </h3>
+
+                                <p>
+                                    Resolva desafios matemáticos
+                                    enquanto joga.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="primary-small"
+                                    disabled
+                                >
+                                    EM BREVE
+                                </button>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- HISTÓRIA -->
+
+                        <article
+                            class="game-card educational-game"
+                            data-subject="historia"
+                        >
+
+                            <div class="game-cover">
+                                🏛️
+                            </div>
+
+                            <div class="game-card-content">
+
+                                <span class="game-tag">
+                                    HISTÓRIA
+                                </span>
+
+                                <h3>
+                                    Jogos de História
+                                </h3>
+
+                                <p>
+                                    Explore acontecimentos
+                                    históricos.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="primary-small"
+                                    disabled
+                                >
+                                    EM BREVE
+                                </button>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- GEOGRAFIA -->
+
+                        <article
+                            class="game-card educational-game"
+                            data-subject="geografia"
+                        >
+
+                            <div class="game-cover">
+                                🌎
+                            </div>
+
+                            <div class="game-card-content">
+
+                                <span class="game-tag">
+                                    GEOGRAFIA
+                                </span>
+
+                                <h3>
+                                    Jogos de Geografia
+                                </h3>
+
+                                <p>
+                                    Países, mapas, lugares
+                                    e muito mais.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="primary-small"
+                                    disabled
+                                >
+                                    EM BREVE
+                                </button>
+
+                            </div>
+
+                        </article>
+
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =====================================
+                 INGLÊS
+            ====================================== -->
+
+            <section
+                id="ingles"
+                class="content-section"
+            >
+
+
+                <div class="section-title">
+
+                    <h2>
+                        🇺🇸 Mini Curso de Inglês
+                    </h2>
+
+                    <p>
+                        Conteúdo gratuito para você começar.
+                    </p>
+
+                </div>
+
+
+                <div class="course-card">
+
+                    <div class="course-icon">
+                        🇺🇸
+                    </div>
+
+                    <div class="course-info">
+
+                        <span>
+                            CURSO GRATUITO
+                        </span>
+
+                        <h3>
+                            Inglês para Iniciantes
+                        </h3>
+
+                        <p>
+                            Comece sua jornada no inglês.
+                        </p>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width: 0%"
+                            ></div>
+
+                        </div>
+
+                        <small>
+                            0% concluído
+                        </small>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="primary-small"
+                    >
+                        COMEÇAR
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =====================================
+                 MÚSICA
+            ====================================== -->
+
+            <section
+                id="musica"
+                class="content-section"
+            >
+
+
+                <div class="section-title">
+
+                    <h2>
+                        🎵 Música
+                    </h2>
+
+                    <p>
+                        Conhecimento musical para todas as idades.
+                    </p>
+
+                </div>
+
+
+                <div class="category-grid">
+
+
+                    <div class="category-card">
+
+                        <span>
+                            🧒
+                        </span>
+
+                        <h3>
+                            Música Infantil
+                        </h3>
+
+                        <p>
+                            Conteúdos musicais para crianças.
+                        </p>
+
+                    </div>
+
+
+                    <div class="category-card">
+
+                        <span>
+                            🎸
+                        </span>
+
+                        <h3>
+                            Teoria e Prática
+                        </h3>
+
+                        <p>
+                            Aprenda música na prática.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =====================================
+                 INCLUSIVOS
+            ====================================== -->
+
+            <section
+                id="inclusivos"
+                class="content-section"
+            >
+
+
+                <div class="section-title">
+
+                    <h2>
+                        ♿ Conteúdos Inclusivos
+                    </h2>
+
+                    <p>
+                        Materiais pensados para diferentes perfis.
+                    </p>
+
+                </div>
+
+
+                <div class="category-grid">
+
+
+                    <div class="category-card">
+
+                        <span>
+                            🧩
+                        </span>
+
+                        <h3>
+                            Atividades Adaptadas
+                        </h3>
+
+                        <p>
+                            Conteúdos visuais e adaptados.
+                        </p>
+
+                    </div>
+
+
+                    <div class="category-card">
+
+                        <span>
+                            🧠
+                        </span>
+
+                        <h3>
+                            Aprendizagem
+                        </h3>
+
+                        <p>
+                            Estratégias para diferentes formas
+                            de aprender.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =====================================
+                 FEEDBACK
+            ====================================== -->
+
+            <section
+                id="feedback"
+                class="content-section"
+            >
+
+
+                <div class="section-title">
+
+                    <h2>
+                        💬 Feedback
+                    </h2>
+
+                    <p>
+                        Ajude a melhorar o Aldemar Studios.
+                    </p>
+
+                </div>
+
+
+                <div class="feedback-card">
+
+                    <h3>
+                        O que podemos melhorar?
+                    </h3>
+
+                    <p>
+                        Sua opinião é muito importante para
+                        continuarmos desenvolvendo a plataforma.
+                    </p>
+
+
+                    <div class="stars">
+
+                        <button type="button">★</button>
+
+                        <button type="button">★</button>
+
+                        <button type="button">★</button>
+
+                        <button type="button">★</button>
+
+                        <button type="button">★</button>
+
+                    </div>
+
+
+                    <textarea
+                        id="feedbackText"
+                        placeholder="Escreva sua sugestão..."
+                    ></textarea>
+
+
+                    <button
+                        type="button"
+                        class="primary-small"
+                    >
+                        ENVIAR FEEDBACK
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =====================================
+                 PERFIL
+            ====================================== -->
+
+            <section
+                id="perfil"
+                class="content-section"
+            >
+
+
+                <div class="section-title">
+
+                    <h2>
+                        👤 Meu Perfil
+                    </h2>
+
+                    <p>
+                        Informações da sua conta.
+                    </p>
+
+                </div>
+
+
+                <div class="profile-card">
+
+
+                    <div
+                        class="profile-avatar"
+                        id="profileAvatar"
+                    >
+                        AS
+                    </div>
+
+
+                    <div class="profile-data">
+
+
+                        <div>
+
+                            <span>
+                                Nome completo
+                            </span>
+
+                            <strong id="profileName">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                E-mail
+                            </span>
+
+                            <strong id="profileEmail">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Plano atual
+                            </span>
+
+                            <strong id="profilePlan">
+                                GRATUITO
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
