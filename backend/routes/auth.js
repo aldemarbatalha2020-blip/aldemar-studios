@@ -6,9 +6,9 @@ const { pool } = require("../database/connection");
 const router = express.Router();
 
 
-// =========================================
+// =========================================================
 // CADASTRO
-// =========================================
+// =========================================================
 
 router.post("/register", async (req, res) => {
 
@@ -21,7 +21,9 @@ router.post("/register", async (req, res) => {
         } = req.body;
 
 
+        // =====================================
         // VALIDAÇÕES
+        // =====================================
 
         if (!nome_completo || !email || !senha) {
 
@@ -32,6 +34,7 @@ router.post("/register", async (req, res) => {
 
         }
 
+
         if (nome_completo.trim().length < 3) {
 
             return res.status(400).json({
@@ -41,11 +44,13 @@ router.post("/register", async (req, res) => {
 
         }
 
+
         if (senha.length < 8) {
 
             return res.status(400).json({
                 sucesso: false,
-                mensagem: "A senha deve possuir pelo menos 8 caracteres."
+                mensagem:
+                    "A senha deve possuir pelo menos 8 caracteres."
             });
 
         }
@@ -55,57 +60,104 @@ router.post("/register", async (req, res) => {
             email.trim().toLowerCase();
 
 
-        // VERIFICAR EMAIL
+        // =====================================
+        // VERIFICAR E-MAIL
+        // =====================================
 
-        const [usuarios] = await pool.execute(
-            "SELECT id FROM usuarios WHERE email = ? LIMIT 1",
-            [emailNormalizado]
-        );
+        const [usuarios] =
+            await pool.execute(
+                `
+                SELECT id
+                FROM usuarios
+                WHERE email = ?
+                LIMIT 1
+                `,
+                [emailNormalizado]
+            );
 
 
         if (usuarios.length > 0) {
 
             return res.status(409).json({
                 sucesso: false,
-                mensagem: "Este e-mail já está cadastrado."
+                mensagem:
+                    "Este e-mail já está cadastrado."
             });
 
         }
 
 
+        // =====================================
         // CRIPTOGRAFAR SENHA
+        // =====================================
 
         const senhaHash =
             await bcrypt.hash(senha, 12);
 
 
+        // =====================================
         // CRIAR USUÁRIO
+        // =====================================
 
-        const [resultado] = await pool.execute(
-            `
-            INSERT INTO usuarios
-            (nome_completo, email, senha, plano, status)
-            VALUES (?, ?, ?, 'gratuito', 'ativo')
-            `,
-            [
-                nome_completo.trim(),
-                emailNormalizado,
-                senhaHash
-            ]
-        );
+        const [resultado] =
+            await pool.execute(
+                `
+                INSERT INTO usuarios
+                (
+                    nome_completo,
+                    email,
+                    senha,
+                    plano,
+                    status
+                )
+                VALUES
+                (
+                    ?,
+                    ?,
+                    ?,
+                    'gratuito',
+                    'ativo'
+                )
+                `,
+                [
+                    nome_completo.trim(),
+                    emailNormalizado,
+                    senhaHash
+                ]
+            );
 
+
+        // =====================================
+        // RESPOSTA
+        // =====================================
 
         return res.status(201).json({
 
             sucesso: true,
 
-            mensagem: "Conta criada com sucesso!",
+            mensagem:
+                "Conta criada com sucesso!",
 
             usuario: {
-                id: resultado.insertId,
-                nome_completo: nome_completo.trim(),
-                email: emailNormalizado,
-                plano: "gratuito"
+
+                id:
+                    resultado.insertId,
+
+                nome_completo:
+                    nome_completo.trim(),
+
+                nick:
+                    null,
+
+                email:
+                    emailNormalizado,
+
+                foto:
+                    null,
+
+                plano:
+                    "gratuito"
+
             }
 
         });
@@ -118,9 +170,14 @@ router.post("/register", async (req, res) => {
             error
         );
 
+
         return res.status(500).json({
+
             sucesso: false,
-            mensagem: "Erro interno do servidor."
+
+            mensagem:
+                "Erro interno do servidor."
+
         });
 
     }
@@ -128,9 +185,9 @@ router.post("/register", async (req, res) => {
 });
 
 
-// =========================================
+// =========================================================
 // LOGIN
-// =========================================
+// =========================================================
 
 router.post("/login", async (req, res) => {
 
@@ -168,21 +225,24 @@ router.post("/login", async (req, res) => {
         // BUSCAR USUÁRIO
         // =====================================
 
-        const [usuarios] = await pool.execute(
-            `
-            SELECT
-                id,
-                nome_completo,
-                email,
-                senha,
-                plano,
-                status
-            FROM usuarios
-            WHERE email = ?
-            LIMIT 1
-            `,
-            [emailNormalizado]
-        );
+        const [usuarios] =
+            await pool.execute(
+                `
+                SELECT
+                    id,
+                    nome_completo,
+                    nick,
+                    email,
+                    foto,
+                    senha,
+                    plano,
+                    status
+                FROM usuarios
+                WHERE email = ?
+                LIMIT 1
+                `,
+                [emailNormalizado]
+            );
 
 
         // =====================================
@@ -203,7 +263,8 @@ router.post("/login", async (req, res) => {
         }
 
 
-        const usuario = usuarios[0];
+        const usuario =
+            usuarios[0];
 
 
         // =====================================
@@ -262,13 +323,20 @@ router.post("/login", async (req, res) => {
 
             usuario: {
 
-                id: usuario.id,
+                id:
+                    usuario.id,
 
                 nome_completo:
                     usuario.nome_completo,
 
+                nick:
+                    usuario.nick,
+
                 email:
                     usuario.email,
+
+                foto:
+                    usuario.foto,
 
                 plano:
                     usuario.plano
@@ -285,6 +353,7 @@ router.post("/login", async (req, res) => {
             error
         );
 
+
         return res.status(500).json({
 
             sucesso: false,
@@ -298,5 +367,519 @@ router.post("/login", async (req, res) => {
 
 });
 
+
+// =========================================================
+// ATUALIZAR PERFIL
+// =========================================================
+
+router.put("/profile", async (req, res) => {
+
+    try {
+
+        const {
+            id,
+            nome_completo,
+            nick,
+            email,
+            foto
+        } = req.body;
+
+
+        // =====================================
+        // VALIDAR ID
+        // =====================================
+
+        if (!id) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Usuário não informado."
+
+            });
+
+        }
+
+
+        // =====================================
+        // VALIDAR NOME
+        // =====================================
+
+        if (
+            !nome_completo ||
+            nome_completo.trim().length < 3
+        ) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Digite seu nome completo."
+
+            });
+
+        }
+
+
+        // =====================================
+        // VALIDAR E-MAIL
+        // =====================================
+
+        if (!email) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Digite seu e-mail."
+
+            });
+
+        }
+
+
+        const emailNormalizado =
+            email.trim().toLowerCase();
+
+
+        // =====================================
+        // NORMALIZAR NICK
+        // =====================================
+
+        const nickNormalizado =
+            nick
+                ? nick.trim()
+                : null;
+
+
+        // =====================================
+        // VERIFICAR E-MAIL
+        // =====================================
+
+        const [emailExistente] =
+            await pool.execute(
+                `
+                SELECT id
+                FROM usuarios
+                WHERE email = ?
+                AND id <> ?
+                LIMIT 1
+                `,
+                [
+                    emailNormalizado,
+                    id
+                ]
+            );
+
+
+        if (emailExistente.length > 0) {
+
+            return res.status(409).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Este e-mail já está sendo utilizado."
+
+            });
+
+        }
+
+
+        // =====================================
+        // VERIFICAR NICK
+        // =====================================
+
+        if (nickNormalizado) {
+
+            if (nickNormalizado.length < 3) {
+
+                return res.status(400).json({
+
+                    sucesso: false,
+
+                    mensagem:
+                        "O nick deve possuir pelo menos 3 caracteres."
+
+                });
+
+            }
+
+
+            if (nickNormalizado.length > 30) {
+
+                return res.status(400).json({
+
+                    sucesso: false,
+
+                    mensagem:
+                        "O nick deve possuir no máximo 30 caracteres."
+
+                });
+
+            }
+
+
+            const [nickExistente] =
+                await pool.execute(
+                    `
+                    SELECT id
+                    FROM usuarios
+                    WHERE nick = ?
+                    AND id <> ?
+                    LIMIT 1
+                    `,
+                    [
+                        nickNormalizado,
+                        id
+                    ]
+                );
+
+
+            if (nickExistente.length > 0) {
+
+                return res.status(409).json({
+
+                    sucesso: false,
+
+                    mensagem:
+                        "Este nick já está sendo utilizado."
+
+                });
+
+            }
+
+        }
+
+
+        // =====================================
+        // ATUALIZAR USUÁRIO
+        // =====================================
+
+        await pool.execute(
+            `
+            UPDATE usuarios
+            SET
+                nome_completo = ?,
+                nick = ?,
+                email = ?,
+                foto = ?
+            WHERE id = ?
+            `,
+            [
+                nome_completo.trim(),
+                nickNormalizado || null,
+                emailNormalizado,
+                foto || null,
+                id
+            ]
+        );
+
+
+        // =====================================
+        // BUSCAR DADOS ATUALIZADOS
+        // =====================================
+
+        const [usuarios] =
+            await pool.execute(
+                `
+                SELECT
+                    id,
+                    nome_completo,
+                    nick,
+                    email,
+                    foto,
+                    plano,
+                    status
+                FROM usuarios
+                WHERE id = ?
+                LIMIT 1
+                `,
+                [id]
+            );
+
+
+        if (usuarios.length === 0) {
+
+            return res.status(404).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Usuário não encontrado."
+
+            });
+
+        }
+
+
+        const usuario =
+            usuarios[0];
+
+
+        // =====================================
+        // RESPOSTA
+        // =====================================
+
+        return res.status(200).json({
+
+            sucesso: true,
+
+            mensagem:
+                "Perfil atualizado com sucesso!",
+
+            usuario: {
+
+                id:
+                    usuario.id,
+
+                nome_completo:
+                    usuario.nome_completo,
+
+                nick:
+                    usuario.nick,
+
+                email:
+                    usuario.email,
+
+                foto:
+                    usuario.foto,
+
+                plano:
+                    usuario.plano
+
+            }
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao atualizar perfil:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            sucesso: false,
+
+            mensagem:
+                "Erro interno do servidor."
+
+        });
+
+    }
+
+});
+
+
+// =========================================================
+// ALTERAR SENHA
+// =========================================================
+
+router.put("/password", async (req, res) => {
+
+    try {
+
+        const {
+            id,
+            senha_atual,
+            nova_senha
+        } = req.body;
+
+
+        // =====================================
+        // VALIDAR CAMPOS
+        // =====================================
+
+        if (
+            !id ||
+            !senha_atual ||
+            !nova_senha
+        ) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Preencha todos os campos."
+
+            });
+
+        }
+
+
+        // =====================================
+        // VALIDAR NOVA SENHA
+        // =====================================
+
+        if (nova_senha.length < 8) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "A nova senha deve possuir pelo menos 8 caracteres."
+
+            });
+
+        }
+
+
+        // =====================================
+        // BUSCAR USUÁRIO
+        // =====================================
+
+        const [usuarios] =
+            await pool.execute(
+                `
+                SELECT
+                    id,
+                    senha,
+                    status
+                FROM usuarios
+                WHERE id = ?
+                LIMIT 1
+                `,
+                [id]
+            );
+
+
+        if (usuarios.length === 0) {
+
+            return res.status(404).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Usuário não encontrado."
+
+            });
+
+        }
+
+
+        const usuario =
+            usuarios[0];
+
+
+        // =====================================
+        // VERIFICAR STATUS
+        // =====================================
+
+        if (usuario.status !== "ativo") {
+
+            return res.status(403).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Esta conta não está disponível."
+
+            });
+
+        }
+
+
+        // =====================================
+        // VERIFICAR SENHA ATUAL
+        // =====================================
+
+        const senhaCorreta =
+            await bcrypt.compare(
+                senha_atual,
+                usuario.senha
+            );
+
+
+        if (!senhaCorreta) {
+
+            return res.status(401).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "A senha atual está incorreta."
+
+            });
+
+        }
+
+
+        // =====================================
+        // CRIPTOGRAFAR NOVA SENHA
+        // =====================================
+
+        const novaSenhaHash =
+            await bcrypt.hash(
+                nova_senha,
+                12
+            );
+
+
+        // =====================================
+        // SALVAR NOVA SENHA
+        // =====================================
+
+        await pool.execute(
+            `
+            UPDATE usuarios
+            SET senha = ?
+            WHERE id = ?
+            `,
+            [
+                novaSenhaHash,
+                id
+            ]
+        );
+
+
+        // =====================================
+        // SUCESSO
+        // =====================================
+
+        return res.status(200).json({
+
+            sucesso: true,
+
+            mensagem:
+                "Senha alterada com sucesso!"
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao alterar senha:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            sucesso: false,
+
+            mensagem:
+                "Erro interno do servidor."
+
+        });
+
+    }
+
+});
+
+
+// =========================================================
+// EXPORTAR ROTAS
+// =========================================================
 
 module.exports = router;

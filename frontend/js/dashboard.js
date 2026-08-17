@@ -1,10 +1,17 @@
 /* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
-   VERSÃO COMPLETA
+   VERSÃO COMPLETA — DASHBOARD + API + PERFIL + JOGOS
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    /* =====================================================
+       CONFIGURAÇÃO
+    ====================================================== */
+
+    const API_URL = "http://localhost:3000";
+
 
     /* =====================================================
        ELEMENTOS PRINCIPAIS
@@ -35,20 +42,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const userAvatarElement =
         document.getElementById("userAvatar");
 
-    const profileNameElement =
-        document.getElementById("profileName");
-
-    const profileEmailElement =
-        document.getElementById("profileEmail");
+    const userPlanElement =
+        document.getElementById("userPlan");
 
     const profileAvatarElement =
         document.getElementById("profileAvatar");
 
+    const profileNameInput =
+        document.getElementById("profileNameInput");
+
+    const profileNickInput =
+        document.getElementById("profileNickInput");
+
+    const profileEmailInput =
+        document.getElementById("profileEmailInput");
+
     const profilePlanElement =
         document.getElementById("profilePlan");
 
-    const userPlanElement =
-        document.getElementById("userPlan");
+    const profilePlanBottom =
+        document.getElementById("profilePlanBottom");
+
+    const profilePhotoInput =
+        document.getElementById("profilePhotoInput");
+
+    const changePhotoButton =
+        document.getElementById("changePhotoButton");
+
+    const removePhotoButton =
+        document.getElementById("removePhotoButton");
+
+    const saveProfileButton =
+        document.getElementById("saveProfileButton");
+
+    const cancelProfileButton =
+        document.getElementById("cancelProfileEdit");
+
+    const changePasswordButton =
+        document.getElementById("changePasswordButton");
 
 
     /* =====================================================
@@ -64,68 +95,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (savedUser) {
 
-            user = JSON.parse(savedUser);
-
+            user =
+                JSON.parse(savedUser);
         }
 
     } catch (error) {
 
         console.error(
-            "Erro ao recuperar usuário:",
+            "Erro ao recuperar usuário da sessão:",
             error
         );
 
         sessionStorage.removeItem("usuario");
-
-        user = null;
-
     }
 
 
     /* =====================================================
-       FALLBACK
+       FALLBACK LOCALSTORAGE
     ====================================================== */
 
     if (!user) {
 
-        const localUser =
-            localStorage.getItem("user");
+        try {
 
-        if (localUser) {
+            const localUser =
+                localStorage.getItem("user");
 
-            try {
+            if (localUser) {
 
-                user = JSON.parse(localUser);
-
-            } catch (error) {
-
-                console.warn(
-                    "Dados antigos de usuário inválidos."
-                );
-
+                user =
+                    JSON.parse(localUser);
             }
 
+        } catch (error) {
+
+            console.warn(
+                "Dados antigos de usuário inválidos:",
+                error
+            );
+
+            localStorage.removeItem("user");
+        }
+    }
+
+
+    /* =====================================================
+       FUNÇÕES DE USUÁRIO
+    ====================================================== */
+
+    function getUserId() {
+
+        if (!user) {
+            return null;
         }
 
-    }
-
-
-    /* =====================================================
-       SE NÃO EXISTIR USUÁRIO
-    ====================================================== */
-
-    if (!user) {
-
-        console.warn(
-            "Nenhum usuário encontrado."
+        return (
+            user.id ||
+            user.usuario_id ||
+            user.user_id ||
+            null
         );
-
     }
 
-
-    /* =====================================================
-       NORMALIZAÇÃO DOS DADOS
-    ====================================================== */
 
     function getUserName() {
 
@@ -135,42 +166,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return (
             user.nome_completo ||
-            user.name ||
             user.nome ||
+            user.name ||
             user.fullName ||
             "Usuário"
         );
-
     }
 
 
     function getUserEmail() {
 
         if (!user) {
-            return "—";
+            return "";
         }
 
         return (
             user.email ||
             user.emailAddress ||
-            "—"
+            ""
         );
-
-    }
-
-
-    function getUserPlan() {
-
-        if (!user) {
-            return "gratuito";
-        }
-
-        return (
-            user.plano ||
-            user.plan ||
-            "gratuito"
-        );
-
     }
 
 
@@ -185,7 +199,20 @@ document.addEventListener("DOMContentLoaded", () => {
             user.nickname ||
             ""
         );
+    }
 
+
+    function getUserPlan() {
+
+        if (!user) {
+            return "gratuito";
+        }
+
+        return (
+            user.plano ||
+            user.plan ||
+            "gratuito"
+        );
     }
 
 
@@ -196,15 +223,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function firstName(name) {
 
         if (!name) {
-
             return "usuário";
-
         }
 
         return name
             .trim()
             .split(/\s+/)[0];
-
     }
 
 
@@ -215,11 +239,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function getInitials(name) {
 
         if (!name) {
-
             return "AS";
-
         }
-
 
         const parts =
             name
@@ -233,7 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return parts[0]
                 .substring(0, 2)
                 .toUpperCase();
-
         }
 
 
@@ -241,174 +261,11 @@ document.addEventListener("DOMContentLoaded", () => {
             parts[0][0] +
             parts[parts.length - 1][0]
         ).toUpperCase();
-
     }
 
 
     /* =====================================================
-       ATUALIZAR INTERFACE DO USUÁRIO
-    ====================================================== */
-
-    function updateUserInterface() {
-
-        if (!user) {
-            return;
-        }
-
-
-        const name =
-            getUserName();
-
-        const email =
-            getUserEmail();
-
-        const plan =
-            getUserPlan();
-
-        const nick =
-            getUserNick();
-
-        const initials =
-            getInitials(name);
-
-
-        /* =============================================
-           HEADER
-        ============================================== */
-
-        if (userNameElement) {
-
-            userNameElement.textContent =
-                name;
-
-        }
-
-
-        if (userPlanElement) {
-
-            userPlanElement.textContent =
-                String(plan).toUpperCase();
-
-        }
-
-
-        if (userAvatarElement) {
-
-            updateAvatarElement(
-                userAvatarElement,
-                initials
-            );
-
-        }
-
-
-        /* =============================================
-           BOAS-VINDAS
-        ============================================== */
-
-        if (welcomeNameElement) {
-
-            welcomeNameElement.textContent =
-                firstName(name);
-
-        }
-
-
-        /* =============================================
-           PERFIL
-        ============================================== */
-
-        if (profileNameElement) {
-
-            profileNameElement.textContent =
-                name;
-
-        }
-
-
-        if (profileEmailElement) {
-
-            profileEmailElement.textContent =
-                email;
-
-        }
-
-
-        if (profilePlanElement) {
-
-            profilePlanElement.textContent =
-                String(plan).toUpperCase();
-
-        }
-
-
-        if (profileAvatarElement) {
-
-            updateAvatarElement(
-                profileAvatarElement,
-                initials
-            );
-
-        }
-
-
-        /* =============================================
-           CAMPOS DE EDIÇÃO
-        ============================================== */
-
-        const editName =
-            document.getElementById("editProfileName");
-
-        const editNick =
-            document.getElementById("editProfileNick");
-
-        const editEmail =
-            document.getElementById("editProfileEmail");
-
-
-        if (editName) {
-
-            editName.value =
-                name;
-
-        }
-
-
-        if (editNick) {
-
-            editNick.value =
-                nick;
-
-        }
-
-
-        if (editEmail) {
-
-            editEmail.value =
-                email === "—"
-                    ? ""
-                    : email;
-
-        }
-
-
-        /* =============================================
-           FOTO DO USUÁRIO
-        ============================================== */
-
-        if (user.foto) {
-
-            applyUserPhoto(
-                user.foto
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       AVATAR
+       ATUALIZAR AVATAR
     ====================================================== */
 
     function updateAvatarElement(
@@ -421,7 +278,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (user && user.foto) {
+        if (
+            user &&
+            user.foto
+        ) {
 
             element.style.backgroundImage =
                 `url("${user.foto}")`;
@@ -443,63 +303,139 @@ document.addEventListener("DOMContentLoaded", () => {
             element.style.backgroundImage =
                 "";
 
+            element.style.backgroundSize =
+                "";
+
+            element.style.backgroundPosition =
+                "";
+
+            element.style.backgroundRepeat =
+                "";
+
             element.textContent =
                 initials;
-
         }
-
     }
 
 
     /* =====================================================
-       APLICAR FOTO
+       ATUALIZAR INTERFACE
     ====================================================== */
 
-    function applyUserPhoto(photo) {
+    function updateUserInterface() {
 
-        if (!photo) {
+        if (!user) {
             return;
         }
 
 
-        const avatars = [
-            userAvatarElement,
-            profileAvatarElement
-        ];
+        const name =
+            getUserName();
+
+        const email =
+            getUserEmail();
+
+        const nick =
+            getUserNick();
+
+        const plan =
+            getUserPlan();
+
+        const initials =
+            getInitials(name);
 
 
-        avatars.forEach(avatar => {
+        /* HEADER */
 
-            if (!avatar) {
-                return;
-            }
+        if (userNameElement) {
+
+            userNameElement.textContent =
+                name;
+        }
 
 
-            avatar.style.backgroundImage =
-                `url("${photo}")`;
+        if (userPlanElement) {
 
-            avatar.style.backgroundSize =
-                "cover";
+            userPlanElement.textContent =
+                String(plan).toUpperCase();
+        }
 
-            avatar.style.backgroundPosition =
-                "center";
 
-            avatar.style.backgroundRepeat =
-                "no-repeat";
+        if (userAvatarElement) {
 
-            avatar.textContent =
-                "";
+            updateAvatarElement(
+                userAvatarElement,
+                initials
+            );
+        }
 
-        });
 
+        /* BOAS-VINDAS */
+
+        if (welcomeNameElement) {
+
+            welcomeNameElement.textContent =
+                firstName(name);
+        }
+
+
+        /* PERFIL */
+
+        if (profileNameInput) {
+
+            profileNameInput.value =
+                name;
+        }
+
+
+        if (profileNickInput) {
+
+            profileNickInput.value =
+                nick;
+        }
+
+
+        if (profileEmailInput) {
+
+            profileEmailInput.value =
+                email;
+        }
+
+
+        if (profilePlanElement) {
+
+            profilePlanElement.textContent =
+                String(plan).toUpperCase();
+        }
+
+
+        if (profilePlanBottom) {
+
+            profilePlanBottom.textContent =
+                String(plan).toUpperCase();
+        }
+
+
+        if (profileAvatarElement) {
+
+            updateAvatarElement(
+                profileAvatarElement,
+                initials
+            );
+        }
     }
 
 
     /* =====================================================
-       SALVAR USUÁRIO NA SESSÃO
+       SALVAR USUÁRIO
     ====================================================== */
 
     function saveUser() {
+
+        if (!user) {
+            return;
+        }
+
 
         try {
 
@@ -507,12 +443,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "usuario",
                 JSON.stringify(user)
             );
-
-            /*
-             * Mantemos também uma cópia local
-             * para compatibilidade com versões
-             * anteriores do sistema.
-             */
 
             localStorage.setItem(
                 "user",
@@ -525,14 +455,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Erro ao salvar usuário:",
                 error
             );
-
         }
-
     }
 
 
     /* =====================================================
-       INICIALIZAR USUÁRIO
+       INICIALIZAÇÃO
     ====================================================== */
 
     updateUserInterface();
@@ -544,50 +472,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
     menuItems.forEach(item => {
 
-        item.addEventListener("click", () => {
+        item.addEventListener(
+            "click",
+            () => {
 
-            const locked =
-                item.dataset.locked === "true";
+                const locked =
+                    item.dataset.locked === "true";
 
 
-            if (locked) {
+                if (locked) {
 
-                showNotification(
-                    "Esta área ainda está em desenvolvimento."
-                );
+                    showNotification(
+                        "Esta área ainda está em desenvolvimento."
+                    );
 
-                return;
+                    return;
+                }
 
+
+                const sectionName =
+                    item.dataset.section;
+
+
+                if (!sectionName) {
+                    return;
+                }
+
+
+                if (sectionName === "cursos") {
+
+                    openCourses();
+
+                    return;
+                }
+
+
+                showSection(sectionName);
             }
-
-
-            const sectionName =
-                item.dataset.section;
-
-
-            if (!sectionName) {
-                return;
-            }
-
-
-            if (sectionName === "cursos") {
-
-                openCourses();
-
-                return;
-
-            }
-
-
-            showSection(sectionName);
-
-        });
-
+        );
     });
 
 
     /* =====================================================
-       CARDS DE ACESSO RÁPIDO
+       CARDS DE ACESSO
     ====================================================== */
 
     const accessCards =
@@ -598,30 +525,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
     accessCards.forEach(card => {
 
-        card.addEventListener("click", () => {
+        card.addEventListener(
+            "click",
+            event => {
 
-            const section =
-                card.dataset.sectionLink;
+                /*
+                 * Se clicou em um botão dentro do card,
+                 * não interfere no botão.
+                 */
+
+                if (
+                    event.target.closest("button")
+                ) {
+                    return;
+                }
 
 
-            if (!section) {
-                return;
+                const section =
+                    card.dataset.sectionLink;
+
+
+                if (!section) {
+                    return;
+                }
+
+
+                if (section === "cursos") {
+
+                    openCourses();
+
+                    return;
+                }
+
+
+                if (section === "jogos") {
+
+                    showSection("jogos");
+
+                    return;
+                }
+
+
+                showSection(section);
             }
-
-
-            if (section === "cursos") {
-
-                openCourses();
-
-                return;
-
-            }
-
-
-            showSection(section);
-
-        });
-
+        );
     });
 
 
@@ -633,12 +580,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.location.href =
             "cursos/index.html";
-
     }
 
 
     window.openCourses =
         openCourses;
+
+
+    /* =====================================================
+       ABRIR JOGOS DE INGLÊS
+    ====================================================== */
+
+    window.openEnglishGames =
+        function() {
+
+            showSection("jogos");
+
+            setTimeout(() => {
+
+                openGameCategory(
+                    "educativos"
+                );
+
+                setTimeout(() => {
+
+                    const englishFilter =
+                        document.querySelector(
+                            '.game-filter[onclick*="ingles"]'
+                        );
+
+                    filterGames(
+                        "ingles",
+                        englishFilter
+                    );
+
+                }, 50);
+
+            }, 50);
+        };
 
 
     /* =====================================================
@@ -653,7 +632,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 section.classList.remove(
                     "active"
                 );
-
             });
 
 
@@ -662,7 +640,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.classList.remove(
                     "active"
                 );
-
             });
 
 
@@ -679,7 +656,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
                 return;
-
             }
 
 
@@ -699,7 +675,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 activeMenu.classList.add(
                     "active"
                 );
-
             }
 
 
@@ -708,26 +683,27 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            /*
-             * Se abrir o perfil,
-             * atualizamos os dados novamente.
-             */
-
             if (sectionName === "perfil") {
 
                 updateUserInterface();
+            }
 
+
+            /*
+             * Ao entrar novamente em Jogos,
+             * mostramos a tela inicial das categorias.
+             */
+
+            if (sectionName === "jogos") {
+
+                backToGameCategories();
             }
 
 
             window.scrollTo({
-
                 top: 0,
-
                 behavior: "smooth"
-
             });
-
         };
 
 
@@ -767,14 +743,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             perfil:
                 "Meu Perfil"
-
         };
 
 
         pageTitle.textContent =
             titles[sectionName] ||
             "Aldemar Studios";
-
     }
 
 
@@ -805,7 +779,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 categories.style.display =
                     "none";
-
             }
 
 
@@ -815,7 +788,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     category === "passatempo"
                         ? "block"
                         : "none";
-
             }
 
 
@@ -825,9 +797,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     category === "educativos"
                         ? "block"
                         : "none";
-
             }
 
+
+            /*
+             * Sempre começa mostrando todos
+             * os jogos educativos.
+             */
+
+            if (category === "educativos") {
+
+                const allFilter =
+                    document.querySelector(
+                        '.game-filter[onclick*="todos"]'
+                    );
+
+                filterGames(
+                    "todos",
+                    allFilter
+                );
+            }
         };
 
 
@@ -858,7 +847,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 categories.style.display =
                     "block";
-
             }
 
 
@@ -866,7 +854,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 passatempo.style.display =
                     "none";
-
             }
 
 
@@ -874,14 +861,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 educativos.style.display =
                     "none";
-
             }
-
         };
 
 
     /* =====================================================
-       FILTRO DOS JOGOS EDUCATIVOS
+       FILTRO DOS JOGOS
     ====================================================== */
 
     window.filterGames =
@@ -891,7 +876,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelectorAll(
                     ".educational-game"
                 );
-
 
             const filters =
                 document.querySelectorAll(
@@ -904,7 +888,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.classList.remove(
                     "active"
                 );
-
             });
 
 
@@ -913,7 +896,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 button.classList.add(
                     "active"
                 );
-
             }
 
 
@@ -935,211 +917,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     game.style.display =
                         "none";
-
                 }
-
             });
-
         };
 
 
     /* =====================================================
-       BOTÕES DE CURSO
+       PERFIL — SALVAR ALTERAÇÕES
     ====================================================== */
 
-    document.addEventListener(
-        "click",
-        event => {
+    if (saveProfileButton) {
 
-            const button =
-                event.target.closest(
-                    "[data-open-course]"
-                );
-
-
-            if (!button) {
-                return;
-            }
-
-
-            openCourses();
-
-        }
-    );
-
-
-    /* =====================================================
-       FEEDBACK — ESTRELAS
-    ====================================================== */
-
-    const stars =
-        document.querySelectorAll(
-            ".stars button"
-        );
-
-
-    stars.forEach((star, index) => {
-
-        star.addEventListener(
+        saveProfileButton.addEventListener(
             "click",
-            () => {
-
-                stars.forEach(
-                    (item, starIndex) => {
-
-                        if (
-                            starIndex <= index
-                        ) {
-
-                            item.classList.add(
-                                "selected"
-                            );
-
-                        } else {
-
-                            item.classList.remove(
-                                "selected"
-                            );
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-    });
-
-
-    /* =====================================================
-       =====================================================
-       PERFIL DO USUÁRIO
-       =====================================================
-       ===================================================== */
-
-
-    /* =====================================================
-       BOTÃO EDITAR PERFIL
-    ====================================================== */
-
-    const editProfileButton =
-        document.getElementById(
-            "editProfileButton"
-        );
-
-
-    if (editProfileButton) {
-
-        editProfileButton.addEventListener(
-            "click",
-            () => {
-
-                openProfileEditor();
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       ABRIR EDITOR DE PERFIL
-    ====================================================== */
-
-    function openProfileEditor() {
-
-        const editor =
-            document.getElementById(
-                "profileEditArea"
-            );
-
-
-        if (!editor) {
-
-            showNotification(
-                "Área de edição não encontrada."
-            );
-
-            return;
-
-        }
-
-
-        updateUserInterface();
-
-
-        editor.style.display =
-            "block";
-
-
-        editor.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "start"
-
-        });
-
-    }
-
-
-    /* =====================================================
-       BOTÃO CANCELAR EDIÇÃO
-    ====================================================== */
-
-    const cancelProfileButton =
-        document.getElementById(
-            "cancelProfileEdit"
-        );
-
-
-    if (cancelProfileButton) {
-
-        cancelProfileButton.addEventListener(
-            "click",
-            () => {
-
-                const editor =
-                    document.getElementById(
-                        "profileEditArea"
-                    );
-
-
-                if (editor) {
-
-                    editor.style.display =
-                        "none";
-
-                }
-
-
-                updateUserInterface();
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       SALVAR PERFIL
-    ====================================================== */
-
-    const profileForm =
-        document.getElementById(
-            "profileEditForm"
-        );
-
-
-    if (profileForm) {
-
-        profileForm.addEventListener(
-            "submit",
-            event => {
-
-                event.preventDefault();
-
+            async () => {
 
                 if (!user) {
 
@@ -1148,47 +939,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                     return;
-
                 }
 
 
-                const nameInput =
-                    document.getElementById(
-                        "editProfileName"
-                    );
-
-                const nickInput =
-                    document.getElementById(
-                        "editProfileNick"
-                    );
-
-                const emailInput =
-                    document.getElementById(
-                        "editProfileEmail"
-                    );
-
-
                 const newName =
-                    nameInput
-                        ? nameInput.value.trim()
+                    profileNameInput
+                        ? profileNameInput.value.trim()
                         : "";
 
 
                 const newNick =
-                    nickInput
-                        ? nickInput.value.trim()
+                    profileNickInput
+                        ? profileNickInput.value.trim()
                         : "";
 
 
                 const newEmail =
-                    emailInput
-                        ? emailInput.value.trim()
+                    profileEmailInput
+                        ? profileEmailInput.value
+                            .trim()
+                            .toLowerCase()
                         : "";
 
 
-                /* =====================================
-                   VALIDAÇÃO DO NOME
-                ====================================== */
+                /* NOME */
 
                 if (!newName) {
 
@@ -1196,18 +970,59 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Digite seu nome completo."
                     );
 
-                    if (nameInput) {
-                        nameInput.focus();
-                    }
+                    profileNameInput?.focus();
 
                     return;
-
                 }
 
 
-                /* =====================================
-                   VALIDAÇÃO DO E-MAIL
-                ====================================== */
+                if (newName.length < 3) {
+
+                    showNotification(
+                        "O nome deve possuir pelo menos 3 caracteres."
+                    );
+
+                    profileNameInput?.focus();
+
+                    return;
+                }
+
+
+                /* NICK */
+
+                if (newNick.length > 30) {
+
+                    showNotification(
+                        "O nick deve possuir no máximo 30 caracteres."
+                    );
+
+                    profileNickInput?.focus();
+
+                    return;
+                }
+
+
+                if (
+                    newNick &&
+                    (
+                        newNick.length < 3 ||
+                        !/^[a-zA-Z0-9_.-]+$/.test(
+                            newNick
+                        )
+                    )
+                ) {
+
+                    showNotification(
+                        "O nick deve possuir entre 3 e 30 caracteres e pode conter apenas letras, números, ponto, hífen e underline."
+                    );
+
+                    profileNickInput?.focus();
+
+                    return;
+                }
+
+
+                /* E-MAIL */
 
                 if (!newEmail) {
 
@@ -1215,109 +1030,233 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Digite seu e-mail."
                     );
 
-                    if (emailInput) {
-                        emailInput.focus();
-                    }
+                    profileEmailInput?.focus();
 
                     return;
-
                 }
 
 
-                if (
-                    !isValidEmail(newEmail)
-                ) {
+                if (!isValidEmail(newEmail)) {
 
                     showNotification(
                         "Digite um e-mail válido."
                     );
 
-                    if (emailInput) {
-                        emailInput.focus();
-                    }
+                    profileEmailInput?.focus();
 
                     return;
-
                 }
 
 
-                /* =====================================
-                   ATUALIZAR OBJETO
-                ====================================== */
-
-                user.nome_completo =
-                    newName;
-
-                user.email =
-                    newEmail;
-
-                user.nick =
-                    newNick;
+                const originalText =
+                    saveProfileButton.textContent;
 
 
-                /* =====================================
-                   SALVAR
-                ====================================== */
+                saveProfileButton.disabled =
+                    true;
 
-                saveUser();
-
-
-                /* =====================================
-                   ATUALIZAR INTERFACE
-                ====================================== */
-
-                updateUserInterface();
+                saveProfileButton.textContent =
+                    "SALVANDO...";
 
 
-                /* =====================================
-                   FECHAR EDITOR
-                ====================================== */
+                try {
 
-                const editor =
-                    document.getElementById(
-                        "profileEditArea"
+                    const data =
+                        await updateProfileOnServer(
+                            newName,
+                            newNick,
+                            newEmail
+                        );
+
+
+                    if (data.usuario) {
+
+                        user = {
+                            ...user,
+                            ...data.usuario
+                        };
+
+                    } else {
+
+                        user.nome_completo =
+                            newName;
+
+                        user.nick =
+                            newNick;
+
+                        user.email =
+                            newEmail;
+                    }
+
+
+                    saveUser();
+
+                    updateUserInterface();
+
+
+                    showNotification(
+                        data.mensagem ||
+                        "Perfil atualizado com sucesso!"
                     );
 
 
-                if (editor) {
+                } catch (error) {
 
-                    editor.style.display =
-                        "none";
+                    console.error(
+                        "Erro ao atualizar perfil:",
+                        error
+                    );
 
+
+                    showNotification(
+                        error.message ||
+                        "Erro ao atualizar perfil."
+                    );
+
+
+                } finally {
+
+                    saveProfileButton.disabled =
+                        false;
+
+                    saveProfileButton.textContent =
+                        originalText;
                 }
-
-
-                showNotification(
-                    "Perfil atualizado com sucesso!"
-                );
-
             }
         );
-
     }
 
 
     /* =====================================================
-       VALIDAÇÃO DE E-MAIL
+       CANCELAR ALTERAÇÕES
     ====================================================== */
 
-    function isValidEmail(email) {
+    if (cancelProfileButton) {
 
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            .test(email);
+        cancelProfileButton.addEventListener(
+            "click",
+            () => {
 
-    }
+                updateUserInterface();
 
-
-    /* =====================================================
-       FOTO DE PERFIL
-    ====================================================== */
-
-    const profilePhotoInput =
-        document.getElementById(
-            "profilePhotoInput"
+                showNotification(
+                    "Alterações canceladas."
+                );
+            }
         );
+    }
 
+
+    /* =====================================================
+       ATUALIZAR PERFIL NO SERVIDOR
+    ====================================================== */
+
+    async function updateProfileOnServer(
+        nome_completo,
+        nick,
+        email,
+        foto = undefined
+    ) {
+
+        const userId =
+            getUserId();
+
+
+        if (!userId) {
+
+            throw new Error(
+                "ID do usuário não encontrado."
+            );
+        }
+
+
+        const body = {
+
+            id:
+                userId,
+
+            nome_completo:
+                nome_completo,
+
+            nick:
+                nick,
+
+            email:
+                email
+        };
+
+
+        if (foto !== undefined) {
+
+            body.foto =
+                foto;
+        }
+
+
+        const response =
+            await fetch(
+                `${API_URL}/api/auth/profile`,
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(body)
+                }
+            );
+
+
+        const data =
+            await parseResponse(
+                response
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.mensagem ||
+                data.message ||
+                "Não foi possível atualizar o perfil."
+            );
+        }
+
+
+        return data;
+    }
+
+
+    /* =====================================================
+       FOTO — ALTERAR
+    ====================================================== */
+
+    if (
+        changePhotoButton &&
+        profilePhotoInput
+    ) {
+
+        changePhotoButton.addEventListener(
+            "click",
+            () => {
+
+                profilePhotoInput.click();
+            }
+        );
+    }
+
+
+    /* =====================================================
+       FOTO — SELECIONAR
+    ====================================================== */
 
     if (profilePhotoInput) {
 
@@ -1334,10 +1273,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* =====================================
-                   VERIFICAR TIPO
-                ====================================== */
-
                 if (
                     !file.type.startsWith(
                         "image/"
@@ -1352,13 +1287,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         "";
 
                     return;
-
                 }
 
-
-                /* =====================================
-                   LIMITE DE TAMANHO
-                ====================================== */
 
                 const maxSize =
                     5 * 1024 * 1024;
@@ -1374,132 +1304,189 @@ document.addEventListener("DOMContentLoaded", () => {
                         "";
 
                     return;
-
                 }
 
-
-                /* =====================================
-                   LER IMAGEM
-                ====================================== */
 
                 const reader =
                     new FileReader();
 
 
                 reader.onload =
-                    function(readerEvent) {
+                    async readerEvent => {
 
                         const photo =
                             readerEvent.target.result;
 
 
-                        if (!user) {
-                            return;
+                        try {
+
+                            showNotification(
+                                "Enviando foto..."
+                            );
+
+
+                            const data =
+                                await updateProfileOnServer(
+                                    getUserName(),
+                                    getUserNick(),
+                                    getUserEmail(),
+                                    photo
+                                );
+
+
+                            if (data.usuario) {
+
+                                user = {
+                                    ...user,
+                                    ...data.usuario
+                                };
+
+                            } else {
+
+                                user.foto =
+                                    photo;
+                            }
+
+
+                            saveUser();
+
+                            updateUserInterface();
+
+
+                            showNotification(
+                                data.mensagem ||
+                                "Foto de perfil atualizada!"
+                            );
+
+
+                        } catch (error) {
+
+                            console.error(
+                                "Erro ao atualizar foto:",
+                                error
+                            );
+
+
+                            showNotification(
+                                error.message ||
+                                "Erro ao atualizar foto."
+                            );
                         }
-
-
-                        user.foto =
-                            photo;
-
-
-                        saveUser();
-
-
-                        applyUserPhoto(
-                            photo
-                        );
-
-
-                        showNotification(
-                            "Foto de perfil atualizada!"
-                        );
-
                     };
 
 
                 reader.readAsDataURL(
                     file
                 );
-
             }
         );
-
     }
 
 
     /* =====================================================
-       BOTÃO ALTERAR FOTO
+       FOTO — REMOVER
     ====================================================== */
-
-    const changePhotoButton =
-        document.getElementById(
-            "changeProfilePhoto"
-        );
-
-
-    if (
-        changePhotoButton &&
-        profilePhotoInput
-    ) {
-
-        changePhotoButton.addEventListener(
-            "click",
-            () => {
-
-                profilePhotoInput.click();
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       REMOVER FOTO
-    ====================================================== */
-
-    const removePhotoButton =
-        document.getElementById(
-            "removeProfilePhoto"
-        );
-
 
     if (removePhotoButton) {
 
         removePhotoButton.addEventListener(
             "click",
-            () => {
+            async () => {
 
                 if (!user) {
+
+                    showNotification(
+                        "Usuário não encontrado."
+                    );
+
                     return;
                 }
 
 
-                user.foto =
-                    "";
+                if (!user.foto) {
 
+                    showNotification(
+                        "Você não possui uma foto de perfil."
+                    );
 
-                saveUser();
-
-
-                updateUserInterface();
-
-
-                if (profilePhotoInput) {
-
-                    profilePhotoInput.value =
-                        "";
-
+                    return;
                 }
 
 
-                showNotification(
-                    "Foto de perfil removida."
-                );
+                const confirmed =
+                    confirm(
+                        "Deseja realmente remover sua foto de perfil?"
+                    );
 
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                try {
+
+                    showNotification(
+                        "Removendo foto..."
+                    );
+
+
+                    const data =
+                        await updateProfileOnServer(
+                            getUserName(),
+                            getUserNick(),
+                            getUserEmail(),
+                            null
+                        );
+
+
+                    if (data.usuario) {
+
+                        user = {
+                            ...user,
+                            ...data.usuario
+                        };
+
+                    } else {
+
+                        user.foto =
+                            "";
+                    }
+
+
+                    saveUser();
+
+                    updateUserInterface();
+
+
+                    if (profilePhotoInput) {
+
+                        profilePhotoInput.value =
+                            "";
+                    }
+
+
+                    showNotification(
+                        data.mensagem ||
+                        "Foto de perfil removida."
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Erro ao remover foto:",
+                        error
+                    );
+
+
+                    showNotification(
+                        error.message ||
+                        "Erro ao remover foto."
+                    );
+                }
             }
         );
-
     }
 
 
@@ -1507,19 +1494,24 @@ document.addEventListener("DOMContentLoaded", () => {
        ALTERAR SENHA
     ====================================================== */
 
-    const passwordForm =
-        document.getElementById(
-            "changePasswordForm"
-        );
+    if (changePasswordButton) {
+
+        changePasswordButton.addEventListener(
+            "click",
+            async () => {
+
+                const userId =
+                    getUserId();
 
 
-    if (passwordForm) {
+                if (!userId) {
 
-        passwordForm.addEventListener(
-            "submit",
-            event => {
+                    showNotification(
+                        "Usuário não encontrado."
+                    );
 
-                event.preventDefault();
+                    return;
+                }
 
 
                 const currentPassword =
@@ -1556,127 +1548,294 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "";
 
 
-                /* =====================================
-                   VALIDAÇÃO
-                ====================================== */
-
                 if (!currentValue) {
 
                     showNotification(
                         "Digite sua senha atual."
                     );
 
-                    return;
+                    currentPassword?.focus();
 
+                    return;
                 }
 
 
-                if (
-                    newValue.length < 8
-                ) {
+                if (newValue.length < 8) {
 
                     showNotification(
                         "A nova senha deve possuir pelo menos 8 caracteres."
                     );
 
-                    return;
+                    newPassword?.focus();
 
+                    return;
                 }
 
 
-                if (
-                    newValue !==
-                    confirmValue
-                ) {
+                if (newValue !== confirmValue) {
 
                     showNotification(
                         "As senhas não coincidem."
                     );
 
-                    return;
+                    confirmPassword?.focus();
 
+                    return;
                 }
 
 
-                /* =====================================
-                   IMPORTANTE
-                ======================================
-
-                   A senha NÃO será salva no navegador.
-
-                   A alteração real será feita
-                   posteriormente através da API/backend.
-                ====================================== */
-
-                showNotification(
-                    "A alteração de senha será concluída pelo servidor."
-                );
+                const originalText =
+                    changePasswordButton.textContent;
 
 
-                passwordForm.reset();
+                changePasswordButton.disabled =
+                    true;
 
+                changePasswordButton.textContent =
+                    "ALTERANDO...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API_URL}/api/auth/password`,
+                            {
+
+                                method: "PUT",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json",
+
+                                    "Accept":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        id:
+                                            userId,
+
+                                        senha_atual:
+                                            currentValue,
+
+                                        nova_senha:
+                                            newValue
+                                    })
+                            }
+                        );
+
+
+                    const data =
+                        await parseResponse(
+                            response
+                        );
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.mensagem ||
+                            data.message ||
+                            "Não foi possível alterar a senha."
+                        );
+                    }
+
+
+                    if (currentPassword) {
+
+                        currentPassword.value =
+                            "";
+                    }
+
+
+                    if (newPassword) {
+
+                        newPassword.value =
+                            "";
+                    }
+
+
+                    if (confirmPassword) {
+
+                        confirmPassword.value =
+                            "";
+                    }
+
+
+                    showNotification(
+                        data.mensagem ||
+                        "Senha alterada com sucesso!"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Erro ao alterar senha:",
+                        error
+                    );
+
+
+                    showNotification(
+                        error.message ||
+                        "Erro ao alterar senha."
+                    );
+
+
+                } finally {
+
+                    changePasswordButton.disabled =
+                        false;
+
+                    changePasswordButton.textContent =
+                        originalText;
+                }
             }
         );
-
     }
 
 
     /* =====================================================
-       MOSTRAR / OCULTAR SENHAS
+       VALIDAR E-MAIL
     ====================================================== */
 
-    const passwordToggles =
+    function isValidEmail(email) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(email);
+    }
+
+
+    /* =====================================================
+       FEEDBACK — ESTRELAS
+    ====================================================== */
+
+    const stars =
         document.querySelectorAll(
-            "[data-toggle-password]"
+            ".stars button"
         );
 
 
-    passwordToggles.forEach(toggle => {
+    stars.forEach(
+        (star, index) => {
 
-        toggle.addEventListener(
+            star.addEventListener(
+                "click",
+                () => {
+
+                    stars.forEach(
+                        (
+                            item,
+                            starIndex
+                        ) => {
+
+                            if (
+                                starIndex <= index
+                            ) {
+
+                                item.classList.add(
+                                    "selected"
+                                );
+
+                            } else {
+
+                                item.classList.remove(
+                                    "selected"
+                                );
+                            }
+                        }
+                    );
+                }
+            );
+        }
+    );
+
+
+    /* =====================================================
+       FEEDBACK — ENVIAR
+    ====================================================== */
+
+    const feedbackButton =
+        document.querySelector(
+            "#feedback .primary-small"
+        );
+
+
+    const feedbackText =
+        document.getElementById(
+            "feedbackText"
+        );
+
+
+    if (feedbackButton) {
+
+        feedbackButton.addEventListener(
             "click",
             () => {
 
-                const targetId =
-                    toggle.dataset.togglePassword;
+                const text =
+                    feedbackText
+                        ? feedbackText.value.trim()
+                        : "";
 
 
-                const input =
-                    document.getElementById(
-                        targetId
+                const selectedStars =
+                    document.querySelectorAll(
+                        ".stars button.selected"
+                    ).length;
+
+
+                if (
+                    selectedStars === 0
+                ) {
+
+                    showNotification(
+                        "Escolha uma avaliação de 1 a 5 estrelas."
                     );
 
-
-                if (!input) {
                     return;
                 }
 
 
-                if (
-                    input.type ===
-                    "password"
-                ) {
+                if (!text) {
 
-                    input.type =
-                        "text";
+                    showNotification(
+                        "Escreva sua sugestão antes de enviar."
+                    );
 
-                    toggle.textContent =
-                        "🙈";
+                    feedbackText?.focus();
 
-                } else {
-
-                    input.type =
-                        "password";
-
-                    toggle.textContent =
-                        "👁️";
-
+                    return;
                 }
 
+
+                showNotification(
+                    "Obrigado pelo seu feedback!"
+                );
+
+
+                if (feedbackText) {
+
+                    feedbackText.value =
+                        "";
+                }
+
+
+                stars.forEach(
+                    star => {
+
+                        star.classList.remove(
+                            "selected"
+                        );
+                    }
+                );
             }
         );
-
-    });
+    }
 
 
     /* =====================================================
@@ -1710,7 +1869,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     "usuario"
                 );
 
-
                 localStorage.removeItem(
                     "user"
                 );
@@ -1730,10 +1888,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 window.location.href =
                     "index.html";
-
             }
         );
+    }
 
+
+    /* =====================================================
+       PARSE DA RESPOSTA DA API
+    ====================================================== */
+
+    async function parseResponse(response) {
+
+        const text =
+            await response.text();
+
+
+        if (!text) {
+            return {};
+        }
+
+
+        try {
+
+            return JSON.parse(
+                text
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Resposta inválida da API:",
+                text
+            );
+
+            throw new Error(
+                "O servidor retornou uma resposta inválida."
+            );
+        }
     }
 
 
@@ -1768,7 +1959,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.appendChild(
                 notification
             );
-
         }
 
 
@@ -1797,14 +1987,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 3500
             );
-
     }
 
 
     /* =====================================================
-       INICIALIZAÇÃO
+       INICIALIZAÇÃO FINAL
     ====================================================== */
 
-    showSection("inicio");
+    showSection(
+        "inicio"
+    );
 
 });

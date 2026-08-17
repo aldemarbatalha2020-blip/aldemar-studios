@@ -25,11 +25,14 @@
     <div class="dashboard">
 
 
-        <!-- =====================================
+        <!-- =====================================================
              SIDEBAR
-        ====================================== -->
+        ====================================================== -->
 
         <aside class="sidebar">
+
+
+            <!-- MARCA -->
 
             <div class="sidebar-brand">
 
@@ -52,12 +55,15 @@
             </div>
 
 
+            <!-- MENU -->
+
             <nav class="menu">
 
 
                 <!-- INÍCIO -->
 
                 <button
+                    type="button"
                     class="menu-item active"
                     data-section="inicio"
                 >
@@ -74,6 +80,7 @@
                 <!-- JOGOS -->
 
                 <button
+                    type="button"
                     class="menu-item"
                     data-section="jogos"
                 >
@@ -90,6 +97,7 @@
                 <!-- INGLÊS -->
 
                 <button
+                    type="button"
                     class="menu-item"
                     data-section="ingles"
                 >
@@ -106,6 +114,7 @@
                 <!-- MÚSICA -->
 
                 <button
+                    type="button"
                     class="menu-item"
                     data-section="musica"
                 >
@@ -122,6 +131,7 @@
                 <!-- INCLUSIVOS -->
 
                 <button
+                    type="button"
                     class="menu-item"
                     data-section="inclusivos"
                 >
@@ -135,6 +145,8 @@
                 </button>
 
 
+                <!-- TÍTULO -->
+
                 <div class="menu-title">
                     EDUCAÇÃO
                 </div>
@@ -143,6 +155,7 @@
                 <!-- CURSOS -->
 
                 <button
+                    type="button"
                     class="menu-item"
                     data-section="cursos"
                 >
@@ -159,6 +172,7 @@
                 <!-- MATERIAIS -->
 
                 <button
+                    type="button"
                     class="menu-item locked"
                     data-locked="true"
                 >
@@ -179,6 +193,7 @@
                 <!-- SIMULADOS -->
 
                 <button
+                    type="button"
                     class="menu-item locked"
                     data-locked="true"
                 >
@@ -199,6 +214,7 @@
                 <!-- PREMIUM -->
 
                 <button
+                    type="button"
                     class="menu-item locked"
                     data-locked="true"
                 >
@@ -215,11 +231,12 @@
 
                 </button>
 
-
             </nav>
 
 
-            <!-- PARTE INFERIOR -->
+            <!-- =================================================
+                 PARTE INFERIOR
+            ================================================== -->
 
             <div class="sidebar-bottom">
 
@@ -227,6 +244,7 @@
                 <!-- FEEDBACK -->
 
                 <button
+                    type="button"
                     class="menu-item"
                     data-section="feedback"
                 >
@@ -243,6 +261,7 @@
                 <!-- PERFIL -->
 
                 <button
+                    type="button"
                     class="menu-item"
                     data-section="perfil"
                 >
@@ -259,6 +278,7 @@
                 <!-- SAIR -->
 
                 <button
+                    type="button"
                     id="logoutButton"
                     class="menu-item logout"
                 >
@@ -271,22 +291,21 @@
 
                 </button>
 
-
             </div>
 
         </aside>
 
 
-        <!-- =====================================
+        <!-- =====================================================
              CONTEÚDO PRINCIPAL
-        ====================================== -->
+        ====================================================== -->
 
         <main class="main-content">
 
 
-            <!-- =================================
+            <!-- =================================================
                  HEADER
-            ================================== -->
+            ================================================== -->
 
             <header class="topbar">
 
@@ -330,15 +349,17 @@
             </header>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  INÍCIO
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="inicio"
                 class="content-section active"
             >
 
+
+                <!-- BOAS-VINDAS -->
 
                 <div class="welcome-card">
 
@@ -375,6 +396,8 @@
                 </div>
 
 
+                <!-- ACESSO RÁPIDO -->
+
                 <div class="section-title">
 
                     <h2>
@@ -391,29 +414,41 @@
                 <div class="cards-grid">
 
 
-                    <!-- JOGOS -->
+                    <!-- JOGOS DE INGLÊS -->
 
                     <article
-                        class="access-card"
+                        class="game-card educational-game"
                         data-section-link="jogos"
                     >
 
-                        <div class="card-icon">
-                            🎮
+                        <div class="game-cover">
+                            🇺🇸
                         </div>
 
-                        <h3>
-                            Jogos
-                        </h3>
+                        <div class="game-card-content">
 
-                        <p>
-                            Diversos jogos para
-                            diversão e aprendizado.
-                        </p>
+                            <span class="game-tag">
+                                INGLÊS
+                            </span>
 
-                        <span class="card-link">
-                            Explorar →
-                        </span>
+                            <h3>
+                                Jogos de Inglês
+                            </h3>
+
+                            <p>
+                                Aprenda inglês através
+                                de desafios interativos.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                data-section-link="jogos"
+                            >
+                                VER JOGOS →
+                            </button>
+
+                        </div>
 
                     </article>
 
@@ -621,16 +656,14 @@
 
                     </div>
 
-
                 </div>
-
 
             </section>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  JOGOS
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="jogos"
@@ -638,8 +671,9 @@
             >
 
 
-                <div id="gamesCategories">
+                <!-- CATEGORIAS -->
 
+                <div id="gamesCategories">
 
                     <div class="section-title">
 
@@ -661,6 +695,8 @@
 
                     <div class="category-grid">
 
+
+                        <!-- PASSATEMPO -->
 
                         <div
                             class="category-card game-category-card"
@@ -687,6 +723,8 @@
                         </div>
 
 
+                        <!-- EDUCATIVOS -->
+
                         <div
                             class="category-card game-category-card"
                             onclick="openGameCategory('educativos')"
@@ -711,13 +749,14 @@
 
                         </div>
 
-
                     </div>
 
                 </div>
 
 
-                <!-- PASSATEMPO -->
+                <!-- =================================================
+                     PASSATEMPO
+                ================================================== -->
 
                 <div
                     id="passatempoArea"
@@ -752,6 +791,7 @@
 
 
                     <div class="games-grid">
+
 
                         <article class="game-card">
 
@@ -825,7 +865,9 @@
                 </div>
 
 
-                <!-- EDUCATIVOS -->
+                <!-- =================================================
+                     EDUCATIVOS
+                ================================================== -->
 
                 <div
                     id="educativosArea"
@@ -859,7 +901,10 @@
                     </div>
 
 
+                    <!-- FILTROS -->
+
                     <div class="game-filters">
+
 
                         <button
                             type="button"
@@ -869,6 +914,7 @@
                             TODOS
                         </button>
 
+
                         <button
                             type="button"
                             class="game-filter"
@@ -876,6 +922,7 @@
                         >
                             🇺🇸 INGLÊS
                         </button>
+
 
                         <button
                             type="button"
@@ -885,6 +932,7 @@
                             📖 PORTUGUÊS
                         </button>
 
+
                         <button
                             type="button"
                             class="game-filter"
@@ -893,6 +941,7 @@
                             🔢 MATEMÁTICA
                         </button>
 
+
                         <button
                             type="button"
                             class="game-filter"
@@ -900,6 +949,7 @@
                         >
                             🏛️ HISTÓRIA
                         </button>
+
 
                         <button
                             type="button"
@@ -912,8 +962,12 @@
                     </div>
 
 
+                    <!-- JOGOS -->
+
                     <div class="games-grid">
 
+
+                        <!-- INGLÊS -->
 
                         <article
                             class="game-card educational-game"
@@ -942,15 +996,17 @@
                                 <button
                                     type="button"
                                     class="primary-small"
-                                    disabled
+                                    data-section-link="ingles"
                                 >
-                                    EM BREVE
+                                    ACESSAR →
                                 </button>
 
                             </div>
 
                         </article>
 
+
+                        <!-- PORTUGUÊS -->
 
                         <article
                             class="game-card educational-game"
@@ -989,6 +1045,8 @@
                         </article>
 
 
+                        <!-- MATEMÁTICA -->
+
                         <article
                             class="game-card educational-game"
                             data-subject="matematica"
@@ -1025,6 +1083,8 @@
 
                         </article>
 
+
+                        <!-- HISTÓRIA -->
 
                         <article
                             class="game-card educational-game"
@@ -1063,6 +1123,8 @@
                         </article>
 
 
+                        <!-- GEOGRAFIA -->
+
                         <article
                             class="game-card educational-game"
                             data-subject="geografia"
@@ -1099,7 +1161,6 @@
 
                         </article>
 
-
                     </div>
 
                 </div>
@@ -1107,9 +1168,9 @@
             </section>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  INGLÊS
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="ingles"
@@ -1159,7 +1220,10 @@
                     </div>
 
 
-                    <div class="category-card">
+                    <div
+                        class="category-card"
+                        data-section-link="jogos"
+                    >
 
                         <span class="category-big-icon">
                             🎮
@@ -1174,30 +1238,25 @@
                             divertida através dos jogos.
                         </p>
 
-                        <span
-                            class="card-link"
-                            data-section-link="jogos"
-                        >
+                        <span class="card-link">
                             Acessar jogos →
                         </span>
 
                     </div>
-
 
                 </div>
 
             </section>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  CURSOS
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="cursos"
                 class="content-section"
             >
-
 
                 <button
                     type="button"
@@ -1226,10 +1285,6 @@
                 </div>
 
 
-                <!-- =================================
-                     CURSOS GRATUITOS
-                ================================== -->
-
                 <div class="section-title">
 
                     <h2>
@@ -1247,10 +1302,7 @@
                 <div class="course-grid">
 
 
-                    <!-- CURSO DE INGLÊS -->
-
                     <article class="course-card">
-
 
                         <div class="course-icon">
                             🇺🇸
@@ -1302,7 +1354,7 @@
 
                                 <div
                                     class="progress-bar"
-                                    style="width: 0%"
+                                    style="width:0%"
                                 ></div>
 
                             </div>
@@ -1318,24 +1370,17 @@
                         <button
                             type="button"
                             class="primary-small"
-                            onclick="openCourse('ingles-gratis')"
+                            onclick="openCourses()"
                         >
                             COMEÇAR
                         </button>
 
-
                     </article>
-
 
                 </div>
 
 
-                <!-- =================================
-                     INFORMAÇÕES DO PROJETO
-                ================================== -->
-
                 <div class="course-intro-card">
-
 
                     <div class="course-intro-icon">
                         🎯
@@ -1365,16 +1410,14 @@
 
                     </div>
 
-
                 </div>
-
 
             </section>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  MÚSICA
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="musica"
@@ -1399,7 +1442,7 @@
 
                     <div class="category-card">
 
-                        <span>
+                        <span class="category-big-icon">
                             🧒
                         </span>
 
@@ -1416,7 +1459,7 @@
 
                     <div class="category-card">
 
-                        <span>
+                        <span class="category-big-icon">
                             🎸
                         </span>
 
@@ -1430,15 +1473,14 @@
 
                     </div>
 
-
                 </div>
 
             </section>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  INCLUSIVOS
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="inclusivos"
@@ -1463,7 +1505,7 @@
 
                     <div class="category-card">
 
-                        <span>
+                        <span class="category-big-icon">
                             🧩
                         </span>
 
@@ -1480,7 +1522,7 @@
 
                     <div class="category-card">
 
-                        <span>
+                        <span class="category-big-icon">
                             🧠
                         </span>
 
@@ -1495,15 +1537,14 @@
 
                     </div>
 
-
                 </div>
 
             </section>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  FEEDBACK
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="feedback"
@@ -1564,97 +1605,398 @@
             </section>
 
 
-            <!-- =====================================
+            <!-- =====================================================
                  PERFIL
-            ====================================== -->
+            ====================================================== -->
 
             <section
                 id="perfil"
                 class="content-section"
             >
 
+
+                <!-- VOLTAR -->
+
+                <button
+                    type="button"
+                    class="back-button"
+                    onclick="showSection('inicio')"
+                >
+                    ← VOLTAR
+                </button>
+
+
+                <!-- CABEÇALHO -->
+
                 <div class="section-title">
+
+                    <span class="welcome-label">
+                        CONTA
+                    </span>
 
                     <h2>
                         👤 Meu Perfil
                     </h2>
 
                     <p>
-                        Informações da sua conta.
+                        Gerencie suas informações pessoais
+                        e configurações da sua conta.
                     </p>
 
                 </div>
 
 
-                <div class="profile-card">
+                <!-- =================================================
+                     PERFIL PRINCIPAL
+                ================================================== -->
+
+                <div class="profile-edit-card">
 
 
-                    <div
-                        class="profile-avatar"
-                        id="profileAvatar"
+                    <!-- FOTO -->
+
+                    <div class="profile-photo-area">
+
+                        <div
+                            class="profile-avatar large"
+                            id="profileAvatar"
+                        >
+                            AS
+                        </div>
+
+
+                        <input
+                            type="file"
+                            id="profilePhotoInput"
+                            accept="image/jpeg,image/png,image/webp"
+                            hidden
+                        >
+
+
+                        <button
+                            type="button"
+                            class="secondary-small"
+                            id="changeProfilePhoto"
+                        >
+                            📷 ALTERAR FOTO
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="text-button"
+                            id="removeProfilePhoto"
+                        >
+                            Remover foto
+                        </button>
+
+
+                        <p class="profile-photo-info">
+                            JPG, PNG ou WEBP.
+                            Tamanho recomendado: 500 × 500 px.
+                        </p>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FORMULÁRIO
+                    ================================================== -->
+
+                    <form
+                        class="profile-edit-form"
+                        id="profileEditForm"
                     >
-                        AS
-                    </div>
 
 
-                    <div class="profile-data">
+                        <!-- NOME -->
 
+                        <div class="input-group">
 
-                        <div>
-
-                            <span>
+                            <label for="editProfileName">
                                 Nome completo
-                            </span>
+                            </label>
 
-                            <strong id="profileName">
-                                —
-                            </strong>
+                            <input
+                                type="text"
+                                id="editProfileName"
+                                placeholder="Digite seu nome completo"
+                                autocomplete="name"
+                            >
 
                         </div>
 
 
-                        <div>
+                        <!-- NICK -->
 
-                            <span>
+                        <div class="input-group">
+
+                            <label for="editProfileNick">
+                                Nick / nome de usuário
+                            </label>
+
+                            <div class="input-with-prefix">
+
+                                <span>
+                                    @
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="editProfileNick"
+                                    placeholder="seu.nick"
+                                    autocomplete="username"
+                                    maxlength="30"
+                                >
+
+                            </div>
+
+                            <small>
+                                Seu nick poderá ser usado para
+                                identificar você dentro do Aldemar Studios.
+                            </small>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="input-group">
+
+                            <label for="editProfileEmail">
                                 E-mail
-                            </span>
+                            </label>
 
-                            <strong id="profileEmail">
-                                —
-                            </strong>
+                            <input
+                                type="email"
+                                id="editProfileEmail"
+                                placeholder="Digite seu e-mail"
+                                autocomplete="email"
+                            >
 
                         </div>
 
+
+                        <!-- PLANO -->
+
+                        <div class="input-group">
+
+                            <label>
+                                Plano atual
+                            </label>
+
+                            <div class="profile-plan-display">
+
+                                <span>
+                                    🆓
+                                </span>
+
+                                <strong id="profilePlan">
+                                    GRATUITO
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BOTÕES -->
+
+                        <div class="profile-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-button"
+                                id="cancelProfileEdit"
+                            >
+                                CANCELAR
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button"
+                            >
+                                💾 SALVAR ALTERAÇÕES
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =================================================
+                     SEGURANÇA
+                ================================================== -->
+
+                <div class="profile-security-card">
+
+
+                    <div class="security-header">
+
+                        <div class="security-icon">
+                            🔒
+                        </div>
 
                         <div>
 
-                            <span>
-                                Plano atual
+                            <span class="welcome-label">
+                                SEGURANÇA
                             </span>
 
-                            <strong id="profilePlan">
-                                GRATUITO
-                            </strong>
+                            <h3>
+                                Alterar senha
+                            </h3>
+
+                            <p>
+                                Mantenha sua conta protegida
+                                utilizando uma senha forte.
+                            </p>
 
                         </div>
-
 
                     </div>
 
+
+                    <form
+                        class="password-form"
+                        id="changePasswordForm"
+                    >
+
+
+                        <!-- SENHA ATUAL -->
+
+                        <div class="input-group">
+
+                            <label for="currentPassword">
+                                Senha atual
+                            </label>
+
+                            <input
+                                type="password"
+                                id="currentPassword"
+                                placeholder="Digite sua senha atual"
+                                autocomplete="current-password"
+                            >
+
+                        </div>
+
+
+                        <!-- NOVA SENHA -->
+
+                        <div class="input-group">
+
+                            <label for="newPassword">
+                                Nova senha
+                            </label>
+
+                            <input
+                                type="password"
+                                id="newPassword"
+                                placeholder="Digite sua nova senha"
+                                autocomplete="new-password"
+                                minlength="8"
+                            >
+
+                        </div>
+
+
+                        <!-- CONFIRMAR -->
+
+                        <div class="input-group">
+
+                            <label for="confirmPassword">
+                                Confirmar nova senha
+                            </label>
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Digite novamente sua nova senha"
+                                autocomplete="new-password"
+                                minlength="8"
+                            >
+
+                        </div>
+
+
+                        <div class="password-info">
+                            A nova senha deve possuir pelo menos
+                            8 caracteres.
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="primary-small"
+                        >
+                            🔐 ALTERAR SENHA
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =================================================
+                     INFORMAÇÕES DA CONTA
+                ================================================== -->
+
+                <div class="account-info-card">
+
+
+                    <div>
+
+                        <span>
+                            Status da conta
+                        </span>
+
+                        <strong>
+                            🟢 ATIVA
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Plano
+                        </span>
+
+                        <strong id="profilePlanBottom">
+                            GRATUITO
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Recursos
+                        </span>
+
+                        <strong>
+                            Acesso gratuito
+                        </strong>
+
+                    </div>
 
                 </div>
 
             </section>
-
 
         </main>
 
     </div>
 
 
-    <!-- =========================================
+    <!-- =========================================================
          JAVASCRIPT
-    ========================================== -->
+    ========================================================== -->
 
     <script src="js/dashboard.js"></script>
 
