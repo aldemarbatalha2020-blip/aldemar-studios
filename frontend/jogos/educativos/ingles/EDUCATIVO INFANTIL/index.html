@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animal World - English Game</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Comic Sans MS", "Trebuchet MS", sans-serif;
+    background: linear-gradient(135deg, #8ee7ff, #b8f7d4);
+    min-height: 100vh;
+    color: #243447;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* =========================
+   TELA INICIAL
+========================= */
+
+.screen {
+    display: none;
+    min-height: 100vh;
+}
+
+.screen.active {
+    display: flex;
+}
+
+#startScreen {
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+.start-card {
+    width: min(900px, 95%);
+    background: white;
+    border-radius: 35px;
+    padding: 45px 30px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,.18);
+    border: 6px solid #fff;
+}
+
+.logo {
+    font-size: clamp(42px, 8vw, 76px);
+    font-weight: 900;
+    color: #ff7a00;
+    text-shadow: 4px 4px 0 #ffd447;
+    margin-bottom: 10px;
+}
+
+.start-card h2 {
+    color: #20a878;
+    font-size: 28px;
+    margin-bottom: 18px;
+}
+
+.start-card p {
+    font-size: 20px;
+    line-height: 1.5;
+    margin: 0 auto 25px;
+    max-width: 650px;
+}
+
+.animal-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 48px;
+    margin: 20px 0 30px;
+}
+
+.main-btn {
+    border: none;
+    background: #ff7a00;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 23px;
+    font-weight: bold;
+    box-shadow: 0 7px 0 #c95b00;
+    transition: .15s;
+}
+
+.main-btn:hover {
+    transform: translateY(-3px);
+}
+
+.main-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 3px 0 #c95b00;
+}
+
+/* =========================
+   JOGO
+========================= */
+
+#gameScreen {
+    flex-direction: column;
+    padding: 18px;
+}
+
+.topbar {
+    width: min(1150px, 100%);
+    margin: auto;
+    background: white;
+    border-radius: 25px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    box-shadow: 0 7px 20px rgba(0,0,0,.12);
+}
+
+.top-title {
+    font-size: 25px;
+    font-weight: bold;
+    color: #ff7a00;
+}
+
+.progress-box {
+    flex: 1;
+    max-width: 450px;
+}
+
+.progress-text {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.progress {
+    width: 100%;
+    height: 17px;
+    background: #e8e8e8;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #20c997;
+    transition: .4s;
+}
+
+.score {
+    background: #ffd447;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* =========================
+   SEÇÕES
+========================= */
+
+.game-section {
+    display: none;
+    width: min(1150px, 100%);
+    margin: 20px auto;
+}
+
+.game-section.active {
+    display: block;
+}
+
+.section-title {
+    text-align: center;
+    color: #fff;
+    font-size: clamp(30px, 5vw, 45px);
+    text-shadow: 3px 3px 0 #188f69;
+    margin: 10px 0 20px;
+}
+
+.instruction {
+    background: white;
+    border-radius: 20px;
+    padding: 14px;
+    text-align: center;
+    font-size: 19px;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   ANIMAIS
+========================= */
+
+.animals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+}
+
+.animal-card {
+    background: white;
+    border-radius: 25px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    border: 4px solid transparent;
+    transition: .2s;
+}
+
+.animal-card:hover {
+    transform: translateY(-6px) rotate(1deg);
+    border-color: #ffd447;
+}
+
+.animal-image {
+    width: 100%;
+    height: 145px;
+    object-fit: cover;
+    border-radius: 18px;
+    background: #eef9ff;
+}
+
+.animal-name {
+    font-size: 27px;
+    font-weight: bold;
+    color: #168a68;
+    margin-top: 10px;
+}
+
+.animal-translation {
+    color: #777;
+    font-size: 16px;
+    margin-top: 3px;
+}
+
+.sound-btn {
+    margin-top: 10px;
+    border: none;
+    background: #6c63ff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* =========================
+   BOTÃO CONTINUAR
+========================= */
+
+.next-area {
+    text-align: center;
+    margin: 25px 0;
+}
+
+/* =========================
+   PERGUNTAS
+========================= */
+
+.question-card {
+    background: white;
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    max-width: 850px;
+    margin: auto;
+    text-align: center;
+}
+
+.question-number {
+    color: #ff7a00;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.question {
+    font-size: clamp(25px, 5vw, 38px);
+    font-weight: bold;
+    margin: 15px 0 25px;
+}
+
+.question-animal {
+    font-size: 100px;
+    margin: 5px 0 15px;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.option {
+    border: 4px solid #dce8ef;
+    background: #f7fbfd;
+    border-radius: 20px;
+    padding: 17px 10px;
+    font-size: 21px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.option:hover {
+    background: #fff3c4;
+    border-color: #ffd447;
+    transform: scale(1.03);
+}
+
+.option.correct {
+    background: #a8f5c7;
+    border-color: #1eaf65;
+}
+
+.option.wrong {
+    background: #ffc1c1;
+    border-color: #e54848;
+}
+
+.feedback {
+    min-height: 45px;
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.feedback.correct {
+    color: #159447;
+}
+
+.feedback.wrong {
+    color: #d63232;
+}
+
+/* =========================
+   RESULTADO
+========================= */
+
+.result-card {
+    background: white;
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 45px 25px;
+    border-radius: 35px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,.18);
+}
+
+.trophy {
+    font-size: 100px;
+}
+
+.result-card h1 {
+    color: #ff7a00;
+    font-size: 40px;
+    margin: 10px 0;
+}
+
+.final-score {
+    font-size: 30px;
+    color: #168a68;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.stars {
+    font-size: 45px;
+    margin: 15px;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width: 650px) {
+
+    .topbar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .progress-box {
+        order: 3;
+        flex-basis: 100%;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+    }
+
+    .animal-image {
+        height: 160px;
+    }
+
+    .start-card {
+        padding: 30px 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     TELA INICIAL
+========================= -->
+
+<section id="startScreen" class="screen active">
+
+    <div class="start-card">
+
+        <div class="logo">🐾 ANIMAL WORLD 🐾</div>
+
+        <h2>Let's Learn English!</h2>
+
+        <p>
+            Welcome, little explorers! 🌎
+            <br>
+            Let's learn the names of animals in English!
+        </p>
+
+        <div class="animal-row">
+            🐶 🐱 🦁 🐘 🐵 🐰 🐸 🐦 🐟 🐢
+        </div>
+
+        <p>
+            👩‍🏫 Work together with your friends,
+            learn the animals and answer the questions!
+        </p>
+
+        <button class="main-btn" onclick="startGame()">
+            🚀 START GAME
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     TELA DO JOGO
+========================= -->
+
+<section id="gameScreen" class="screen">
+
+    <div class="topbar">
+
+        <div class="top-title">
+            🐾 Animal World
+        </div>
+
+        <div class="progress-box">
+
+            <div class="progress-text" id="progressText">
+                Let's learn!
+            </div>
+
+            <div class="progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+        </div>
+
+        <div class="score">
+            ⭐ <span id="score">0</span>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FASE 1
+    ========================= -->
+
+    <div id="learnSection" class="game-section active">
+
+        <h1 class="section-title">
+            🐾 Meet the Animals!
+        </h1>
+
+        <div class="instruction">
+            👀 Look at the pictures and learn the names in English!
+            <br>
+            🔊 Click on <b>Listen</b> to hear the word.
+        </div>
+
+        <div class="animals-grid" id="animalsGrid"></div>
+
+        <div class="next-area">
+
+            <button class="main-btn" onclick="startQuiz()">
+                🎯 LET'S PLAY!
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FASE 2
+    ========================= -->
+
+    <div id="quizSection" class="game-section">
+
+        <h1 class="section-title">
+            🎯 Animal Challenge!
+        </h1>
+
+        <div class="instruction">
+            🤝 Answer together with your friends!
+            <br>
+            Choose the correct answer.
+        </div>
+
+        <div class="question-card">
+
+            <div class="question-number" id="questionNumber">
+                Question 1
+            </div>
+
+            <div class="question-animal" id="questionAnimal">
+                🐶
+            </div>
+
+            <div class="question" id="questionText">
+                What animal is this?
+            </div>
+
+            <div class="options" id="options"></div>
+
+            <div id="feedback" class="feedback"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RESULTADO
+    ========================= -->
+
+    <div id="resultSection" class="game-section">
+
+        <div class="result-card">
+
+            <div class="trophy">🏆</div>
+
+            <h1>AMAZING!</h1>
+
+            <p>
+                You completed the Animal World challenge!
+            </p>
+
+            <div class="stars" id="stars">
+                ⭐⭐⭐
+            </div>
+
+            <div class="final-score" id="finalScore">
+                Score: 0 / 10
+            </div>
+
+            <p id="resultMessage"></p>
+
+            <br>
+
+            <button class="main-btn" onclick="restartGame()">
+                🔄 PLAY AGAIN
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+/* ==========================================
+   BANCO DE ANIMAIS
+========================================== */
+
+const animals = [
+
+    {
+        name: "DOG",
+        pt: "Cachorro",
+        emoji: "🐶",
+        image: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "CAT",
+        pt: "Gato",
+        emoji: "🐱",
+        image: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "LION",
+        pt: "Leão",
+        emoji: "🦁",
+        image: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "ELEPHANT",
+        pt: "Elefante",
+        emoji: "🐘",
+        image: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "MONKEY",
+        pt: "Macaco",
+        emoji: "🐵",
+        image: "https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "RABBIT",
+        pt: "Coelho",
+        emoji: "🐰",
+        image: "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "FROG",
+        pt: "Sapo",
+        emoji: "🐸",
+        image: "https://images.unsplash.com/photo-1536162474720-19a7e5d2b7b4?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "BIRD",
+        pt: "Pássaro",
+        emoji: "🐦",
+        image: "https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "FISH",
+        pt: "Peixe",
+        emoji: "🐟",
+        image: "https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=500&q=80"
+    },
+
+    {
+        name: "TURTLE",
+        pt: "Tartaruga",
+        emoji: "🐢",
+        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80"
+    }
+
+];
+
+
+/* ==========================================
+   VARIÁVEIS
+========================================== */
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const totalQuestions = 10;
+
+
+/* ==========================================
+   INICIAR JOGO
+========================================== */
+
+function startGame() {
+
+    document.getElementById("startScreen").classList.remove("active");
+
+    document.getElementById("gameScreen").classList.add("active");
+
+    createAnimalCards();
+
+    updateProgress();
+
+}
+
+
+/* ==========================================
+   CRIAR CARTÕES DOS ANIMAIS
+========================================== */
+
+function createAnimalCards() {
+
+    const grid = document.getElementById("animalsGrid");
+
+    grid.innerHTML = "";
+
+    animals.forEach(animal => {
+
+        const card = document.createElement("div");
+
+        card.className = "animal-card";
+
+        card.innerHTML = `
+
+            <img
+                class="animal-image"
+                src="${animal.image}"
+                alt="${animal.name}"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+            >
+
+            <div style="
+                display:none;
+                font-size:85px;
+                padding:20px;
+            ">
+                ${animal.emoji}
+            </div>
+
+            <div class="animal-name">
+                ${animal.name}
+            </div>
+
+            <div class="animal-translation">
+                ${animal.pt}
+            </div>
+
+            <button
+                class="sound-btn"
+                onclick="speakWord('${animal.name}')"
+            >
+                🔊 Listen
+            </button>
+
+        `;
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+/* ==========================================
+   PRONÚNCIA
+========================================== */
+
+function speakWord(word) {
+
+    if ("speechSynthesis" in window) {
+
+        const speech = new SpeechSynthesisUtterance(word);
+
+        speech.lang = "en-US";
+
+        speech.rate = 0.75;
+
+        window.speechSynthesis.cancel();
+
+        window.speechSynthesis.speak(speech);
+
+    }
+
+}
+
+
+/* ==========================================
+   COMEÇAR QUIZ
+========================================== */
+
+function startQuiz() {
+
+    document.getElementById("learnSection").classList.remove("active");
+
+    document.getElementById("quizSection").classList.add("active");
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    updateScore();
+
+    showQuestion();
+
+}
+
+
+/* ==========================================
+   QUESTÕES
+========================================== */
+
+const questions = [
+
+    {
+        animal: "🐶",
+        text: "What animal is this?",
+        correct: "DOG",
+        options: ["DOG", "CAT", "FISH"]
+    },
+
+    {
+        animal: "🐱",
+        text: "What animal is this?",
+        correct: "CAT",
+        options: ["BIRD", "CAT", "LION"]
+    },
+
+    {
+        animal: "🦁",
+        text: "What animal is this?",
+        correct: "LION",
+        options: ["LION", "RABBIT", "FROG"]
+    },
+
+    {
+        animal: "🐘",
+        text: "What animal is this?",
+        correct: "ELEPHANT",
+        options: ["MONKEY", "ELEPHANT", "TURTLE"]
+    },
+
+    {
+        animal: "🐵",
+        text: "What animal is this?",
+        correct: "MONKEY",
+        options: ["MONKEY", "FISH", "CAT"]
+    },
+
+    {
+        animal: "🐰",
+        text: "What animal is this?",
+        correct: "RABBIT",
+        options: ["RABBIT", "BIRD", "DOG"]
+    },
+
+    {
+        animal: "🐸",
+        text: "What animal is this?",
+        correct: "FROG",
+        options: ["TURTLE", "FROG", "LION"]
+    },
+
+    {
+        animal: "🐦",
+        text: "Which animal can fly?",
+        correct: "BIRD",
+        options: ["BIRD", "ELEPHANT", "FISH"]
+    },
+
+    {
+        animal: "🐟",
+        text: "Which animal lives in water?",
+        correct: "FISH",
+        options: ["DOG", "FISH", "MONKEY"]
+    },
+
+    {
+        animal: "🐢",
+        text: "What animal is this?",
+        correct: "TURTLE",
+        options: ["TURTLE", "RABBIT", "CAT"]
+    }
+
+];
+
+
+/* ==========================================
+   MOSTRAR QUESTÃO
+========================================== */
+
+function showQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        `Question ${currentQuestion + 1} of ${totalQuestions}`;
+
+    document.getElementById("questionAnimal").textContent =
+        q.animal;
+
+    document.getElementById("questionText").textContent =
+        q.text;
+
+    document.getElementById("feedback").textContent = "";
+
+    document.getElementById("feedback").className =
+        "feedback";
+
+    const optionsContainer =
+        document.getElementById("options");
+
+    optionsContainer.innerHTML = "";
+
+    q.options.forEach(option => {
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent = option;
+
+        button.onclick = () => checkAnswer(button, option);
+
+        optionsContainer.appendChild(button);
+
+    });
+
+    updateProgress();
+
+}
+
+
+/* ==========================================
+   VERIFICAR RESPOSTA
+========================================== */
+
+function checkAnswer(button, answer) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const correctAnswer =
+        questions[currentQuestion].correct;
+
+    const feedback =
+        document.getElementById("feedback");
+
+    if (answer === correctAnswer) {
+
+        button.classList.add("correct");
+
+        score++;
+
+        feedback.textContent =
+            "🎉 Excellent! Correct answer!";
+
+        feedback.className =
+            "feedback correct";
+
+        speakWord(correctAnswer);
+
+    } else {
+
+        button.classList.add("wrong");
+
+        feedback.textContent =
+            `❌ Not quite! The answer is ${correctAnswer}.`;
+
+        feedback.className =
+            "feedback wrong";
+
+        document.querySelectorAll(".option").forEach(btn => {
+
+            if (btn.textContent === correctAnswer) {
+
+                btn.classList.add("correct");
+
+            }
+
+        });
+
+    }
+
+    updateScore();
+
+    setTimeout(() => {
+
+        currentQuestion++;
+
+        if (currentQuestion >= totalQuestions) {
+
+            finishGame();
+
+        } else {
+
+            showQuestion();
+
+        }
+
+    }, 1300);
+
+}
+
+
+/* ==========================================
+   PONTUAÇÃO
+========================================== */
+
+function updateScore() {
+
+    document.getElementById("score").textContent =
+        score;
+
+}
+
+
+/* ==========================================
+   PROGRESSO
+========================================== */
+
+function updateProgress() {
+
+    const progress =
+        (currentQuestion / totalQuestions) * 100;
+
+    document.getElementById("progressFill").style.width =
+        progress + "%";
+
+    if (currentQuestion === 0) {
+
+        document.getElementById("progressText").textContent =
+            "🐾 Learn the animals!";
+
+    } else {
+
+        document.getElementById("progressText").textContent =
+            `Question ${currentQuestion} / ${totalQuestions}`;
+
+    }
+
+}
+
+
+/* ==========================================
+   FINAL DO JOGO
+========================================== */
+
+function finishGame() {
+
+    document.getElementById("quizSection")
+        .classList.remove("active");
+
+    document.getElementById("resultSection")
+        .classList.add("active");
+
+    document.getElementById("progressFill")
+        .style.width = "100%";
+
+    document.getElementById("progressText")
+        .textContent = "🏆 Complete!";
+
+    document.getElementById("finalScore").textContent =
+        `Score: ${score} / ${totalQuestions}`;
+
+    let stars = "";
+    let message = "";
+
+    if (score === 10) {
+
+        stars = "⭐⭐⭐⭐⭐";
+
+        message =
+            "Amazing! You are an Animal Master! 🦁🏆";
+
+    } else if (score >= 8) {
+
+        stars = "⭐⭐⭐⭐";
+
+        message =
+            "Great job! You know many animals! 🐘🎉";
+
+    } else if (score >= 6) {
+
+        stars = "⭐⭐⭐";
+
+        message =
+            "Good work! Keep practicing! 🐶📚";
+
+    } else if (score >= 4) {
+
+        stars = "⭐⭐";
+
+        message =
+            "Nice try! Let's practice more! 🐱💪";
+
+    } else {
+
+        stars = "⭐";
+
+        message =
+            "Don't give up! Let's learn together! 🐢❤️";
+
+    }
+
+    document.getElementById("stars").textContent =
+        stars;
+
+    document.getElementById("resultMessage").textContent =
+        message;
+
+}
+
+
+/* ==========================================
+   REINICIAR
+========================================== */
+
+function restartGame() {
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    document.getElementById("resultSection")
+        .classList.remove("active");
+
+    document.getElementById("quizSection")
+        .classList.remove("active");
+
+    document.getElementById("learnSection")
+        .classList.add("active");
+
+    updateScore();
+
+    updateProgress();
+
+}
+
+</script>
+
+</body>
+</html>

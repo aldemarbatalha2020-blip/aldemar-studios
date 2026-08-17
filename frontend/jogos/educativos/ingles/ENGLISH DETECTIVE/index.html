@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Detective</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07111d;
+    color:white;
+    min-height:100vh;
+    overflow:hidden;
+}
+
+button{
+    font-family:inherit;
+}
+
+/* =========================
+   FUNDO
+========================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(40,120,180,.16),transparent 30%),
+        radial-gradient(circle at 80% 70%,rgba(100,40,160,.13),transparent 35%);
+    pointer-events:none;
+}
+
+/* =========================
+   HUD
+========================= */
+
+#hud{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:20;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 18px;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(8px);
+}
+
+.hud-left,
+.hud-right{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.badge{
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:10px;
+    padding:8px 12px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* =========================
+   JOGO
+========================= */
+
+#game{
+    position:absolute;
+    inset:0;
+    padding-top:70px;
+}
+
+.scene{
+    position:absolute;
+    inset:70px 0 0 0;
+    display:none;
+}
+
+.scene.active{
+    display:block;
+}
+
+/* =========================
+   CIDADE
+========================= */
+
+.city{
+    width:100%;
+    height:100%;
+    position:relative;
+    background:
+        linear-gradient(
+            to bottom,
+            #142b42 0%,
+            #091725 65%,
+            #050b12 100%
+        );
+}
+
+.moon{
+    position:absolute;
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#eef4f7;
+    right:10%;
+    top:8%;
+    box-shadow:0 0 35px rgba(255,255,255,.3);
+}
+
+.building{
+    position:absolute;
+    bottom:0;
+    background:#101c29;
+    border:1px solid #1d3448;
+}
+
+.building:nth-child(2){
+    left:3%;
+    width:18%;
+    height:55%;
+}
+
+.building:nth-child(3){
+    left:22%;
+    width:15%;
+    height:70%;
+}
+
+.building:nth-child(4){
+    left:39%;
+    width:20%;
+    height:48%;
+}
+
+.building:nth-child(5){
+    right:19%;
+    width:17%;
+    height:65%;
+}
+
+.building:nth-child(6){
+    right:1%;
+    width:16%;
+    height:52%;
+}
+
+.window{
+    position:absolute;
+    width:10px;
+    height:14px;
+    background:#d9b84a;
+    box-shadow:0 0 8px rgba(255,215,80,.3);
+}
+
+.street{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    height:22%;
+    background:#111820;
+    border-top:3px solid #293844;
+}
+
+.road-line{
+    position:absolute;
+    bottom:9%;
+    left:0;
+    width:100%;
+    height:5px;
+    background:repeating-linear-gradient(
+        to right,
+        #d9d9d9 0 70px,
+        transparent 70px 130px
+    );
+}
+
+/* =========================
+   TELA INICIAL
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:50;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:
+        radial-gradient(circle,#173a58,#03070c 75%);
+}
+
+.panel{
+    width:min(700px,94%);
+    padding:38px;
+    text-align:center;
+    border-radius:24px;
+    background:rgba(5,13,23,.96);
+    border:1px solid rgba(75,170,240,.35);
+    box-shadow:0 25px 80px rgba(0,0,0,.6);
+}
+
+.detective-icon{
+    font-size:70px;
+    margin-bottom:10px;
+}
+
+.panel h1{
+    font-size:clamp(38px,8vw,68px);
+    margin-bottom:10px;
+}
+
+.panel h2{
+    font-size:34px;
+    margin-bottom:12px;
+}
+
+.panel p{
+    color:#b7c9d8;
+    line-height:1.6;
+    margin:10px 0;
+}
+
+.btn{
+    border:0;
+    padding:15px 30px;
+    margin-top:18px;
+    border-radius:13px;
+    background:linear-gradient(135deg,#168cff,#005ec2);
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    filter:brightness(1.12);
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================
+   MAPA
+========================= */
+
+#mapScreen{
+    position:absolute;
+    inset:0;
+    padding:25px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.map-container{
+    width:min(1000px,95%);
+    height:min(650px,88%);
+    background:rgba(5,14,24,.88);
+    border:1px solid rgba(85,180,255,.25);
+    border-radius:25px;
+    padding:25px;
+    position:relative;
+    overflow:hidden;
+}
+
+.map-title{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.map-title h2{
+    font-size:32px;
+}
+
+.map-title p{
+    color:#9db3c6;
+    margin-top:5px;
+}
+
+.locations{
+    position:relative;
+    height:calc(100% - 90px);
+}
+
+.location{
+    position:absolute;
+    width:170px;
+    padding:15px;
+    border-radius:18px;
+    text-align:center;
+    background:#102538;
+    border:1px solid #24465e;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.location:hover{
+    transform:translateY(-5px);
+    background:#153653;
+}
+
+.location.locked{
+    opacity:.35;
+    cursor:not-allowed;
+}
+
+.location.completed{
+    border-color:#20c77a;
+}
+
+.location-icon{
+    font-size:38px;
+    margin-bottom:7px;
+}
+
+.location h3{
+    font-size:17px;
+}
+
+.location small{
+    color:#9bb0c0;
+}
+
+#loc1{
+    left:4%;
+    top:25%;
+}
+
+#loc2{
+    left:31%;
+    top:5%;
+}
+
+#loc3{
+    left:60%;
+    top:25%;
+}
+
+#loc4{
+    left:23%;
+    top:58%;
+}
+
+#loc5{
+    right:4%;
+    top:62%;
+}
+
+/* =========================
+   INVESTIGAÇÃO
+========================= */
+
+#investigation{
+    position:fixed;
+    inset:0;
+    z-index:30;
+    background:rgba(2,8,14,.97);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.investigation-panel{
+    width:min(850px,95%);
+    max-height:90vh;
+    overflow:auto;
+    background:#091624;
+    border:1px solid rgba(90,180,255,.3);
+    border-radius:25px;
+    padding:28px;
+}
+
+.case-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.case-header h2{
+    font-size:28px;
+}
+
+.clue-count{
+    padding:8px 12px;
+    border-radius:10px;
+    background:#142b40;
+    color:#8ed0ff;
+    font-weight:bold;
+}
+
+.clue{
+    padding:22px;
+    border-radius:18px;
+    background:#101f2d;
+    border:1px solid #203b50;
+    margin-bottom:20px;
+}
+
+.clue-icon{
+    font-size:42px;
+    margin-bottom:8px;
+}
+
+.clue h3{
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.clue p{
+    color:#d3e0e9;
+    line-height:1.7;
+    font-size:17px;
+}
+
+.question{
+    padding:20px;
+    border-radius:18px;
+    background:#0d1d2c;
+    border:1px solid #23445c;
+}
+
+.question h3{
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.answer{
+    padding:14px;
+    border:1px solid #28465c;
+    background:#132b40;
+    color:white;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.answer:hover{
+    background:#1a3b57;
+}
+
+.answer.correct{
+    background:#137848;
+    border-color:#22c77a;
+}
+
+.answer.wrong{
+    background:#8d3030;
+    border-color:#e35b5b;
+}
+
+.feedback{
+    margin-top:15px;
+    min-height:25px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* =========================
+   FINAL
+========================= */
+
+#finalChallenge{
+    position:fixed;
+    inset:0;
+    z-index:40;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:
+        radial-gradient(circle,#321f50,#060810 75%);
+}
+
+.final-card{
+    width:min(800px,95%);
+    padding:35px;
+    border-radius:25px;
+    background:rgba(8,10,20,.97);
+    border:1px solid rgba(180,110,255,.4);
+    text-align:center;
+}
+
+.final-icon{
+    font-size:65px;
+}
+
+.final-card h2{
+    font-size:35px;
+    margin:10px 0;
+}
+
+.final-progress{
+    margin:15px 0;
+    color:#d0a5ff;
+    font-weight:bold;
+}
+
+.final-question{
+    font-size:21px;
+    line-height:1.5;
+    margin:20px 0;
+}
+
+.final-answers{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.final-answer{
+    padding:15px;
+    border:1px solid #4b3560;
+    border-radius:12px;
+    background:#21152d;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.final-answer:hover{
+    background:#342047;
+}
+
+.final-answer.correct{
+    background:#137848;
+}
+
+.final-answer.wrong{
+    background:#8d3030;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:700px){
+
+    #hud{
+        padding:8px;
+    }
+
+    .badge{
+        font-size:11px;
+        padding:6px 8px;
+    }
+
+    .location{
+        width:125px;
+        padding:10px;
+    }
+
+    .location-icon{
+        font-size:28px;
+    }
+
+    .location h3{
+        font-size:13px;
+    }
+
+    .answers,
+    .final-answers{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        padding:25px 18px;
+    }
+
+    .investigation-panel{
+        padding:18px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HUD
+========================= -->
+
+<div id="hud">
+
+    <div class="hud-left">
+
+        <div class="badge">
+            🕵️ English Detective
+        </div>
+
+        <div class="badge">
+            Fase:
+            <span id="levelDisplay">1</span>/5
+        </div>
+
+        <div class="badge">
+            ⭐
+            <span id="scoreDisplay">0</span>
+        </div>
+
+        <div class="badge">
+            🔎
+            <span id="clueDisplay">0</span>
+        </div>
+
+    </div>
+
+    <div class="hud-right">
+
+        <div class="badge">
+            🏆
+            <span id="bestDisplay">0</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JOGO
+========================= -->
+
+<div id="game">
+
+    <div class="scene active">
+
+        <div class="city">
+
+            <div class="moon"></div>
+
+            <div class="building">
+                <div class="window" style="left:20%;top:20%"></div>
+                <div class="window" style="left:60%;top:35%"></div>
+                <div class="window" style="left:30%;top:55%"></div>
+            </div>
+
+            <div class="building">
+                <div class="window" style="left:20%;top:15%"></div>
+                <div class="window" style="left:60%;top:25%"></div>
+                <div class="window" style="left:40%;top:50%"></div>
+            </div>
+
+            <div class="building">
+                <div class="window" style="left:15%;top:20%"></div>
+                <div class="window" style="left:65%;top:20%"></div>
+            </div>
+
+            <div class="building">
+                <div class="window" style="left:20%;top:20%"></div>
+                <div class="window" style="left:60%;top:30%"></div>
+                <div class="window" style="left:40%;top:55%"></div>
+            </div>
+
+            <div class="building">
+                <div class="window" style="left:20%;top:25%"></div>
+                <div class="window" style="left:60%;top:40%"></div>
+            </div>
+
+            <div class="street"></div>
+            <div class="road-line"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TELA INICIAL
+========================= -->
+
+<div
+    id="startScreen"
+    class="overlay"
+>
+
+    <div class="panel">
+
+        <div class="detective-icon">
+            🕵️‍♂️
+        </div>
+
+        <h1>
+            ENGLISH DETECTIVE
+        </h1>
+
+        <p>
+            Um mistério está acontecendo...
+        </p>
+
+        <p>
+            Encontre as pistas, leia os textos
+            em inglês e descubra a verdade.
+        </p>
+
+        <p>
+            Complete os <strong>5 casos</strong>
+            para se tornar um verdadeiro
+            English Detective.
+        </p>
+
+        <button
+            class="btn"
+            onclick="startGame()"
+        >
+            🔎 COMEÇAR INVESTIGAÇÃO
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAPA
+========================= -->
+
+<div
+    id="mapScreen"
+    class="overlay hidden"
+>
+
+    <div class="map-container">
+
+        <div class="map-title">
+
+            <h2>
+                🗺️ MAPA DA INVESTIGAÇÃO
+            </h2>
+
+            <p>
+                Escolha o local do próximo caso.
+            </p>
+
+        </div>
+
+        <div class="locations">
+
+            <div
+                class="location"
+                id="loc1"
+                onclick="openCase(1)"
+            >
+
+                <div class="location-icon">
+                    🏠
+                </div>
+
+                <h3>
+                    The House
+                </h3>
+
+                <small>
+                    Caso 1
+                </small>
+
+            </div>
+
+
+            <div
+                class="location locked"
+                id="loc2"
+                onclick="openCase(2)"
+            >
+
+                <div class="location-icon">
+                    🏫
+                </div>
+
+                <h3>
+                    The School
+                </h3>
+
+                <small>
+                    Caso 2
+                </small>
+
+            </div>
+
+
+            <div
+                class="location locked"
+                id="loc3"
+                onclick="openCase(3)"
+            >
+
+                <div class="location-icon">
+                    🏪
+                </div>
+
+                <h3>
+                    The Store
+                </h3>
+
+                <small>
+                    Caso 3
+                </small>
+
+            </div>
+
+
+            <div
+                class="location locked"
+                id="loc4"
+                onclick="openCase(4)"
+            >
+
+                <div class="location-icon">
+                    🏥
+                </div>
+
+                <h3>
+                    The Hospital
+                </h3>
+
+                <small>
+                    Caso 4
+                </small>
+
+            </div>
+
+
+            <div
+                class="location locked"
+                id="loc5"
+                onclick="openCase(5)"
+            >
+
+                <div class="location-icon">
+                    🕵️
+                </div>
+
+                <h3>
+                    Final Case
+                </h3>
+
+                <small>
+                    Desafio Final
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     INVESTIGAÇÃO
+========================= -->
+
+<div id="investigation">
+
+    <div class="investigation-panel">
+
+        <div class="case-header">
+
+            <h2 id="caseTitle">
+                Case
+            </h2>
+
+            <div class="clue-count">
+                Pista
+                <span id="caseClueNumber">
+                    1
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="clue">
+
+            <div
+                class="clue-icon"
+                id="clueIcon"
+            >
+                🔎
+            </div>
+
+            <h3 id="clueTitle">
+                Clue
+            </h3>
+
+            <p id="clueText">
+                Text
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <h3 id="questionText">
+                Question
+            </h3>
+
+            <div
+                class="answers"
+                id="answers"
+            >
+
+            </div>
+
+            <div
+                class="feedback"
+                id="feedback"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FINAL
+========================= -->
+
+<div id="finalChallenge">
+
+    <div class="final-card">
+
+        <div class="final-icon">
+            🏆
+        </div>
+
+        <h2>
+            THE FINAL CASE
+        </h2>
+
+        <p>
+            O último mistério.
+        </p>
+
+        <div
+            class="final-progress"
+            id="finalProgress"
+        >
+            Pergunta 1 / 5
+        </div>
+
+        <div
+            class="final-question"
+            id="finalQuestion"
+        >
+        </div>
+
+        <div
+            class="final-answers"
+            id="finalAnswers"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     VITÓRIA
+========================= -->
+
+<div
+    id="victoryScreen"
+    class="overlay hidden"
+>
+
+    <div class="panel">
+
+        <div class="detective-icon">
+            🏆
+        </div>
+
+        <h1>
+            CASO RESOLVIDO!
+        </h1>
+
+        <p>
+            Parabéns, detetive!
+        </p>
+
+        <p>
+            Você resolveu todos os mistérios
+            e completou o desafio final.
+        </p>
+
+        <p>
+            Pontuação:
+            <strong id="victoryScore">
+                0
+            </strong>
+        </p>
+
+        <button
+            class="btn"
+            onclick="restartGame()"
+        >
+            🔄 NOVA INVESTIGAÇÃO
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     GAME OVER
+========================= -->
+
+<div
+    id="gameOver"
+    class="overlay hidden"
+>
+
+    <div class="panel">
+
+        <div class="detective-icon">
+            😔
+        </div>
+
+        <h2>
+            INVESTIGAÇÃO ENCERRADA
+        </h2>
+
+        <p>
+            Você não conseguiu resolver o caso.
+        </p>
+
+        <p>
+            Pontuação:
+            <strong id="gameOverScore">
+                0
+            </strong>
+        </p>
+
+        <button
+            class="btn"
+            onclick="restartGame()"
+        >
+            🔄 TENTAR NOVAMENTE
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   ESTADO DO JOGO
+===================================================== */
+
+let level = 1;
+let score = 0;
+let cluesFound = 0;
+let currentCase = 1;
+let currentClue = 0;
+
+let finalIndex = 0;
+let finalQuestions = [];
+
+let best =
+    Number(
+        localStorage.getItem(
+            "englishDetectiveBest"
+        )
+    ) || 0;
+
+document.getElementById(
+    "bestDisplay"
+).textContent = best;
+
+
+/* =====================================================
+   CASOS
+===================================================== */
+
+const cases = {
+
+    1: {
+
+        title:"CASE 1 — THE MISSING BOOK",
+
+        clues:[
+
+            {
+                icon:"📚",
+                title:"The Bedroom",
+                text:"Tom has a blue book. He likes reading books at night."
+            },
+
+            {
+                icon:"🪑",
+                title:"The Chair",
+                text:"There is a red bag on the chair. Tom does not have the book in his bag."
+            },
+
+            {
+                icon:"🛏️",
+                title:"The Bed",
+                text:"The book is not on the bed. Tom looks under the bed."
+            }
+
+        ],
+
+        questions:[
+
+            {
+                q:"What color is Tom's book?",
+                a:["Red","Blue","Green","Black"],
+                c:1
+            },
+
+            {
+                q:"What does Tom like doing?",
+                a:["Cooking","Reading","Running","Swimming"],
+                c:1
+            },
+
+            {
+                q:"Where is the red bag?",
+                a:["On the bed","Under the bed","On the chair","In the kitchen"],
+                c:2
+            }
+
+        ]
+
+    },
+
+
+    2: {
+
+        title:"CASE 2 — THE EMPTY CLASSROOM",
+
+        clues:[
+
+            {
+                icon:"🏫",
+                title:"The Classroom",
+                text:"The students usually study English in this classroom every morning."
+            },
+
+            {
+                icon:"📝",
+                title:"The Board",
+                text:"There is a sentence on the board: 'Mary likes English and she watches videos at home.'"
+            },
+
+            {
+                icon:"🎒",
+                title:"The Backpack",
+                text:"There is a green backpack on the floor. It belongs to Mary."
+            }
+
+        ],
+
+        questions:[
+
+            {
+                q:"What do the students study?",
+                a:["Math","Science","English","History"],
+                c:2
+            },
+
+            {
+                q:"What does Mary like?",
+                a:["English","Football","Pizza","Music"],
+                c:0
+            },
+
+            {
+                q:"What color is the backpack?",
+                a:["Blue","Red","Green","Yellow"],
+                c:2
+            }
+
+        ]
+
+    },
+
+
+    3: {
+
+        title:"CASE 3 — THE MYSTERIOUS STORE",
+
+        clues:[
+
+            {
+                icon:"🏪",
+                title:"The Store",
+                text:"Mr. John works at the store. He sells food and drinks."
+            },
+
+            {
+                icon:"🍎",
+                title:"The Counter",
+                text:"There are apples and bananas on the counter. The apples are red."
+            },
+
+            {
+                icon:"🥤",
+                title:"The Refrigerator",
+                text:"There are bottles of water in the refrigerator. John drinks water every day."
+            }
+
+        ],
+
+        questions:[
+
+            {
+                q:"Where does Mr. John work?",
+                a:["At a school","At a hospital","At a store","At home"],
+                c:2
+            },
+
+            {
+                q:"What color are the apples?",
+                a:["Green","Red","Blue","Yellow"],
+                c:1
+            },
+
+            {
+                q:"What does John drink every day?",
+                a:["Milk","Juice","Water","Coffee"],
+                c:2
+            }
+
+        ]
+
+    },
+
+
+    4: {
+
+        title:"CASE 4 — THE HOSPITAL MYSTERY",
+
+        clues:[
+
+            {
+                icon:"🏥",
+                title:"The Hospital",
+                text:"Dr. Sarah works at the hospital. She helps people every day."
+            },
+
+            {
+                icon:"👨‍⚕️",
+                title:"The Doctor",
+                text:"Sarah has a small black bag. She carries it when she works."
+            },
+
+            {
+                icon:"🚪",
+                title:"Room 3",
+                text:"The patient in Room 3 likes watching TV, but he does not like reading."
+            }
+
+        ],
+
+        questions:[
+
+            {
+                q:"Where does Sarah work?",
+                a:["At a school","At a hospital","At a store","At a restaurant"],
+                c:1
+            },
+
+            {
+                q:"What color is Sarah's bag?",
+                a:["Red","Blue","Black","White"],
+                c:2
+            },
+
+            {
+                q:"What does the patient like?",
+                a:["Reading","Cooking","Watching TV","Running"],
+                c:2
+            }
+
+        ]
+
+    }
+
+};
+
+
+/* =====================================================
+   BANCO FINAL
+===================================================== */
+
+const finalBank = [
+
+    {
+        q:"Choose the correct sentence.",
+        a:[
+            "She like English.",
+            "She likes English.",
+            "She liking English.",
+            "She liked English every day."
+        ],
+        c:1
+    },
+
+    {
+        q:"What does 'WORK' mean?",
+        a:[
+            "Comer",
+            "Trabalhar",
+            "Dormir",
+            "Assistir"
+        ],
+        c:1
+    },
+
+    {
+        q:"He ___ TV every night.",
+        a:[
+            "watch",
+            "watching",
+            "watches",
+            "watched"
+        ],
+        c:2
+    },
+
+    {
+        q:"What does 'HAVE' mean?",
+        a:[
+            "Ter",
+            "Ir",
+            "Querer",
+            "Gostar"
+        ],
+        c:0
+    },
+
+    {
+        q:"Choose the correct sentence.",
+        a:[
+            "They plays soccer.",
+            "They play soccer.",
+            "They playing soccer.",
+            "They playeds soccer."
+        ],
+        c:1
+    },
+
+    {
+        q:"Read: 'John eats breakfast every morning.' What does John do every morning?",
+        a:[
+            "He sleeps.",
+            "He eats breakfast.",
+            "He watches TV.",
+            "He goes to school."
+        ],
+        c:1
+    },
+
+    {
+        q:"She ___ a blue bag.",
+        a:[
+            "have",
+            "has",
+            "haves",
+            "having"
+        ],
+        c:1
+    },
+
+    {
+        q:"What does 'GO' mean?",
+        a:[
+            "Ir",
+            "Comer",
+            "Ver",
+            "Trabalhar"
+        ],
+        c:0
+    },
+
+    {
+        q:"Which sentence is correct?",
+        a:[
+            "Does he like pizza?",
+            "Does he likes pizza?",
+            "Do he like pizza?",
+            "He does likes pizza?"
+        ],
+        c:0
+    },
+
+    {
+        q:"Mary ___ English at school.",
+        a:[
+            "study",
+            "studies",
+            "studying",
+            "studied"
+        ],
+        c:1
+    }
+
+];
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const mapScreen =
+    document.getElementById(
+        "mapScreen"
+    );
+
+const investigation =
+    document.getElementById(
+        "investigation"
+    );
+
+const finalChallenge =
+    document.getElementById(
+        "finalChallenge"
+    );
+
+const victoryScreen =
+    document.getElementById(
+        "victoryScreen"
+    );
+
+const gameOver =
+    document.getElementById(
+        "gameOver"
+    );
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+function startGame(){
+
+    level = 1;
+    score = 0;
+    cluesFound = 0;
+    currentCase = 1;
+    currentClue = 0;
+    finalIndex = 0;
+
+    updateHUD();
+
+    startScreen
+        .classList
+        .add("hidden");
+
+    mapScreen
+        .classList
+        .remove("hidden");
+
+    resetLocations();
+
+    unlockLocation(1);
+
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+function updateHUD(){
+
+    document.getElementById(
+        "levelDisplay"
+    ).textContent = level;
+
+    document.getElementById(
+        "scoreDisplay"
+    ).textContent = score;
+
+    document.getElementById(
+        "clueDisplay"
+    ).textContent = cluesFound;
+
+}
+
+
+/* =====================================================
+   MAPA
+===================================================== */
+
+function resetLocations(){
+
+    for(
+        let i=1;
+        i<=5;
+        i++
+    ){
+
+        document.getElementById(
+            "loc"+i
+        )
+        .classList
+        .add("locked");
+
+        document.getElementById(
+            "loc"+i
+        )
+        .classList
+        .remove("completed");
+
+    }
+
+}
+
+
+function unlockLocation(n){
+
+    document.getElementById(
+        "loc"+n
+    )
+    .classList
+    .remove("locked");
+
+}
+
+
+/* =====================================================
+   ABRIR CASO
+===================================================== */
+
+function openCase(n){
+
+    if(
+        document.getElementById(
+            "loc"+n
+        )
+        .classList
+        .contains("locked")
+    ){
+
+        return;
+
+    }
+
+
+    if(n===5){
+
+        startFinalChallenge();
+
+        return;
+
+    }
+
+
+    currentCase = n;
+    currentClue = 0;
+
+    mapScreen
+        .classList
+        .add("hidden");
+
+    investigation
+        .style
+        .display = "flex";
+
+    document.getElementById(
+        "caseTitle"
+    ).textContent =
+        cases[n].title;
+
+    showClue();
+
+}
+
+
+/* =====================================================
+   MOSTRAR PISTA
+===================================================== */
+
+function showClue(){
+
+    const data =
+        cases[currentCase];
+
+    const clue =
+        data.clues[
+            currentClue
+        ];
+
+    document.getElementById(
+        "caseClueNumber"
+    ).textContent =
+        (
+            currentClue+1
+        ) +
+        " / " +
+        data.clues.length;
+
+    document.getElementById(
+        "clueIcon"
+    ).textContent =
+        clue.icon;
+
+    document.getElementById(
+        "clueTitle"
+    ).textContent =
+        clue.title;
+
+    document.getElementById(
+        "clueText"
+    ).textContent =
+        clue.text;
+
+    const question =
+        data.questions[
+            currentClue
+        ];
+
+    document.getElementById(
+        "questionText"
+    ).textContent =
+        question.q;
+
+    const answers =
+        document.getElementById(
+            "answers"
+        );
+
+    answers.innerHTML = "";
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+    question.a.forEach(
+        (text,index)=>{
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "answer";
+
+            button.textContent =
+                text;
+
+            button.onclick =
+                ()=>answerCase(
+                    index,
+                    question.c
+                );
+
+            answers.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   RESPONDER CASO
+===================================================== */
+
+function answerCase(
+    selected,
+    correct
+){
+
+    const buttons =
+        document.querySelectorAll(
+            "#answers .answer"
+        );
+
+    buttons.forEach(
+        button=>{
+            button.disabled =
+                true;
+        }
+    );
+
+
+    if(
+        selected === correct
+    ){
+
+        buttons[selected]
+            .classList
+            .add("correct");
+
+        score += 100;
+
+        cluesFound++;
+
+        updateHUD();
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "✅ Correct! Excellent detective work!";
+
+        setTimeout(
+            nextClue,
+            900
+        );
+
+    }
+    else{
+
+        buttons[selected]
+            .classList
+            .add("wrong");
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "❌ Not quite. Look carefully at the clue.";
+
+        setTimeout(
+            ()=>{
+                buttons.forEach(
+                    button=>{
+                        button.disabled =
+                            false;
+                    }
+                );
+
+                document.getElementById(
+                    "feedback"
+                ).textContent = "";
+
+            },
+            900
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PRÓXIMA PISTA
+===================================================== */
+
+function nextClue(){
+
+    currentClue++;
+
+    if(
+        currentClue <
+        cases[currentCase].clues.length
+    ){
+
+        showClue();
+
+    }
+    else{
+
+        completeCase();
+
+    }
+
+}
+
+
+/* =====================================================
+   CONCLUIR CASO
+===================================================== */
+
+function completeCase(){
+
+    investigation
+        .style
+        .display = "none";
+
+    document.getElementById(
+        "loc"+currentCase
+    )
+    .classList
+    .add("completed");
+
+    level =
+        currentCase + 1;
+
+    updateHUD();
+
+
+    if(
+        currentCase < 4
+    ){
+
+        unlockLocation(
+            currentCase+1
+        );
+
+        mapScreen
+            .classList
+            .remove("hidden");
+
+    }
+    else{
+
+        unlockLocation(5);
+
+        mapScreen
+            .classList
+            .remove("hidden");
+
+    }
+
+}
+
+
+/* =====================================================
+   DESAFIO FINAL
+===================================================== */
+
+function startFinalChallenge(){
+
+    finalQuestions =
+        shuffle(
+            [...finalBank]
+        )
+        .slice(
+            0,
+            5
+        );
+
+    finalIndex = 0;
+
+    mapScreen
+        .classList
+        .add("hidden");
+
+    finalChallenge
+        .style
+        .display = "flex";
+
+    showFinalQuestion();
+
+}
+
+
+/* =====================================================
+   MOSTRAR FINAL
+===================================================== */
+
+function showFinalQuestion(){
+
+    const q =
+        finalQuestions[
+            finalIndex
+        ];
+
+    document.getElementById(
+        "finalProgress"
+    ).textContent =
+        "Pergunta " +
+        (
+            finalIndex+1
+        ) +
+        " / 5";
+
+    document.getElementById(
+        "finalQuestion"
+    ).textContent =
+        q.q;
+
+    const area =
+        document.getElementById(
+            "finalAnswers"
+        );
+
+    area.innerHTML = "";
+
+    q.a.forEach(
+        (text,index)=>{
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "final-answer";
+
+            button.textContent =
+                text;
+
+            button.onclick =
+                ()=>answerFinal(
+                    index,
+                    q.c
+                );
+
+            area.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   RESPONDER FINAL
+===================================================== */
+
+function answerFinal(
+    selected,
+    correct
+){
+
+    const buttons =
+        document.querySelectorAll(
+            ".final-answer"
+        );
+
+    buttons.forEach(
+        b=>{
+            b.disabled =
+                true;
+        }
+    );
+
+
+    if(
+        selected === correct
+    ){
+
+        buttons[selected]
+            .classList
+            .add("correct");
+
+        score += 200;
+
+        updateHUD();
+
+        setTimeout(
+            ()=>{
+                finalIndex++;
+
+                if(
+                    finalIndex>=5
+                ){
+
+                    victory();
+
+                }
+                else{
+
+                    showFinalQuestion();
+
+                }
+
+            },
+            700
+        );
+
+    }
+    else{
+
+        buttons[selected]
+            .classList
+            .add("wrong");
+
+        setTimeout(
+            ()=>{
+                buttons.forEach(
+                    b=>{
+                        b.disabled =
+                            false;
+                    }
+                );
+
+            },
+            700
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   EMBARALHAR
+===================================================== */
+
+function shuffle(array){
+
+    for(
+        let i=array.length-1;
+        i>0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random()*
+                (i+1)
+            );
+
+        [
+            array[i],
+            array[j]
+        ] =
+        [
+            array[j],
+            array[i]
+        ];
+
+    }
+
+    return array;
+
+}
+
+
+/* =====================================================
+   VITÓRIA
+===================================================== */
+
+function victory(){
+
+    finalChallenge
+        .style
+        .display = "none";
+
+    if(score>best){
+
+        best = score;
+
+        localStorage.setItem(
+            "englishDetectiveBest",
+            best
+        );
+
+    }
+
+    document.getElementById(
+        "victoryScore"
+    ).textContent =
+        score;
+
+    document.getElementById(
+        "bestDisplay"
+    ).textContent =
+        best;
+
+    victoryScreen
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+function showGameOver(){
+
+    investigation
+        .style
+        .display = "none";
+
+    finalChallenge
+        .style
+        .display = "none";
+
+    document.getElementById(
+        "gameOverScore"
+    ).textContent =
+        score;
+
+    gameOver
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =====================================================
+   REINICIAR
+===================================================== */
+
+function restartGame(){
+
+    victoryScreen
+        .classList
+        .add("hidden");
+
+    gameOver
+        .classList
+        .add("hidden");
+
+    startGame();
+
+}
+
+
+/* =====================================================
+   TECLADO
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        /*
+         * Durante perguntas,
+         * A B C D também funcionam.
+         */
+
+        if(
+            investigation.style.display === "flex"
+        ){
+
+            const key =
+                event.key.toLowerCase();
+
+            if(
+                ["a","b","c","d"]
+                .includes(key)
+            ){
+
+                const index =
+                    ["a","b","c","d"]
+                    .indexOf(key);
+
+                const button =
+                    document.querySelectorAll(
+                        "#answers .answer"
+                    )[index];
+
+                if(button){
+                    button.click();
+                }
+
+            }
+
+        }
+
+
+        if(
+            finalChallenge.style.display === "flex"
+        ){
+
+            const key =
+                event.key.toLowerCase();
+
+            if(
+                ["a","b","c","d"]
+                .includes(key)
+            ){
+
+                const index =
+                    ["a","b","c","d"]
+                    .indexOf(key);
+
+                const button =
+                    document.querySelectorAll(
+                        ".final-answer"
+                    )[index];
+
+                if(button){
+                    button.click();
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
+updateHUD();
+
+</script>
+
+</body>
+</html>

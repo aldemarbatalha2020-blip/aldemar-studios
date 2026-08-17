@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pronunciation Challenge</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="game">
+
+        <!-- TOPO -->
+        <header class="topbar">
+
+            <div class="brand">
+                <span class="brand-icon">🎙️</span>
+
+                <div>
+                    <h1>Pronunciation</h1>
+                    <span>Challenge</span>
+                </div>
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <span>⭐</span>
+                    <strong id="score">0</strong>
+                </div>
+
+                <div class="stat">
+                    <span>🔥</span>
+                    <strong id="streak">0</strong>
+                </div>
+
+                <div class="stat">
+                    <span>❤️</span>
+                    <strong id="lives">3</strong>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PROGRESSO -->
+        <div class="progress-area">
+
+            <div class="progress-info">
+
+                <span id="levelText">Nível 1</span>
+
+                <span>
+                    <span id="currentQuestion">1</span>
+                    /
+                    <span id="totalQuestions">5</span>
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div id="progress"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTEÚDO -->
+        <main class="content">
+
+            <div class="level-badge" id="levelBadge">
+                EASY
+            </div>
+
+            <h2>How do you pronounce?</h2>
+
+            <div class="word-card">
+
+                <span class="word-label">
+                    SAY THIS WORD
+                </span>
+
+                <div id="word">
+                    THINK
+                </div>
+
+                <div id="phonetic">
+                    /θɪŋk/
+                </div>
+
+            </div>
+
+
+            <!-- ÁUDIO -->
+            <button class="listen-btn" id="listenBtn">
+
+                <span>🔊</span>
+
+                <div>
+                    <strong>Listen</strong>
+                    <small>Ouça a pronúncia</small>
+                </div>
+
+            </button>
+
+
+            <!-- MICROFONE -->
+            <button class="speak-btn" id="speakBtn">
+
+                🎙️
+
+                <span>
+                    <strong>Speak</strong>
+                    <small>Fale a palavra</small>
+                </span>
+
+            </button>
+
+
+            <div id="result" class="result hidden"></div>
+
+
+            <!-- DICA -->
+            <div class="tip">
+
+                <span class="tip-icon">💡</span>
+
+                <div>
+
+                    <strong>Pronunciation Tip</strong>
+
+                    <p id="tipText">
+                        Coloque a língua levemente entre os dentes
+                        para produzir o som TH.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button id="nextBtn" class="next-btn hidden">
+                Próxima palavra →
+            </button>
+
+        </main>
+
+
+        <!-- TELA FINAL -->
+        <section id="gameOver" class="game-over hidden">
+
+            <div class="trophy">
+                🏆
+            </div>
+
+            <h2>Challenge Complete!</h2>
+
+            <p>Você terminou o desafio de pronúncia.</p>
+
+            <div class="final-score">
+
+                <span>Sua pontuação</span>
+
+                <strong id="finalScore">
+                    0
+                </strong>
+
+            </div>
+
+            <button id="restartBtn">
+                Jogar novamente
+            </button>
+
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

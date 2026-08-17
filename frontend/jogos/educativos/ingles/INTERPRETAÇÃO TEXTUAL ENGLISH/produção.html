@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NEO ENGLISH // WRITING LAB</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --cyan:#00eaff;
+    --blue:#3478ff;
+    --purple:#a855f7;
+    --green:#00ff9d;
+    --red:#ff416c;
+    --yellow:#ffe66d;
+    --bg:#040812;
+    --panel:rgba(7,15,30,.94);
+    --border:rgba(0,234,255,.25);
+    --text:#ecfaff;
+    --muted:#8da5ba;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(0,234,255,.12),transparent 30%),
+        radial-gradient(circle at 90% 80%,rgba(168,85,247,.14),transparent 30%),
+        #040812;
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);
+    background-size:45px 45px;
+    pointer-events:none;
+    z-index:-5;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,.015),
+        rgba(255,255,255,.015) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    z-index:20;
+}
+
+.stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-3;
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:white;
+    opacity:.6;
+    animation:blink 3s infinite alternate;
+}
+
+@keyframes blink{
+    from{opacity:.15}
+    to{opacity:.9}
+}
+
+/* =========================
+   SCREENS
+========================= */
+
+.screen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+}
+
+.start-card{
+    width:min(900px,100%);
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:55px 35px;
+    text-align:center;
+    box-shadow:0 0 60px rgba(0,234,255,.07);
+    position:relative;
+    overflow:hidden;
+}
+
+.start-card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    height:3px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        var(--cyan),
+        var(--purple),
+        transparent
+    );
+}
+
+.system{
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:4px;
+    margin-bottom:18px;
+}
+
+h1{
+    font-size:clamp(40px,8vw,80px);
+    letter-spacing:5px;
+    line-height:.95;
+}
+
+h1 span{
+    color:var(--cyan);
+}
+
+.subtitle{
+    color:var(--muted);
+    margin-top:18px;
+    letter-spacing:3px;
+    font-size:14px;
+}
+
+.intro{
+    max-width:700px;
+    margin:30px auto;
+    line-height:1.8;
+    color:#c8d7e5;
+}
+
+.mission-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:30px 0;
+}
+
+.mission-item{
+    border:1px solid var(--border);
+    background:rgba(0,234,255,.035);
+    padding:18px 10px;
+    border-radius:10px;
+}
+
+.mission-item strong{
+    display:block;
+    color:var(--cyan);
+    font-size:25px;
+    margin-bottom:6px;
+}
+
+.mission-item span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.start-btn,
+.finish-btn{
+    border:1px solid var(--cyan);
+    background:rgba(0,234,255,.07);
+    color:white;
+    padding:16px 40px;
+    border-radius:8px;
+    font-weight:bold;
+    letter-spacing:2px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.start-btn:hover,
+.finish-btn:hover{
+    background:var(--cyan);
+    color:#001016;
+    box-shadow:0 0 30px rgba(0,234,255,.4);
+}
+
+/* =========================
+   GAME
+========================= */
+
+#gameScreen{
+    display:none;
+    align-items:flex-start;
+}
+
+.game{
+    width:min(1200px,100%);
+    margin:auto;
+}
+
+.topbar{
+    display:grid;
+    grid-template-columns:1fr 1.5fr 1fr;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.hud{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:13px 17px;
+}
+
+.hud-label{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:2px;
+    margin-bottom:6px;
+}
+
+.hud-value{
+    color:var(--cyan);
+    font-weight:bold;
+}
+
+.center-hud{
+    text-align:center;
+}
+
+.timer{
+    text-align:right;
+}
+
+.timer-value{
+    font-size:23px;
+}
+
+.timer.danger .timer-value{
+    color:var(--red);
+}
+
+.progress-bar{
+    width:100%;
+    height:7px;
+    background:#101827;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:18px;
+}
+
+.progress{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,var(--cyan),var(--purple));
+    transition:.4s;
+}
+
+/* =========================
+   MAIN PANEL
+========================= */
+
+.main-panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.panel-header{
+    padding:22px 27px;
+    border-bottom:1px solid rgba(0,234,255,.12);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.panel-label{
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:3px;
+    margin-bottom:7px;
+}
+
+.panel-title{
+    font-size:23px;
+}
+
+.badge{
+    border:1px solid var(--purple);
+    color:#dcb7ff;
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:11px;
+}
+
+.content{
+    padding:27px;
+}
+
+/* =========================
+   INSTRUÇÕES
+========================= */
+
+.challenge{
+    border:1px solid rgba(168,85,247,.35);
+    background:rgba(168,85,247,.045);
+    border-radius:11px;
+    padding:20px;
+    margin-bottom:23px;
+}
+
+.challenge-title{
+    color:#d8b4fe;
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:10px;
+}
+
+.challenge p{
+    line-height:1.7;
+    color:#d7e4ef;
+}
+
+.requirements{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:15px;
+}
+
+.requirement{
+    padding:7px 10px;
+    border-radius:6px;
+    background:rgba(0,234,255,.06);
+    border:1px solid rgba(0,234,255,.17);
+    font-size:12px;
+    color:#c9e8f2;
+}
+
+/* =========================
+   MINI TABELA
+========================= */
+
+.help-title{
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:10px;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+    margin-bottom:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+}
+
+th,
+td{
+    border:1px solid rgba(0,234,255,.13);
+    padding:10px;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    color:var(--cyan);
+    background:rgba(0,234,255,.045);
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+td:first-child{
+    color:#fff;
+    font-weight:bold;
+}
+
+td:nth-child(2){
+    color:#b8d5e5;
+}
+
+td:nth-child(3){
+    color:#9fb4c4;
+}
+
+/* =========================
+   WRITING
+========================= */
+
+.paragraph-block{
+    margin-bottom:25px;
+}
+
+.paragraph-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:9px;
+}
+
+.paragraph-title strong{
+    color:#fff;
+}
+
+.word-count{
+    color:var(--muted);
+    font-size:11px;
+}
+
+textarea{
+    width:100%;
+    min-height:190px;
+    resize:vertical;
+    border-radius:10px;
+    border:1px solid rgba(143,167,187,.25);
+    background:#050b16;
+    color:#effaff;
+    padding:17px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:16px;
+    line-height:1.75;
+    outline:none;
+    transition:.2s;
+}
+
+textarea:focus{
+    border-color:var(--cyan);
+    box-shadow:0 0 18px rgba(0,234,255,.07);
+}
+
+textarea.error-focus{
+    border-color:var(--red);
+}
+
+textarea.good-focus{
+    border-color:var(--green);
+}
+
+.paragraph-status{
+    margin-top:7px;
+    font-size:12px;
+    color:var(--muted);
+}
+
+.paragraph-status.ok{
+    color:var(--green);
+}
+
+/* =========================
+   CORREÇÕES
+========================= */
+
+.correction-panel{
+    display:none;
+    margin-top:18px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid rgba(255,65,108,.3);
+}
+
+.correction-header{
+    padding:12px 15px;
+    background:rgba(255,65,108,.08);
+    color:#ff9eb4;
+    font-weight:bold;
+    font-size:13px;
+}
+
+.correction-body{
+    padding:15px;
+    background:rgba(255,65,108,.035);
+}
+
+.error-item{
+    padding:13px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.error-item:last-child{
+    border-bottom:none;
+}
+
+.error-title{
+    color:var(--red);
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.error-original{
+    color:#ffb5c5;
+    margin-bottom:5px;
+}
+
+.error-correct{
+    color:var(--green);
+    margin-bottom:7px;
+}
+
+.error-reason{
+    color:#c3d2de;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.no-error{
+    border:1px solid rgba(0,255,157,.2);
+    background:rgba(0,255,157,.04);
+    color:#baffdf;
+    padding:14px;
+    border-radius:9px;
+    margin-top:15px;
+    display:none;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.action-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-top:10px;
+}
+
+.check-btn{
+    border:1px solid var(--purple);
+    background:rgba(168,85,247,.07);
+    color:white;
+    padding:13px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.check-btn:hover{
+    background:var(--purple);
+}
+
+.next-btn{
+    display:none;
+    border:1px solid var(--green);
+    background:rgba(0,255,157,.06);
+    color:var(--green);
+    padding:13px 25px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.next-btn:hover{
+    background:var(--green);
+    color:#00140c;
+}
+
+/* =========================
+   FINAL
+========================= */
+
+#finishScreen{
+    display:none;
+}
+
+.finish-card{
+    width:min(850px,100%);
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:50px 30px;
+    text-align:center;
+}
+
+.finish-card h2{
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+.finish-card h2 span{
+    color:var(--cyan);
+}
+
+.final-score{
+    color:var(--cyan);
+    font-size:70px;
+    font-weight:bold;
+    margin:15px 0;
+}
+
+.final-text{
+    max-width:650px;
+    margin:0 auto 30px;
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.final-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:30px;
+}
+
+.final-item{
+    padding:18px;
+    border:1px solid var(--border);
+    border-radius:9px;
+}
+
+.final-item strong{
+    display:block;
+    color:var(--cyan);
+    font-size:25px;
+    margin-bottom:6px;
+}
+
+.final-item span{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+/* =========================
+   MUSIC
+========================= */
+
+.music{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:30;
+}
+
+.music button{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:1px solid var(--cyan);
+    background:rgba(4,8,18,.9);
+    color:var(--cyan);
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:800px){
+
+    .mission-grid{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .center-hud{
+        grid-column:1/-1;
+        grid-row:1;
+    }
+
+    .timer{
+        text-align:left;
+    }
+
+    .content{
+        padding:18px;
+    }
+
+    .panel-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .action-row{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .check-btn,
+    .next-btn{
+        width:100%;
+    }
+
+    .final-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+
+<!-- =========================================
+     TELA INICIAL
+========================================= -->
+
+<section class="screen" id="startScreen">
+
+    <div class="start-card">
+
+        <div class="system">
+            NEO EDUCATION SYSTEM // WRITING LAB
+        </div>
+
+        <h1>
+            ENGLISH<br>
+            <span>WRITING LAB</span>
+        </h1>
+
+        <div class="subtitle">
+            TEXT PRODUCTION TRAINING
+        </div>
+
+        <p class="intro">
+            Welcome to the Writing Laboratory.
+            Your mission is to produce two short texts in English.
+            The system will analyze your writing, identify common
+            mistakes and explain how you can improve your sentences.
+        </p>
+
+        <div class="mission-grid">
+
+            <div class="mission-item">
+                <strong>02</strong>
+                <span>TEXTS TO PRODUCE</span>
+            </div>
+
+            <div class="mission-item">
+                <strong>10</strong>
+                <span>LINES APPROX. / TEXT</span>
+            </div>
+
+            <div class="mission-item">
+                <strong>AI</strong>
+                <span>WRITING ANALYSIS</span>
+            </div>
+
+        </div>
+
+        <p style="color:#8da5ba;font-size:13px;margin-bottom:20px;">
+            SIMPLE PRESENT • VOCABULARY • CONNECTORS • WRITING
+        </p>
+
+        <button class="start-btn" onclick="startGame()">
+            ▶ ENTER WRITING LAB
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     JOGO
+========================================= -->
+
+<section class="screen" id="gameScreen">
+
+<div class="game">
+
+    <div class="topbar">
+
+        <div class="hud">
+
+            <div class="hud-label">
+                CURRENT MISSION
+            </div>
+
+            <div class="hud-value" id="missionHud">
+                TEXT 01 / 02
+            </div>
+
+        </div>
+
+        <div class="hud center-hud">
+
+            <div class="hud-label">
+                WRITING PROGRESS
+            </div>
+
+            <div class="hud-value" id="progressHud">
+                0%
+            </div>
+
+        </div>
+
+        <div class="hud timer" id="timerBox">
+
+            <div class="hud-label">
+                TIME
+            </div>
+
+            <div class="hud-value timer-value" id="timer">
+                15:00
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="progress-bar">
+
+        <div class="progress" id="progress"></div>
+
+    </div>
+
+
+    <div class="main-panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <div class="panel-label">
+                    WRITING MISSION
+                </div>
+
+                <div class="panel-title" id="missionTitle">
+                    My Daily Life
+                </div>
+
+            </div>
+
+            <div class="badge">
+                SIMPLE PRESENT
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+
+            <!-- DESAFIO -->
+
+            <div class="challenge">
+
+                <div class="challenge-title">
+                    // YOUR OBJECTIVE
+                </div>
+
+                <p id="missionDescription"></p>
+
+                <div class="requirements">
+
+                    <div class="requirement">
+                        2 PARAGRAPHS
+                    </div>
+
+                    <div class="requirement">
+                        ABOUT 5 LINES EACH
+                    </div>
+
+                    <div class="requirement">
+                        SIMPLE PRESENT
+                    </div>
+
+                    <div class="requirement">
+                        USE YOUR OWN IDEAS
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MINI TABELA -->
+
+            <div class="help-title">
+                // MINI ENGLISH SUPPORT TABLE
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ITEM</th>
+                            <th>EXAMPLE</th>
+                            <th>USE</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>I am</td>
+                            <td>I am a student.</td>
+                            <td>identity / state</td>
+                        </tr>
+
+                        <tr>
+                            <td>I have</td>
+                            <td>I have a small house.</td>
+                            <td>possession</td>
+                        </tr>
+
+                        <tr>
+                            <td>I like</td>
+                            <td>I like music.</td>
+                            <td>preference</td>
+                        </tr>
+
+                        <tr>
+                            <td>I do not like</td>
+                            <td>I do not like noise.</td>
+                            <td>negative idea</td>
+                        </tr>
+
+                        <tr>
+                            <td>I usually</td>
+                            <td>I usually study at night.</td>
+                            <td>routine</td>
+                        </tr>
+
+                        <tr>
+                            <td>I go</td>
+                            <td>I go to school.</td>
+                            <td>movement / routine</td>
+                        </tr>
+
+                        <tr>
+                            <td>because</td>
+                            <td>I study because I like English.</td>
+                            <td>reason</td>
+                        </tr>
+
+                        <tr>
+                            <td>but</td>
+                            <td>I like music, but I do not dance.</td>
+                            <td>contrast</td>
+                        </tr>
+
+                        <tr>
+                            <td>and</td>
+                            <td>I read and write.</td>
+                            <td>connection</td>
+                        </tr>
+
+                        <tr>
+                            <td>every day</td>
+                            <td>I practice every day.</td>
+                            <td>routine</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- PARÁGRAFO 1 -->
+
+            <div class="paragraph-block">
+
+                <div class="paragraph-title">
+
+                    <strong>
+                        PARAGRAPH 01
+                    </strong>
+
+                    <span class="word-count"
+                          id="count1">
+                        0 words
+                    </span>
+
+                </div>
+
+                <textarea
+                    id="text1"
+                    placeholder="Write your first paragraph here. Try to write about 5 lines..."
+                    oninput="liveCount(1)"
+                ></textarea>
+
+                <div class="paragraph-status"
+                     id="status1">
+                    Minimum suggested: 35 words
+                </div>
+
+                <div class="correction-panel"
+                     id="correction1">
+
+                    <div class="correction-header">
+                        ⚠ WRITING ANALYSIS
+                    </div>
+
+                    <div class="correction-body"
+                         id="correctionBody1">
+                    </div>
+
+                </div>
+
+                <div class="no-error"
+                     id="noError1">
+                    ✓ No common errors were detected in this paragraph.
+                </div>
+
+            </div>
+
+
+            <!-- PARÁGRAFO 2 -->
+
+            <div class="paragraph-block">
+
+                <div class="paragraph-title">
+
+                    <strong>
+                        PARAGRAPH 02
+                    </strong>
+
+                    <span class="word-count"
+                          id="count2">
+                        0 words
+                    </span>
+
+                </div>
+
+                <textarea
+                    id="text2"
+                    placeholder="Write your second paragraph here. Try to write about 5 lines..."
+                    oninput="liveCount(2)"
+                ></textarea>
+
+                <div class="paragraph-status"
+                     id="status2">
+                    Minimum suggested: 35 words
+                </div>
+
+                <div class="correction-panel"
+                     id="correction2">
+
+                    <div class="correction-header">
+                        ⚠ WRITING ANALYSIS
+                    </div>
+
+                    <div class="correction-body"
+                         id="correctionBody2">
+                    </div>
+
+                </div>
+
+                <div class="no-error"
+                     id="noError2">
+                    ✓ No common errors were detected in this paragraph.
+                </div>
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="action-row">
+
+                <button class="check-btn"
+                        onclick="analyzeWriting()">
+                    🔍 CHECK MY WRITING
+                </button>
+
+                <button class="next-btn"
+                        id="nextBtn"
+                        onclick="nextMission()">
+                    NEXT WRITING MISSION →
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     FINAL
+========================================= -->
+
+<section class="screen" id="finishScreen">
+
+    <div class="finish-card">
+
+        <div class="system">
+            WRITING LAB // FINAL REPORT
+        </div>
+
+        <h2>
+            MISSION <span>COMPLETE</span>
+        </h2>
+
+        <div class="final-score"
+             id="finalScore">
+            100%
+        </div>
+
+        <p class="final-text"
+           id="finalText">
+        </p>
+
+        <div class="final-grid">
+
+            <div class="final-item">
+
+                <strong id="finalTexts">
+                    2
+                </strong>
+
+                <span>
+                    TEXTS COMPLETED
+                </span>
+
+            </div>
+
+            <div class="final-item">
+
+                <strong id="finalWords">
+                    0
+                </strong>
+
+                <span>
+                    WORDS WRITTEN
+                </span>
+
+            </div>
+
+            <div class="final-item">
+
+                <strong id="finalTime">
+                    --:--
+                </strong>
+
+                <span>
+                    TIME USED
+                </span>
+
+            </div>
+
+        </div>
+
+        <button class="finish-btn"
+                onclick="location.reload()">
+            ↻ NEW WRITING MISSION
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- MÚSICA -->
+
+<div class="music">
+
+    <button id="musicButton"
+            onclick="toggleMusic()">
+        ♪
+    </button>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   MISSÕES
+========================================================= */
+
+const missions = [
+
+{
+    title:"My Daily Life",
+
+    description:
+    "Write about your daily life. Talk about your routine, school, work, family, hobbies or things you usually do. Try to explain what you like and what you do not like.",
+
+    keywords:[
+        "I",
+        "usually",
+        "every",
+        "like",
+        "have",
+        "go",
+        "study",
+        "work"
+    ]
+},
+
+{
+    title:"My Future",
+
+    description:
+    "Write about your future life. Imagine your future home, work, studies, hobbies or routine. Explain what you want to do and why. You can use simple ideas and your imagination.",
+
+    keywords:[
+        "I",
+        "want",
+        "future",
+        "will",
+        "have",
+        "work",
+        "live",
+        "study"
+    ]
+}
+
+];
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let mission = 0;
+
+let totalWords = 0;
+
+let missionFinished = false;
+
+let secondsLeft = 900;
+
+let timerInterval = null;
+
+let startTime = 0;
+
+let audioContext = null;
+
+let musicPlaying = false;
+
+let musicInterval = null;
+
+
+/* =========================================================
+   ESTRELAS
+========================================================= */
+
+function createStars(){
+
+    const stars =
+        document.getElementById("stars");
+
+    for(let i=0;i<100;i++){
+
+        const star =
+            document.createElement("div");
+
+        star.className="star";
+
+        star.style.left =
+            Math.random()*100+"%";
+
+        star.style.top =
+            Math.random()*100+"%";
+
+        const size =
+            Math.random()*2+1;
+
+        star.style.width=size+"px";
+        star.style.height=size+"px";
+
+        star.style.animationDelay =
+            Math.random()*3+"s";
+
+        stars.appendChild(star);
+    }
+}
+
+createStars();
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startGame(){
+
+    document.getElementById("startScreen").style.display="none";
+
+    document.getElementById("gameScreen").style.display="flex";
+
+    startTime=Date.now();
+
+    loadMission();
+
+    startTimer();
+
+    startMusic();
+}
+
+
+/* =========================================================
+   LOAD MISSION
+========================================================= */
+
+function loadMission(){
+
+    const data=missions[mission];
+
+    document.getElementById("missionHud").textContent =
+        "TEXT 0"+(mission+1)+" / 02";
+
+    document.getElementById("missionTitle").textContent =
+        data.title;
+
+    document.getElementById("missionDescription").textContent =
+        data.description;
+
+    document.getElementById("progressHud").textContent =
+        mission===0 ? "50%" : "100%";
+
+    document.getElementById("progress").style.width =
+        mission===0 ? "50%" : "100%";
+
+    document.getElementById("text1").value="";
+    document.getElementById("text2").value="";
+
+    resetAnalysis(1);
+    resetAnalysis(2);
+
+    document.getElementById("nextBtn").style.display="none";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* =========================================================
+   CONTADOR DE PALAVRAS
+========================================================= */
+
+function getWords(text){
+
+    return text
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+}
+
+
+function liveCount(number){
+
+    const text =
+        document.getElementById("text"+number).value;
+
+    const words =
+        getWords(text);
+
+    document.getElementById("count"+number).textContent =
+        words.length+" words";
+
+    const status =
+        document.getElementById("status"+number);
+
+    if(words.length>=35){
+
+        status.textContent =
+            "✓ Good length. Continue checking your English.";
+
+        status.classList.add("ok");
+
+    }else{
+
+        status.textContent =
+            "Minimum suggested: 35 words";
+
+        status.classList.remove("ok");
+    }
+}
+
+
+/* =========================================================
+   NORMALIZAÇÃO
+========================================================= */
+
+function normalize(text){
+
+    return text
+        .toLowerCase()
+        .replace(/[.,!?;:()"]/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+}
+
+
+/* =========================================================
+   CORRETOR
+========================================================= */
+
+function analyzeText(text){
+
+    const errors=[];
+
+    const clean=normalize(text);
+
+    if(!clean){
+
+        errors.push({
+
+            title:"Empty paragraph",
+
+            original:"Your paragraph is empty.",
+
+            correct:"Write at least a few complete sentences.",
+
+            reason:
+            "A paragraph needs sentences with information. Try to explain your idea instead of writing only one or two words."
+
+        });
+
+        return errors;
+    }
+
+
+    /* -----------------------------------------
+       1. I IS
+    ----------------------------------------- */
+
+    if(/\bi\s+is\b/i.test(text)){
+
+        errors.push({
+
+            title:"Use AM with I",
+
+            original:"I is ...",
+
+            correct:"I am ...",
+
+            reason:
+            "The subject I uses am with the verb to be. We say I am, not I is."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       2. I ARE
+    ----------------------------------------- */
+
+    if(/\bi\s+are\b/i.test(text)){
+
+        errors.push({
+
+            title:"Use AM with I",
+
+            original:"I are ...",
+
+            correct:"I am ...",
+
+            reason:
+            "The subject I uses am. The form are is used with you, we and they."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       3. HE HAVE
+    ----------------------------------------- */
+
+    if(/\b(he|she|it)\s+have\b/i.test(text)){
+
+        const match =
+            text.match(/\b(he|she|it)\s+have\b/i);
+
+        const subject =
+            match ? match[1] : "he";
+
+        errors.push({
+
+            title:"Third person with HAVE",
+
+            original:subject+" have ...",
+
+            correct:subject+" has ...",
+
+            reason:
+            "With he, she or it in the Simple Present, have changes to has."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       4. HE GO
+    ----------------------------------------- */
+
+    if(/\b(he|she|it)\s+go\b/i.test(text)){
+
+        const match =
+            text.match(/\b(he|she|it)\s+go\b/i);
+
+        const subject =
+            match ? match[1] : "he";
+
+        errors.push({
+
+            title:"Third person with GO",
+
+            original:subject+" go ...",
+
+            correct:subject+" goes ...",
+
+            reason:
+            "In affirmative Simple Present sentences, verbs usually receive S, ES or IES with he, she or it."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       5. HE LIKE
+    ----------------------------------------- */
+
+    if(/\b(he|she|it)\s+like\b/i.test(text)){
+
+        const match =
+            text.match(/\b(he|she|it)\s+like\b/i);
+
+        const subject =
+            match ? match[1] : "he";
+
+        errors.push({
+
+            title:"Third person with LIKE",
+
+            original:subject+" like ...",
+
+            correct:subject+" likes ...",
+
+            reason:
+            "With he, she or it, the verb like becomes likes in an affirmative Simple Present sentence."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       6. HE WANT
+    ----------------------------------------- */
+
+    if(/\b(he|she|it)\s+want\b/i.test(text)){
+
+        const match =
+            text.match(/\b(he|she|it)\s+want\b/i);
+
+        const subject =
+            match ? match[1] : "he";
+
+        errors.push({
+
+            title:"Third person with WANT",
+
+            original:subject+" want ...",
+
+            correct:subject+" wants ...",
+
+            reason:
+            "With he, she or it, the verb receives S in an affirmative Simple Present sentence."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       7. HE WORK
+    ----------------------------------------- */
+
+    if(/\b(he|she|it)\s+work\b/i.test(text)){
+
+        const match =
+            text.match(/\b(he|she|it)\s+work\b/i);
+
+        const subject =
+            match ? match[1] : "he";
+
+        errors.push({
+
+            title:"Third person with WORK",
+
+            original:subject+" work ...",
+
+            correct:subject+" works ...",
+
+            reason:
+            "With he, she or it, we use works in an affirmative Simple Present sentence."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       8. DOES + VERB S
+    ----------------------------------------- */
+
+    if(/\bdoes\s+\w+(s|es)\b/i.test(text)){
+
+        const match =
+            text.match(/\bdoes\s+(\w+(?:s|es))\b/i);
+
+        errors.push({
+
+            title:"DOES + base verb",
+
+            original:match ? "does "+match[1] : "does + verb",
+
+            correct:"does + base verb",
+
+            reason:
+            "After does, the main verb returns to its base form. Example: Does she like music? Not: Does she likes music?"
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       9. DOES NOT + VERB S
+    ----------------------------------------- */
+
+    if(/\bdoes\s+not\s+\w+(s|es)\b/i.test(text)){
+
+        const match =
+            text.match(/\bdoes\s+not\s+(\w+(?:s|es))\b/i);
+
+        errors.push({
+
+            title:"DOES NOT + base verb",
+
+            original:
+                match
+                ? "does not "+match[1]
+                : "does not + verb",
+
+            correct:"does not + base verb",
+
+            reason:
+            "After does not, the main verb does not receive S. Example: She does not like coffee."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       10. DO NOT + VERB S
+    ----------------------------------------- */
+
+    if(/\bdo\s+not\s+\w+(s|es)\b/i.test(text)){
+
+        const match =
+            text.match(/\bdo\s+not\s+(\w+(?:s|es))\b/i);
+
+        errors.push({
+
+            title:"DO NOT + base verb",
+
+            original:
+                match
+                ? "do not "+match[1]
+                : "do not + verb",
+
+            correct:"do not + base verb",
+
+            reason:
+            "After do not, the main verb stays in the base form. Example: I do not like coffee."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       11. I HAS
+    ----------------------------------------- */
+
+    if(/\bi\s+has\b/i.test(text)){
+
+        errors.push({
+
+            title:"I uses HAVE",
+
+            original:"I has ...",
+
+            correct:"I have ...",
+
+            reason:
+            "The subject I uses have. Has is used with he, she and it."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       12. HE AM
+    ----------------------------------------- */
+
+    if(/\b(he|she|it)\s+am\b/i.test(text)){
+
+        errors.push({
+
+            title:"HE / SHE / IT uses IS",
+
+            original:"he/she/it am ...",
+
+            correct:"he/she/it is ...",
+
+            reason:
+            "The verb to be changes according to the subject. He, she and it use is."
+
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       13. PORTUGUESE COMMON WORDS
+    ----------------------------------------- */
+
+    const portugueseWords = {
+
+        "eu":"I",
+        "minha":"my",
+        "meu":"my",
+        "casa":"house/home",
+        "escola":"school",
+        "trabalho":"work",
+        "gosto":"like",
+        "família":"family",
+        "familia":"family",
+        "hoje":"today",
+        "amanhã":"tomorrow",
+        "amanha":"tomorrow",
+        "amigo":"friend",
+        "amiga":"friend",
+        "comida":"food",
+        "música":"music",
+        "musica":"music",
+        "inglês":"English",
+        "ingles":"English"
+    };
+
+    const words=clean.split(" ");
+
+    words.forEach(word=>{
+
+        if(portugueseWords[word]){
+
+            errors.push({
+
+                title:"Portuguese word detected",
+
+                original:word,
+
+                correct:
+                    portugueseWords[word],
+
+                reason:
+                "This word appears to be Portuguese. Because this is an English writing mission, replace it with the English word."
+
+            });
+
+        }
+
+    });
+
+
+    /* -----------------------------------------
+       14. VERY SHORT SENTENCES
+    ----------------------------------------- */
+
+    const sentences =
+        text
+            .split(/[.!?]+/)
+            .map(s=>s.trim())
+            .filter(Boolean);
+
+    sentences.forEach(sentence=>{
+
+        const count =
+            getWords(sentence).length;
+
+        if(count===1){
+
+            errors.push({
+
+                title:"Incomplete sentence",
+
+                original:sentence,
+
+                correct:
+                    "Try to add a subject and a verb.",
+
+                reason:
+                "A complete English sentence normally needs a subject and a verb. Example: I study English."
+
+            });
+
+        }
+
+    });
+
+
+    return removeDuplicateErrors(errors);
+
+}
+
+
+/* =========================================================
+   REMOVE DUPLICADOS
+========================================================= */
+
+function removeDuplicateErrors(errors){
+
+    const seen=new Set();
+
+    return errors.filter(error=>{
+
+        const key =
+            error.title+"|"+error.original;
+
+        if(seen.has(key)){
+            return false;
+        }
+
+        seen.add(key);
+
+        return true;
+
+    });
+
+}
+
+
+/* =========================================================
+   RENDER CORREÇÃO
+========================================================= */
+
+function renderErrors(number,errors){
+
+    const panel =
+        document.getElementById("correction"+number);
+
+    const body =
+        document.getElementById("correctionBody"+number);
+
+    const noError =
+        document.getElementById("noError"+number);
+
+    const textarea =
+        document.getElementById("text"+number);
+
+    if(errors.length===0){
+
+        panel.style.display="none";
+
+        noError.style.display="block";
+
+        textarea.classList.remove("error-focus");
+
+        textarea.classList.add("good-focus");
+
+        return;
+    }
+
+
+    noError.style.display="none";
+
+    panel.style.display="block";
+
+    textarea.classList.remove("good-focus");
+
+    textarea.classList.add("error-focus");
+
+    body.innerHTML="";
+
+
+    errors.forEach(error=>{
+
+        const div =
+            document.createElement("div");
+
+        div.className="error-item";
+
+        div.innerHTML=`
+
+            <div class="error-title">
+                ⚠ ${escapeHTML(error.title)}
+            </div>
+
+            <div class="error-original">
+                ❌ You wrote:
+                <strong>${escapeHTML(error.original)}</strong>
+            </div>
+
+            <div class="error-correct">
+                ✓ Better form:
+                <strong>${escapeHTML(error.correct)}</strong>
+            </div>
+
+            <div class="error-reason">
+                💡 Why?
+                ${escapeHTML(error.reason)}
+            </div>
+
+        `;
+
+        body.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetAnalysis(number){
+
+    document.getElementById("correction"+number)
+        .style.display="none";
+
+    document.getElementById("noError"+number)
+        .style.display="none";
+
+    document.getElementById("text"+number)
+        .classList.remove(
+            "error-focus",
+            "good-focus"
+        );
+
+    document.getElementById("count"+number)
+        .textContent="0 words";
+
+    document.getElementById("status"+number)
+        .textContent="Minimum suggested: 35 words";
+
+    document.getElementById("status"+number)
+        .classList.remove("ok");
+
+}
+
+
+/* =========================================================
+   ANALISAR TEXTO
+========================================================= */
+
+function analyzeWriting(){
+
+    const text1 =
+        document.getElementById("text1").value.trim();
+
+    const text2 =
+        document.getElementById("text2").value.trim();
+
+
+    let valid=true;
+
+
+    if(getWords(text1).length<35){
+
+        alert(
+            "Paragraph 01 is too short.\n\n" +
+            "Try to write about 35 words or more."
+        );
+
+        document.getElementById("text1").focus();
+
+        valid=false;
+
+    }
+
+
+    if(getWords(text2).length<35){
+
+        alert(
+            "Paragraph 02 is too short.\n\n" +
+            "Try to write about 35 words or more."
+        );
+
+        document.getElementById("text2").focus();
+
+        valid=false;
+
+    }
+
+
+    if(!valid) return;
+
+
+    const errors1 =
+        analyzeText(text1);
+
+    const errors2 =
+        analyzeText(text2);
+
+
+    renderErrors(1,errors1);
+
+    renderErrors(2,errors2);
+
+
+    if(
+        errors1.length===0 &&
+        errors2.length===0
+    ){
+
+        missionFinished=true;
+
+        document.getElementById("nextBtn")
+            .style.display="inline-block";
+
+        document.getElementById("nextBtn")
+            .textContent =
+                mission===0
+                ? "NEXT WRITING MISSION →"
+                : "FINISH MISSION →";
+
+        window.scrollTo({
+            top:document.body.scrollHeight,
+            behavior:"smooth"
+        });
+
+    }else{
+
+        missionFinished=false;
+
+        alert(
+            "The system found some points to improve.\n\n" +
+            "Read the explanations, correct your writing, " +
+            "and check again."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PRÓXIMA MISSÃO
+========================================================= */
+
+function nextMission(){
+
+    if(!missionFinished) return;
+
+    if(mission===0){
+
+        mission=1;
+
+        loadMission();
+
+    }else{
+
+        finishGame();
+
+    }
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    updateTimer();
+
+    timerInterval =
+        setInterval(()=>{
+
+            secondsLeft--;
+
+            updateTimer();
+
+            if(secondsLeft<=0){
+
+                clearInterval(timerInterval);
+
+                finishGame(true);
+
+            }
+
+        },1000);
+
+}
+
+
+function updateTimer(){
+
+    const min =
+        Math.floor(secondsLeft/60);
+
+    const sec =
+        secondsLeft%60;
+
+    document.getElementById("timer")
+        .textContent =
+            String(min).padStart(2,"0")
+            +":"+
+            String(sec).padStart(2,"0");
+
+
+    if(secondsLeft<=60){
+
+        document.getElementById("timerBox")
+            .classList.add("danger");
+
+    }
+
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+function finishGame(timeout=false){
+
+    clearInterval(timerInterval);
+
+    stopMusic();
+
+    const text1 =
+        document.getElementById("text1").value;
+
+    const text2 =
+        document.getElementById("text2").value;
+
+    totalWords =
+        getWords(text1).length+
+        getWords(text2).length;
+
+    const used =
+        900-secondsLeft;
+
+    const min =
+        Math.floor(used/60);
+
+    const sec =
+        used%60;
+
+
+    document.getElementById("gameScreen")
+        .style.display="none";
+
+    document.getElementById("finishScreen")
+        .style.display="flex";
+
+
+    document.getElementById("finalTexts")
+        .textContent =
+            mission===1 ? "2" : "1";
+
+
+    document.getElementById("finalWords")
+        .textContent =
+            totalWords;
+
+
+    document.getElementById("finalTime")
+        .textContent =
+            String(min).padStart(2,"0")
+            +":"+
+            String(sec).padStart(2,"0");
+
+
+    if(timeout){
+
+        document.getElementById("finalScore")
+            .textContent="TIME";
+
+        document.getElementById("finalText")
+            .textContent=
+            "The time is over. Your writing was saved during the mission. Review the corrections and try again to improve your English.";
+
+        return;
+
+    }
+
+
+    document.getElementById("finalScore")
+        .textContent="100%";
+
+    document.getElementById("finalText")
+        .textContent=
+        "Excellent work. You produced two English texts and corrected the common problems identified by the Writing Lab. Keep practicing Simple Present, vocabulary and connectors.";
+
+}
+
+
+/* =========================================================
+   MÚSICA FUTURISTA
+========================================================= */
+
+function startMusic(){
+
+    if(musicPlaying) return;
+
+    try{
+
+        audioContext =
+            new (window.AudioContext||
+            window.webkitAudioContext)();
+
+        musicPlaying=true;
+
+        document.getElementById("musicButton")
+            .textContent="♫";
+
+        playNote();
+
+        musicInterval=
+            setInterval(playNote,850);
+
+    }catch(e){
+
+        console.log("Audio unavailable.");
+
+    }
+
+}
+
+
+function playNote(){
+
+    if(!audioContext||!musicPlaying)
+        return;
+
+    const now =
+        audioContext.currentTime;
+
+    const osc =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+    const filter =
+        audioContext.createBiquadFilter();
+
+
+    const notes=[
+        110,
+        138.59,
+        164.81,
+        220,
+        246.94,
+        293.66,
+        329.63
+    ];
+
+
+    osc.type="sine";
+
+    osc.frequency.value =
+        notes[Math.floor(Math.random()*notes.length)];
+
+
+    filter.type="lowpass";
+
+    filter.frequency.value=850;
+
+
+    gain.gain.setValueAtTime(
+        0,
+        now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+        .045,
+        now+.08
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        now+.8
+    );
+
+
+    osc.connect(filter);
+
+    filter.connect(gain);
+
+    gain.connect(
+        audioContext.destination
+    );
+
+
+    osc.start(now);
+
+    osc.stop(now+.82);
+
+}
+
+
+function toggleMusic(){
+
+    if(!audioContext){
+
+        startMusic();
+
+        return;
+
+    }
+
+
+    if(musicPlaying){
+
+        stopMusic();
+
+    }else{
+
+        musicPlaying=true;
+
+        document.getElementById("musicButton")
+            .textContent="♫";
+
+        musicInterval=
+            setInterval(playNote,850);
+
+        playNote();
+
+    }
+
+}
+
+
+function stopMusic(){
+
+    musicPlaying=false;
+
+    if(musicInterval){
+
+        clearInterval(musicInterval);
+
+        musicInterval=null;
+
+    }
+
+    document.getElementById("musicButton")
+        .textContent="♪";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>ENGLISH RACE</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% 0%,#172554 0%,#020617 48%,#000 100%);
+    color:#fff;
+    overflow-x:hidden;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+.screen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* =====================================================
+   MENU
+===================================================== */
+
+#menu{
+    text-align:center;
+}
+
+.logo{
+    font-size:clamp(45px,8vw,90px);
+    font-weight:900;
+    letter-spacing:5px;
+    color:#38bdf8;
+    text-shadow:
+        0 0 10px #38bdf8,
+        0 0 35px #0284c7;
+}
+
+.logo span{
+    color:#fff;
+}
+
+.subtitle{
+    margin-top:8px;
+    color:#94a3b8;
+    letter-spacing:4px;
+    font-size:15px;
+}
+
+.menu-box{
+    width:min(680px,95vw);
+    margin:35px auto 0;
+    padding:30px;
+    border-radius:25px;
+    background:rgba(15,23,42,.96);
+    border:1px solid #334155;
+    box-shadow:0 25px 70px rgba(0,0,0,.55);
+}
+
+.team-inputs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.team{
+    background:#020617;
+    padding:18px;
+    border-radius:15px;
+    border:1px solid #334155;
+}
+
+.team label{
+    display:block;
+    color:#94a3b8;
+    font-size:12px;
+    margin-bottom:8px;
+    text-transform:uppercase;
+}
+
+.team input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    background:#0f172a;
+    border:1px solid #475569;
+    color:#fff;
+    font-size:17px;
+    outline:none;
+}
+
+.team input:focus{
+    border-color:#38bdf8;
+}
+
+.rules{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.rule{
+    background:#020617;
+    border-radius:12px;
+    padding:15px 5px;
+}
+
+.rule strong{
+    display:block;
+    color:#38bdf8;
+    font-size:22px;
+}
+
+.rule small{
+    color:#94a3b8;
+}
+
+.start{
+    width:100%;
+    padding:18px;
+    border:0;
+    border-radius:14px;
+    background:linear-gradient(135deg,#0ea5e9,#2563eb);
+    color:#fff;
+    font-size:20px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.start:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 35px rgba(14,165,233,.4);
+}
+
+/* =====================================================
+   GAME
+===================================================== */
+
+#game{
+    display:none;
+    flex-direction:column;
+    justify-content:flex-start;
+}
+
+.game-container{
+    width:min(1180px,100%);
+    margin:auto;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+    display:grid;
+    grid-template-columns:1fr 200px 1fr;
+    gap:15px;
+    align-items:center;
+}
+
+.team-panel{
+    background:#0f172a;
+    border:2px solid #334155;
+    border-radius:18px;
+    padding:15px;
+    text-align:center;
+    transition:.3s;
+}
+
+.team-panel.active{
+    transform:scale(1.04);
+}
+
+.team-panel.blue.active{
+    border-color:#38bdf8;
+    box-shadow:0 0 30px rgba(56,189,248,.3);
+}
+
+.team-panel.red.active{
+    border-color:#fb7185;
+    box-shadow:0 0 30px rgba(251,113,133,.3);
+}
+
+.team-name{
+    color:#cbd5e1;
+    font-weight:bold;
+    font-size:16px;
+}
+
+.team-time{
+    margin-top:7px;
+    font-size:25px;
+    font-weight:900;
+    color:#38bdf8;
+}
+
+.red .team-time{
+    color:#fb7185;
+}
+
+.center-info{
+    text-align:center;
+}
+
+.level{
+    font-size:30px;
+    font-weight:900;
+    color:#facc15;
+}
+
+.distance{
+    margin-top:4px;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/* =====================================================
+   TRACK
+===================================================== */
+
+.track{
+    margin-top:20px;
+    position:relative;
+    height:210px;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #334155;
+    background:
+        linear-gradient(
+            to bottom,
+            #172554 0%,
+            #1e3a8a 45%,
+            #111827 45%,
+            #111827 100%
+        );
+}
+
+.track::before{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:55%;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #1f2937 0px,
+            #1f2937 70px,
+            #374151 70px,
+            #374151 140px
+        );
+    opacity:.8;
+}
+
+.road-line{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:42px;
+    height:5px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #f8fafc 0px,
+            #f8fafc 50px,
+            transparent 50px,
+            transparent 90px
+        );
+    opacity:.6;
+}
+
+.finish{
+    position:absolute;
+    right:12px;
+    top:0;
+    bottom:0;
+    width:16px;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #fff 0px,
+            #fff 15px,
+            #111 15px,
+            #111 30px
+        );
+    z-index:3;
+}
+
+.finish-label{
+    position:absolute;
+    right:0;
+    top:10px;
+    transform:translateX(-3px);
+    color:#facc15;
+    font-weight:900;
+    font-size:12px;
+    z-index:4;
+}
+
+.car{
+    position:absolute;
+    left:20px;
+    bottom:58px;
+    width:92px;
+    height:43px;
+    border-radius:15px 23px 8px 8px;
+    transition:
+        left .8s ease,
+        background .3s,
+        box-shadow .3s;
+    z-index:5;
+}
+
+.car::before{
+    content:"";
+    position:absolute;
+    width:43px;
+    height:21px;
+    top:-13px;
+    left:20px;
+    border-radius:18px 18px 3px 3px;
+    background:inherit;
+}
+
+.car::after{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    left:12px;
+    bottom:-9px;
+    border-radius:50%;
+    background:#020617;
+    box-shadow:52px 0 0 #020617;
+}
+
+.car.blue{
+    background:#38bdf8;
+    box-shadow:0 0 25px rgba(56,189,248,.8);
+}
+
+.car.red{
+    background:#fb7185;
+    box-shadow:0 0 25px rgba(251,113,133,.8);
+}
+
+.track-status{
+    position:absolute;
+    left:15px;
+    top:15px;
+    z-index:5;
+    padding:7px 12px;
+    border-radius:20px;
+    background:rgba(2,6,23,.75);
+    font-size:12px;
+    font-weight:900;
+    color:#cbd5e1;
+}
+
+/* =====================================================
+   QUESTION
+===================================================== */
+
+.question-card{
+    margin-top:22px;
+    background:rgba(15,23,42,.98);
+    border:1px solid #334155;
+    border-radius:25px;
+    padding:28px;
+    box-shadow:0 20px 70px rgba(0,0,0,.5);
+}
+
+.turn{
+    text-align:center;
+    font-size:15px;
+    color:#38bdf8;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.turn.red{
+    color:#fb7185;
+}
+
+.category{
+    text-align:center;
+    color:#64748b;
+    font-size:13px;
+    margin-top:8px;
+}
+
+.question{
+    text-align:center;
+    font-size:clamp(25px,4vw,42px);
+    font-weight:900;
+    margin:28px 10px;
+    line-height:1.2;
+}
+
+.instruction{
+    text-align:center;
+    color:#94a3b8;
+    margin-bottom:22px;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.answer{
+    min-height:70px;
+    border-radius:14px;
+    border:2px solid #334155;
+    background:#020617;
+    color:#fff;
+    padding:15px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.answer:hover:not(:disabled){
+    border-color:#38bdf8;
+    transform:translateY(-2px);
+    background:#0f172a;
+}
+
+.answer.correct{
+    background:#14532d;
+    border-color:#22c55e;
+}
+
+.answer.wrong{
+    background:#7f1d1d;
+    border-color:#ef4444;
+}
+
+.answer:disabled{
+    cursor:default;
+}
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress-area{
+    margin-top:22px;
+}
+
+.progress-header{
+    display:flex;
+    justify-content:space-between;
+    color:#94a3b8;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.progress{
+    height:9px;
+    border-radius:20px;
+    background:#1e293b;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#22c55e,#38bdf8);
+    transition:.5s;
+}
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+.feedback{
+    min-height:55px;
+    text-align:center;
+    margin-top:18px;
+    font-size:19px;
+    font-weight:bold;
+}
+
+.next{
+    display:none;
+    margin:5px auto 0;
+    padding:14px 30px;
+    border:0;
+    border-radius:12px;
+    background:#38bdf8;
+    color:#020617;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+#result{
+    display:none;
+    text-align:center;
+}
+
+.result-box{
+    width:min(750px,95vw);
+    padding:40px 25px;
+    border-radius:25px;
+    background:#0f172a;
+    border:1px solid #334155;
+    box-shadow:0 25px 80px rgba(0,0,0,.55);
+}
+
+.trophy{
+    font-size:75px;
+}
+
+.final-title{
+    color:#94a3b8;
+    margin-top:5px;
+}
+
+.winner{
+    margin:15px 0;
+    font-size:42px;
+    font-weight:900;
+    color:#facc15;
+}
+
+.final-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin:30px 0;
+}
+
+.final-team{
+    background:#020617;
+    border-radius:15px;
+    padding:20px;
+}
+
+.final-team h3{
+    color:#cbd5e1;
+}
+
+.final-time{
+    font-size:38px;
+    font-weight:900;
+    color:#38bdf8;
+    margin-top:8px;
+}
+
+.restart{
+    width:100%;
+    padding:17px;
+    border:0;
+    border-radius:13px;
+    background:#2563eb;
+    color:#fff;
+    font-size:18px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:700px){
+
+    .team-inputs{
+        grid-template-columns:1fr;
+    }
+
+    .rules{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .header{
+        grid-template-columns:1fr 90px 1fr;
+    }
+
+    .team-time{
+        font-size:18px;
+    }
+
+    .level{
+        font-size:22px;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    .question-card{
+        padding:20px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     MENU
+===================================================== -->
+
+<section id="menu" class="screen">
+
+<div>
+
+    <div class="logo">
+        ENGLISH <span>RACE</span>
+    </div>
+
+    <div class="subtitle">
+        A1 • 2 GRUPOS • 10 NÍVEIS • 100 KM
+    </div>
+
+    <div class="menu-box">
+
+        <div class="team-inputs">
+
+            <div class="team">
+
+                <label>Equipe 1</label>
+
+                <input
+                    id="team1Input"
+                    value="GRUPO 1"
+                >
+
+            </div>
+
+
+            <div class="team">
+
+                <label>Equipe 2</label>
+
+                <input
+                    id="team2Input"
+                    value="GRUPO 2"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="rules">
+
+            <div class="rule">
+                <strong>10</strong>
+                <small>Níveis</small>
+            </div>
+
+            <div class="rule">
+                <strong>100</strong>
+                <small>KM</small>
+            </div>
+
+            <div class="rule">
+                <strong>+1 KM</strong>
+                <small>Acertou</small>
+            </div>
+
+            <div class="rule">
+                <strong>-1 KM</strong>
+                <small>Errou</small>
+            </div>
+
+        </div>
+
+
+        <button
+            class="start"
+            onclick="startGame()"
+        >
+
+            🏁 COMEÇAR CORRIDA
+
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     GAME
+===================================================== -->
+
+<section id="game" class="screen">
+
+<div class="game-container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+
+        <div
+            id="teamPanel1"
+            class="team-panel blue"
+        >
+
+            <div
+                id="teamName1"
+                class="team-name"
+            >
+                GRUPO 1
+            </div>
+
+            <div
+                id="time1"
+                class="team-time"
+            >
+                00:00
+            </div>
+
+        </div>
+
+
+        <div class="center-info">
+
+            <div
+                id="levelText"
+                class="level"
+            >
+                NÍVEL 1
+            </div>
+
+            <div
+                id="distanceText"
+                class="distance"
+            >
+                0 / 100 KM
+            </div>
+
+        </div>
+
+
+        <div
+            id="teamPanel2"
+            class="team-panel red"
+        >
+
+            <div
+                id="teamName2"
+                class="team-name"
+            >
+                GRUPO 2
+            </div>
+
+            <div
+                id="time2"
+                class="team-time"
+            >
+                00:00
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TRACK -->
+
+    <div class="track">
+
+        <div class="track-status">
+            🏎️ CORRIDA A1
+        </div>
+
+        <div class="finish-label">
+            FINISH
+        </div>
+
+        <div class="finish"></div>
+
+        <div class="road-line"></div>
+
+        <div
+            id="car"
+            class="car blue"
+        ></div>
+
+    </div>
+
+
+    <!-- QUESTION -->
+
+    <div class="question-card">
+
+        <div
+            id="turn"
+            class="turn"
+        >
+            VEZ DO GRUPO 1
+        </div>
+
+
+        <div
+            id="category"
+            class="category"
+        >
+            A1 • SIMPLE PRESENT
+        </div>
+
+
+        <div
+            id="question"
+            class="question"
+        >
+            I like pizza.
+        </div>
+
+
+        <div
+            id="instruction"
+            class="instruction"
+        >
+            Escolha a alternativa correta.
+        </div>
+
+
+        <div
+            id="answers"
+            class="answers"
+        ></div>
+
+
+        <div class="progress-area">
+
+            <div class="progress-header">
+
+                <span id="questionCounter">
+                    Pergunta 1 de 100
+                </span>
+
+                <span id="kmCounter">
+                    0 KM
+                </span>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    id="progressBar"
+                    class="progress-bar"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="feedback"
+            class="feedback"
+        ></div>
+
+
+        <button
+            id="nextBtn"
+            class="next"
+            onclick="nextQuestion()"
+        >
+
+            PRÓXIMA RODADA →
+
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     RESULT
+===================================================== -->
+
+<section id="result" class="screen">
+
+<div class="result-box">
+
+    <div class="trophy">
+        🏆
+    </div>
+
+    <div class="final-title">
+        CORRIDA FINALIZADA
+    </div>
+
+    <div
+        id="winner"
+        class="winner"
+    >
+        VENCEDOR
+    </div>
+
+
+    <div class="final-grid">
+
+
+        <div class="final-team">
+
+            <h3 id="finalName1">
+                GRUPO 1
+            </h3>
+
+            <div
+                id="finalTime1"
+                class="final-time"
+            >
+                00:00
+            </div>
+
+            <small>
+                TEMPO TOTAL
+            </small>
+
+        </div>
+
+
+        <div class="final-team">
+
+            <h3 id="finalName2">
+                GRUPO 2
+            </h3>
+
+            <div
+                id="finalTime2"
+                class="final-time"
+            >
+                00:00
+            </div>
+
+            <small>
+                TEMPO TOTAL
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="restart"
+        onclick="location.reload()"
+    >
+
+        🔄 NOVA CORRIDA
+
+    </button>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* =====================================================
+   BANCO DE QUESTÕES A1
+===================================================== */
+
+const questionBank = [
+
+/* SIMPLE PRESENT */
+
+{
+q:"I like pizza.",
+a:[
+"Eu gosto de pizza.",
+"Eu faço pizza.",
+"Eu compro pizza.",
+"Eu vejo pizza."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I play soccer.",
+a:[
+"Eu jogo futebol.",
+"Eu assisto futebol.",
+"Eu compro futebol.",
+"Eu ensino futebol."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I like music.",
+a:[
+"Eu gosto de música.",
+"Eu escrevo música.",
+"Eu compro música.",
+"Eu ensino música."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I eat rice.",
+a:[
+"Eu como arroz.",
+"Eu compro arroz.",
+"Eu vejo arroz.",
+"Eu vendo arroz."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I drink water.",
+a:[
+"Eu bebo água.",
+"Eu compro água.",
+"Eu vejo água.",
+"Eu faço água."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I watch TV.",
+a:[
+"Eu assisto TV.",
+"Eu compro TV.",
+"Eu faço TV.",
+"Eu vendo TV."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I read books.",
+a:[
+"Eu leio livros.",
+"Eu compro livros.",
+"Eu vendo livros.",
+"Eu escrevo livros."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I study English.",
+a:[
+"Eu estudo inglês.",
+"Eu ensino inglês.",
+"Eu vendo inglês.",
+"Eu compro inglês."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I work at school.",
+a:[
+"Eu trabalho na escola.",
+"Eu moro na escola.",
+"Eu compro a escola.",
+"Eu vejo a escola."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I go to school.",
+a:[
+"Eu vou para a escola.",
+"Eu moro na escola.",
+"Eu trabalho em casa.",
+"Eu vejo a escola."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I have a dog.",
+a:[
+"Eu tenho um cachorro.",
+"Eu quero um cachorro.",
+"Eu vejo um cachorro.",
+"Eu compro um cachorro."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I want water.",
+a:[
+"Eu quero água.",
+"Eu bebo água.",
+"Eu vejo água.",
+"Eu compro água."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She likes pizza.",
+a:[
+"Ela gosta de pizza.",
+"Ela faz pizza.",
+"Ela compra pizza.",
+"Ela vende pizza."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He likes soccer.",
+a:[
+"Ele gosta de futebol.",
+"Ele compra futebol.",
+"Ele vende futebol.",
+"Ele vê futebol."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She plays soccer.",
+a:[
+"Ela joga futebol.",
+"Ela compra futebol.",
+"Ela vende futebol.",
+"Ela vê futebol."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He plays basketball.",
+a:[
+"Ele joga basquete.",
+"Ele compra basquete.",
+"Ele vende basquete.",
+"Ele assiste basquete."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She watches TV.",
+a:[
+"Ela assiste TV.",
+"Ela compra TV.",
+"Ela vende TV.",
+"Ela faz TV."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He eats rice.",
+a:[
+"Ele come arroz.",
+"Ele compra arroz.",
+"Ele vende arroz.",
+"Ele vê arroz."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She drinks water.",
+a:[
+"Ela bebe água.",
+"Ela compra água.",
+"Ela vende água.",
+"Ela vê água."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He studies English.",
+a:[
+"Ele estuda inglês.",
+"Ele compra inglês.",
+"Ele vende inglês.",
+"Ele ensina inglês."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+/* VOCABULARY */
+
+{
+q:"What does 'like' mean?",
+a:[
+"Gostar",
+"Querer",
+"Comer",
+"Ir"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'want' mean?",
+a:[
+"Querer",
+"Gostar",
+"Comer",
+"Dormir"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'play' mean?",
+a:[
+"Jogar",
+"Comer",
+"Beber",
+"Dormir"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'eat' mean?",
+a:[
+"Comer",
+"Beber",
+"Jogar",
+"Dormir"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'drink' mean?",
+a:[
+"Beber",
+"Comer",
+"Dormir",
+"Correr"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'go' mean?",
+a:[
+"Ir",
+"Ter",
+"Comer",
+"Jogar"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'have' mean?",
+a:[
+"Ter",
+"Ir",
+"Comer",
+"Jogar"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'watch' mean?",
+a:[
+"Assistir",
+"Ler",
+"Escrever",
+"Falar"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'read' mean?",
+a:[
+"Ler",
+"Escrever",
+"Falar",
+"Correr"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'write' mean?",
+a:[
+"Escrever",
+"Ler",
+"Comer",
+"Dormir"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'work' mean?",
+a:[
+"Trabalhar",
+"Jogar",
+"Dormir",
+"Comer"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'study' mean?",
+a:[
+"Estudar",
+"Trabalhar",
+"Comer",
+"Dormir"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'sleep' mean?",
+a:[
+"Dormir",
+"Comer",
+"Beber",
+"Jogar"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'run' mean?",
+a:[
+"Correr",
+"Dormir",
+"Comer",
+"Ler"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What does 'walk' mean?",
+a:[
+"Caminhar",
+"Comer",
+"Dormir",
+"Ler"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+/* OBJETOS */
+
+{
+q:"What is 'book'?",
+a:[
+"Livro",
+"Casa",
+"Mesa",
+"Carro"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'school'?",
+a:[
+"Escola",
+"Casa",
+"Carro",
+"Igreja"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'dog'?",
+a:[
+"Cachorro",
+"Gato",
+"Peixe",
+"Cavalo"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'cat'?",
+a:[
+"Gato",
+"Cachorro",
+"Peixe",
+"Pássaro"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'house'?",
+a:[
+"Casa",
+"Escola",
+"Carro",
+"Rua"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'car'?",
+a:[
+"Carro",
+"Casa",
+"Ônibus",
+"Bicicleta"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'water'?",
+a:[
+"Água",
+"Leite",
+"Café",
+"Suco"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'food'?",
+a:[
+"Comida",
+"Água",
+"Casa",
+"Escola"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'friend'?",
+a:[
+"Amigo",
+"Professor",
+"Pai",
+"Aluno"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'teacher'?",
+a:[
+"Professor",
+"Aluno",
+"Médico",
+"Amigo"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'student'?",
+a:[
+"Aluno",
+"Professor",
+"Médico",
+"Amigo"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'mother'?",
+a:[
+"Mãe",
+"Pai",
+"Irmão",
+"Professor"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'father'?",
+a:[
+"Pai",
+"Mãe",
+"Irmão",
+"Professor"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'brother'?",
+a:[
+"Irmão",
+"Pai",
+"Professor",
+"Amigo"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'sister'?",
+a:[
+"Irmã",
+"Mãe",
+"Professora",
+"Amiga"
+],
+c:0,
+cat:"VOCABULARY"
+},
+
+/* COLORS */
+
+{
+q:"What is 'red'?",
+a:[
+"Vermelho",
+"Azul",
+"Verde",
+"Amarelo"
+],
+c:0,
+cat:"COLORS"
+},
+
+{
+q:"What is 'blue'?",
+a:[
+"Azul",
+"Vermelho",
+"Verde",
+"Preto"
+],
+c:0,
+cat:"COLORS"
+},
+
+{
+q:"What is 'green'?",
+a:[
+"Verde",
+"Azul",
+"Amarelo",
+"Branco"
+],
+c:0,
+cat:"COLORS"
+},
+
+{
+q:"What is 'black'?",
+a:[
+"Preto",
+"Branco",
+"Azul",
+"Verde"
+],
+c:0,
+cat:"COLORS"
+},
+
+{
+q:"What is 'white'?",
+a:[
+"Branco",
+"Preto",
+"Azul",
+"Amarelo"
+],
+c:0,
+cat:"COLORS"
+},
+
+{
+q:"What is 'yellow'?",
+a:[
+"Amarelo",
+"Azul",
+"Verde",
+"Vermelho"
+],
+c:0,
+cat:"COLORS"
+},
+
+/* TO BE */
+
+{
+q:"I ___ a student.",
+a:[
+"am",
+"is",
+"are",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"She ___ my friend.",
+a:[
+"is",
+"am",
+"are",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"He ___ a teacher.",
+a:[
+"is",
+"am",
+"are",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"We ___ students.",
+a:[
+"are",
+"is",
+"am",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"They ___ friends.",
+a:[
+"are",
+"is",
+"am",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"I ___ happy.",
+a:[
+"am",
+"is",
+"are",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"You ___ my friend.",
+a:[
+"are",
+"is",
+"am",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"He ___ happy.",
+a:[
+"is",
+"are",
+"am",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"They ___ happy.",
+a:[
+"are",
+"is",
+"am",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"We ___ friends.",
+a:[
+"are",
+"is",
+"am",
+"be"
+],
+c:0,
+cat:"TO BE"
+},
+
+/* ARTICLES */
+
+{
+q:"I have ___ book.",
+a:[
+"a",
+"an",
+"the",
+"are"
+],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"She has ___ apple.",
+a:[
+"an",
+"a",
+"the",
+"is"
+],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"He has ___ dog.",
+a:[
+"a",
+"an",
+"are",
+"am"
+],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"I eat ___ orange.",
+a:[
+"an",
+"a",
+"is",
+"are"
+],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"She has ___ cat.",
+a:[
+"a",
+"an",
+"am",
+"are"
+],
+c:0,
+cat:"ARTICLES"
+},
+
+/* FRASES */
+
+{
+q:"Choose the correct sentence:",
+a:[
+"I like pizza.",
+"I likes pizza.",
+"I liking pizza.",
+"I am like pizza."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"I play soccer.",
+"I plays soccer.",
+"I playing soccer.",
+"I am play soccer."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"She likes music.",
+"She like music.",
+"She liking music.",
+"She is like music."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"He plays soccer.",
+"He play soccer.",
+"He playing soccer.",
+"He is play soccer."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"I have a dog.",
+"I has a dog.",
+"I having a dog.",
+"I am have a dog."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"She has a cat.",
+"She have a cat.",
+"She having a cat.",
+"She is have a cat."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"I want water.",
+"I wants water.",
+"I wanting water.",
+"I am want water."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"He wants water.",
+"He want water.",
+"He wanting water.",
+"He is want water."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"I watch TV.",
+"I watches TV.",
+"I watching TV.",
+"I am watch TV."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:[
+"She watches TV.",
+"She watch TV.",
+"She watching TV.",
+"She is watch TV."
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+/* QUESTIONS */
+
+{
+q:"Do you like pizza?",
+a:[
+"Yes, I do.",
+"Yes, I am.",
+"Yes, I does.",
+"Yes, I is."
+],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Do you play soccer?",
+a:[
+"Yes, I do.",
+"Yes, I am.",
+"Yes, I does.",
+"Yes, I is."
+],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Do you like music?",
+a:[
+"Yes, I do.",
+"Yes, I am.",
+"Yes, I does.",
+"Yes, I is."
+],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Does she like pizza?",
+a:[
+"Yes, she does.",
+"Yes, she do.",
+"Yes, she is.",
+"Yes, she are."
+],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Does he play soccer?",
+a:[
+"Yes, he does.",
+"Yes, he do.",
+"Yes, he is.",
+"Yes, he are."
+],
+c:0,
+cat:"QUESTIONS"
+},
+
+/* NUMBERS */
+
+{
+q:"What is 'one'?",
+a:[
+"Um",
+"Dois",
+"Três",
+"Quatro"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'two'?",
+a:[
+"Dois",
+"Um",
+"Três",
+"Cinco"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'three'?",
+a:[
+"Três",
+"Dois",
+"Quatro",
+"Cinco"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'four'?",
+a:[
+"Quatro",
+"Três",
+"Cinco",
+"Seis"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'five'?",
+a:[
+"Cinco",
+"Quatro",
+"Seis",
+"Sete"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'six'?",
+a:[
+"Seis",
+"Cinco",
+"Sete",
+"Oito"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'seven'?",
+a:[
+"Sete",
+"Seis",
+"Oito",
+"Nove"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'eight'?",
+a:[
+"Oito",
+"Sete",
+"Nove",
+"Dez"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'nine'?",
+a:[
+"Nove",
+"Oito",
+"Dez",
+"Sete"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+{
+q:"What is 'ten'?",
+a:[
+"Dez",
+"Nove",
+"Oito",
+"Onze"
+],
+c:0,
+cat:"NUMBERS"
+},
+
+/* MAIS SIMPLE PRESENT */
+
+{
+q:"I ___ soccer.",
+a:[
+"play",
+"plays",
+"playing",
+"is play"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ soccer.",
+a:[
+"plays",
+"play",
+"playing",
+"is play"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ music.",
+a:[
+"like",
+"likes",
+"liking",
+"is like"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ music.",
+a:[
+"likes",
+"like",
+"liking",
+"is like"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ English.",
+a:[
+"study",
+"studies",
+"studying",
+"is study"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ English.",
+a:[
+"studies",
+"study",
+"studying",
+"is study"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ TV.",
+a:[
+"watch",
+"watches",
+"watching",
+"is watch"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ TV.",
+a:[
+"watches",
+"watch",
+"watching",
+"is watch"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ water.",
+a:[
+"drink",
+"drinks",
+"drinking",
+"is drink"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ water.",
+a:[
+"drinks",
+"drink",
+"drinking",
+"is drink"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ to school.",
+a:[
+"go",
+"goes",
+"going",
+"is go"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ to school.",
+a:[
+"goes",
+"go",
+"going",
+"is go"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ a book.",
+a:[
+"have",
+"has",
+"having",
+"is have"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ a book.",
+a:[
+"has",
+"have",
+"having",
+"is have"
+],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+/* DAILY ROUTINE */
+
+{
+q:"I wake up at 7.",
+a:[
+"Eu acordo às 7.",
+"Eu durmo às 7.",
+"Eu almoço às 7.",
+"Eu estudo às 7."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+{
+q:"I go to school.",
+a:[
+"Eu vou para a escola.",
+"Eu moro na escola.",
+"Eu trabalho em casa.",
+"Eu volto da escola."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+{
+q:"I eat breakfast.",
+a:[
+"Eu tomo café da manhã.",
+"Eu almoço.",
+"Eu janto.",
+"Eu durmo."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+{
+q:"I go home.",
+a:[
+"Eu vou para casa.",
+"Eu vou para a escola.",
+"Eu trabalho em casa.",
+"Eu moro na escola."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+{
+q:"I sleep at night.",
+a:[
+"Eu durmo à noite.",
+"Eu estudo à noite.",
+"Eu trabalho à noite.",
+"Eu almoço à noite."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+{
+q:"She goes to school.",
+a:[
+"Ela vai para a escola.",
+"Ela mora na escola.",
+"Ela trabalha em casa.",
+"Ela compra uma escola."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+{
+q:"He eats breakfast.",
+a:[
+"Ele toma café da manhã.",
+"Ele janta.",
+"Ele dorme.",
+"Ele estuda."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+{
+q:"She watches TV at night.",
+a:[
+"Ela assiste TV à noite.",
+"Ela trabalha à noite.",
+"Ela dorme na TV.",
+"Ela compra uma TV."
+],
+c:0,
+cat:"DAILY ROUTINE"
+},
+
+/* QUESTÕES EXTRAS */
+
+{
+q:"I ___ pizza.",
+a:["like","likes","liking","is like"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ pizza.",
+a:["likes","like","liking","is like"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ soccer.",
+a:["play","plays","playing","is play"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ soccer.",
+a:["plays","play","playing","is play"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ English.",
+a:["study","studies","studying","is study"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ English.",
+a:["studies","study","studying","is study"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ water.",
+a:["drink","drinks","drinking","is drink"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ water.",
+a:["drinks","drink","drinking","is drink"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ rice.",
+a:["eat","eats","eating","is eat"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ rice.",
+a:["eats","eat","eating","is eat"],
+c:0,
+cat:"SIMPLE PRESENT"
+}
+
+];
+
+
+/* =====================================================
+   ESTADO DO JOGO
+===================================================== */
+
+let questions = [];
+
+let currentQuestion = 0;
+
+let currentTeam = 0;
+
+let teamNames = [
+    "GRUPO 1",
+    "GRUPO 2"
+];
+
+let times = [
+    0,
+    0
+];
+
+let distances = [
+    0,
+    0
+];
+
+let finished = [
+    false,
+    false
+];
+
+let timer = null;
+
+let lastTimestamp = null;
+
+let answered = false;
+
+
+/* =====================================================
+   EMBARALHAR
+===================================================== */
+
+function shuffle(array){
+
+    const arr = [...array];
+
+    for(
+        let i = arr.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            arr[i],
+            arr[j]
+        ] = [
+            arr[j],
+            arr[i]
+        ];
+
+    }
+
+    return arr;
+
+}
+
+
+/* =====================================================
+   INICIAR JOGO
+===================================================== */
+
+function startGame(){
+
+    teamNames[0] =
+        document.getElementById("team1Input")
+        .value.trim() || "GRUPO 1";
+
+    teamNames[1] =
+        document.getElementById("team2Input")
+        .value.trim() || "GRUPO 2";
+
+
+    /*
+       Cria exatamente 100 perguntas.
+       O banco pode ser maior ou menor.
+       A seleção é aleatória.
+    */
+
+    let pool = [];
+
+    while(pool.length < 100){
+
+        pool.push(
+            ...shuffle(questionBank)
+        );
+
+    }
+
+    questions =
+        pool.slice(0,100);
+
+
+    currentQuestion = 0;
+
+    currentTeam = 0;
+
+    times = [
+        0,
+        0
+    ];
+
+    distances = [
+        0,
+        0
+    ];
+
+    finished = [
+        false,
+        false
+    ];
+
+
+    document.getElementById("teamName1")
+        .textContent =
+        teamNames[0];
+
+    document.getElementById("teamName2")
+        .textContent =
+        teamNames[1];
+
+
+    document.getElementById("menu")
+        .style.display =
+        "none";
+
+    document.getElementById("result")
+        .style.display =
+        "none";
+
+    document.getElementById("game")
+        .style.display =
+        "flex";
+
+
+    updateTimeDisplay();
+
+    updateCar();
+
+    showQuestion();
+
+    startClock();
+
+}
+
+
+/* =====================================================
+   CRONÔMETRO
+===================================================== */
+
+function startClock(){
+
+    clearInterval(timer);
+
+    lastTimestamp =
+        Date.now();
+
+
+    timer =
+        setInterval(()=>{
+
+            const now =
+                Date.now();
+
+            const delta =
+                now - lastTimestamp;
+
+            lastTimestamp =
+                now;
+
+
+            /*
+               O tempo pertence apenas ao
+               grupo que está com a vez.
+            */
+
+            if(
+                !finished[currentTeam]
+            ){
+
+                times[currentTeam] +=
+                    delta;
+
+                updateTimeDisplay();
+
+            }
+
+        },100);
+
+}
+
+
+/* =====================================================
+   FORMATAR TEMPO
+===================================================== */
+
+function formatTime(ms){
+
+    const totalSeconds =
+        Math.floor(ms / 1000);
+
+    const hours =
+        Math.floor(
+            totalSeconds / 3600
+        );
+
+    const minutes =
+        Math.floor(
+            (totalSeconds % 3600) / 60
+        );
+
+    const seconds =
+        totalSeconds % 60;
+
+
+    const h =
+        String(hours).padStart(2,"0");
+
+    const m =
+        String(minutes).padStart(2,"0");
+
+    const s =
+        String(seconds).padStart(2,"0");
+
+
+    if(hours > 0){
+
+        return `${h}:${m}:${s}`;
+
+    }
+
+    return `${m}:${s}`;
+
+}
+
+
+/* =====================================================
+   TEMPOS
+===================================================== */
+
+function updateTimeDisplay(){
+
+    document.getElementById("time1")
+        .textContent =
+        formatTime(times[0]);
+
+    document.getElementById("time2")
+        .textContent =
+        formatTime(times[1]);
+
+}
+
+
+/* =====================================================
+   MOSTRAR QUESTÃO
+===================================================== */
+
+function showQuestion(){
+
+    answered = false;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    document.getElementById("question")
+        .textContent =
+        q.q;
+
+
+    document.getElementById("category")
+        .textContent =
+        "A1 • " + q.cat;
+
+
+    document.getElementById("instruction")
+        .textContent =
+        getInstruction(q.cat);
+
+
+    document.getElementById("questionCounter")
+        .textContent =
+        `Pergunta ${currentQuestion + 1} de 100`;
+
+
+    document.getElementById("kmCounter")
+        .textContent =
+        `${distances[currentTeam]} KM`;
+
+
+    document.getElementById("levelText")
+        .textContent =
+        `NÍVEL ${getLevel(distances[currentTeam])}`;
+
+
+    document.getElementById("distanceText")
+        .textContent =
+        `${distances[currentTeam]} / 100 KM`;
+
+
+    const turn =
+        document.getElementById("turn");
+
+
+    turn.textContent =
+        `VEZ DO ${teamNames[currentTeam]}`;
+
+
+    turn.classList.toggle(
+        "red",
+        currentTeam === 1
+    );
+
+
+    document.getElementById("teamPanel1")
+        .classList.toggle(
+            "active",
+            currentTeam === 0
+        );
+
+    document.getElementById("teamPanel2")
+        .classList.toggle(
+            "active",
+            currentTeam === 1
+        );
+
+
+    createAnswers(q);
+
+    updateProgress();
+
+    document.getElementById("feedback")
+        .textContent =
+        "";
+
+
+    document.getElementById("nextBtn")
+        .style.display =
+        "none";
+
+
+    updateCar();
+
+}
+
+
+/* =====================================================
+   NÍVEL
+===================================================== */
+
+function getLevel(km){
+
+    if(km >= 100){
+        return 10;
+    }
+
+    return Math.floor(km / 10) + 1;
+
+}
+
+
+/* =====================================================
+   INSTRUÇÃO
+===================================================== */
+
+function getInstruction(category){
+
+    if(category === "VOCABULARY"){
+        return "Escolha o significado correto.";
+    }
+
+    if(category === "TO BE"){
+        return "Complete a frase corretamente.";
+    }
+
+    if(category === "ARTICLES"){
+        return "Escolha a alternativa correta.";
+    }
+
+    if(category === "QUESTIONS"){
+        return "Escolha a resposta correta.";
+    }
+
+    return "Escolha a alternativa correta.";
+
+}
+
+
+/* =====================================================
+   CRIAR RESPOSTAS
+===================================================== */
+
+function createAnswers(q){
+
+    const container =
+        document.getElementById("answers");
+
+    container.innerHTML =
+        "";
+
+
+    const options =
+        q.a.map(
+            (text,index)=>({
+
+                text:text,
+
+                correct:
+                    index === q.c
+
+            })
+        );
+
+
+    shuffle(options)
+        .forEach(option=>{
+
+            const btn =
+                document.createElement("button");
+
+
+            btn.className =
+                "answer";
+
+
+            btn.textContent =
+                option.text;
+
+
+            btn.dataset.correct =
+                option.correct
+                ? "true"
+                : "false";
+
+
+            btn.onclick =
+                ()=>checkAnswer(btn);
+
+
+            container.appendChild(btn);
+
+        });
+
+}
+
+
+/* =====================================================
+   RESPONDER
+===================================================== */
+
+function checkAnswer(button){
+
+    if(answered){
+        return;
+    }
+
+
+    answered = true;
+
+
+    const correct =
+        button.dataset.correct === "true";
+
+
+    const buttons =
+        document.querySelectorAll(".answer");
+
+
+    buttons.forEach(btn=>{
+
+        btn.disabled =
+            true;
+
+
+        if(
+            btn.dataset.correct === "true"
+        ){
+
+            btn.classList.add(
+                "correct"
+            );
+
+        }
+
+    });
+
+
+    if(correct){
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        /*
+           ACERTO = +1 KM
+        */
+
+        distances[currentTeam] =
+            Math.min(
+                100,
+                distances[currentTeam] + 1
+            );
+
+
+        document.getElementById("feedback")
+            .innerHTML =
+            `✅ CORRETO! <strong>+1 KM</strong>`;
+
+    }
+
+    else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        /*
+           ERRO = -1 KM
+        */
+
+        distances[currentTeam] =
+            Math.max(
+                0,
+                distances[currentTeam] - 1
+            );
+
+
+        document.getElementById("feedback")
+            .innerHTML =
+            `❌ ERRO! <strong>-1 KM</strong>`;
+
+    }
+
+
+    updateProgress();
+
+    updateCar();
+
+
+    /*
+       Chegou a 100 KM?
+    */
+
+    if(
+        distances[currentTeam] >= 100
+    ){
+
+        finished[currentTeam] =
+            true;
+
+
+        document.getElementById("feedback")
+            .innerHTML =
+            `🏁 <strong>${teamNames[currentTeam]}</strong>
+             CHEGOU AO NÍVEL 10!`;
+
+
+        /*
+           Se o outro grupo também terminou,
+           finaliza imediatamente.
+        */
+
+        if(
+            finished[0] &&
+            finished[1]
+        ){
+
+            document.getElementById("nextBtn")
+                .style.display =
+                "none";
+
+            finishGame();
+
+            return;
+
+        }
+
+
+        /*
+           O outro grupo precisa terminar.
+        */
+
+        document.getElementById("nextBtn")
+            .style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    document.getElementById("nextBtn")
+        .style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   ATUALIZAR CARRO
+===================================================== */
+
+function updateCar(){
+
+    const car =
+        document.getElementById("car");
+
+
+    /*
+       O carro percorre toda a pista
+       entre 0 e 100 km.
+    */
+
+    const percentage =
+        distances[currentTeam];
+
+
+    car.className =
+        currentTeam === 0
+        ? "car blue"
+        : "car red";
+
+
+    car.style.left =
+        `calc(${percentage}% - 46px)`;
+
+
+    /*
+       Mantém o carro dentro da pista.
+    */
+
+    if(percentage <= 3){
+
+        car.style.left =
+            "20px";
+
+    }
+
+
+    if(percentage >= 97){
+
+        car.style.left =
+            "calc(100% - 112px)";
+
+    }
+
+}
+
+
+/* =====================================================
+   PROGRESSO
+===================================================== */
+
+function updateProgress(){
+
+    const km =
+        distances[currentTeam];
+
+
+    const level =
+        getLevel(km);
+
+
+    document.getElementById("progressBar")
+        .style.width =
+        km + "%";
+
+
+    document.getElementById("kmCounter")
+        .textContent =
+        `${km} KM`;
+
+
+    document.getElementById("distanceText")
+        .textContent =
+        `${km} / 100 KM`;
+
+
+    document.getElementById("levelText")
+        .textContent =
+        `NÍVEL ${level}`;
+
+}
+
+
+/* =====================================================
+   PRÓXIMA RODADA
+===================================================== */
+
+function nextQuestion(){
+
+    /*
+       Alterna a vez.
+    */
+
+    let nextTeam =
+        currentTeam === 0
+        ? 1
+        : 0;
+
+
+    /*
+       Se o próximo já terminou,
+       mantém a vez do outro.
+    */
+
+    if(finished[nextTeam]){
+
+        nextTeam =
+            currentTeam;
+
+    }
+
+
+    currentTeam =
+        nextTeam;
+
+
+    currentQuestion++;
+
+
+    /*
+       Se acabarem as 100 perguntas,
+       finaliza.
+    */
+
+    if(
+        currentQuestion >= 100
+    ){
+
+        finishGame();
+
+        return;
+
+    }
+
+
+    showQuestion();
+
+}
+
+
+/* =====================================================
+   FINAL
+===================================================== */
+
+function finishGame(){
+
+    clearInterval(timer);
+
+
+    /*
+       Garante que o último tempo seja
+       atualizado visualmente.
+    */
+
+    updateTimeDisplay();
+
+
+    document.getElementById("game")
+        .style.display =
+        "none";
+
+
+    document.getElementById("result")
+        .style.display =
+        "flex";
+
+
+    document.getElementById("finalName1")
+        .textContent =
+        teamNames[0];
+
+
+    document.getElementById("finalName2")
+        .textContent =
+        teamNames[1];
+
+
+    document.getElementById("finalTime1")
+        .textContent =
+        formatTime(times[0]);
+
+
+    document.getElementById("finalTime2")
+        .textContent =
+        formatTime(times[1]);
+
+
+    let winner;
+
+
+    /*
+       Se ambos chegaram a 100 KM,
+       vence o menor tempo.
+    */
+
+    if(
+        distances[0] >= 100 &&
+        distances[1] >= 100
+    ){
+
+        if(times[0] < times[1]){
+
+            winner =
+                `🏆 ${teamNames[0]} VENCEU!`;
+
+        }
+
+        else if(times[1] < times[0]){
+
+            winner =
+                `🏆 ${teamNames[1]} VENCEU!`;
+
+        }
+
+        else{
+
+            winner =
+                "🤝 EMPATE!";
+
+        }
+
+    }
+
+    /*
+       Apenas um chegou.
+    */
+
+    else if(
+        distances[0] >= 100
+    ){
+
+        winner =
+            `🏆 ${teamNames[0]} VENCEU!`;
+
+    }
+
+    else if(
+        distances[1] >= 100
+    ){
+
+        winner =
+            `🏆 ${teamNames[1]} VENCEU!`;
+
+    }
+
+    /*
+       Se acabaram as perguntas,
+       compara quem chegou mais longe.
+    */
+
+    else{
+
+        if(
+            distances[0] > distances[1]
+        ){
+
+            winner =
+                `🏆 ${teamNames[0]} VENCEU!`;
+
+        }
+
+        else if(
+            distances[1] > distances[0]
+        ){
+
+            winner =
+                `🏆 ${teamNames[1]} VENCEU!`;
+
+        }
+
+        else if(
+            times[0] < times[1]
+        ){
+
+            winner =
+                `🏆 ${teamNames[0]} VENCEU!`;
+
+        }
+
+        else if(
+            times[1] < times[0]
+        ){
+
+            winner =
+                `🏆 ${teamNames[1]} VENCEU!`;
+
+        }
+
+        else{
+
+            winner =
+                "🤝 EMPATE!";
+
+        }
+
+    }
+
+
+    document.getElementById("winner")
+        .textContent =
+        winner;
+
+}
+
+</script>
+
+</body>
+</html>

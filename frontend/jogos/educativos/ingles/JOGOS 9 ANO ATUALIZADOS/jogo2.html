@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Comic Challenge - 9º Ano</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top left,#172554,transparent 35%),
+        radial-gradient(circle at bottom right,#312e81,transparent 35%),
+        #050816;
+    color:white;
+}
+
+header{
+    height:70px;
+    background:rgba(0,0,0,.45);
+    border-bottom:1px solid rgba(255,255,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.header-info{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.container{
+    width:min(1100px,94%);
+    margin:25px auto;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+/* =========================
+   TELA INICIAL
+========================= */
+
+.start{
+    min-height:80vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.badge{
+    color:#38bdf8;
+    border:1px solid rgba(56,189,248,.35);
+    background:rgba(56,189,248,.1);
+    padding:8px 16px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+.start h1{
+    font-size:clamp(40px,7vw,70px);
+    margin-bottom:12px;
+}
+
+.start p{
+    max-width:700px;
+    color:#94a3b8;
+    line-height:1.6;
+    font-size:17px;
+}
+
+.groups{
+    display:flex;
+    gap:20px;
+    width:min(700px,100%);
+    margin:35px 0;
+}
+
+.group{
+    flex:1;
+    padding:25px;
+    border-radius:18px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+}
+
+.group h2{
+    margin-bottom:8px;
+}
+
+.group p{
+    color:#94a3b8;
+}
+
+.main-btn{
+    border:0;
+    padding:15px 30px;
+    border-radius:12px;
+    background:#38bdf8;
+    color:#03111c;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.main-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(56,189,248,.3);
+}
+
+/* =========================
+   PLACAR
+========================= */
+
+.scoreboard{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.score{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:15px;
+    padding:14px;
+    text-align:center;
+}
+
+.score small{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:5px;
+}
+
+.score strong{
+    font-size:28px;
+}
+
+/* =========================
+   SORTEIO
+========================= */
+
+.turn{
+    text-align:center;
+    padding:18px;
+    margin-bottom:20px;
+    border-radius:17px;
+    background:linear-gradient(
+        135deg,
+        rgba(56,189,248,.12),
+        rgba(129,140,248,.12)
+    );
+    border:1px solid rgba(56,189,248,.25);
+}
+
+.turn small{
+    color:#94a3b8;
+}
+
+.turn h2{
+    margin-top:6px;
+    font-size:28px;
+}
+
+/* =========================
+   TÍTULO
+========================= */
+
+.game-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.game-title h2{
+    font-size:25px;
+}
+
+.game-title span{
+    color:#38bdf8;
+    font-weight:bold;
+}
+
+/* =========================
+   TIRINHA
+========================= */
+
+.comic{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-bottom:22px;
+}
+
+.panel{
+    background:#f8fafc;
+    color:#111827;
+    border:5px solid #111827;
+    border-radius:8px;
+    padding:10px;
+    min-height:270px;
+    position:relative;
+    box-shadow:5px 5px 0 #000;
+}
+
+.panel-number{
+    position:absolute;
+    top:7px;
+    left:7px;
+    background:#111827;
+    color:white;
+    padding:4px 8px;
+    font-size:11px;
+    font-weight:bold;
+    border-radius:4px;
+}
+
+.scene{
+    height:145px;
+    margin-top:25px;
+    border-radius:7px;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(#bfdbfe 0%,#dbeafe 65%,#86efac 65%);
+}
+
+/* PERSONAGEM */
+
+.character{
+    position:absolute;
+    bottom:12px;
+    width:42px;
+    height:65px;
+    background:#2563eb;
+    border-radius:15px 15px 5px 5px;
+}
+
+.character:before{
+    content:"";
+    position:absolute;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#f1c27d;
+    left:5px;
+    top:-27px;
+    border:2px solid #111827;
+}
+
+.character:after{
+    content:"";
+    position:absolute;
+    width:38px;
+    height:9px;
+    background:#111827;
+    left:2px;
+    top:-29px;
+    border-radius:10px;
+}
+
+.alex{
+    left:25px;
+}
+
+.ben{
+    right:25px;
+    background:#ef4444;
+}
+
+.house{
+    position:absolute;
+    right:20px;
+    bottom:15px;
+    width:95px;
+    height:70px;
+    background:#f59e0b;
+    border:3px solid #111827;
+}
+
+.house:before{
+    content:"";
+    position:absolute;
+    left:-10px;
+    top:-42px;
+    border-left:55px solid transparent;
+    border-right:55px solid transparent;
+    border-bottom:45px solid #7c2d12;
+}
+
+.ball{
+    position:absolute;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#fff;
+    border:3px solid #111827;
+    bottom:20px;
+    left:50%;
+}
+
+.bed{
+    position:absolute;
+    bottom:15px;
+    left:20px;
+    width:115px;
+    height:42px;
+    background:#60a5fa;
+    border:3px solid #111827;
+}
+
+.table{
+    position:absolute;
+    bottom:15px;
+    right:25px;
+    width:70px;
+    height:42px;
+    background:#92400e;
+    border:3px solid #111827;
+}
+
+.bubble{
+    position:absolute;
+    top:10px;
+    left:10px;
+    max-width:190px;
+    padding:8px 11px;
+    background:white;
+    border:3px solid #111827;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+    line-height:1.25;
+}
+
+.bubble.right{
+    left:auto;
+    right:8px;
+}
+
+.caption{
+    margin-top:12px;
+    font-size:14px;
+    line-height:1.4;
+    font-weight:bold;
+}
+
+.caption small{
+    display:block;
+    margin-top:5px;
+    color:#475569;
+    font-weight:normal;
+}
+
+/* =========================
+   QUESTÃO
+========================= */
+
+.question-box{
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
+    padding:25px;
+}
+
+.question-number{
+    color:#38bdf8;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.question{
+    font-size:21px;
+    font-weight:900;
+    line-height:1.4;
+    margin-bottom:18px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.option{
+    background:rgba(255,255,255,.06);
+    color:white;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:16px;
+    font-size:16px;
+    text-align:left;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.option:hover{
+    border-color:#38bdf8;
+    background:rgba(56,189,248,.1);
+}
+
+.option.correct{
+    background:rgba(34,197,94,.2);
+    border-color:#22c55e;
+}
+
+.option.wrong{
+    background:rgba(239,68,68,.2);
+    border-color:#ef4444;
+}
+
+.feedback{
+    display:none;
+    margin-top:18px;
+    padding:16px;
+    border-radius:12px;
+    line-height:1.5;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.correct{
+    background:rgba(34,197,94,.12);
+    border:1px solid rgba(34,197,94,.35);
+}
+
+.feedback.wrong{
+    background:rgba(239,68,68,.12);
+    border:1px solid rgba(239,68,68,.35);
+}
+
+.next{
+    display:none;
+    margin:18px auto 0;
+    border:0;
+    padding:13px 25px;
+    border-radius:10px;
+    background:#818cf8;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.next.show{
+    display:block;
+}
+
+/* =========================
+   FINAL
+========================= */
+
+.final{
+    text-align:center;
+    padding:50px 20px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:25px;
+}
+
+.final h1{
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+.final p{
+    color:#94a3b8;
+}
+
+.final-scores{
+    display:flex;
+    gap:20px;
+    max-width:700px;
+    margin:30px auto;
+}
+
+.final-card{
+    flex:1;
+    padding:30px;
+    background:rgba(255,255,255,.06);
+    border-radius:18px;
+}
+
+.final-card strong{
+    display:block;
+    color:#38bdf8;
+    font-size:50px;
+    margin-top:10px;
+}
+
+.winner{
+    color:#facc15;
+    font-size:27px;
+    font-weight:900;
+    margin:25px;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:750px){
+
+    .comic{
+        grid-template-columns:1fr;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .groups,
+    .final-scores{
+        flex-direction:column;
+    }
+
+    .scoreboard{
+        grid-template-columns:1fr;
+    }
+
+    .game-title{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:5px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ENGLISH <span>COMIC</span>
+    </div>
+
+    <div class="header-info" id="headerInfo">
+        9º ANO
+    </div>
+
+</header>
+
+<div class="container">
+
+<!-- ======================================
+     INÍCIO
+====================================== -->
+
+<section id="startScreen" class="screen active">
+
+    <div class="start">
+
+        <div class="badge">
+            9º ANO • ENGLISH ACTIVITY
+        </div>
+
+        <h1>THE FUNNY DAY</h1>
+
+        <p>
+            Leia a tirinha, observe as cenas e responda às perguntas.
+            O sistema vai sortear qual grupo responderá cada questão.
+        </p>
+
+        <div class="groups">
+
+            <div class="group">
+
+                <h2>🔵 GRUPO 1</h2>
+
+                <p>
+                    English Team
+                </p>
+
+            </div>
+
+            <div class="group">
+
+                <h2>🔴 GRUPO 2</h2>
+
+                <p>
+                    English Team
+                </p>
+
+            </div>
+
+        </div>
+
+        <button class="main-btn" onclick="startGame()">
+            ▶ COMEÇAR
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================
+     JOGO
+====================================== -->
+
+<section id="gameScreen" class="screen">
+
+    <div class="scoreboard">
+
+        <div class="score">
+
+            <small>
+                🔵 GRUPO 1
+            </small>
+
+            <strong id="score1">
+                0
+            </strong>
+
+        </div>
+
+        <div class="score">
+
+            <small>
+                📝 QUESTÃO
+            </small>
+
+            <strong id="questionCounter">
+                1/10
+            </strong>
+
+        </div>
+
+        <div class="score">
+
+            <small>
+                🔴 GRUPO 2
+            </small>
+
+            <strong id="score2">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="turn">
+
+        <small>
+            🎲 O SISTEMA SORTEOU
+        </small>
+
+        <h2 id="turnText">
+            🔵 GRUPO 1
+        </h2>
+
+    </div>
+
+
+    <div class="game-title">
+
+        <h2>
+            📖 THE FUNNY DAY
+        </h2>
+
+        <span>
+            COMIC
+        </span>
+
+    </div>
+
+
+    <!-- ==================================
+         TIRINHA
+    ================================== -->
+
+    <div class="comic">
+
+
+        <!-- QUADRO 1 -->
+
+        <div class="panel">
+
+            <div class="panel-number">
+                1
+            </div>
+
+            <div class="scene">
+
+                <div class="character alex"></div>
+
+                <div class="character ben"></div>
+
+                <div class="bubble">
+                    Hi, Ben! Where are you going?
+                </div>
+
+            </div>
+
+            <div class="caption">
+
+                Alex meets Ben.
+
+                <small>
+                    Alex: "Hi, Ben! Where are you going?"
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUADRO 2 -->
+
+        <div class="panel">
+
+            <div class="panel-number">
+                2
+            </div>
+
+            <div class="scene">
+
+                <div class="character ben"></div>
+
+                <div class="ball"></div>
+
+                <div class="bubble right">
+                    I'm going to the park.
+                </div>
+
+            </div>
+
+            <div class="caption">
+
+                Ben is going to the park.
+
+                <small>
+                    Ben: "I'm going to the park."
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUADRO 3 -->
+
+        <div class="panel">
+
+            <div class="panel-number">
+                3
+            </div>
+
+            <div class="scene">
+
+                <div class="character alex"></div>
+
+                <div class="character ben"></div>
+
+                <div class="ball"></div>
+
+                <div class="bubble">
+                    Let's play soccer!
+                </div>
+
+            </div>
+
+            <div class="caption">
+
+                The boys play soccer.
+
+                <small>
+                    They have fun at the park.
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUADRO 4 -->
+
+        <div class="panel">
+
+            <div class="panel-number">
+                4
+            </div>
+
+            <div class="scene">
+
+                <div class="character alex"></div>
+
+                <div class="character ben"></div>
+
+                <div class="bubble right">
+                    There is a problem!
+                </div>
+
+            </div>
+
+            <div class="caption">
+
+                Something happens.
+
+                <small>
+                    Alex sees a problem.
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUADRO 5 -->
+
+        <div class="panel">
+
+            <div class="panel-number">
+                5
+            </div>
+
+            <div class="scene">
+
+                <div class="house"></div>
+
+                <div class="character alex"></div>
+
+                <div class="bubble">
+                    There are two dogs!
+                </div>
+
+            </div>
+
+            <div class="caption">
+
+                Two dogs are near the house.
+
+                <small>
+                    Alex is surprised.
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUADRO 6 -->
+
+        <div class="panel">
+
+            <div class="panel-number">
+                6
+            </div>
+
+            <div class="scene">
+
+                <div class="character ben"></div>
+
+                <div class="character alex"></div>
+
+                <div class="bubble right">
+                    Run!
+                </div>
+
+            </div>
+
+            <div class="caption">
+
+                The boys run away.
+
+                <small>
+                    It was a funny day!
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================
+         QUESTÃO
+    ================================== -->
+
+    <div class="question-box">
+
+        <div
+            class="question-number"
+            id="questionType">
+            QUESTION 1
+        </div>
+
+        <div
+            class="question"
+            id="questionText">
+        </div>
+
+        <div
+            class="options"
+            id="options">
+        </div>
+
+        <div
+            class="feedback"
+            id="feedback">
+        </div>
+
+        <button
+            class="next"
+            id="nextButton"
+            onclick="nextQuestion()">
+
+            PRÓXIMA QUESTÃO →
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================
+     FINAL
+====================================== -->
+
+<section id="finalScreen" class="screen">
+
+    <div class="final">
+
+        <div class="badge">
+            ACTIVITY COMPLETE
+        </div>
+
+        <h1>
+            🎉 FINISHED!
+        </h1>
+
+        <p>
+            A atividade terminou!
+        </p>
+
+
+        <div class="final-scores">
+
+            <div class="final-card">
+
+                🔵 GRUPO 1
+
+                <strong id="finalScore1">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="final-card">
+
+                🔴 GRUPO 2
+
+                <strong id="finalScore2">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="winner"
+            id="winner">
+        </div>
+
+
+        <button
+            class="main-btn"
+            onclick="location.reload()">
+
+            🔄 JOGAR NOVAMENTE
+
+        </button>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =================================================
+   QUESTÕES
+================================================= */
+
+const questions = [
+
+    {
+        type:"INTERPRETATION",
+
+        question:
+        "Where is Ben going?",
+
+        options:[
+            "To school.",
+            "To the park.",
+            "To the supermarket.",
+            "To the house."
+        ],
+
+        answer:1,
+
+        explanation:
+        "Ben says: 'I'm going to the park.'"
+    },
+
+
+    {
+        type:"INTERPRETATION",
+
+        question:
+        "What do Alex and Ben play?",
+
+        options:[
+            "Basketball.",
+            "Tennis.",
+            "Soccer.",
+            "Volleyball."
+        ],
+
+        answer:2,
+
+        explanation:
+        "The boys play soccer at the park."
+    },
+
+
+    {
+        type:"THERE IS",
+
+        question:
+        "Choose the correct sentence.",
+
+        options:[
+            "There are a problem.",
+            "There is a problem.",
+            "There are problem.",
+            "There is two problem."
+        ],
+
+        answer:1,
+
+        explanation:
+        "Problem is singular, so we use 'There is'."
+    },
+
+
+    {
+        type:"THERE ARE",
+
+        question:
+        "How many dogs are there?",
+
+        options:[
+            "One dog.",
+            "Two dogs.",
+            "Three dogs.",
+            "Four dogs."
+        ],
+
+        answer:1,
+
+        explanation:
+        "Alex says: 'There are two dogs.'"
+    },
+
+
+    {
+        type:"SIMPLE PRESENT",
+
+        question:
+        "Choose the correct sentence.",
+
+        options:[
+            "Ben play soccer.",
+            "Ben plays soccer.",
+            "Ben playing soccer.",
+            "Ben played soccer every day."
+        ],
+
+        answer:1,
+
+        explanation:
+        "With 'Ben' we use 'plays' in the Simple Present."
+    },
+
+
+    {
+        type:"SIMPLE PRESENT",
+
+        question:
+        "Which sentence is correct?",
+
+        options:[
+            "Alex likes soccer.",
+            "Alex like soccer.",
+            "Alex liking soccer.",
+            "Alex liked soccer every morning."
+        ],
+
+        answer:0,
+
+        explanation:
+        "Alex = he, so the verb receives -s: likes."
+    },
+
+
+    {
+        type:"SIMPLE PAST",
+
+        question:
+        "Which word indicates the past?",
+
+        options:[
+            "Today.",
+            "Every day.",
+            "Yesterday.",
+            "Usually."
+        ],
+
+        answer:2,
+
+        explanation:
+        "'Yesterday' indicates a past action."
+    },
+
+
+    {
+        type:"SIMPLE PAST",
+
+        question:
+        "Choose the sentence in the Simple Past.",
+
+        options:[
+            "They play soccer.",
+            "They played soccer.",
+            "They are playing soccer.",
+            "They play soccer every day."
+        ],
+
+        answer:1,
+
+        explanation:
+        "'Played' is the Simple Past of 'play'."
+    },
+
+
+    {
+        type:"THERE IS / THERE ARE",
+
+        question:
+        "Choose the correct sentence.",
+
+        options:[
+            "There is two dogs.",
+            "There are two dogs.",
+            "There are a dog.",
+            "There is many dogs."
+        ],
+
+        answer:1,
+
+        explanation:
+        "Dogs is plural, so we use 'There are'."
+    },
+
+
+    {
+        type:"FINAL",
+
+        question:
+        "How was the boys' day?",
+
+        options:[
+            "It was boring.",
+            "It was funny.",
+            "It was sad.",
+            "It was difficult."
+        ],
+
+        answer:1,
+
+        explanation:
+        "The final panel says: 'It was a funny day!'"
+    }
+
+];
+
+
+let currentQuestion = 0;
+
+let score1 = 0;
+let score2 = 0;
+
+let currentGroup = 1;
+
+let answered = false;
+
+
+/* =================================================
+   INICIAR
+================================================= */
+
+function startGame(){
+
+    document
+        .getElementById("startScreen")
+        .classList
+        .remove("active");
+
+    document
+        .getElementById("gameScreen")
+        .classList
+        .add("active");
+
+    currentQuestion = 0;
+
+    score1 = 0;
+
+    score2 = 0;
+
+    updateScores();
+
+    showQuestion();
+}
+
+
+/* =================================================
+   SORTEAR GRUPO
+================================================= */
+
+function drawGroup(){
+
+    currentGroup =
+        Math.random() < 0.5
+        ? 1
+        : 2;
+
+    document
+        .getElementById("turnText")
+        .textContent =
+        currentGroup === 1
+        ? "🔵 GRUPO 1"
+        : "🔴 GRUPO 2";
+}
+
+
+/* =================================================
+   MOSTRAR QUESTÃO
+================================================= */
+
+function showQuestion(){
+
+    answered = false;
+
+    drawGroup();
+
+    const q =
+        questions[currentQuestion];
+
+
+    document
+        .getElementById("questionCounter")
+        .textContent =
+        `${currentQuestion + 1}/${questions.length}`;
+
+
+    document
+        .getElementById("questionType")
+        .textContent =
+        `QUESTION ${currentQuestion + 1} • ${q.type}`;
+
+
+    document
+        .getElementById("questionText")
+        .textContent =
+        q.question;
+
+
+    const options =
+        document.getElementById("options");
+
+    options.innerHTML = "";
+
+
+    q.options.forEach(
+        (option,index)=>{
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "option";
+
+            button.textContent =
+                String.fromCharCode(65 + index)
+                + ") "
+                + option;
+
+            button.onclick =
+                ()=>{
+                    checkAnswer(
+                        index,
+                        button
+                    );
+                };
+
+            options.appendChild(button);
+        }
+    );
+
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.className =
+        "feedback";
+
+    feedback.innerHTML = "";
+
+
+    document
+        .getElementById("nextButton")
+        .classList
+        .remove("show");
+
+
+    document
+        .getElementById("headerInfo")
+        .textContent =
+        `Questão ${currentQuestion + 1} de ${questions.length}`;
+}
+
+
+/* =================================================
+   VERIFICAR RESPOSTA
+================================================= */
+
+function checkAnswer(
+    index,
+    selectedButton
+){
+
+    if(answered){
+        return;
+    }
+
+    answered = true;
+
+    const q =
+        questions[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+
+    buttons.forEach(button=>{
+        button.style.pointerEvents =
+            "none";
+    });
+
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    if(index === q.answer){
+
+        selectedButton
+            .classList
+            .add("correct");
+
+
+        if(currentGroup === 1){
+
+            score1 += 100;
+
+        }else{
+
+            score2 += 100;
+
+        }
+
+
+        feedback.className =
+            "feedback show correct";
+
+
+        feedback.innerHTML =
+            `
+            <strong>✅ CORRETO!</strong><br>
+            Grupo ${currentGroup} ganhou
+            <strong>100 pontos</strong>!<br><br>
+            ${q.explanation}
+            `;
+
+    }else{
+
+        selectedButton
+            .classList
+            .add("wrong");
+
+
+        buttons[q.answer]
+            .classList
+            .add("correct");
+
+
+        feedback.className =
+            "feedback show wrong";
+
+
+        feedback.innerHTML =
+            `
+            <strong>❌ INCORRETO!</strong><br>
+            A resposta correta é:
+            <strong>${q.options[q.answer]}</strong><br><br>
+            ${q.explanation}
+            `;
+    }
+
+
+    updateScores();
+
+
+    document
+        .getElementById("nextButton")
+        .classList
+        .add("show");
+}
+
+
+/* =================================================
+   PRÓXIMA QUESTÃO
+================================================= */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+
+    if(
+        currentQuestion >=
+        questions.length
+    ){
+
+        finishGame();
+
+        return;
+    }
+
+
+    showQuestion();
+}
+
+
+/* =================================================
+   ATUALIZAR PLACAR
+================================================= */
+
+function updateScores(){
+
+    document
+        .getElementById("score1")
+        .textContent =
+        score1;
+
+
+    document
+        .getElementById("score2")
+        .textContent =
+        score2;
+}
+
+
+/* =================================================
+   FINAL
+================================================= */
+
+function finishGame(){
+
+    document
+        .getElementById("gameScreen")
+        .classList
+        .remove("active");
+
+
+    document
+        .getElementById("finalScreen")
+        .classList
+        .add("active");
+
+
+    document
+        .getElementById("finalScore1")
+        .textContent =
+        score1;
+
+
+    document
+        .getElementById("finalScore2")
+        .textContent =
+        score2;
+
+
+    const winner =
+        document.getElementById("winner");
+
+
+    if(score1 > score2){
+
+        winner.textContent =
+            "🏆 GRUPO 1 VENCEU!";
+
+    }
+
+    else if(score2 > score1){
+
+        winner.textContent =
+            "🏆 GRUPO 2 VENCEU!";
+
+    }
+
+    else{
+
+        winner.textContent =
+            "🤝 EMPATE! PARABÉNS AOS DOIS GRUPOS!";
+    }
+
+
+    document
+        .getElementById("headerInfo")
+        .textContent =
+        "Atividade concluída";
+}
+
+</script>
+
+</body>
+</html>

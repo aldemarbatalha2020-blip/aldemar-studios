@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Space English - Battle Arena</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         JOGO
+    ====================================================== -->
+
+    <div id="game">
+
+        <!-- =================================================
+             HUD
+        ================================================== -->
+
+        <header class="game-header">
+
+
+            <!-- PLAYER 1 -->
+
+            <div
+                class="player-hud player-one-hud"
+            >
+
+                <div class="player-name">
+
+                    <span class="player-icon">
+                        🚀
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            PLAYER 1
+                        </strong>
+
+                        <small>
+                            W A S D + SPACE
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="lives">
+
+                    <span class="life p1-life">
+                        ❤️
+                    </span>
+
+                    <span class="life p1-life">
+                        ❤️
+                    </span>
+
+                    <span class="life p1-life">
+                        ❤️
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- CENTRO -->
+
+            <div class="game-title">
+
+                <span>
+                    🚀
+                </span>
+
+                <div>
+
+                    <h1>
+                        SPACE ENGLISH
+                    </h1>
+
+                    <small>
+                        BATTLE ARENA
+                    </small>
+
+                </div>
+
+                <span>
+                    👽
+                </span>
+
+            </div>
+
+
+            <!-- PLAYER 2 -->
+
+            <div
+                class="player-hud player-two-hud"
+            >
+
+                <div class="player-name">
+
+                    <div>
+
+                        <strong>
+                            PLAYER 2
+                        </strong>
+
+                        <small>
+                            ARROWS + ENTER
+                        </small>
+
+                    </div>
+
+                    <span class="player-icon">
+                        🚀
+                    </span>
+
+                </div>
+
+
+                <div class="lives">
+
+                    <span class="life p2-life">
+                        ❤️
+                    </span>
+
+                    <span class="life p2-life">
+                        ❤️
+                    </span>
+
+                    <span class="life p2-life">
+                        ❤️
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             ARENAS
+        ================================================== -->
+
+        <main class="battlefield">
+
+
+            <!-- =================================================
+                 PLAYER 1 ARENA
+            ================================================== -->
+
+            <section
+                id="player1Arena"
+                class="player-arena player-one-arena"
+            >
+
+                <div class="arena-label">
+
+                    PLAYER 1
+
+                </div>
+
+
+                <!-- ESTRELAS -->
+
+                <div class="stars"></div>
+
+
+                <!-- ALIENS -->
+
+                <div
+                    id="player1Aliens"
+                    class="aliens"
+                ></div>
+
+
+                <!-- TIROS -->
+
+                <div
+                    id="player1Bullets"
+                    class="bullets"
+                ></div>
+
+
+                <!-- NAVE -->
+
+                <div
+                    id="player1Ship"
+                    class="ship ship-one"
+                >
+
+                    🚀
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="arena-status">
+
+                    <span>
+                        ALIENS:
+                    </span>
+
+                    <strong id="player1Kills">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DIVISOR
+            ================================================== -->
+
+            <div class="arena-divider">
+
+                <div class="divider-line"></div>
+
+                <span>
+                    VS
+                </span>
+
+                <div class="divider-line"></div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PLAYER 2 ARENA
+            ================================================== -->
+
+            <section
+                id="player2Arena"
+                class="player-arena player-two-arena"
+            >
+
+                <div class="arena-label">
+
+                    PLAYER 2
+
+                </div>
+
+
+                <!-- ESTRELAS -->
+
+                <div class="stars"></div>
+
+
+                <!-- ALIENS -->
+
+                <div
+                    id="player2Aliens"
+                    class="aliens"
+                ></div>
+
+
+                <!-- TIROS -->
+
+                <div
+                    id="player2Bullets"
+                    class="bullets"
+                ></div>
+
+
+                <!-- NAVE -->
+
+                <div
+                    id="player2Ship"
+                    class="ship ship-two"
+                >
+
+                    🚀
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="arena-status">
+
+                    <span>
+                        ALIENS:
+                    </span>
+
+                    <strong id="player2Kills">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+
+        <!-- =================================================
+             CONTROLES
+        ================================================== -->
+
+        <footer class="controls-bar">
+
+
+            <div>
+
+                <strong>
+                    PLAYER 1
+                </strong>
+
+                <span>
+                    W A S D
+                </span>
+
+                <span>
+                    SPACE = SHOOT
+                </span>
+
+            </div>
+
+
+            <div class="round-info">
+
+                <span>
+                    ROUND
+                </span>
+
+                <strong id="roundNumber">
+                    1
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    PLAYER 2
+                </strong>
+
+                <span>
+                    ARROWS
+                </span>
+
+                <span>
+                    ENTER = SHOOT
+                </span>
+
+            </div>
+
+
+        </footer>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MODAL DE PERGUNTA
+    ====================================================== -->
+
+    <div
+        id="questionModal"
+        class="modal hidden"
+    >
+
+
+        <div class="question-box">
+
+
+            <div class="question-header">
+
+                <span id="questionPlayer">
+                    PLAYER 1
+                </span>
+
+                <span id="questionCategory">
+                    ENGLISH
+                </span>
+
+            </div>
+
+
+            <div class="alien-question-icon">
+                👽
+            </div>
+
+
+            <h2>
+                ENGLISH ATTACK!
+            </h2>
+
+
+            <p id="questionText">
+                What is the past of "GO"?
+            </p>
+
+
+            <div
+                id="questionAnswers"
+                class="question-answers"
+            >
+
+                <button
+                    class="answer-button"
+                    data-answer="0"
+                >
+                    A) Goed
+                </button>
+
+                <button
+                    class="answer-button"
+                    data-answer="1"
+                >
+                    B) Went
+                </button>
+
+                <button
+                    class="answer-button"
+                    data-answer="2"
+                >
+                    C) Goes
+                </button>
+
+                <button
+                    class="answer-button"
+                    data-answer="3"
+                >
+                    D) Going
+                </button>
+
+            </div>
+
+
+            <div
+                id="questionFeedback"
+                class="question-feedback"
+            ></div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TELA DE ELIMINAÇÃO
+    ====================================================== -->
+
+    <div
+        id="eliminationModal"
+        class="modal hidden"
+    >
+
+        <div class="elimination-box">
+
+            <div
+                id="eliminationIcon"
+                class="elimination-icon"
+            >
+                💀
+            </div>
+
+
+            <h2 id="eliminationTitle">
+                PLAYER 1 ELIMINATED
+            </h2>
+
+
+            <p id="eliminationText">
+                You lost all your lives.
+            </p>
+
+
+            <button
+                id="continueButton"
+                class="continue-button"
+            >
+                CONTINUE BATTLE
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TELA FINAL
+    ====================================================== -->
+
+    <div
+        id="winnerModal"
+        class="modal hidden"
+    >
+
+        <div class="winner-box">
+
+
+            <div class="winner-trophy">
+                🏆
+            </div>
+
+
+            <span class="victory-label">
+                VICTORY
+            </span>
+
+
+            <h2 id="winnerTitle">
+                PLAYER 1 WINS!
+            </h2>
+
+
+            <p id="winnerText">
+                The last survivor of the battle.
+            </p>
+
+
+            <div class="final-player-stats">
+
+
+                <div class="final-player">
+
+                    <strong>
+                        PLAYER 1
+                    </strong>
+
+                    <span id="finalP1Lives">
+                        ❤️❤️❤️
+                    </span>
+
+                    <small>
+                        SURVIVED
+                    </small>
+
+                </div>
+
+
+                <div class="final-vs">
+                    VS
+                </div>
+
+
+                <div class="final-player">
+
+                    <strong>
+                        PLAYER 2
+                    </strong>
+
+                    <span id="finalP2Lives">
+                        💀
+                    </span>
+
+                    <small>
+                        ELIMINATED
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="winner-score">
+
+
+                <div>
+
+                    <span>
+                        P1 ALIENS
+                    </span>
+
+                    <strong id="finalP1Kills">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        P2 ALIENS
+                    </span>
+
+                    <strong id="finalP2Kills">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                id="restartButton"
+                class="restart-button"
+            >
+
+                🔄 PLAY AGAIN
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>

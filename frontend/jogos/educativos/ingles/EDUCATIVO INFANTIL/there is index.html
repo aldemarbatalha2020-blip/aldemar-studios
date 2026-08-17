@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>There Is & There Are 🌈</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: "Comic Sans MS", "Trebuchet MS", Arial, sans-serif;
+        background: linear-gradient(180deg, #8ee7ff, #dff9ff);
+        min-height: 100vh;
+        color: #263238;
+    }
+
+    header {
+        background: linear-gradient(135deg, #6c5ce7, #00b894);
+        color: white;
+        text-align: center;
+        padding: 28px 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.15);
+    }
+
+    header h1 {
+        font-size: clamp(2rem, 6vw, 4rem);
+        margin-bottom: 8px;
+        text-shadow: 3px 3px 0 rgba(0,0,0,.15);
+    }
+
+    header p {
+        font-size: 1.2rem;
+    }
+
+    .container {
+        width: min(1100px, 94%);
+        margin: 25px auto 50px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 25px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 20px rgba(0,0,0,.12);
+        border: 4px solid rgba(255,255,255,.8);
+    }
+
+    .card h2 {
+        color: #6c5ce7;
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .intro {
+        text-align: center;
+    }
+
+    .intro .big-emoji {
+        font-size: 5rem;
+        margin: 10px;
+    }
+
+    .explanation {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .rule {
+        border-radius: 22px;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .rule.is {
+        background: #e8f8ff;
+        border: 4px solid #00a8ff;
+    }
+
+    .rule.are {
+        background: #fff4d6;
+        border: 4px solid #f39c12;
+    }
+
+    .rule h3 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+
+    .rule.is h3 {
+        color: #0984e3;
+    }
+
+    .rule.are h3 {
+        color: #e67e22;
+    }
+
+    .rule .emoji {
+        font-size: 4rem;
+        margin: 10px;
+    }
+
+    .example {
+        background: white;
+        border-radius: 15px;
+        padding: 12px;
+        margin-top: 15px;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .translation {
+        display: block;
+        color: #636e72;
+        font-size: 1rem;
+        margin-top: 5px;
+    }
+
+    .magic {
+        background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+        text-align: center;
+    }
+
+    .magic h2 {
+        color: #d63031;
+    }
+
+    .magic-rule {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .magic-box {
+        background: white;
+        border-radius: 18px;
+        padding: 18px 25px;
+        min-width: 180px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        box-shadow: 0 5px 10px rgba(0,0,0,.1);
+    }
+
+    .vocabulary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .word {
+        background: #f5f6fa;
+        border-radius: 18px;
+        padding: 18px;
+        text-align: center;
+        border: 3px solid #dfe6e9;
+        transition: .2s;
+    }
+
+    .word:hover {
+        transform: translateY(-5px);
+        border-color: #6c5ce7;
+    }
+
+    .word .emoji {
+        font-size: 3rem;
+    }
+
+    .word strong {
+        display: block;
+        color: #6c5ce7;
+        font-size: 1.2rem;
+        margin-top: 5px;
+    }
+
+    .word span {
+        color: #636e72;
+    }
+
+    .formation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 20px 0;
+    }
+
+    .piece {
+        padding: 14px 18px;
+        border-radius: 14px;
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .purple { background: #6c5ce7; }
+    .blue { background: #0984e3; }
+    .green { background: #00b894; }
+    .orange { background: #e17055; }
+    .pink { background: #e84393; }
+
+    .arrow {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .scene {
+        background: linear-gradient(180deg, #74b9ff 0 55%, #55efc4 55%);
+        border-radius: 25px;
+        padding: 30px;
+        min-height: 250px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .scene .house {
+        font-size: 8rem;
+    }
+
+    .scene p {
+        background: white;
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 15px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin: 8px;
+    }
+
+    .activity {
+        background: linear-gradient(135deg, #dfe6e9, #ffffff);
+    }
+
+    .question {
+        background: white;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 15px 0;
+        border: 3px solid #dfe6e9;
+    }
+
+    .question-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .answers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .answer {
+        border: none;
+        border-radius: 15px;
+        padding: 12px 20px;
+        background: #6c5ce7;
+        color: white;
+        font-family: inherit;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .answer:hover {
+        transform: scale(1.05);
+        background: #4834d4;
+    }
+
+    .answer.correct {
+        background: #00b894 !important;
+    }
+
+    .answer.wrong {
+        background: #d63031 !important;
+    }
+
+    .feedback {
+        margin-top: 10px;
+        font-weight: bold;
+        min-height: 25px;
+    }
+
+    #score {
+        text-align: center;
+        font-size: 1.6rem;
+        margin: 20px 0;
+        color: #6c5ce7;
+        font-weight: bold;
+    }
+
+    .reset {
+        display: block;
+        margin: 20px auto 0;
+        border: none;
+        background: #00b894;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 18px;
+        font-family: inherit;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .reset:hover {
+        background: #019875;
+    }
+
+    .remember {
+        background: linear-gradient(135deg, #a29bfe, #74b9ff);
+        color: white;
+        text-align: center;
+    }
+
+    .remember h2 {
+        color: white;
+    }
+
+    .remember p {
+        font-size: 1.4rem;
+        margin: 12px;
+        font-weight: bold;
+    }
+
+    footer {
+        text-align: center;
+        padding: 25px;
+        color: #636e72;
+        font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+        .explanation {
+            grid-template-columns: 1fr;
+        }
+
+        .card {
+            padding: 18px;
+        }
+
+        .scene .house {
+            font-size: 5rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌈 THERE IS & THERE ARE 🌈</h1>
+    <p>Vamos aprender inglês brincando! 🚀📚</p>
+</header>
+
+<div class="container">
+
+    <!-- INTRODUÇÃO -->
+    <section class="card intro">
+        <div class="big-emoji">🏠✨</div>
+
+        <h2>O que significa?</h2>
+
+        <p style="font-size:1.3rem; line-height:1.6;">
+            Quando queremos dizer que <strong>tem</strong> ou que
+            <strong>existe</strong> alguma coisa, podemos usar:
+        </p>
+
+        <div class="magic-rule">
+            <div class="magic-box">
+                🟢 THERE IS
+                <br>
+                <small>1 coisa</small>
+            </div>
+
+            <div class="magic-box">
+                🔵 THERE ARE
+                <br>
+                <small>2 ou mais coisas</small>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- THERE IS / THERE ARE -->
+    <section class="card">
+
+        <h2>🧠 A regra é muito fácil!</h2>
+
+        <div class="explanation">
+
+            <div class="rule is">
+
+                <h3>THERE IS</h3>
+
+                <div class="emoji">☝️🐱</div>
+
+                <p><strong>UMA COISA</strong></p>
+
+                <div class="example">
+                    There is a cat.
+                    <span class="translation">
+                        🐱 Tem um gato.
+                    </span>
+                </div>
+
+                <div class="example">
+                    There is a book.
+                    <span class="translation">
+                        📖 Tem um livro.
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="rule are">
+
+                <h3>THERE ARE</h3>
+
+                <div class="emoji">🐱🐱🐱</div>
+
+                <p><strong>DUAS OU MAIS COISAS</strong></p>
+
+                <div class="example">
+                    There are two cats.
+                    <span class="translation">
+                        🐱🐱 Tem dois gatos.
+                    </span>
+                </div>
+
+                <div class="example">
+                    There are many apples.
+                    <span class="translation">
+                        🍎🍎🍎 Tem muitas maçãs.
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- REGRA MÁGICA -->
+    <section class="card magic">
+
+        <h2>✨ A REGRA MÁGICA ✨</h2>
+
+        <div class="magic-rule">
+
+            <div class="magic-box">
+                ☝️ ONE
+                <br>
+                <strong>THERE IS</strong>
+            </div>
+
+            <div class="magic-box">
+                ✌️ TWO
+                <br>
+                <strong>THERE ARE</strong>
+            </div>
+
+            <div class="magic-box">
+                🌟 MANY
+                <br>
+                <strong>THERE ARE</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FORMAÇÃO -->
+    <section class="card">
+
+        <h2>🧩 Como formar a frase?</h2>
+
+        <h3 style="margin-top:15px;">☝️ UMA COISA</h3>
+
+        <div class="formation">
+            <div class="piece purple">THERE IS</div>
+            <div class="arrow">+</div>
+            <div class="piece blue">A / AN</div>
+            <div class="arrow">+</div>
+            <div class="piece green">COISA</div>
+        </div>
+
+        <div class="example" style="text-align:center;">
+            THERE IS + A + DOG
+            <br>
+            🐶
+            <br>
+            <strong>There is a dog.</strong>
+        </div>
+
+
+        <h3 style="margin-top:30px;">✌️ DUAS OU MAIS COISAS</h3>
+
+        <div class="formation">
+            <div class="piece purple">THERE ARE</div>
+            <div class="arrow">+</div>
+            <div class="piece orange">NUMBER</div>
+            <div class="arrow">+</div>
+            <div class="piece green">COISAS</div>
+        </div>
+
+        <div class="example" style="text-align:center;">
+            THERE ARE + TWO + CATS
+            <br>
+            🐱 🐱
+            <br>
+            <strong>There are two cats.</strong>
+        </div>
+
+    </section>
+
+
+    <!-- VOCABULÁRIO -->
+    <section class="card">
+
+        <h2>🎒 Vocabulary — Vocabulário</h2>
+
+        <div class="vocabulary">
+
+            <div class="word">
+                <div class="emoji">🐱</div>
+                <strong>CAT</strong>
+                <span>gato</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🐶</div>
+                <strong>DOG</strong>
+                <span>cachorro</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">📖</div>
+                <strong>BOOK</strong>
+                <span>livro</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">✏️</div>
+                <strong>PENCIL</strong>
+                <span>lápis</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">⚽</div>
+                <strong>BALL</strong>
+                <span>bola</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🍎</div>
+                <strong>APPLE</strong>
+                <span>maçã</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🪑</div>
+                <strong>CHAIR</strong>
+                <span>cadeira</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🏫</div>
+                <strong>SCHOOL</strong>
+                <span>escola</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🏠</div>
+                <strong>HOUSE</strong>
+                <span>casa</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🚗</div>
+                <strong>CAR</strong>
+                <span>carro</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🧸</div>
+                <strong>TOY</strong>
+                <span>brinquedo</span>
+            </div>
+
+            <div class="word">
+                <div class="emoji">🥚</div>
+                <strong>EGG</strong>
+                <span>ovo</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXEMPLOS -->
+    <section class="card">
+
+        <h2>🏠 Vamos olhar uma casa!</h2>
+
+        <div class="scene">
+
+            <div class="house">🏠</div>
+
+            <p>📖 There is a book.</p>
+
+            <p>🐶 There is a dog.</p>
+
+            <p>⚽⚽ There are two balls.</p>
+
+            <p>🍎🍎🍎 There are three apples.</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ATIVIDADE -->
+    <section class="card activity">
+
+        <h2>🎮 ATIVIDADE</h2>
+
+        <p style="font-size:1.2rem;">
+            Observe os desenhos e escolha a resposta correta!
+        </p>
+
+        <div id="questions"></div>
+
+        <div id="score"></div>
+
+        <button class="reset" onclick="restartGame()">
+            🔄 Jogar novamente
+        </button>
+
+    </section>
+
+
+    <!-- LEMBRETE -->
+    <section class="card remember">
+
+        <h2>🌟 LEMBRETE DO PEQUENO EXPLORADOR 🌟</h2>
+
+        <p>☝️ ONE → THERE IS</p>
+
+        <p>✌️ TWO OR MORE → THERE ARE</p>
+
+        <p>🌈 MANY → THERE ARE</p>
+
+        <p style="font-size:1.1rem;">
+            Você conseguiu! 🎉
+        </p>
+
+    </section>
+
+</div>
+
+
+<footer>
+    🌈 English with Aldemar • Aprendendo inglês brincando! 📚
+</footer>
+
+
+<script>
+
+const questions = [
+
+    {
+        emoji: "🐶",
+        text: "Qual frase está correta?",
+        options: [
+            "There is a dog.",
+            "There are a dog."
+        ],
+        correct: 0
+    },
+
+    {
+        emoji: "🐱 🐱",
+        text: "Qual frase está correta?",
+        options: [
+            "There is two cats.",
+            "There are two cats."
+        ],
+        correct: 1
+    },
+
+    {
+        emoji: "🍎 🍎 🍎",
+        text: "Complete: ______ three apples.",
+        options: [
+            "There is",
+            "There are"
+        ],
+        correct: 1
+    },
+
+    {
+        emoji: "📖",
+        text: "Complete: ______ a book.",
+        options: [
+            "There is",
+            "There are"
+        ],
+        correct: 0
+    },
+
+    {
+        emoji: "⚽ ⚽ ⚽ ⚽",
+        text: "Complete: ______ four balls.",
+        options: [
+            "There is",
+            "There are"
+        ],
+        correct: 1
+    },
+
+    {
+        emoji: "🍎 🍎 🍎 🍎 🍎",
+        text: "Complete: ______ many apples.",
+        options: [
+            "There is",
+            "There are"
+        ],
+        correct: 1
+    }
+];
+
+let score = 0;
+let answered = 0;
+
+function loadQuestions() {
+
+    const container = document.getElementById("questions");
+
+    container.innerHTML = "";
+
+    questions.forEach((question, index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "question";
+
+        div.innerHTML = `
+            <div style="font-size:3rem; margin-bottom:10px;">
+                ${question.emoji}
+            </div>
+
+            <div class="question-title">
+                ${index + 1}. ${question.text}
+            </div>
+
+            <div class="answers">
+
+                ${question.options.map((option, optionIndex) => `
+                    <button
+                        class="answer"
+                        onclick="answerQuestion(${index}, ${optionIndex}, this)">
+                        ${option}
+                    </button>
+                `).join("")}
+
+            </div>
+
+            <div class="feedback" id="feedback-${index}"></div>
+        `;
+
+        container.appendChild(div);
+
+    });
+
+    updateScore();
+}
+
+
+function answerQuestion(questionIndex, optionIndex, button) {
+
+    const question = questions[questionIndex];
+
+    const parent = button.parentElement;
+
+    const buttons = parent.querySelectorAll(".answer");
+
+    if ([...buttons].some(btn =>
+        btn.classList.contains("correct") ||
+        btn.classList.contains("wrong")
+    )) {
+        return;
+    }
+
+    if (optionIndex === question.correct) {
+
+        button.classList.add("correct");
+
+        document.getElementById(`feedback-${questionIndex}`).innerHTML =
+            "🎉 Muito bem! Você acertou! ⭐";
+
+        score++;
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons[question.correct].classList.add("correct");
+
+        document.getElementById(`feedback-${questionIndex}`).innerHTML =
+            "💡 Quase! A resposta verde é a correta! 😊";
+    }
+
+    answered++;
+
+    updateScore();
+
+    if (answered === questions.length) {
+
+        setTimeout(() => {
+
+            let message = "";
+
+            if (score === questions.length) {
+                message = "🏆 PERFEITO! Você acertou tudo!";
+            }
+            else if (score >= 4) {
+                message = "🌟 MUITO BEM! Você está aprendendo!";
+            }
+            else if (score >= 2) {
+                message = "👏 BOM TRABALHO! Continue praticando!";
+            }
+            else {
+                message = "💪 NÃO DESISTA! Vamos praticar novamente!";
+            }
+
+            document.getElementById("score").innerHTML =
+                `${message}<br><br>⭐ Resultado: ${score}/${questions.length}`;
+
+        }, 300);
+
+    }
+
+}
+
+
+function updateScore() {
+
+    document.getElementById("score").innerHTML =
+        `⭐ Pontos: ${score} / ${questions.length}`;
+
+}
+
+
+function restartGame() {
+
+    score = 0;
+    answered = 0;
+
+    loadQuestions();
+
+    window.scrollTo({
+        top: document.querySelector(".activity").offsetTop - 20,
+        behavior: "smooth"
+    });
+
+}
+
+
+loadQuestions();
+
+</script>
+
+</body>
+</html>

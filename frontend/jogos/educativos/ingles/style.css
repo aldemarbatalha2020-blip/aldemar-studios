@@ -1,0 +1,463 @@
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #173b5d,
+            #050b12 60%
+        );
+
+    color: white;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.game-container {
+
+    width: 1100px;
+
+    max-width: 100%;
+
+}
+
+
+.topbar {
+
+    height: 90px;
+
+    background: #0b1726;
+
+    border: 1px solid #203b57;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 25px;
+
+    border-radius: 15px 15px 0 0;
+
+}
+
+
+.logo span {
+
+    color: #45e0ff;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    font-weight: bold;
+
+}
+
+
+.logo h1 {
+
+    margin-top: 5px;
+
+    font-size: 27px;
+
+    letter-spacing: 3px;
+
+}
+
+
+.status {
+
+    display: flex;
+
+    gap: 30px;
+
+}
+
+
+.status-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+.status-item small {
+
+    color: #7188a0;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+}
+
+
+.status-item strong {
+
+    margin-top: 5px;
+
+    font-size: 17px;
+
+}
+
+
+.game-wrapper {
+
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 3 / 2;
+
+    background: #07121e;
+
+    border-left: 1px solid #203b57;
+
+    border-right: 1px solid #203b57;
+
+}
+
+
+canvas {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    image-rendering: pixelated;
+
+}
+
+
+.screen {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(3, 8, 15, .80);
+
+    backdrop-filter: blur(5px);
+
+}
+
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+.menu {
+
+    width: 500px;
+
+    max-width: 90%;
+
+    background: #0d1b2d;
+
+    border: 1px solid #31516f;
+
+    border-radius: 15px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 80px
+        rgba(0, 0, 0, .6);
+
+}
+
+
+.mini-title {
+
+    color: #45e0ff;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.menu h2 {
+
+    font-size: 42px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.menu > p:not(.mini-title) {
+
+    color: #8fa5bc;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+
+}
+
+
+button {
+
+    border: none;
+
+    background: #45e0ff;
+
+    color: #041019;
+
+    padding: 14px 28px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+button:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.1);
+
+}
+
+
+.controls {
+
+    margin-top: 20px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.controls span {
+
+    background: #12253b;
+
+    color: #9eb3c9;
+
+    padding: 8px 10px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+
+}
+
+
+.question-box {
+
+    width: 550px;
+
+    max-width: 90%;
+
+    background: #0d1b2d;
+
+    border: 1px solid #31516f;
+
+    border-radius: 15px;
+
+    padding: 35px;
+
+    text-align: center;
+
+}
+
+
+.question-title {
+
+    color: #45e0ff;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+}
+
+
+.question-box h2 {
+
+    margin: 20px 0;
+
+    font-size: 27px;
+
+}
+
+
+.answers {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+}
+
+
+.answers button {
+
+    background: #162b43;
+
+    color: white;
+
+    border: 1px solid #2b4864;
+
+    text-align: left;
+
+}
+
+
+.answers button:hover {
+
+    background: #24415e;
+
+}
+
+
+.feedback {
+
+    min-height: 20px;
+
+    margin-top: 15px;
+
+    font-weight: bold;
+
+}
+
+
+footer {
+
+    background: #0b1726;
+
+    border: 1px solid #203b57;
+
+    border-radius: 0 0 15px 15px;
+
+    padding: 12px 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #7188a0;
+
+    font-size: 11px;
+
+}
+
+
+@media (max-width: 700px) {
+
+    .topbar {
+
+        height: auto;
+
+        padding: 18px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+    }
+
+
+    .status {
+
+        width: 100%;
+
+        justify-content: space-between;
+
+    }
+
+
+    .menu h2 {
+
+        font-size: 30px;
+
+    }
+
+
+    .answers {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    footer {
+
+        flex-direction: column;
+
+        gap: 8px;
+
+    }
+
+}

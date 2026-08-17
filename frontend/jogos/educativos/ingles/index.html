@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        English Bomber
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <header class="topbar">
+
+            <div class="logo">
+
+                <span>
+                    INSTITUTO ACUTIS
+                </span>
+
+                <h1>
+                    ENGLISH BOMBER
+                </h1>
+
+            </div>
+
+            <div class="status">
+
+                <div class="status-item">
+
+                    <small>
+                        PONTOS
+                    </small>
+
+                    <strong id="score">
+                        0000
+                    </strong>
+
+                </div>
+
+                <div class="status-item">
+
+                    <small>
+                        VIDAS
+                    </small>
+
+                    <strong id="lives">
+                        ❤️❤️❤️
+                    </strong>
+
+                </div>
+
+                <div class="status-item">
+
+                    <small>
+                        TEMPO
+                    </small>
+
+                    <strong id="timer">
+                        03:00
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="game-wrapper">
+
+            <canvas
+                id="gameCanvas"
+                width="960"
+                height="640">
+            </canvas>
+
+
+            <!-- TELA INICIAL -->
+
+            <section
+                id="startScreen"
+                class="screen">
+
+                <div class="menu">
+
+                    <p class="mini-title">
+                        JOGO EDUCATIVO
+                    </p>
+
+                    <h2>
+                        ENGLISH BOMBER
+                    </h2>
+
+                    <p>
+                        Coloque bombas, responda perguntas
+                        em inglês e destrua os obstáculos.
+                    </p>
+
+                    <button id="startButton">
+                        COMEÇAR
+                    </button>
+
+                    <div class="controls">
+
+                        <span>
+                            ↑ ↓ ← → / WASD
+                        </span>
+
+                        <span>
+                            ESPAÇO = BOMBA
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PERGUNTA -->
+
+            <section
+                id="questionScreen"
+                class="screen hidden">
+
+                <div class="question-box">
+
+                    <div class="question-title">
+                        💣 BOMBA ARMADA
+                    </div>
+
+                    <h2 id="question">
+                        Pergunta
+                    </h2>
+
+                    <div
+                        id="answers"
+                        class="answers">
+                    </div>
+
+                    <p
+                        id="feedback"
+                        class="feedback">
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- GAME OVER -->
+
+            <section
+                id="gameOverScreen"
+                class="screen hidden">
+
+                <div class="menu">
+
+                    <p class="mini-title">
+                        FIM DE JOGO
+                    </p>
+
+                    <h2 id="gameOverTitle">
+                        GAME OVER
+                    </h2>
+
+                    <p id="gameOverText">
+                    </p>
+
+                    <button id="restartButton">
+                        JOGAR NOVAMENTE
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <footer>
+
+            <span>
+                💣 Acerte → bomba explode
+            </span>
+
+            <span>
+                ❌ Erre → bomba falha
+            </span>
+
+        </footer>
+
+    </div>
+ 
+
+    <script src="game.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Present Challenge - 9º Ano</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top left,#172554,transparent 35%),
+        radial-gradient(circle at bottom right,#312e81,transparent 35%),
+        #050816;
+    color:white;
+}
+
+header{
+    height:70px;
+    background:rgba(0,0,0,.45);
+    border-bottom:1px solid rgba(255,255,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.header-info{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.container{
+    width:min(1100px,94%);
+    margin:25px auto;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+/* ==============================
+   INÍCIO
+============================== */
+
+.start{
+    min-height:80vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.badge{
+    color:#38bdf8;
+    border:1px solid rgba(56,189,248,.35);
+    background:rgba(56,189,248,.1);
+    padding:8px 16px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+.start h1{
+    font-size:clamp(38px,7vw,68px);
+    margin-bottom:12px;
+}
+
+.start p{
+    max-width:750px;
+    color:#94a3b8;
+    line-height:1.6;
+    font-size:17px;
+}
+
+.groups{
+    display:flex;
+    gap:20px;
+    width:min(700px,100%);
+    margin:35px 0;
+}
+
+.group{
+    flex:1;
+    padding:25px;
+    border-radius:18px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+}
+
+.group h2{
+    margin-bottom:8px;
+}
+
+.group p{
+    color:#94a3b8;
+}
+
+.main-btn{
+    border:0;
+    padding:15px 30px;
+    border-radius:12px;
+    background:#38bdf8;
+    color:#03111c;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.main-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(56,189,248,.3);
+}
+
+/* ==============================
+   PLACAR
+============================== */
+
+.scoreboard{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.score{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:15px;
+    padding:14px;
+    text-align:center;
+}
+
+.score small{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:5px;
+}
+
+.score strong{
+    font-size:28px;
+}
+
+/* ==============================
+   SORTEIO
+============================== */
+
+.turn{
+    text-align:center;
+    padding:18px;
+    margin-bottom:20px;
+    border-radius:17px;
+    background:linear-gradient(
+        135deg,
+        rgba(56,189,248,.12),
+        rgba(129,140,248,.12)
+    );
+    border:1px solid rgba(56,189,248,.25);
+}
+
+.turn small{
+    color:#94a3b8;
+}
+
+.turn h2{
+    margin-top:6px;
+    font-size:28px;
+}
+
+/* ==============================
+   TÍTULO
+============================== */
+
+.game-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.game-title h2{
+    font-size:25px;
+}
+
+.game-title span{
+    color:#38bdf8;
+    font-weight:bold;
+}
+
+/* ==============================
+   VERBOS
+============================== */
+
+.verbs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.verb{
+    padding:7px 12px;
+    border-radius:20px;
+    background:rgba(56,189,248,.1);
+    border:1px solid rgba(56,189,248,.25);
+    color:#7dd3fc;
+    font-size:13px;
+    font-weight:bold;
+}
+
+/* ==============================
+   TEXTO
+============================== */
+
+.text-card{
+    background:#f8fafc;
+    color:#172033;
+    border-radius:18px;
+    padding:30px;
+    margin-bottom:22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.text-card h3{
+    text-align:center;
+    color:#1e3a8a;
+    font-size:29px;
+    margin-bottom:22px;
+}
+
+.text-card p{
+    font-size:17px;
+    line-height:1.85;
+    margin-bottom:18px;
+}
+
+.text-card p:last-child{
+    margin-bottom:0;
+}
+
+.text-card strong{
+    color:#1d4ed8;
+}
+
+/* ==============================
+   QUESTÃO
+============================== */
+
+.question-box{
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
+    padding:25px;
+}
+
+.question-number{
+    color:#38bdf8;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.question{
+    font-size:21px;
+    font-weight:900;
+    line-height:1.4;
+    margin-bottom:18px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.option{
+    background:rgba(255,255,255,.06);
+    color:white;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:16px;
+    font-size:16px;
+    text-align:left;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.option:hover{
+    border-color:#38bdf8;
+    background:rgba(56,189,248,.1);
+}
+
+.option.correct{
+    background:rgba(34,197,94,.2);
+    border-color:#22c55e;
+}
+
+.option.wrong{
+    background:rgba(239,68,68,.2);
+    border-color:#ef4444;
+}
+
+.feedback{
+    display:none;
+    margin-top:18px;
+    padding:16px;
+    border-radius:12px;
+    line-height:1.5;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.correct{
+    background:rgba(34,197,94,.12);
+    border:1px solid rgba(34,197,94,.35);
+}
+
+.feedback.wrong{
+    background:rgba(239,68,68,.12);
+    border:1px solid rgba(239,68,68,.35);
+}
+
+.next{
+    display:none;
+    margin:18px auto 0;
+    border:0;
+    padding:13px 25px;
+    border-radius:10px;
+    background:#818cf8;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.next.show{
+    display:block;
+}
+
+/* ==============================
+   FINAL
+============================== */
+
+.final{
+    text-align:center;
+    padding:50px 20px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:25px;
+}
+
+.final h1{
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+.final p{
+    color:#94a3b8;
+}
+
+.final-scores{
+    display:flex;
+    gap:20px;
+    max-width:700px;
+    margin:30px auto;
+}
+
+.final-card{
+    flex:1;
+    padding:30px;
+    background:rgba(255,255,255,.06);
+    border-radius:18px;
+}
+
+.final-card strong{
+    display:block;
+    color:#38bdf8;
+    font-size:50px;
+    margin-top:10px;
+}
+
+.winner{
+    color:#facc15;
+    font-size:27px;
+    font-weight:900;
+    margin:25px;
+}
+
+/* ==============================
+   RESPONSIVO
+============================== */
+
+@media(max-width:750px){
+
+    .groups,
+    .final-scores{
+        flex-direction:column;
+    }
+
+    .scoreboard{
+        grid-template-columns:1fr;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .game-title{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:5px;
+    }
+
+    .text-card{
+        padding:20px;
+    }
+
+    .text-card p{
+        font-size:16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ENGLISH <span>CHALLENGE</span>
+    </div>
+
+    <div class="header-info" id="headerInfo">
+        9º ANO
+    </div>
+
+</header>
+
+
+<div class="container">
+
+<!-- =====================================================
+     INÍCIO
+===================================================== -->
+
+<section id="startScreen" class="screen active">
+
+    <div class="start">
+
+        <div class="badge">
+            9º ANO • SIMPLE PRESENT
+        </div>
+
+        <h1>
+            MY DAILY LIFE
+        </h1>
+
+        <p>
+            Leia o texto com atenção. Observe os verbos no presente
+            e responda às perguntas. O sistema sorteia automaticamente
+            qual grupo terá a vez de responder.
+        </p>
+
+
+        <div class="groups">
+
+            <div class="group">
+
+                <h2>
+                    🔵 GRUPO 1
+                </h2>
+
+                <p>
+                    English Team
+                </p>
+
+            </div>
+
+
+            <div class="group">
+
+                <h2>
+                    🔴 GRUPO 2
+                </h2>
+
+                <p>
+                    English Team
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="main-btn"
+            onclick="startGame()">
+
+            ▶ COMEÇAR
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     JOGO
+===================================================== -->
+
+<section id="gameScreen" class="screen">
+
+
+    <!-- PLACAR -->
+
+    <div class="scoreboard">
+
+        <div class="score">
+
+            <small>
+                🔵 GRUPO 1
+            </small>
+
+            <strong id="score1">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="score">
+
+            <small>
+                📝 QUESTÃO
+            </small>
+
+            <strong id="questionCounter">
+                1/12
+            </strong>
+
+        </div>
+
+
+        <div class="score">
+
+            <small>
+                🔴 GRUPO 2
+            </small>
+
+            <strong id="score2">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- SORTEIO -->
+
+    <div class="turn">
+
+        <small>
+            🎲 O SISTEMA SORTEOU A VEZ DE
+        </small>
+
+        <h2 id="turnText">
+            🔵 GRUPO 1
+        </h2>
+
+    </div>
+
+
+    <!-- TÍTULO -->
+
+    <div class="game-title">
+
+        <h2>
+            📖 MY DAILY LIFE
+        </h2>
+
+        <span>
+            READING + SIMPLE PRESENT
+        </span>
+
+    </div>
+
+
+    <!-- VERBOS TRABALHADOS -->
+
+    <div class="verbs">
+
+        <div class="verb">
+            TO BE
+        </div>
+
+        <div class="verb">
+            GO
+        </div>
+
+        <div class="verb">
+            HAVE
+        </div>
+
+        <div class="verb">
+            EAT
+        </div>
+
+        <div class="verb">
+            LIKE
+        </div>
+
+        <div class="verb">
+            WANT
+        </div>
+
+        <div class="verb">
+            WORK
+        </div>
+
+        <div class="verb">
+            WATCH
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TEXTO
+    ================================================= -->
+
+    <div class="text-card">
+
+        <h3>
+            My Daily Life
+        </h3>
+
+
+        <p>
+
+            <strong>1.</strong>
+
+            My name is Daniel and I am fifteen years old.
+            I am a student and I live with my family in a small town.
+            I am usually happy because I have good friends and a nice
+            family. My mother is a teacher and my father works in a
+            small store near our house.
+
+        </p>
+
+
+        <p>
+
+            <strong>2.</strong>
+
+            Every morning, I wake up at six thirty.
+            I get ready and go to school at seven o'clock.
+            I have breakfast with my family before I leave.
+            I usually eat bread, fruit and drink milk.
+            I like breakfast because it gives me energy for the day.
+
+        </p>
+
+
+        <p>
+
+            <strong>3.</strong>
+
+            At school, I have many classes.
+            I like English because I enjoy learning new words.
+            I also like Science and History.
+            My best friend, Lucas, is in my class.
+            We study together and talk during the school break.
+
+        </p>
+
+
+        <p>
+
+            <strong>4.</strong>
+
+            In the afternoon, I go home and have lunch with my family.
+            After lunch, I do my homework.
+            My mother works in the afternoon, and my father works
+            until five o'clock. Sometimes I watch TV after I finish
+            my homework. I like watching comedy shows.
+
+        </p>
+
+
+        <p>
+
+            <strong>5.</strong>
+
+            At night, I have dinner with my family.
+            After dinner, I sometimes watch a movie with my parents.
+            I also read books because I like stories.
+            I want to travel to another country one day.
+            I am interested in English because I want to speak
+            with people from different places.
+
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         QUESTÃO
+    ================================================= -->
+
+    <div class="question-box">
+
+        <div
+            class="question-number"
+            id="questionType">
+
+            QUESTION 1
+
+        </div>
+
+
+        <div
+            class="question"
+            id="questionText">
+        </div>
+
+
+        <div
+            class="options"
+            id="options">
+        </div>
+
+
+        <div
+            class="feedback"
+            id="feedback">
+        </div>
+
+
+        <button
+            class="next"
+            id="nextButton"
+            onclick="nextQuestion()">
+
+            PRÓXIMA QUESTÃO →
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FINAL
+===================================================== -->
+
+<section id="finalScreen" class="screen">
+
+    <div class="final">
+
+        <div class="badge">
+            ACTIVITY COMPLETE
+        </div>
+
+        <h1>
+            🎉 FINISHED!
+        </h1>
+
+        <p>
+            A atividade terminou!
+        </p>
+
+
+        <div class="final-scores">
+
+            <div class="final-card">
+
+                🔵 GRUPO 1
+
+                <strong id="finalScore1">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="final-card">
+
+                🔴 GRUPO 2
+
+                <strong id="finalScore2">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="winner"
+            id="winner">
+        </div>
+
+
+        <button
+            class="main-btn"
+            onclick="location.reload()">
+
+            🔄 JOGAR NOVAMENTE
+
+        </button>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   BANCO DE QUESTÕES
+========================================================= */
+
+const questions = [
+
+    {
+        type:"INTERPRETATION",
+
+        question:
+        "How old is Daniel?",
+
+        options:[
+            "13 years old.",
+            "14 years old.",
+            "15 years old.",
+            "16 years old."
+        ],
+
+        answer:2,
+
+        explanation:
+        "Daniel says: 'I am fifteen years old.'"
+    },
+
+
+    {
+        type:"TO BE",
+
+        question:
+        "Complete the sentence: Daniel ___ a student.",
+
+        options:[
+            "am",
+            "is",
+            "are",
+            "be"
+        ],
+
+        answer:1,
+
+        explanation:
+        "With 'Daniel' we use 'is'. Daniel is a student."
+    },
+
+
+    {
+        type:"INTERPRETATION",
+
+        question:
+        "What does Daniel's father do?",
+
+        options:[
+            "He is a teacher.",
+            "He is a doctor.",
+            "He works in a small store.",
+            "He is a student."
+        ],
+
+        answer:2,
+
+        explanation:
+        "The text says that his father works in a small store."
+    },
+
+
+    {
+        type:"GO",
+
+        question:
+        "What time does Daniel go to school?",
+
+        options:[
+            "At six o'clock.",
+            "At six thirty.",
+            "At seven o'clock.",
+            "At eight o'clock."
+        ],
+
+        answer:2,
+
+        explanation:
+        "Daniel goes to school at seven o'clock."
+    },
+
+
+    {
+        type:"EAT",
+
+        question:
+        "What does Daniel usually eat for breakfast?",
+
+        options:[
+            "Rice and meat.",
+            "Bread and fruit.",
+            "Pizza and juice.",
+            "Cake and coffee."
+        ],
+
+        answer:1,
+
+        explanation:
+        "He usually eats bread and fruit and drinks milk."
+    },
+
+
+    {
+        type:"LIKE",
+
+        question:
+        "Why does Daniel like breakfast?",
+
+        options:[
+            "Because it is expensive.",
+            "Because it is at school.",
+            "Because it gives him energy.",
+            "Because his friend makes it."
+        ],
+
+        answer:2,
+
+        explanation:
+        "The text says: 'I like breakfast because it gives me energy.'"
+    },
+
+
+    {
+        type:"INTERPRETATION",
+
+        question:
+        "Who is Lucas?",
+
+        options:[
+            "Daniel's brother.",
+            "Daniel's teacher.",
+            "Daniel's father.",
+            "Daniel's best friend."
+        ],
+
+        answer:3,
+
+        explanation:
+        "Lucas is Daniel's best friend."
+    },
+
+
+    {
+        type:"HAVE",
+
+        question:
+        "Which sentence is correct?",
+
+        options:[
+            "Daniel have many classes.",
+            "Daniel has many classes.",
+            "Daniel having many classes.",
+            "Daniel haves many classes."
+        ],
+
+        answer:1,
+
+        explanation:
+        "With 'Daniel' we use 'has': Daniel has many classes."
+    },
+
+
+    {
+        type:"WORK",
+
+        question:
+        "When does Daniel's father work until?",
+
+        options:[
+            "Until three o'clock.",
+            "Until four o'clock.",
+            "Until five o'clock.",
+            "Until six o'clock."
+        ],
+
+        answer:2,
+
+        explanation:
+        "The text says: 'my father works until five o'clock.'"
+    },
+
+
+    {
+        type:"WATCH",
+
+        question:
+        "What does Daniel like watching?",
+
+        options:[
+            "News programs.",
+            "Sports programs.",
+            "Comedy shows.",
+            "Documentaries."
+        ],
+
+        answer:2,
+
+        explanation:
+        "Daniel says: 'I like watching comedy shows.'"
+    },
+
+
+    {
+        type:"WANT",
+
+        question:
+        "What does Daniel want to do one day?",
+
+        options:[
+            "Buy a car.",
+            "Travel to another country.",
+            "Work in a store.",
+            "Become a teacher."
+        ],
+
+        answer:1,
+
+        explanation:
+        "Daniel wants to travel to another country one day."
+    },
+
+
+    {
+        type:"SIMPLE PRESENT",
+
+        question:
+        "Choose the correct sentence.",
+
+        options:[
+            "Daniel go to school every day.",
+            "Daniel goes to school every day.",
+            "Daniel going to school every day.",
+            "Daniel gone to school every day."
+        ],
+
+        answer:1,
+
+        explanation:
+        "With 'Daniel' we add -es to 'go': Daniel goes."
+    }
+
+];
+
+
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
+
+let currentQuestion = 0;
+
+let score1 = 0;
+
+let score2 = 0;
+
+let currentGroup = 1;
+
+let answered = false;
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+function startGame(){
+
+    document
+        .getElementById("startScreen")
+        .classList
+        .remove("active");
+
+    document
+        .getElementById("gameScreen")
+        .classList
+        .add("active");
+
+    currentQuestion = 0;
+
+    score1 = 0;
+
+    score2 = 0;
+
+    updateScores();
+
+    showQuestion();
+}
+
+
+/* =========================================================
+   SORTEIO DO GRUPO
+========================================================= */
+
+function drawGroup(){
+
+    currentGroup =
+        Math.random() < 0.5
+        ? 1
+        : 2;
+
+
+    document
+        .getElementById("turnText")
+        .textContent =
+        currentGroup === 1
+        ? "🔵 GRUPO 1"
+        : "🔴 GRUPO 2";
+}
+
+
+/* =========================================================
+   MOSTRAR QUESTÃO
+========================================================= */
+
+function showQuestion(){
+
+    answered = false;
+
+    drawGroup();
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    document
+        .getElementById("questionCounter")
+        .textContent =
+        `${currentQuestion + 1}/${questions.length}`;
+
+
+    document
+        .getElementById("questionType")
+        .textContent =
+        `QUESTION ${currentQuestion + 1} • ${q.type}`;
+
+
+    document
+        .getElementById("questionText")
+        .textContent =
+        q.question;
+
+
+    const options =
+        document.getElementById("options");
+
+    options.innerHTML = "";
+
+
+    q.options.forEach(
+        (option,index)=>{
+
+            const button =
+                document.createElement("button");
+
+
+            button.className =
+                "option";
+
+
+            button.textContent =
+                String.fromCharCode(65 + index)
+                + ") "
+                + option;
+
+
+            button.onclick =
+                ()=>{
+                    checkAnswer(
+                        index,
+                        button
+                    );
+                };
+
+
+            options.appendChild(button);
+
+        }
+    );
+
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    feedback.className =
+        "feedback";
+
+
+    feedback.innerHTML = "";
+
+
+    document
+        .getElementById("nextButton")
+        .classList
+        .remove("show");
+
+
+    document
+        .getElementById("headerInfo")
+        .textContent =
+        `Questão ${currentQuestion + 1} de ${questions.length}`;
+}
+
+
+/* =========================================================
+   VERIFICAR RESPOSTA
+========================================================= */
+
+function checkAnswer(
+    index,
+    selectedButton
+){
+
+    if(answered){
+        return;
+    }
+
+
+    answered = true;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    const buttons =
+        document.querySelectorAll(".option");
+
+
+    buttons.forEach(button=>{
+
+        button.style.pointerEvents =
+            "none";
+
+    });
+
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    if(index === q.answer){
+
+        selectedButton
+            .classList
+            .add("correct");
+
+
+        if(currentGroup === 1){
+
+            score1 += 100;
+
+        }else{
+
+            score2 += 100;
+
+        }
+
+
+        feedback.className =
+            "feedback show correct";
+
+
+        feedback.innerHTML =
+            `
+            <strong>✅ CORRETO!</strong><br>
+            Grupo ${currentGroup} ganhou
+            <strong>100 pontos</strong>!<br><br>
+            ${q.explanation}
+            `;
+
+    }else{
+
+        selectedButton
+            .classList
+            .add("wrong");
+
+
+        buttons[q.answer]
+            .classList
+            .add("correct");
+
+
+        feedback.className =
+            "feedback show wrong";
+
+
+        feedback.innerHTML =
+            `
+            <strong>❌ INCORRETO!</strong><br>
+            A resposta correta é:
+            <strong>${q.options[q.answer]}</strong><br><br>
+            ${q.explanation}
+            `;
+    }
+
+
+    updateScores();
+
+
+    document
+        .getElementById("nextButton")
+        .classList
+        .add("show");
+}
+
+
+/* =========================================================
+   PRÓXIMA QUESTÃO
+========================================================= */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+
+    if(
+        currentQuestion >=
+        questions.length
+    ){
+
+        finishGame();
+
+        return;
+    }
+
+
+    showQuestion();
+}
+
+
+/* =========================================================
+   ATUALIZAR PLACAR
+========================================================= */
+
+function updateScores(){
+
+    document
+        .getElementById("score1")
+        .textContent =
+        score1;
+
+
+    document
+        .getElementById("score2")
+        .textContent =
+        score2;
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+function finishGame(){
+
+    document
+        .getElementById("gameScreen")
+        .classList
+        .remove("active");
+
+
+    document
+        .getElementById("finalScreen")
+        .classList
+        .add("active");
+
+
+    document
+        .getElementById("finalScore1")
+        .textContent =
+        score1;
+
+
+    document
+        .getElementById("finalScore2")
+        .textContent =
+        score2;
+
+
+    const winner =
+        document.getElementById("winner");
+
+
+    if(score1 > score2){
+
+        winner.textContent =
+            "🏆 GRUPO 1 VENCEU!";
+
+    }
+
+    else if(score2 > score1){
+
+        winner.textContent =
+            "🏆 GRUPO 2 VENCEU!";
+
+    }
+
+    else{
+
+        winner.textContent =
+            "🤝 EMPATE! PARABÉNS AOS DOIS GRUPOS!";
+
+    }
+
+
+    document
+        .getElementById("headerInfo")
+        .textContent =
+        "Atividade concluída";
+}
+
+</script>
+
+</body>
+</html>

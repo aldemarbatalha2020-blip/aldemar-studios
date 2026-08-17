@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>English Race | Instituto Acutis</title>
+
+<link rel="stylesheet" href="corrida.css">
+```
+
+</head>
+
+<body>
+
+<main class="race-game">
+
+```
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header class="race-header">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🏎️
+        </div>
+
+        <div>
+            <h1>ENGLISH RACE</h1>
+            <span>Multiplayer • Instituto Acutis</span>
+        </div>
+
+    </div>
+
+    <div class="race-info">
+
+        <div class="info-box">
+            <span>🏁</span>
+            <div>
+                <small>META</small>
+                <strong>20 CASAS</strong>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <span>⏱️</span>
+            <div>
+                <small>PERGUNTA</small>
+                <strong>30 SEG</strong>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     ÁREA PRINCIPAL
+====================================================== -->
+
+<section class="race-area">
+
+    <!-- =================================================
+         PLAYER 1
+    ================================================== -->
+
+    <section class="player-race player-one" id="player1">
+
+        <div class="player-header">
+
+            <div class="player-title">
+
+                <div class="player-number">
+                    1
+                </div>
+
+                <div>
+                    <strong>PLAYER 1</strong>
+                    <small>PILOTO AZUL</small>
+                </div>
+
+            </div>
+
+            <div class="player-progress">
+
+                <span>🏁</span>
+
+                <strong id="player1Position">
+                    0/20
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PISTA PLAYER 1
+        ================================================== -->
+
+        <div class="race-track-wrapper">
+
+            <div class="race-track" id="player1Track">
+
+                <!--
+
+                    O JS CRIARÁ AS 20 CASAS.
+
+                    O percurso será:
+
+                    START
+                      ↓
+                    casas 1 → 5
+                           →
+                    casas 6 → 10
+                           ←
+                    casas 11 → 15
+                           →
+                    casas 16 → 20
+                           ↑
+                        CHEGADA
+
+                -->
+
+                <div class="start-area">
+
+                    <span>START</span>
+
+                </div>
+
+
+                <div class="finish-area">
+
+                    <span>🏁</span>
+                    <small>FINISH</small>
+
+                </div>
+
+
+                <!-- CARRO -->
+
+                <div
+                    class="race-car player1-car"
+                    id="player1Car"
+                >
+                    🏎️
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div
+            class="player-message"
+            id="player1Message"
+        >
+            🚦 Pronto! Responda para começar!
+        </div>
+
+
+        <!-- BOTÃO -->
+
+        <button
+            class="answer-button"
+            id="player1AnswerButton"
+        >
+            ❓ RESPONDER PERGUNTA
+        </button>
+
+    </section>
+
+
+
+    <!-- =================================================
+         VS
+    ================================================== -->
+
+    <div class="versus">
+
+        <span>VS</span>
+
+    </div>
+
+
+
+    <!-- =================================================
+         PLAYER 2
+    ================================================== -->
+
+    <section class="player-race player-two" id="player2">
+
+        <div class="player-header">
+
+            <div class="player-title">
+
+                <div class="player-number">
+                    2
+                </div>
+
+                <div>
+                    <strong>PLAYER 2</strong>
+                    <small>PILOTO ROXO</small>
+                </div>
+
+            </div>
+
+            <div class="player-progress">
+
+                <span>🏁</span>
+
+                <strong id="player2Position">
+                    0/20
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PISTA PLAYER 2
+        ================================================== -->
+
+        <div class="race-track-wrapper">
+
+            <div class="race-track" id="player2Track">
+
+                <div class="start-area">
+
+                    <span>START</span>
+
+                </div>
+
+
+                <div class="finish-area">
+
+                    <span>🏁</span>
+                    <small>FINISH</small>
+
+                </div>
+
+
+                <!-- CARRO -->
+
+                <div
+                    class="race-car player2-car"
+                    id="player2Car"
+                >
+                    🏎️
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div
+            class="player-message"
+            id="player2Message"
+        >
+            🚦 Pronto! Responda para começar!
+        </div>
+
+
+        <!-- BOTÃO -->
+
+        <button
+            class="answer-button"
+            id="player2AnswerButton"
+        >
+            ❓ RESPONDER PERGUNTA
+        </button>
+
+    </section>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION MODAL
+====================================================== -->
+
+<div
+    class="question-overlay hidden"
+    id="questionOverlay"
+>
+
+    <div class="question-card">
+
+        <div class="question-header">
+
+            <div class="question-player">
+
+                <div
+                    class="question-player-icon"
+                    id="questionPlayerIcon"
+                >
+                    🏎️
+                </div>
+
+                <div>
+
+                    <small>
+                        VELOCIDADE
+                    </small>
+
+                    <strong id="questionPlayer">
+                        PLAYER 1
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="question-timer">
+
+                <span>⏱️</span>
+
+                <strong id="questionTimer">
+                    30
+                </strong>
+
+                <small>
+                    SEG
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- CATEGORIA -->
+
+        <div
+            class="question-category"
+            id="questionCategory"
+        >
+            ENGLISH
+        </div>
+
+
+        <!-- PERGUNTA -->
+
+        <h2
+            id="questionText"
+            class="question-text"
+        >
+            Question
+        </h2>
+
+
+        <!-- RESPOSTAS -->
+
+        <div
+            id="questionAnswers"
+            class="question-answers"
+        >
+        </div>
+
+
+        <!-- FEEDBACK -->
+
+        <div
+            id="questionFeedback"
+            class="question-feedback"
+        >
+            Escolha uma resposta para avançar!
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TELA DE VITÓRIA
+====================================================== -->
+
+<div
+    class="winner-overlay hidden"
+    id="winnerOverlay"
+>
+
+    <div class="winner-card">
+
+        <div class="winner-trophy">
+            🏆
+        </div>
+
+        <span>
+            RACE COMPLETE
+        </span>
+
+        <h1 id="winnerTitle">
+            PLAYER 1 WINS!
+        </h1>
+
+        <p id="winnerMessage">
+            O piloto chegou primeiro!
+        </p>
+
+
+        <div class="winner-results">
+
+            <div>
+
+                <strong
+```

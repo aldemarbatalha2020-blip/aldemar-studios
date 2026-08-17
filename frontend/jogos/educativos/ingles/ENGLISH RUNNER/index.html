@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>English Runner - 5 Levels</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07111f;
+    color:white;
+    user-select:none;
+}
+
+canvas{
+    display:block;
+    width:100vw;
+    height:100vh;
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+#hud{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+
+    padding:12px 18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    z-index:10;
+
+    background:
+        rgba(0,0,0,.60);
+
+    backdrop-filter:
+        blur(7px);
+
+}
+
+.info{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+}
+
+.badge{
+
+    background:
+        rgba(255,255,255,.12);
+
+    padding:8px 12px;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    font-size:14px;
+
+}
+
+
+/* =====================================================
+   TELAS
+===================================================== */
+
+#startScreen,
+#levelScreen,
+#gameOver,
+#victoryScreen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:40;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            #173b63 0%,
+            #050a12 72%
+        );
+
+}
+
+
+.panel{
+
+    width:
+        min(
+            680px,
+            92%
+        );
+
+    padding:38px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    background:
+        rgba(5,15,28,.96);
+
+    border:
+        1px solid
+        rgba(86,178,255,.35);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.55);
+
+}
+
+
+.panel h1{
+
+    font-size:
+        clamp(
+            38px,
+            8vw,
+            70px
+        );
+
+    margin-bottom:10px;
+
+}
+
+
+.panel h2{
+
+    font-size:34px;
+
+    margin-bottom:12px;
+
+}
+
+
+.panel p{
+
+    color:#b6c9dc;
+
+    line-height:1.6;
+
+    margin:12px 0;
+
+}
+
+
+.levelBig{
+
+    font-size:65px;
+
+    margin-bottom:10px;
+
+}
+
+
+.btn{
+
+    border:0;
+
+    padding:15px 30px;
+
+    margin-top:20px;
+
+    border-radius:13px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #168cff,
+            #005ec2
+        );
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.btn:hover{
+
+    transform:
+        translateY(-3px);
+
+    filter:
+        brightness(1.15);
+
+}
+
+
+.hidden{
+
+    display:none!important;
+
+}
+
+
+/* =====================================================
+   PERGUNTA
+===================================================== */
+
+#questionBox{
+
+    position:fixed;
+
+    z-index:20;
+
+    top:78px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        min(
+            700px,
+            92%
+        );
+
+    padding:18px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    background:
+        rgba(3,12,23,.94);
+
+    border:
+        1px solid
+        rgba(82,174,255,.35);
+
+    box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.35);
+
+}
+
+
+#question{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-bottom:13px;
+
+    line-height:1.4;
+
+}
+
+
+.answers{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            1fr
+        );
+
+    gap:10px;
+
+}
+
+
+.answer{
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    background:#10283f;
+
+    color:white;
+
+    padding:11px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    transition:.2s;
+
+}
+
+
+.answer:hover{
+
+    background:#1b4267;
+
+}
+
+
+.answer.correct{
+
+    background:#16834b;
+
+}
+
+
+.answer.wrong{
+
+    background:#a83232;
+
+}
+
+
+/* =====================================================
+   PROGRESSO DESAFIO FINAL
+===================================================== */
+
+#finalProgress{
+
+    margin-top:10px;
+
+    color:#8cc9ff;
+
+    font-weight:bold;
+
+}
+
+
+/* =====================================================
+   CONTROLES
+===================================================== */
+
+#mobileControls{
+
+    position:fixed;
+
+    bottom:20px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:15;
+
+    display:none;
+
+    gap:15px;
+
+}
+
+
+.control{
+
+    width:65px;
+
+    height:55px;
+
+    border:0;
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    color:white;
+
+    font-size:25px;
+
+    font-weight:bold;
+
+}
+
+
+@media(max-width:700px){
+
+    #hud{
+
+        padding:8px;
+
+    }
+
+    .info{
+
+        gap:5px;
+
+    }
+
+    .badge{
+
+        padding:6px 8px;
+
+        font-size:11px;
+
+    }
+
+    #questionBox{
+
+        top:62px;
+
+        padding:12px;
+
+    }
+
+    #question{
+
+        font-size:16px;
+
+    }
+
+    .answer{
+
+        padding:9px 5px;
+
+        font-size:13px;
+
+    }
+
+    #mobileControls{
+
+        display:flex;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<canvas id="game"></canvas>
+
+
+<!-- =====================================================
+     HUD
+===================================================== -->
+
+<div id="hud">
+
+    <div class="info">
+
+        <div class="badge">
+            🏃 English Runner
+        </div>
+
+        <div class="badge">
+            📊 Nível:
+            <span id="level">
+                1
+            </span>
+        </div>
+
+        <div class="badge">
+            ⭐
+            <span id="score">
+                0
+            </span>
+        </div>
+
+        <div class="badge">
+            ❤️
+            <span id="lives">
+                3
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="badge">
+
+        🏆 Recorde:
+        <span id="best">
+            0
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PERGUNTAS
+===================================================== -->
+
+<div
+    id="questionBox"
+    class="hidden"
+>
+
+    <div id="question">
+        Question
+    </div>
+
+    <div
+        id="finalProgress"
+        class="hidden"
+    >
+        Desafio Final:
+        1 / 5
+    </div>
+
+    <div class="answers">
+
+        <button
+            class="answer"
+            onclick="answerQuestion(0)"
+        >
+            A
+        </button>
+
+        <button
+            class="answer"
+            onclick="answerQuestion(1)"
+        >
+            B
+        </button>
+
+        <button
+            class="answer"
+            onclick="answerQuestion(2)"
+        >
+            C
+        </button>
+
+        <button
+            class="answer"
+            onclick="answerQuestion(3)"
+        >
+            D
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTROLES MOBILE
+===================================================== -->
+
+<div id="mobileControls">
+
+    <button
+        class="control"
+        id="leftBtn"
+    >
+        ◀
+    </button>
+
+    <button
+        class="control"
+        id="rightBtn"
+    >
+        ▶
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     TELA INICIAL
+===================================================== -->
+
+<div id="startScreen">
+
+    <div class="panel">
+
+        <div class="levelBig">
+            🏃
+        </div>
+
+        <h1>
+            ENGLISH RUNNER
+        </h1>
+
+        <p>
+            Corra, desvie dos obstáculos e
+            enfrente desafios de inglês.
+        </p>
+
+        <p>
+            O jogo possui
+            <strong>5 níveis</strong>.
+        </p>
+
+        <p>
+            Quanto mais você avança,
+            mais difícil fica!
+        </p>
+
+        <button
+            class="btn"
+            onclick="startGame()"
+        >
+            ▶ COMEÇAR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LEVEL SCREEN
+===================================================== -->
+
+<div
+    id="levelScreen"
+    class="hidden"
+>
+
+    <div class="panel">
+
+        <div
+            id="levelIcon"
+            class="levelBig"
+        >
+            🟢
+        </div>
+
+        <h2 id="levelTitle">
+            NÍVEL 1
+        </h2>
+
+        <p id="levelDescription">
+            Perguntas fáceis.
+        </p>
+
+        <button
+            class="btn"
+            onclick="continueLevel()"
+        >
+            ▶ CONTINUAR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     GAME OVER
+===================================================== -->
+
+<div
+    id="gameOver"
+    class="hidden"
+>
+
+    <div class="panel">
+
+        <div class="levelBig">
+            🏁
+        </div>
+
+        <h2>
+            FIM DE JOGO
+        </h2>
+
+        <p>
+            Pontuação:
+            <strong id="finalScore">
+                0
+            </strong>
+        </p>
+
+        <p>
+            Você chegou ao:
+            <strong id="finalLevel">
+                Nível 1
+            </strong>
+        </p>
+
+        <p>
+            Recorde:
+            <strong id="finalBest">
+                0
+            </strong>
+        </p>
+
+        <button
+            class="btn"
+            onclick="restartGame()"
+        >
+            🔄 JOGAR NOVAMENTE
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     VITÓRIA
+===================================================== -->
+
+<div
+    id="victoryScreen"
+    class="hidden"
+>
+
+    <div class="panel">
+
+        <div class="levelBig">
+            🏆
+        </div>
+
+        <h1>
+            VOCÊ VENCEU!
+        </h1>
+
+        <p>
+            Parabéns!
+        </p>
+
+        <p>
+            Você completou os
+            <strong>5 níveis</strong>
+            do English Runner.
+        </p>
+
+        <p>
+            Você acertou as
+            <strong>5 perguntas</strong>
+            do Desafio Final!
+        </p>
+
+        <p>
+            Pontuação final:
+            <strong id="victoryScore">
+                0
+            </strong>
+        </p>
+
+        <button
+            class="btn"
+            onclick="restartGame()"
+        >
+            🔄 JOGAR NOVAMENTE
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById(
+        "game"
+    );
+
+const ctx =
+    canvas.getContext(
+        "2d"
+    );
+
+
+let W = 0;
+
+let H = 0;
+
+
+function resize(){
+
+    W =
+        canvas.width =
+        window.innerWidth;
+
+    H =
+        canvas.height =
+        window.innerHeight;
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resize
+);
+
+resize();
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const scoreEl =
+    document.getElementById(
+        "score"
+    );
+
+const livesEl =
+    document.getElementById(
+        "lives"
+    );
+
+const bestEl =
+    document.getElementById(
+        "best"
+    );
+
+const levelEl =
+    document.getElementById(
+        "level"
+    );
+
+const questionBox =
+    document.getElementById(
+        "questionBox"
+    );
+
+const questionEl =
+    document.getElementById(
+        "question"
+    );
+
+const answerButtons =
+    document.querySelectorAll(
+        ".answer"
+    );
+
+const finalProgress =
+    document.getElementById(
+        "finalProgress"
+    );
+
+
+/* =====================================================
+   TELAS
+===================================================== */
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const levelScreen =
+    document.getElementById(
+        "levelScreen"
+    );
+
+const gameOverScreen =
+    document.getElementById(
+        "gameOver"
+    );
+
+const victoryScreen =
+    document.getElementById(
+        "victoryScreen"
+    );
+
+
+/* =====================================================
+   ESTADO
+===================================================== */
+
+let running = false;
+
+let score = 0;
+
+let lives = 3;
+
+let level = 1;
+
+let speed = 5;
+
+let roadOffset = 0;
+
+let questionActive = false;
+
+let currentQuestion = null;
+
+let spawnTimer = 0;
+
+let animationId;
+
+
+/* =====================================================
+   DESAFIO FINAL
+===================================================== */
+
+let finalQuestions = [];
+
+let finalQuestionIndex = 0;
+
+
+/* =====================================================
+   RECORDE
+===================================================== */
+
+let best =
+    Number(
+        localStorage.getItem(
+            "englishRunnerBest"
+        )
+    ) || 0;
+
+bestEl.textContent =
+    best;
+
+
+/* =====================================================
+   JOGADOR
+===================================================== */
+
+const player = {
+
+    targetLane:1,
+
+    x:0,
+
+    y:0,
+
+    width:42,
+
+    height:62,
+
+    moveSpeed:.18
+
+};
+
+
+/* =====================================================
+   ESTRADA
+===================================================== */
+
+function getRoad(){
+
+    const roadWidth =
+        Math.min(
+            560,
+            W*.72
+        );
+
+    const left =
+        W/2 -
+        roadWidth/2;
+
+    const laneWidth =
+        roadWidth/3;
+
+    return {
+        left,
+        width:roadWidth,
+        laneWidth
+    };
+
+}
+
+
+function laneX(lane){
+
+    const road =
+        getRoad();
+
+    return (
+        road.left +
+        road.laneWidth *
+        lane +
+        road.laneWidth/2
+    );
+
+}
+
+
+/* =====================================================
+   OBSTÁCULOS
+===================================================== */
+
+let obstacles = [];
+
+
+function createObstacle(){
+
+    const lane =
+        Math.floor(
+            Math.random()*3
+        );
+
+    obstacles.push({
+
+        lane,
+
+        x:laneX(lane),
+
+        y:-100,
+
+        width:48,
+
+        height:58,
+
+        speed:
+            speed +
+            Math.random()*2
+
+    });
+
+}
+
+
+/* =====================================================
+   PERGUNTAS — NÍVEL 1
+   FÁCIL
+===================================================== */
+
+const easyQuestions = [
+
+    {
+        q:"What does 'DOG' mean?",
+        a:[
+            "Gato",
+            "Cachorro",
+            "Peixe",
+            "Pássaro"
+        ],
+        correct:1
+    },
+
+    {
+        q:"What does 'HOUSE' mean?",
+        a:[
+            "Casa",
+            "Escola",
+            "Rua",
+            "Carro"
+        ],
+        correct:0
+    },
+
+    {
+        q:"What does 'APPLE' mean?",
+        a:[
+            "Banana",
+            "Laranja",
+            "Maçã",
+            "Uva"
+        ],
+        correct:2
+    },
+
+    {
+        q:"What does 'BOOK' mean?",
+        a:[
+            "Livro",
+            "Mesa",
+            "Caneta",
+            "Cadeira"
+        ],
+        correct:0
+    },
+
+    {
+        q:"What does 'WATER' mean?",
+        a:[
+            "Leite",
+            "Água",
+            "Comida",
+            "Suco"
+        ],
+        correct:1
+    },
+
+    {
+        q:"What does 'SCHOOL' mean?",
+        a:[
+            "Hospital",
+            "Casa",
+            "Escola",
+            "Igreja"
+        ],
+        correct:2
+    },
+
+    {
+        q:"What does 'RUN' mean?",
+        a:[
+            "Dormir",
+            "Comer",
+            "Correr",
+            "Ler"
+        ],
+        correct:2
+    },
+
+    {
+        q:"What does 'EAT' mean?",
+        a:[
+            "Beber",
+            "Comer",
+            "Correr",
+            "Assistir"
+        ],
+        correct:1
+    }
+
+];
+
+
+/* =====================================================
+   PERGUNTAS — NÍVEL 2
+   MÉDIO
+===================================================== */
+
+const mediumQuestions = [
+
+    {
+        q:"Choose the correct sentence.",
+        a:[
+            "I likes pizza.",
+            "I like pizza.",
+            "I liking pizza.",
+            "I am like pizza."
+        ],
+        correct:1
+    },
+
+    {
+        q:"She ___ English every day.",
+        a:[
+            "study",
+            "studies",
+            "studying",
+            "studied"
+        ],
+        correct:1
+    },
+
+    {
+        q:"They ___ soccer on Sundays.",
+        a:[
+            "plays",
+            "play",
+            "playing",
+            "played"
+        ],
+        correct:1
+    },
+
+    {
+        q:"What does 'WANT' mean?",
+        a:[
+            "Querer",
+            "Gostar",
+            "Trabalhar",
+            "Assistir"
+        ],
+        correct:0
+    },
+
+    {
+        q:"He ___ TV at night.",
+        a:[
+            "watch",
+            "watching",
+            "watches",
+            "watched"
+        ],
+        correct:2
+    },
+
+    {
+        q:"Choose the correct sentence.",
+        a:[
+            "She have a dog.",
+            "She has a dog.",
+            "She haves a dog.",
+            "She having a dog."
+        ],
+        correct:1
+    },
+
+    {
+        q:"What does 'WORK' mean?",
+        a:[
+            "Estudar",
+            "Trabalhar",
+            "Jogar",
+            "Viajar"
+        ],
+        correct:1
+    },
+
+    {
+        q:"I ___ breakfast every morning.",
+        a:[
+            "eat",
+            "eats",
+            "eating",
+            "ate"
+        ],
+        correct:0
+    }
+
+];
+
+
+/* =====================================================
+   PERGUNTAS — NÍVEL 3
+   DIFÍCIL
+===================================================== */
+
+const hardQuestions = [
+
+    {
+        q:"Which sentence is correct?",
+        a:[
+            "He don't like coffee.",
+            "He doesn't likes coffee.",
+            "He doesn't like coffee.",
+            "He not like coffee."
+        ],
+        correct:2
+    },
+
+    {
+        q:"Choose the correct question.",
+        a:[
+            "Does she likes music?",
+            "Do she like music?",
+            "Does she like music?",
+            "She does like music?"
+        ],
+        correct:2
+    },
+
+    {
+        q:"Which sentence is in the Simple Present?",
+        a:[
+            "They are playing.",
+            "They played yesterday.",
+            "They play every day.",
+            "They will play tomorrow."
+        ],
+        correct:2
+    },
+
+    {
+        q:"Read: 'John works at a school. He teaches English every morning.' What does John do?",
+        a:[
+            "He is a doctor.",
+            "He is a teacher.",
+            "He is a student.",
+            "He is a driver."
+        ],
+        correct:1
+    },
+
+    {
+        q:"Choose the correct sentence.",
+        a:[
+            "My brother watch TV.",
+            "My brother watches TV.",
+            "My brother watching TV.",
+            "My brother watchs TV."
+        ],
+        correct:1
+    },
+
+    {
+        q:"Which sentence is correct?",
+        a:[
+            "Do he have a car?",
+            "Does he has a car?",
+            "Does he have a car?",
+            "He does has a car?"
+        ],
+        correct:2
+    },
+
+    {
+        q:"Read: 'Mary likes apples, but she doesn't like bananas.' What fruit does Mary dislike?",
+        a:[
+            "Apples",
+            "Oranges",
+            "Bananas",
+            "Grapes"
+        ],
+        correct:2
+    },
+
+    {
+        q:"Choose the correct option: 'My parents ___ English at home.'",
+        a:[
+            "speaks",
+            "speak",
+            "speaking",
+            "does speak"
+        ],
+        correct:1
+    }
+
+];
+
+
+/* =====================================================
+   BANCO GERAL
+===================================================== */
+
+const allQuestions = [
+    ...easyQuestions,
+    ...mediumQuestions,
+    ...hardQuestions
+];
+
+
+/* =====================================================
+   SORTEAR PERGUNTA
+===================================================== */
+
+function randomQuestion(array){
+
+    return array[
+        Math.floor(
+            Math.random() *
+            array.length
+        )
+    ];
+
+}
+
+
+/* =====================================================
+   PERGUNTA DE ACORDO COM O NÍVEL
+===================================================== */
+
+function getQuestionForLevel(){
+
+    if(level===1){
+
+        return randomQuestion(
+            easyQuestions
+        );
+
+    }
+
+    if(level===2){
+
+        return randomQuestion(
+            mediumQuestions
+        );
+
+    }
+
+    if(level===3){
+
+        return randomQuestion(
+            hardQuestions
+        );
+
+    }
+
+    if(level===4){
+
+        return randomQuestion(
+            allQuestions
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   MOSTRAR PERGUNTA
+===================================================== */
+
+function showQuestion(){
+
+    if(level===5){
+
+        showFinalQuestion();
+
+        return;
+
+    }
+
+
+    currentQuestion =
+        getQuestionForLevel();
+
+
+    questionEl.textContent =
+        currentQuestion.q;
+
+
+    currentQuestion.a.forEach(
+        (answer,index)=>{
+
+            answerButtons[index]
+                .textContent =
+                answer;
+
+            answerButtons[index]
+                .classList.remove(
+                    "correct",
+                    "wrong"
+                );
+
+        }
+    );
+
+
+    finalProgress
+        .classList
+        .add("hidden");
+
+
+    questionActive =
+        true;
+
+
+    questionBox
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =====================================================
+   RESPONDER
+===================================================== */
+
+function answerQuestion(index){
+
+    if(!questionActive)
+        return;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".answer"
+        );
+
+
+    /* CORRETA */
+
+    if(
+        index ===
+        currentQuestion.correct
+    ){
+
+        buttons[index]
+            .classList
+            .add("correct");
+
+
+        score +=
+            level===5
+            ? 300
+            : 100;
+
+
+        scoreEl.textContent =
+            score;
+
+
+        setTimeout(
+            ()=>{
+                processCorrectAnswer();
+            },
+            500
+        );
+
+
+    }
+
+    /* ERRADA */
+
+    else{
+
+        buttons[index]
+            .classList
+            .add("wrong");
+
+
+        lives--;
+
+        livesEl.textContent =
+            lives;
+
+
+        if(lives<=0){
+
+            setTimeout(
+                gameOver,
+                500
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   PROCESSAR ACERTO
+===================================================== */
+
+function processCorrectAnswer(){
+
+    questionActive =
+        false;
+
+
+    questionBox
+        .classList
+        .add("hidden");
+
+
+    /* DESAFIO FINAL */
+
+    if(level===5){
+
+        finalQuestionIndex++;
+
+        if(
+            finalQuestionIndex >= 5
+        ){
+
+            victory();
+
+            return;
+
+        }
+
+        setTimeout(
+            showFinalQuestion,
+            350
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * A resposta correta não
+     * muda o nível imediatamente.
+     *
+     * O jogador continua correndo.
+     *
+     * O próximo nível será
+     * liberado através da pontuação.
+     */
+
+}
+
+
+/* =====================================================
+   PROGRESSÃO DOS NÍVEIS
+===================================================== */
+
+function checkLevelProgress(){
+
+    if(level===1 && score>=300){
+
+        changeLevel(2);
+
+        return;
+
+    }
+
+
+    if(level===2 && score>=700){
+
+        changeLevel(3);
+
+        return;
+
+    }
+
+
+    if(level===3 && score>=1200){
+
+        changeLevel(4);
+
+        return;
+
+    }
+
+
+    /*
+     * Nível 4 precisa chegar
+     * a 1800 pontos para
+     * iniciar o desafio final.
+     */
+
+    if(level===4 && score>=1800){
+
+        changeLevel(5);
+
+        return;
+
+    }
+
+}
+
+
+/* =====================================================
+   MUDAR NÍVEL
+===================================================== */
+
+function changeLevel(newLevel){
+
+    level =
+        newLevel;
+
+
+    levelEl.textContent =
+        level;
+
+
+    running =
+        false;
+
+
+    closeQuestion();
+
+
+    let icon =
+        "🟢";
+
+    let title =
+        "NÍVEL 1";
+
+    let description =
+        "Perguntas fáceis de vocabulário.";
+
+    if(level===2){
+
+        icon =
+            "🟡";
+
+        title =
+            "NÍVEL 2";
+
+        description =
+            "Agora as perguntas ficaram mais difíceis.";
+
+    }
+
+
+    if(level===3){
+
+        icon =
+            "🔴";
+
+        title =
+            "NÍVEL 3";
+
+        description =
+            "Prepare-se para perguntas difíceis de gramática e interpretação.";
+
+    }
+
+
+    if(level===4){
+
+        icon =
+            "🟣";
+
+        title =
+            "NÍVEL 4";
+
+        description =
+            "Agora tudo pode acontecer. As perguntas serão aleatórias.";
+
+    }
+
+
+    if(level===5){
+
+        icon =
+            "🏆";
+
+        title =
+            "DESAFIO FINAL";
+
+        description =
+            "Cinco perguntas sorteadas. Acerte todas para vencer.";
+
+        prepareFinalChallenge();
+
+    }
+
+
+    document.getElementById(
+        "levelIcon"
+    ).textContent =
+        icon;
+
+
+    document.getElementById(
+        "levelTitle"
+    ).textContent =
+        title;
+
+
+    document.getElementById(
+        "levelDescription"
+    ).textContent =
+        description;
+
+
+    document.getElementById(
+        "levelScreen"
+    )
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* =====================================================
+   CONTINUAR NÍVEL
+===================================================== */
+
+function continueLevel(){
+
+    document.getElementById(
+        "levelScreen"
+    )
+    .classList
+    .add("hidden");
+
+
+    running =
+        true;
+
+
+    /*
+     * O nível 5 começa
+     * diretamente com pergunta.
+     */
+
+    if(level===5){
+
+        setTimeout(
+            showFinalQuestion,
+            400
+        );
+
+    }
+
+    gameLoop();
+
+}
+
+
+/* =====================================================
+   PREPARAR DESAFIO FINAL
+===================================================== */
+
+function prepareFinalChallenge(){
+
+    /*
+     * Cria uma cópia do banco.
+     */
+
+    const shuffled =
+        [...allQuestions];
+
+
+    /*
+     * Embaralhamento.
+     */
+
+    for(
+        let i=shuffled.length-1;
+        i>0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i+1)
+            );
+
+        [
+            shuffled[i],
+            shuffled[j]
+        ] =
+        [
+            shuffled[j],
+            shuffled[i]
+        ];
+
+    }
+
+
+    /*
+     * Seleciona exatamente 5.
+     */
+
+    finalQuestions =
+        shuffled.slice(
+            0,
+            5
+        );
+
+
+    finalQuestionIndex =
+        0;
+
+}
+
+
+/* =====================================================
+   MOSTRAR QUESTÃO FINAL
+===================================================== */
+
+function showFinalQuestion(){
+
+    if(
+        finalQuestionIndex>=5
+    ){
+
+        victory();
+
+        return;
+
+    }
+
+
+    currentQuestion =
+        finalQuestions[
+            finalQuestionIndex
+        ];
+
+
+    questionEl.textContent =
+        currentQuestion.q;
+
+
+    currentQuestion.a.forEach(
+        (answer,index)=>{
+
+            answerButtons[index]
+                .textContent =
+                answer;
+
+            answerButtons[index]
+                .classList.remove(
+                    "correct",
+                    "wrong"
+                );
+
+        }
+    );
+
+
+    finalProgress
+        .textContent =
+        "🏆 Desafio Final: " +
+        (finalQuestionIndex+1) +
+        " / 5";
+
+
+    finalProgress
+        .classList
+        .remove("hidden");
+
+
+    questionActive =
+        true;
+
+
+    questionBox
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =====================================================
+   FECHAR PERGUNTA
+===================================================== */
+
+function closeQuestion(){
+
+    questionActive =
+        false;
+
+    questionBox
+        .classList
+        .add("hidden");
+
+}
+
+
+/* =====================================================
+   FUNDO
+===================================================== */
+
+function drawBackground(){
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "#102d4d"
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "#07111b"
+    );
+
+
+    ctx.fillStyle =
+        gradient;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    ctx.fillStyle =
+        "#0a1926";
+
+
+    for(
+        let i=0;
+        i<12;
+        i++
+    ){
+
+        let x =
+            i%2===0
+            ? 30
+            : W-55;
+
+
+        let y =
+            (
+                i*130 +
+                roadOffset*.4
+            )
+            %
+            (H+150)
+            -
+            100;
+
+
+        ctx.fillRect(
+            x,
+            y,
+            25,
+            70
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ESTRADA
+===================================================== */
+
+function drawRoad(){
+
+    const road =
+        getRoad();
+
+
+    ctx.fillStyle =
+        "#202a34";
+
+
+    ctx.fillRect(
+        road.left,
+        0,
+        road.width,
+        H
+    );
+
+
+    ctx.fillStyle =
+        "#cfd5db";
+
+
+    ctx.fillRect(
+        road.left,
+        0,
+        7,
+        H
+    );
+
+
+    ctx.fillRect(
+        road.left+
+        road.width-
+        7,
+        0,
+        7,
+        H
+    );
+
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.65)";
+
+
+    for(
+        let lane=1;
+        lane<3;
+        lane++
+    ){
+
+        const x =
+            road.left+
+            road.laneWidth*
+            lane;
+
+
+        for(
+            let y=
+                -100+
+                roadOffset;
+            y<H;
+            y+=100
+        ){
+
+            ctx.fillRect(
+                x-3,
+                y,
+                6,
+                55
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   JOGADOR
+===================================================== */
+
+function drawPlayer(){
+
+    player.x +=
+        (
+            laneX(
+                player.targetLane
+            ) -
+            player.x
+        ) *
+        player.moveSpeed;
+
+
+    player.y =
+        H-125;
+
+
+    ctx.fillStyle =
+        "#168cff";
+
+
+    ctx.fillRect(
+        player.x-
+        player.width/2,
+        player.y,
+        player.width,
+        player.height
+    );
+
+
+    ctx.fillStyle =
+        "#ffd4a3";
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        player.x,
+        player.y-12,
+        15,
+        0,
+        Math.PI*2
+    );
+
+
+    ctx.fill();
+
+
+    ctx.fillStyle =
+        "#ffffff";
+
+
+    ctx.fillRect(
+        player.x-13,
+        player.y+7,
+        26,
+        25
+    );
+
+
+    ctx.fillStyle =
+        "#182433";
+
+
+    ctx.fillRect(
+        player.x-16,
+        player.y+38,
+        11,
+        24
+    );
+
+
+    ctx.fillRect(
+        player.x+5,
+        player.y+38,
+        11,
+        24
+    );
+
+}
+
+
+/* =====================================================
+   OBSTÁCULOS
+===================================================== */
+
+function drawObstacles(){
+
+    obstacles.forEach(
+        o=>{
+
+            ctx.fillStyle =
+                "#e74c3c";
+
+
+            ctx.fillRect(
+                o.x-o.width/2,
+                o.y,
+                o.width,
+                o.height
+            );
+
+
+            ctx.fillStyle =
+                "#ffffff";
+
+
+            ctx.fillRect(
+                o.x-15,
+                o.y+15,
+                30,
+                6
+            );
+
+
+            ctx.fillRect(
+                o.x-15,
+                o.y+35,
+                30,
+                6
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   COLISÃO
+===================================================== */
+
+function collision(a,b){
+
+    return (
+
+        a.x-a.width/2 <
+        b.x+b.width/2 &&
+
+        a.x+a.width/2 >
+        b.x-b.width/2 &&
+
+        a.y <
+        b.y+b.height &&
+
+        a.y+a.height >
+        b.y
+
+    );
+
+}
+
+
+/* =====================================================
+   CONTROLES
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(!running)
+            return;
+
+
+        if(
+            e.key==="ArrowLeft" ||
+            e.key.toLowerCase()==="a"
+        ){
+
+            player.targetLane =
+                Math.max(
+                    0,
+                    player.targetLane-1
+                );
+
+        }
+
+
+        if(
+            e.key==="ArrowRight" ||
+            e.key.toLowerCase()==="d"
+        ){
+
+            player.targetLane =
+                Math.min(
+                    2,
+                    player.targetLane+1
+                );
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "leftBtn"
+)
+.addEventListener(
+    "click",
+    ()=>{
+
+        if(running){
+
+            player.targetLane =
+                Math.max(
+                    0,
+                    player.targetLane-1
+                );
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "rightBtn"
+)
+.addEventListener(
+    "click",
+    ()=>{
+
+        if(running){
+
+            player.targetLane =
+                Math.min(
+                    2,
+                    player.targetLane+1
+                );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame(){
+
+    startScreen
+        .classList
+        .add("hidden");
+
+
+    gameOverScreen
+        .classList
+        .add("hidden");
+
+
+    victoryScreen
+        .classList
+        .add("hidden");
+
+
+    levelScreen
+        .classList
+        .add("hidden");
+
+
+    score =
+        0;
+
+
+    lives =
+        3;
+
+
+    level =
+        1;
+
+
+    speed =
+        5;
+
+
+    roadOffset =
+        0;
+
+
+    obstacles =
+        [];
+
+
+    spawnTimer =
+        0;
+
+
+    player.targetLane =
+        1;
+
+
+    player.x =
+        laneX(1);
+
+
+    scoreEl.textContent =
+        score;
+
+
+    livesEl.textContent =
+        lives;
+
+
+    levelEl.textContent =
+        level;
+
+
+    closeQuestion();
+
+
+    running =
+        true;
+
+
+    cancelAnimationFrame(
+        animationId
+    );
+
+
+    gameLoop();
+
+}
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+function gameOver(){
+
+    running =
+        false;
+
+
+    closeQuestion();
+
+
+    if(score>best){
+
+        best =
+            score;
+
+
+        localStorage.setItem(
+            "englishRunnerBest",
+            best
+        );
+
+    }
+
+
+    bestEl.textContent =
+        best;
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent =
+        score;
+
+
+    document.getElementById(
+        "finalLevel"
+    ).textContent =
+        "Nível " +
+        level;
+
+
+    document.getElementById(
+        "finalBest"
+    ).textContent =
+        best;
+
+
+    gameOverScreen
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =====================================================
+   VITÓRIA
+===================================================== */
+
+function victory(){
+
+    running =
+        false;
+
+
+    closeQuestion();
+
+
+    if(score>best){
+
+        best =
+            score;
+
+
+        localStorage.setItem(
+            "englishRunnerBest",
+            best
+        );
+
+    }
+
+
+    bestEl.textContent =
+        best;
+
+
+    document.getElementById(
+        "victoryScore"
+    ).textContent =
+        score;
+
+
+    victoryScreen
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =====================================================
+   RESTART
+===================================================== */
+
+function restartGame(){
+
+    startGame();
+
+}
+
+
+/* =====================================================
+   LOOP
+===================================================== */
+
+function gameLoop(){
+
+    if(!running)
+        return;
+
+
+    /*
+     * A velocidade aumenta
+     * lentamente durante o jogo.
+     */
+
+    speed +=
+        0.0008;
+
+
+    roadOffset +=
+        speed;
+
+
+    if(
+        roadOffset>=100
+    ){
+
+        roadOffset -=
+            100;
+
+    }
+
+
+    /*
+     * Obstáculos.
+     */
+
+    spawnTimer -= 1;
+
+
+    if(
+        spawnTimer<=0
+    ){
+
+        createObstacle();
+
+
+        spawnTimer =
+            Math.max(
+                35,
+                82-
+                speed*3
+            );
+
+    }
+
+
+    /*
+     * Movimento.
+     */
+
+    obstacles.forEach(
+        o=>{
+            o.y +=
+                o.speed;
+        }
+    );
+
+
+    /*
+     * Colisões.
+     */
+
+    for(
+        let i=
+            obstacles.length-1;
+        i>=0;
+        i--
+    ){
+
+        const o =
+            obstacles[i];
+
+
+        if(
+            collision(
+                player,
+                o
+            )
+        ){
+
+            obstacles.splice(
+                i,
+                1
+            );
+
+
+            lives--;
+
+
+            livesEl.textContent =
+                lives;
+
+
+            if(lives<=0){
+
+                gameOver();
+
+                return;
+
+            }
+
+
+            continue;
+
+        }
+
+
+        /*
+         * Obstáculo saiu.
+         */
+
+        if(
+            o.y>H+100
+        ){
+
+            obstacles.splice(
+                i,
+                1
+            );
+
+
+            score +=
+                10;
+
+
+            scoreEl.textContent =
+                score;
+
+
+            /*
+             * A cada 50 pontos:
+             * pergunta.
+             */
+
+            if(
+                score%50===0 &&
+                !questionActive
+            ){
+
+                showQuestion();
+
+            }
+
+
+            /*
+             * Verificar evolução.
+             */
+
+            checkLevelProgress();
+
+        }
+
+    }
+
+
+    drawBackground();
+
+    drawRoad();
+
+    drawObstacles();
+
+    drawPlayer();
+
+
+    animationId =
+        requestAnimationFrame(
+            gameLoop
+        );
+
+}
+
+
+/* =====================================================
+   PRIMEIRA RENDERIZAÇÃO
+===================================================== */
+
+player.x =
+    laneX(1);
+
+
+player.y =
+    H-125;
+
+
+drawBackground();
+
+drawRoad();
+
+drawPlayer();
+
+</script>
+
+</body>
+
+</html>

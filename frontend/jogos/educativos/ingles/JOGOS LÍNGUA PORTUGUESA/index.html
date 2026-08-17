@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Missão: Cidade das Regras</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#111827,#1e3a8a 55%,#312e81);
+  color:#fff;
+  overflow-x:hidden;
+}
+button{font:inherit}
+#app{min-height:100vh;display:flex;justify-content:center;padding:22px}
+.screen{width:min(1050px,100%);display:none}
+.screen.active{display:block}
+.card{
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(12px);
+  border-radius:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.header{padding:28px;margin-bottom:18px}
+.logo{font-size:18px;font-weight:800;letter-spacing:2px;color:#93c5fd}
+h1{font-size:clamp(32px,6vw,62px);margin:8px 0}
+.subtitle{font-size:18px;color:#dbeafe;line-height:1.5}
+.start-box{padding:30px}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+.rule{
+  padding:20px;border-radius:18px;background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.12)
+}
+.rule b{display:block;font-size:21px;margin:8px 0}
+.rule p{color:#dbeafe;line-height:1.45}
+.btn{
+  border:0;border-radius:14px;padding:14px 22px;cursor:pointer;
+  font-weight:800;transition:.2s;box-shadow:0 7px 18px rgba(0,0,0,.2)
+}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:#fbbf24;color:#111827}
+.secondary{background:#fff;color:#172554}
+.danger{background:#ef4444;color:#fff}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-bottom:16px;flex-wrap:wrap
+}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.12);font-weight:700}
+.progress{height:10px;background:rgba(255,255,255,.15);border-radius:20px;overflow:hidden;margin:12px 0 20px}
+.progress span{display:block;height:100%;background:#fbbf24;width:0;transition:.4s}
+.phase-map{padding:24px}
+.phase-map h2{margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.phase{
+  aspect-ratio:1;border:0;border-radius:15px;background:#2563eb;color:white;
+  cursor:pointer;font-weight:900;font-size:18px
+}
+.phase:hover{transform:scale(1.05)}
+.phase.locked{background:#374151;color:#9ca3af;cursor:not-allowed}
+.phase.done{background:#059669}
+.phase.current{outline:4px solid #fbbf24}
+.question-card{padding:28px}
+.badge{
+  display:inline-block;padding:8px 12px;border-radius:999px;background:#fbbf24;
+  color:#111827;font-weight:900;margin-bottom:14px
+}
+.question{font-size:clamp(22px,3vw,32px);line-height:1.35;margin:10px 0 22px}
+.text-box{
+  background:#f8fafc;color:#172033;border-radius:18px;padding:20px;
+  line-height:1.7;font-size:18px;margin:15px 0 22px;border-left:6px solid #2563eb
+}
+.options{display:grid;gap:12px}
+.option{
+  text-align:left;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);
+  color:#fff;padding:16px;border-radius:15px;cursor:pointer;transition:.2s
+}
+.option:hover{background:rgba(255,255,255,.16);border-color:#93c5fd}
+.option.correct{background:rgba(16,185,129,.3);border-color:#34d399}
+.option.wrong{background:rgba(239,68,68,.3);border-color:#f87171}
+.feedback{margin-top:18px;padding:15px;border-radius:14px;display:none;line-height:1.5}
+.feedback.show{display:block}
+.feedback.good{background:rgba(16,185,129,.22)}
+.feedback.bad{background:rgba(239,68,68,.22)}
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
+.hidden{display:none!important}
+.result{text-align:center;padding:38px}
+.result .big{font-size:70px}
+.result h2{font-size:38px;margin:10px 0}
+.result p{font-size:19px;color:#dbeafe;line-height:1.6;margin:10px auto 24px;max-width:700px}
+.modal{
+ position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;
+ align-items:center;justify-content:center;padding:20px;z-index:10
+}
+.modal.show{display:flex}
+.modal-card{max-width:500px;width:100%;padding:28px;text-align:center}
+.modal-card h3{font-size:30px;margin-bottom:10px}
+@media(max-width:700px){
+ .rules{grid-template-columns:1fr}
+ .grid{grid-template-columns:repeat(4,1fr)}
+ .question-card{padding:20px}
+ .actions{flex-direction:column}
+ .actions .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<section id="home" class="screen active">
+  <div class="card header">
+    <div class="logo">INSTITUTO ACUTIS • LÍNGUA PORTUGUESA</div>
+    <h1>⚖️ Missão: Cidade das Regras</h1>
+    <p class="subtitle">Uma aventura de leitura e interpretação para o 6º ano.</p>
+  </div>
+  <div class="card start-box">
+    <h2>🎯 Sua missão</h2>
+    <p class="subtitle" style="margin-top:8px">
+      Leia situações do cotidiano, descubra informações, faça inferências e diferencie
+      <b>direito, dever e obrigação</b>.
+    </p>
+    <div class="rules">
+      <div class="rule">🟢<b>DIREITO</b><p>Aquilo que a pessoa pode receber, fazer ou exigir.</p></div>
+      <div class="rule">🔵<b>DEVER</b><p>Aquilo que a pessoa deve fazer para cumprir responsabilidades e respeitar a convivência.</p></div>
+      <div class="rule">🟠<b>OBRIGAÇÃO</b><p>Aquilo que precisa ser cumprido por uma regra, acordo ou determinação.</p></div>
+    </div>
+    <button class="btn primary" onclick="startGame()">🚀 COMEÇAR MISSÃO</button>
+  </div>
+</section>
+
+<section id="map" class="screen">
+  <div class="topbar">
+    <div><div class="logo">MAPA DA CIDADE</div><h2>Escolha uma missão</h2></div>
+    <div class="stats">
+      <div class="stat">⭐ <span id="mapScore">0</span></div>
+      <div class="stat">❤️ <span id="mapLives">3</span></div>
+    </div>
+  </div>
+  <div class="card phase-map">
+    <div class="progress"><span id="mapProgress"></span></div>
+    <div id="phaseGrid" class="grid"></div>
+  </div>
+</section>
+
+<section id="game" class="screen">
+  <div class="topbar">
+    <div>
+      <div class="logo">MISSÃO <span id="phaseNumber">1</span> DE 21</div>
+      <h2 id="phaseTitle">Desafio</h2>
+    </div>
+    <div class="stats">
+      <div class="stat">⭐ <span id="score">0</span></div>
+      <div class="stat">❤️ <span id="lives">3</span></div>
+    </div>
+  </div>
+  <div class="progress"><span id="gameProgress"></span></div>
+
+  <div class="card question-card">
+    <span id="typeBadge" class="badge">LEITURA</span>
+    <div id="textBox" class="text-box hidden"></div>
+    <div id="question" class="question"></div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <div class="actions">
+      <button class="btn secondary" onclick="backToMap()">🗺️ Mapa</button>
+      <button id="nextBtn" class="btn primary hidden" onclick="nextQuestion()">Continuar ➜</button>
+    </div>
+  </div>
+</section>
+
+<section id="result" class="screen">
+  <div class="card result">
+    <div class="big">🏆</div>
+    <h2>Missão concluída!</h2>
+    <p id="resultText"></p>
+    <button class="btn primary" onclick="restartGame()">🔄 Jogar novamente</button>
+    <button class="btn secondary" onclick="showScreen('map')" style="margin-left:8px">🗺️ Voltar ao mapa</button>
+  </div>
+</section>
+
+<div id="modal" class="modal">
+ <div class="card modal-card">
+   <div style="font-size:55px">❤️</div>
+   <h3>Fim das vidas!</h3>
+   <p class="subtitle">Você pode voltar ao mapa e tentar outra missão.</p>
+   <button class="btn primary" onclick="backToMap()" style="margin-top:18px">🗺️ Voltar ao mapa</button>
+ </div>
+</div>
+
+</div>
+
+<script>
+const missions = [
+{
+ title:"O direito de aprender", type:"Leitura direta",
+ text:"Na Escola Horizonte, todos os estudantes participam das aulas e têm acesso aos materiais necessários. A direção explicou que aprender é um direito e que ninguém deve ser impedido de frequentar a escola por causa de sua condição financeira.",
+ q:"Qual direito é destacado no texto?",
+ options:["Direito à educação","Direito de desrespeitar regras","Direito de faltar às aulas","Direito de impedir colegas"],
+ answer:0,
+ feedback:"O texto afirma diretamente que todos têm direito de aprender e frequentar a escola."
+},
+{
+ title:"Responsabilidade na biblioteca", type:"Situação cotidiana",
+ text:"Lucas pegou um livro na biblioteca da escola. A bibliotecária explicou que o livro deveria ser devolvido na sexta-feira, para que outros alunos também pudessem utilizá-lo. Lucas anotou a data em sua agenda.",
+ q:"De acordo com o texto, o que Lucas deve fazer?",
+ options:["Guardar o livro para sempre","Devolver o livro na data combinada","Impedir outros alunos de ler","Jogar o livro fora"],
+ answer:1,
+ feedback:"A informação está explícita: Lucas deve devolver o livro na sexta-feira."
+},
+{
+ title:"Regra do recreio", type:"Interpretação",
+ text:"Durante o recreio, os alunos perceberam uma placa: 'Não corra nas escadas'. João queria chegar rapidamente à quadra, mas decidiu caminhar. Ele sabia que a regra existia para evitar acidentes.",
+ q:"Por que João decidiu caminhar?",
+ options:["Porque não gostava da quadra","Porque queria chegar atrasado","Porque compreendeu a finalidade da regra","Porque estava proibido de brincar"],
+ answer:2,
+ feedback:"A pista está no final do texto: a regra existe para evitar acidentes."
+},
+{
+ title:"Direito ou dever?", type:"Classificação",
+ text:"Marina participa das atividades da escola. Ela sabe que pode expressar sua opinião durante uma discussão, mas também entende que precisa ouvir os colegas e respeitar suas opiniões.",
+ q:"Expressar sua opinião, no contexto apresentado, é principalmente um:",
+ options:["Direito","Dever","Castigo","Problema"],
+ answer:0,
+ feedback:"O texto apresenta a possibilidade de expressar a própria opinião como um direito."
+},
+{
+ title:"O combinado", type:"Inferência",
+ text:"Antes de sair para jogar bola, Pedro combinou com sua mãe que voltaria às 17 horas. O relógio marcou 16h55 quando Pedro terminou a partida. Ele guardou a bola e começou a voltar para casa.",
+ q:"O que podemos inferir sobre a atitude de Pedro?",
+ options:["Ele ignorou o combinado","Ele procurou cumprir o horário combinado","Ele decidiu não voltar","Ele perdeu o direito de brincar"],
+ answer:1,
+ feedback:"Pedro percebeu que o horário estava próximo e iniciou o retorno para cumprir o combinado."
+},
+{
+ title:"A praça do bairro", type:"Ideia principal",
+ text:"Os moradores de um bairro organizaram um mutirão para cuidar da praça. Alguns recolheram o lixo, outros plantaram mudas e um grupo pintou os bancos. Ao final, todos perceberam que o espaço ficou mais agradável para a comunidade.",
+ q:"Qual é a ideia principal do texto?",
+ options:["A praça ficou fechada","Os moradores cuidaram coletivamente da praça","Somente as crianças trabalharam","Os moradores destruíram os bancos"],
+ answer:1,
+ feedback:"O texto inteiro apresenta ações coletivas para melhorar a praça."
+},
+{
+ title:"A regra do uniforme", type:"Vocabulário no contexto",
+ text:"Na escola, os estudantes receberam um aviso informando que o uniforme deveria ser usado nas aulas. Alguns alunos perguntaram por que a regra existia. A coordenação explicou que ela fazia parte das normas de organização da escola.",
+ q:"No contexto, a palavra 'normas' significa:",
+ options:["Brincadeiras","Regras","Histórias","Presentes"],
+ answer:1,
+ feedback:"'Normas' significa regras ou orientações que devem ser seguidas."
+},
+{
+ title:"Internet com responsabilidade", type:"Intenção",
+ text:"A professora escreveu no mural: 'Antes de compartilhar uma foto de outra pessoa, peça autorização. Respeitar a privacidade também é uma forma de cuidar dos outros.'",
+ q:"Qual é a principal intenção desse texto?",
+ options:["Divertir os leitores","Ensinar uma atitude responsável","Contar uma aventura","Vender um produto"],
+ answer:1,
+ feedback:"O texto orienta o leitor sobre uma atitude responsável na internet."
+},
+{
+ title:"A fila", type:"Consequência",
+ text:"Na cantina, havia uma fila organizada. Rafael tentou passar à frente dos colegas. Ana explicou que todos deveriam esperar sua vez. Rafael percebeu que sua atitude prejudicaria quem estava esperando e voltou para o final da fila.",
+ q:"O que aconteceu depois que Rafael percebeu o problema?",
+ options:["Ele saiu da escola","Ele passou novamente à frente","Ele voltou para o final da fila","Ele fechou a cantina"],
+ answer:2,
+ feedback:"O texto informa que Rafael voltou para o final da fila."
+},
+{
+ title:"Quem disse isso?", type:"Identificação",
+ text:"— Todos têm direito de participar da atividade — disse a professora. — Mas precisamos respeitar a vez de cada colega.",
+ q:"Quem afirmou que todos têm direito de participar?",
+ options:["Um aluno","A professora","O diretor","Um visitante"],
+ answer:1,
+ feedback:"A fala começa com 'disse a professora', portanto foi ela quem afirmou isso."
+},
+{
+ title:"Ordem dos acontecimentos", type:"Sequência",
+ text:"Leia os acontecimentos: 1. Beatriz encontrou um papel no chão. 2. Ela pegou o papel. 3. Procurou uma lixeira. 4. Jogou o papel no local adequado.",
+ q:"Qual é a sequência correta?",
+ options:["4 → 2 → 1 → 3","1 → 2 → 3 → 4","2 → 4 → 1 → 3","3 → 1 → 4 → 2"],
+ answer:1,
+ feedback:"Primeiro Beatriz encontrou o papel; depois pegou, procurou a lixeira e o descartou."
+},
+{
+ title:"Direito à informação", type:"Inferência",
+ text:"A escola publicou um aviso explicando a data da reunião de responsáveis, o horário e o local. O aviso ficou disponível no mural e também foi enviado às famílias.",
+ q:"Por que essas informações são importantes?",
+ options:["Para que as famílias saibam quando e onde a reunião acontecerá","Para impedir a reunião","Para cancelar as aulas","Para escolher o uniforme"],
+ answer:0,
+ feedback:"As informações permitem que as famílias saibam quando e onde devem comparecer."
+},
+{
+ title:"O dever de cuidar", type:"Classificação",
+ text:"Depois da aula de artes, os estudantes encontraram papéis espalhados pelo chão. A professora pediu que todos organizassem a sala antes de sair. Os alunos recolheram os materiais e deixaram o espaço limpo.",
+ q:"A atitude dos alunos representa principalmente um:",
+ options:["Direito","Dever","Prêmio","Convite"],
+ answer:1,
+ feedback:"Cuidar do espaço utilizado e organizá-lo é apresentado como uma responsabilidade dos alunos."
+},
+{
+ title:"Obrigação ou escolha?", type:"Classificação",
+ text:"No laboratório, havia um cartaz dizendo: 'É obrigatório usar óculos de proteção durante os experimentos'. Sofia colocou os óculos antes de iniciar a atividade.",
+ q:"Usar os óculos de proteção é apresentado como:",
+ options:["Uma obrigação","Uma brincadeira","Um direito de faltar","Uma opinião"],
+ answer:0,
+ feedback:"A própria palavra 'obrigatório' indica que a ação precisa ser cumprida."
+},
+{
+ title:"A notícia da escola", type:"Gênero textual",
+ text:"ESCOLA REALIZA CAMPANHA DE ARRECADAÇÃO\nNa próxima semana, estudantes e professores poderão levar alimentos não perecíveis para uma campanha de solidariedade. As doações serão destinadas a famílias da comunidade.",
+ q:"Esse texto se aproxima mais de qual gênero?",
+ options:["Notícia/aviso informativo","Receita culinária","Poema","Conto de aventura"],
+ answer:0,
+ feedback:"O texto apresenta informações objetivas sobre uma ação que acontecerá na escola."
+},
+{
+ title:"O que não está escrito?", type:"Inferência",
+ text:"Caio entrou na sala, colocou a mochila no lugar e percebeu que seus colegas já estavam sentados. Ele olhou para o relógio e rapidamente pegou o caderno.",
+ q:"O que podemos inferir?",
+ options:["A aula provavelmente já havia começado","Caio estava indo para casa","A escola estava fechada","Não havia professor"],
+ answer:0,
+ feedback:"Os colegas já estavam sentados e Caio pegou rapidamente o caderno, indicando que a aula provavelmente havia começado."
+},
+{
+ title:"A palavra importante", type:"Vocabulário",
+ text:"O diretor afirmou que a participação dos estudantes era essencial para o projeto. Segundo ele, cada aluno poderia contribuir com ideias e sugestões.",
+ q:"No texto, 'essencial' significa algo:",
+ options:["Desnecessário","Muito importante","Proibido","Engraçado"],
+ answer:1,
+ feedback:"Essencial é aquilo que é muito importante ou necessário."
+},
+{
+ title:"O acordo", type:"Compreensão",
+ text:"Dois colegas decidiram fazer um trabalho juntos. Um pesquisaria as informações e o outro organizaria os cartazes. Eles combinaram que ambos revisariam o trabalho antes da apresentação.",
+ q:"Qual foi a obrigação combinada pelos dois?",
+ options:["Fazer o trabalho sozinhos","Revisar o trabalho antes da apresentação","Não apresentar o trabalho","Trocar de escola"],
+ answer:1,
+ feedback:"O texto informa claramente que os dois revisariam o trabalho antes da apresentação."
+},
+{
+ title:"Três conceitos", type:"Direito, dever ou obrigação",
+ text:"Na escola, Júlia pode participar das atividades e apresentar suas ideias. Ao mesmo tempo, precisa respeitar os colegas e cumprir as regras de segurança durante as aulas.",
+ q:"Qual alternativa apresenta corretamente um direito e uma obrigação mencionados?",
+ options:["Participar das atividades / cumprir regras de segurança","Desrespeitar colegas / faltar às aulas","Impedir opiniões / quebrar materiais","Ignorar regras / interromper colegas"],
+ answer:0,
+ feedback:"Participar das atividades aparece como possibilidade/direito; cumprir regras de segurança é uma obrigação."
+},
+{
+ title:"A placa da cidade", type:"Interpretação",
+ text:"Na entrada do parque havia uma placa: 'Preserve este espaço. Não jogue lixo no chão. Utilize as lixeiras'. Um grupo de estudantes leu a placa antes de fazer um piquenique.",
+ q:"Qual atitude está de acordo com a mensagem da placa?",
+ options:["Deixar embalagens no gramado","Usar as lixeiras disponíveis","Arrancar plantas","Jogar lixo no lago"],
+ answer:1,
+ feedback:"A placa orienta claramente os visitantes a utilizar as lixeiras e preservar o espaço."
+},
+{
+ title:"👑 Chefão da Leitura", type:"Desafio final",
+ text:"A turma de Miguel recebeu uma missão: organizar uma campanha para melhorar a convivência na escola. Primeiro, os alunos conversaram sobre problemas do cotidiano. Depois, criaram cartazes com mensagens sobre respeito, cuidado e responsabilidade. A professora lembrou que todos têm direitos, mas também precisam cumprir seus deveres. No final, a turma decidiu que cada estudante ajudaria a manter a sala organizada, respeitar a vez de falar e cuidar dos materiais coletivos.",
+ q:"Qual alternativa resume melhor a mensagem do texto?",
+ options:[
+ "Na escola, somente os professores possuem responsabilidades.",
+ "Ter direitos também envolve respeitar deveres e colaborar para uma boa convivência.",
+ "Os alunos não podem participar de decisões.",
+ "Cuidar dos materiais é responsabilidade apenas da direção."
+ ],
+ answer:1,
+ feedback:"O texto relaciona direitos, deveres, responsabilidade e colaboração para uma boa convivência."
+}
+];
+
+let score=0, lives=3, current=0, answered=false;
+let completed = JSON.parse(localStorage.getItem("cidadeRegrasCompleted") || "[]");
+
+function showScreen(id){
+ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+}
+
+function startGame(){
+ score=0; lives=3; current=0;
+ showScreen("map"); renderMap();
+}
+
+function renderMap(){
+ const grid=document.getElementById("phaseGrid");
+ grid.innerHTML="";
+ missions.forEach((m,i)=>{
+   const b=document.createElement("button");
+   b.className="phase";
+   if(completed.includes(i)) b.classList.add("done");
+   if(i===current) b.classList.add("current");
+   const unlocked = i===0 || completed.includes(i-1) || completed.includes(i);
+   if(!unlocked) b.classList.add("locked");
+   b.textContent=completed.includes(i)?"✓":i+1;
+   b.disabled=!unlocked;
+   b.onclick=()=>loadMission(i);
+   grid.appendChild(b);
+ });
+ document.getElementById("mapScore").textContent=score;
+ document.getElementById("mapLives").textContent=lives;
+ document.getElementById("mapProgress").style.width=(completed.length/missions.length*100)+"%";
+}
+
+function loadMission(index){
+ current=index; answered=false;
+ const m=missions[index];
+ document.getElementById("phaseNumber").textContent=index+1;
+ document.getElementById("phaseTitle").textContent=m.title;
+ document.getElementById("typeBadge").textContent=m.type;
+ document.getElementById("question").textContent=m.q;
+ document.getElementById("score").textContent=score;
+ document.getElementById("lives").textContent=lives;
+ document.getElementById("gameProgress").style.width=((index)/missions.length*100)+"%";
+ const text=document.getElementById("textBox");
+ text.textContent=m.text;
+ text.classList.remove("hidden");
+ const opts=document.getElementById("options");
+ opts.innerHTML="";
+ m.options.forEach((option,i)=>{
+   const b=document.createElement("button");
+   b.className="option";
+   b.textContent=String.fromCharCode(65+i)+") "+option;
+   b.onclick=()=>answer(i,b);
+   opts.appendChild(b);
+ });
+ const fb=document.getElementById("feedback");
+ fb.className="feedback";
+ fb.textContent="";
+ document.getElementById("nextBtn").classList.add("hidden");
+ showScreen("game");
+}
+
+function answer(choice,button){
+ if(answered) return;
+ answered=true;
+ const m=missions[current];
+ const all=[...document.querySelectorAll(".option")];
+ all.forEach(x=>x.disabled=true);
+ const fb=document.getElementById("feedback");
+ if(choice===m.answer){
+   button.classList.add("correct");
+   score+=100;
+   fb.className="feedback show good";
+   fb.innerHTML="✅ <b>Muito bem!</b> "+m.feedback;
+ }else{
+   button.classList.add("wrong");
+   all[m.answer].classList.add("correct");
+   lives--;
+   fb.className="feedback show bad";
+   fb.innerHTML="❌ <b>Quase!</b> "+m.feedback;
+   if(lives<=0){
+     document.getElementById("nextBtn").classList.add("hidden");
+     setTimeout(()=>document.getElementById("modal").classList.add("show"),500);
+     return;
+   }
+ }
+ document.getElementById("score").textContent=score;
+ document.getElementById("lives").textContent=lives;
+ document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function nextQuestion(){
+ if(!answered)return;
+ if(!completed.includes(current)){
+   completed.push(current);
+   completed.sort((a,b)=>a-b);
+   localStorage.setItem("cidadeRegrasCompleted",JSON.stringify(completed));
+ }
+ if(current===missions.length-1){
+   finishGame();
+ }else{
+   current++;
+   loadMission(current);
+ }
+}
+
+function finishGame(){
+ document.getElementById("resultText").innerHTML=
+   `Você terminou as <b>21 missões</b> da Cidade das Regras!<br>
+    Pontuação: <b>${score}</b> pontos • Vidas restantes: <b>${lives}</b> ❤️`;
+ showScreen("result");
+}
+
+function backToMap(){
+ document.getElementById("modal").classList.remove("show");
+ showScreen("map");
+ renderMap();
+}
+
+function restartGame(){
+ localStorage.removeItem("cidadeRegrasCompleted");
+ completed=[];
+ score=0;lives=3;current=0;
+ showScreen("map");renderMap();
+}
+
+renderMap();
+</script>
+</body>
+</html>

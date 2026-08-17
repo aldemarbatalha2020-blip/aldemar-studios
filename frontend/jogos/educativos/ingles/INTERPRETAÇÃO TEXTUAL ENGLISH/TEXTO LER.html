@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEO ENGLISH // DAILY ROUTINE</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --cyan:#00eaff;
+    --blue:#3578ff;
+    --purple:#a855f7;
+    --green:#00ff9d;
+    --red:#ff416c;
+    --yellow:#ffe66d;
+    --bg:#040812;
+    --panel:rgba(7,15,30,.95);
+    --border:rgba(0,234,255,.25);
+    --text:#edfaff;
+    --muted:#8da5ba;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 15%,rgba(0,234,255,.13),transparent 30%),
+        radial-gradient(circle at 90% 80%,rgba(168,85,247,.13),transparent 30%),
+        var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);
+    background-size:45px 45px;
+    pointer-events:none;
+    z-index:-5;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,.015),
+        rgba(255,255,255,.015) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    pointer-events:none;
+    z-index:20;
+}
+
+/* ESTRELAS */
+
+#stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-3;
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    border-radius:50%;
+    opacity:.5;
+    animation:twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:.15}
+    to{opacity:.9}
+}
+
+/* TELAS */
+
+.screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+/* INÍCIO */
+
+.start-box{
+    width:min(900px,100%);
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:55px 35px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 0 60px rgba(0,234,255,.08);
+}
+
+.start-box::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:3px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        var(--cyan),
+        var(--purple),
+        transparent
+    );
+}
+
+.system{
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:4px;
+    margin-bottom:18px;
+}
+
+h1{
+    font-size:clamp(40px,8vw,78px);
+    line-height:.95;
+    letter-spacing:5px;
+}
+
+h1 span{
+    color:var(--cyan);
+}
+
+.subtitle{
+    margin-top:18px;
+    color:var(--muted);
+    letter-spacing:3px;
+    font-size:14px;
+}
+
+.intro{
+    max-width:680px;
+    margin:30px auto;
+    color:#c8d7e5;
+    line-height:1.8;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:30px 0;
+}
+
+.info{
+    padding:18px 10px;
+    border:1px solid var(--border);
+    background:rgba(0,234,255,.035);
+    border-radius:10px;
+}
+
+.info strong{
+    display:block;
+    color:var(--cyan);
+    font-size:25px;
+    margin-bottom:5px;
+}
+
+.info span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.main-btn{
+    border:1px solid var(--cyan);
+    background:rgba(0,234,255,.07);
+    color:white;
+    padding:16px 42px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    letter-spacing:2px;
+    transition:.25s;
+}
+
+.main-btn:hover{
+    background:var(--cyan);
+    color:#001018;
+    box-shadow:0 0 30px rgba(0,234,255,.4);
+}
+
+/* JOGO */
+
+#gameScreen{
+    display:none;
+    align-items:flex-start;
+}
+
+.game{
+    width:min(1100px,100%);
+    margin:auto;
+}
+
+.hud{
+    display:grid;
+    grid-template-columns:1fr 1.5fr 1fr;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.hud-box{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:13px 18px;
+}
+
+.label{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:2px;
+    margin-bottom:6px;
+}
+
+.value{
+    color:var(--cyan);
+    font-weight:bold;
+}
+
+.center{
+    text-align:center;
+}
+
+.timer{
+    text-align:right;
+}
+
+.timer-value{
+    font-size:23px;
+}
+
+.timer.danger .timer-value{
+    color:var(--red);
+    animation:pulse .7s infinite alternate;
+}
+
+@keyframes pulse{
+    from{opacity:.4}
+    to{opacity:1}
+}
+
+.progress-bar{
+    width:100%;
+    height:7px;
+    background:#101827;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:18px;
+}
+
+.progress{
+    width:0%;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--purple)
+    );
+    transition:.4s;
+}
+
+/* PAINEL */
+
+.panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.panel-header{
+    padding:22px 27px;
+    border-bottom:1px solid rgba(0,234,255,.12);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.panel-label{
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:3px;
+    margin-bottom:7px;
+}
+
+.title{
+    font-size:23px;
+}
+
+.badge{
+    border:1px solid var(--purple);
+    color:#dcb7ff;
+    border-radius:20px;
+    padding:7px 12px;
+    font-size:11px;
+}
+
+.content{
+    padding:27px;
+}
+
+/* HISTÓRIA */
+
+.story-label{
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:3px;
+    margin-bottom:10px;
+}
+
+.story{
+    border:1px solid rgba(0,234,255,.18);
+    border-radius:12px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,234,255,.035),
+            rgba(168,85,247,.04)
+        );
+    padding:25px;
+    margin-bottom:28px;
+}
+
+.story h2{
+    font-size:25px;
+    margin-bottom:18px;
+    color:white;
+}
+
+.story p{
+    font-size:16px;
+    line-height:1.85;
+    color:#e5f3fa;
+    margin-bottom:17px;
+}
+
+.story p:last-child{
+    margin-bottom:0;
+}
+
+.paragraph-number{
+    color:var(--cyan);
+    font-size:10px;
+    letter-spacing:2px;
+    margin-bottom:5px;
+}
+
+/* QUESTÃO */
+
+.question-box{
+    border-top:1px solid rgba(0,234,255,.13);
+    padding-top:25px;
+}
+
+.question-number{
+    color:var(--purple);
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:9px;
+}
+
+.question{
+    font-size:20px;
+    line-height:1.5;
+    margin-bottom:20px;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.answer{
+    background:rgba(255,255,255,.025);
+    color:#eaf6ff;
+    border:1px solid rgba(143,167,187,.25);
+    border-radius:9px;
+    padding:16px;
+    text-align:left;
+    cursor:pointer;
+    transition:.2s;
+    font-size:15px;
+    line-height:1.4;
+}
+
+.answer:hover{
+    border-color:var(--cyan);
+    background:rgba(0,234,255,.06);
+    transform:translateY(-2px);
+}
+
+.answer.correct{
+    border-color:var(--green);
+    background:rgba(0,255,157,.09);
+    color:#caffeb;
+}
+
+.answer.wrong{
+    border-color:var(--red);
+    background:rgba(255,65,108,.09);
+    color:#ffd1dc;
+}
+
+.answer.disabled{
+    pointer-events:none;
+}
+
+.feedback{
+    min-height:30px;
+    margin-top:17px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.feedback.good{
+    color:var(--green);
+}
+
+.feedback.bad{
+    color:var(--red);
+}
+
+.next-area{
+    text-align:right;
+    margin-top:15px;
+}
+
+.next-btn{
+    display:none;
+    border:1px solid var(--green);
+    color:var(--green);
+    background:rgba(0,255,157,.06);
+    padding:13px 24px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.next-btn:hover{
+    background:var(--green);
+    color:#00140c;
+}
+
+/* FINAL */
+
+#finishScreen{
+    display:none;
+}
+
+.finish-box{
+    width:min(850px,100%);
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:50px 30px;
+    text-align:center;
+}
+
+.finish-title{
+    font-size:50px;
+    margin-bottom:12px;
+}
+
+.finish-title span{
+    color:var(--cyan);
+}
+
+.final-score{
+    color:var(--cyan);
+    font-size:72px;
+    font-weight:bold;
+    text-shadow:0 0 25px rgba(0,234,255,.35);
+    margin:10px 0;
+}
+
+.final-message{
+    max-width:650px;
+    margin:0 auto 30px;
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:30px;
+}
+
+.result{
+    padding:18px;
+    border:1px solid var(--border);
+    border-radius:9px;
+}
+
+.result strong{
+    display:block;
+    color:var(--cyan);
+    font-size:25px;
+    margin-bottom:6px;
+}
+
+.result span{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+/* MÚSICA */
+
+.music{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:30;
+}
+
+.music button{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:1px solid var(--cyan);
+    color:var(--cyan);
+    background:rgba(4,8,18,.9);
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:800px){
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hud{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .center{
+        grid-column:1/-1;
+        grid-row:1;
+    }
+
+    .timer{
+        text-align:left;
+    }
+
+    .content{
+        padding:18px;
+    }
+
+    .panel-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    .result-grid{
+        grid-template-columns:1fr;
+    }
+
+    .story p{
+        font-size:15px;
+    }
+
+    .question{
+        font-size:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+
+<!-- ==========================================
+     TELA INICIAL
+========================================== -->
+
+<section class="screen" id="startScreen">
+
+<div class="start-box">
+
+    <div class="system">
+        NEO EDUCATION SYSTEM // READING UNIT
+    </div>
+
+    <h1>
+        DAILY<br>
+        <span>ROUTINES</span>
+    </h1>
+
+    <div class="subtitle">
+        SIMPLE PRESENT READING MISSION
+    </div>
+
+    <p class="intro">
+        Welcome to the Daily Routines Reading Mission.
+        Read a short story about a young student,
+        understand the details of her daily life and
+        answer the questions to complete the mission.
+    </p>
+
+    <div class="info-grid">
+
+        <div class="info">
+            <strong>05</strong>
+            <span>PARAGRAPHS</span>
+        </div>
+
+        <div class="info">
+            <strong>10</strong>
+            <span>QUESTIONS</span>
+        </div>
+
+        <div class="info">
+            <strong>08:00</strong>
+            <span>MINUTES</span>
+        </div>
+
+    </div>
+
+    <p style="color:#8da5ba;font-size:13px;margin-bottom:20px;">
+        A1 / A2 • DAILY ROUTINES • SIMPLE PRESENT
+    </p>
+
+    <button class="main-btn" onclick="startGame()">
+        ▶ START READING
+    </button>
+
+</div>
+
+</section>
+
+
+<!-- ==========================================
+     JOGO
+========================================== -->
+
+<section class="screen" id="gameScreen">
+
+<div class="game">
+
+    <div class="hud">
+
+        <div class="hud-box">
+
+            <div class="label">
+                MISSION
+            </div>
+
+            <div class="value">
+                DAILY ROUTINES
+            </div>
+
+        </div>
+
+        <div class="hud-box center">
+
+            <div class="label">
+                QUESTION
+            </div>
+
+            <div class="value">
+                <span id="questionIndex">01</span> / 10
+            </div>
+
+        </div>
+
+        <div class="hud-box timer" id="timerBox">
+
+            <div class="label">
+                TIME REMAINING
+            </div>
+
+            <div class="value timer-value" id="timer">
+                08:00
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="progress-bar">
+
+        <div class="progress" id="progress"></div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <div class="panel-label">
+                    READING FILE // 001
+                </div>
+
+                <div class="title">
+                    A Day in Sofia's Life
+                </div>
+
+            </div>
+
+            <div class="badge">
+                A1 / A2
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+            <div class="story-label">
+                // READ THE STORY CAREFULLY
+            </div>
+
+
+            <div class="story">
+
+                <h2>
+                    A Day in Sofia's Life
+                </h2>
+
+
+                <!-- PARÁGRAFO 1 -->
+
+                <div class="paragraph-number">
+                    PARAGRAPH 01
+                </div>
+
+                <p>
+                    Sofia lives in a small city with her mother and her younger brother.
+                    She wakes up at six thirty every morning. She gets out of bed,
+                    opens the window, and makes her bed. Then she goes to the bathroom
+                    and gets ready for school.
+                </p>
+
+
+                <!-- PARÁGRAFO 2 -->
+
+                <div class="paragraph-number">
+                    PARAGRAPH 02
+                </div>
+
+                <p>
+                    At seven o'clock, Sofia has breakfast with her family.
+                    She usually eats bread, fruit, and eggs. She drinks orange juice,
+                    but she does not drink coffee. After breakfast, she takes her
+                    school bag and walks to the bus stop near her house.
+                </p>
+
+
+                <!-- PARÁGRAFO 3 -->
+
+                <div class="paragraph-number">
+                    PARAGRAPH 03
+                </div>
+
+                <p>
+                    Sofia's classes start at eight o'clock. She studies English,
+                    science, history, and mathematics. She likes English because
+                    she enjoys reading short stories. During the break, she talks
+                    with her friends and sometimes eats a small snack.
+                </p>
+
+
+                <!-- PARÁGRAFO 4 -->
+
+                <div class="paragraph-number">
+                    PARAGRAPH 04
+                </div>
+
+                <p>
+                    Sofia arrives home at one thirty in the afternoon.
+                    She has lunch with her family and rests for a short time.
+                    Then she does her homework. In the afternoon, she also helps
+                    her mother at home and plays with her brother.
+                </p>
+
+
+                <!-- PARÁGRAFO 5 -->
+
+                <div class="paragraph-number">
+                    PARAGRAPH 05
+                </div>
+
+                <p>
+                    In the evening, Sofia takes a shower and has dinner with her family.
+                    After dinner, she watches television or reads a book.
+                    She usually prepares her school bag before bed.
+                    Sofia goes to bed at ten o'clock because she needs to wake up early
+                    the next morning.
+                </p>
+
+            </div>
+
+
+            <!-- QUESTÃO -->
+
+            <div class="question-box">
+
+                <div class="question-number" id="questionNumber">
+                    QUESTION 01 / 10
+                </div>
+
+                <div class="question" id="question">
+                    What time does Sofia wake up?
+                </div>
+
+                <div class="answers" id="answers"></div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="next-area">
+
+                    <button
+                        class="next-btn"
+                        id="nextBtn"
+                        onclick="nextQuestion()">
+                        NEXT QUESTION →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ==========================================
+     FINAL
+========================================== -->
+
+<section class="screen" id="finishScreen">
+
+<div class="finish-box">
+
+    <div class="system">
+        READING MISSION // REPORT
+    </div>
+
+    <div class="finish-title">
+        MISSION <span>COMPLETE</span>
+    </div>
+
+    <div class="final-score" id="finalScore">
+        0/10
+    </div>
+
+    <p class="final-message" id="finalMessage"></p>
+
+    <div class="result-grid">
+
+        <div class="result">
+
+            <strong id="correctResult">
+                0
+            </strong>
+
+            <span>
+                CORRECT ANSWERS
+            </span>
+
+        </div>
+
+        <div class="result">
+
+            <strong id="wrongResult">
+                0
+            </strong>
+
+            <span>
+                WRONG ANSWERS
+            </span>
+
+        </div>
+
+        <div class="result">
+
+            <strong id="timeResult">
+                00:00
+            </strong>
+
+            <span>
+                TIME USED
+            </span>
+
+        </div>
+
+    </div>
+
+    <button class="main-btn"
+            onclick="location.reload()">
+        ↻ NEW MISSION
+    </button>
+
+</div>
+
+</section>
+
+
+<!-- MÚSICA -->
+
+<div class="music">
+
+    <button
+        id="musicButton"
+        onclick="toggleMusic()">
+        ♪
+    </button>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   QUESTÕES
+========================================================== */
+
+const questions = [
+
+{
+    question:
+        "What time does Sofia wake up?",
+
+    answers:[
+        "At six thirty.",
+        "At seven thirty.",
+        "At eight o'clock.",
+        "At ten o'clock."
+    ],
+
+    correct:0
+},
+
+{
+    question:
+        "Who does Sofia live with?",
+
+    answers:[
+        "Her father and sister.",
+        "Her mother and younger brother.",
+        "Her friends.",
+        "Her teacher."
+    ],
+
+    correct:1
+},
+
+{
+    question:
+        "What does Sofia usually eat for breakfast?",
+
+    answers:[
+        "Rice, meat, and juice.",
+        "Bread, fruit, and eggs.",
+        "Only fruit.",
+        "Bread and coffee."
+    ],
+
+    correct:1
+},
+
+{
+    question:
+        "What does Sofia NOT drink?",
+
+    answers:[
+        "Orange juice.",
+        "Water.",
+        "Coffee.",
+        "Milk."
+    ],
+
+    correct:2
+},
+
+{
+    question:
+        "Why does Sofia like English?",
+
+    answers:[
+        "Because she likes mathematics.",
+        "Because she enjoys reading short stories.",
+        "Because she wants to be a teacher.",
+        "Because her friends study English."
+    ],
+
+    correct:1
+},
+
+{
+    question:
+        "How does Sofia get to the bus stop?",
+
+    answers:[
+        "She drives a car.",
+        "She rides a bike.",
+        "She walks.",
+        "She takes a train."
+    ],
+
+    correct:2
+},
+
+{
+    question:
+        "What does Sofia do after lunch?",
+
+    answers:[
+        "She goes to school.",
+        "She rests and then does her homework.",
+        "She goes to the cinema.",
+        "She sleeps until night."
+    ],
+
+    correct:1
+},
+
+{
+    question:
+        "Which activity does Sofia do with her brother?",
+
+    answers:[
+        "She studies science.",
+        "She cooks dinner.",
+        "She plays with him.",
+        "She walks to school."
+    ],
+
+    correct:2
+},
+
+{
+    question:
+        "Which sentence is TRUE according to the text?",
+
+    answers:[
+        "Sofia goes to bed at eight o'clock.",
+        "Sofia drinks coffee every morning.",
+        "Sofia prepares her school bag before bed.",
+        "Sofia never reads books."
+    ],
+
+    correct:2
+},
+
+{
+    question:
+        "In the sentence 'She usually prepares her school bag', what does 'usually' indicate?",
+
+    answers:[
+        "A routine or something that happens often.",
+        "Something that happened yesterday.",
+        "A future plan.",
+        "Something that never happens."
+    ],
+
+    correct:0
+}
+
+];
+
+
+/* ==========================================================
+   VARIÁVEIS
+========================================================== */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let wrong = 0;
+
+let answered = false;
+
+let secondsLeft = 480;
+
+let totalSeconds = 480;
+
+let timerInterval = null;
+
+let audioContext = null;
+
+let musicPlaying = false;
+
+let musicInterval = null;
+
+
+/* ==========================================================
+   ESTRELAS
+========================================================== */
+
+function createStars(){
+
+    const container =
+        document.getElementById("stars");
+
+    for(let i=0;i<90;i++){
+
+        const star =
+            document.createElement("div");
+
+        star.className="star";
+
+        star.style.left =
+            Math.random()*100+"%";
+
+        star.style.top =
+            Math.random()*100+"%";
+
+        const size =
+            Math.random()*2+1;
+
+        star.style.width=size+"px";
+
+        star.style.height=size+"px";
+
+        star.style.animationDelay =
+            Math.random()*3+"s";
+
+        container.appendChild(star);
+    }
+}
+
+createStars();
+
+
+/* ==========================================================
+   INICIAR
+========================================================== */
+
+function startGame(){
+
+    document.getElementById("startScreen")
+        .style.display="none";
+
+    document.getElementById("gameScreen")
+        .style.display="flex";
+
+    loadQuestion();
+
+    startTimer();
+
+    startMusic();
+
+}
+
+
+/* ==========================================================
+   CARREGAR QUESTÃO
+========================================================== */
+
+function loadQuestion(){
+
+    answered=false;
+
+    const q =
+        questions[currentQuestion];
+
+    document.getElementById("questionIndex")
+        .textContent =
+            String(currentQuestion+1)
+            .padStart(2,"0");
+
+    document.getElementById("questionNumber")
+        .textContent =
+            "QUESTION "+
+            String(currentQuestion+1)
+            .padStart(2,"0")+
+            " / 10";
+
+    document.getElementById("question")
+        .textContent =
+            q.question;
+
+    document.getElementById("feedback")
+        .textContent="";
+
+    document.getElementById("feedback")
+        .className="feedback";
+
+    const answers =
+        document.getElementById("answers");
+
+    answers.innerHTML="";
+
+    q.answers.forEach((answer,index)=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className="answer";
+
+        button.textContent =
+            String.fromCharCode(65+index)+
+            ". "+
+            answer;
+
+        button.onclick=()=>{
+            checkAnswer(index,button);
+        };
+
+        answers.appendChild(button);
+
+    });
+
+    document.getElementById("nextBtn")
+        .style.display="none";
+
+    document.getElementById("progress")
+        .style.width =
+            (currentQuestion/10*100)+"%";
+
+}
+
+
+/* ==========================================================
+   VERIFICAR
+========================================================== */
+
+function checkAnswer(selected,button){
+
+    if(answered) return;
+
+    answered=true;
+
+    const q =
+        questions[currentQuestion];
+
+    const buttons =
+        document.querySelectorAll(".answer");
+
+    buttons.forEach(btn=>{
+        btn.classList.add("disabled");
+    });
+
+
+    if(selected===q.correct){
+
+        score++;
+
+        button.classList.add("correct");
+
+        document.getElementById("feedback")
+            .textContent =
+            "✓ CORRECT. You understood the text.";
+
+        document.getElementById("feedback")
+            .className =
+            "feedback good";
+
+    }else{
+
+        wrong++;
+
+        button.classList.add("wrong");
+
+        buttons[q.correct]
+            .classList.add("correct");
+
+        document.getElementById("feedback")
+            .textContent =
+            "✗ NOT CORRECT. Read the paragraph again carefully.";
+
+        document.getElementById("feedback")
+            .className =
+            "feedback bad";
+
+    }
+
+
+    document.getElementById("nextBtn")
+        .style.display="inline-block";
+
+}
+
+
+/* ==========================================================
+   PRÓXIMA
+========================================================== */
+
+function nextQuestion(){
+
+    if(!answered) return;
+
+    currentQuestion++;
+
+    if(currentQuestion>=questions.length){
+
+        finishGame();
+
+        return;
+    }
+
+    loadQuestion();
+
+    window.scrollTo({
+        top:document.body.scrollHeight,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* ==========================================================
+   TIMER
+========================================================== */
+
+function startTimer(){
+
+    updateTimer();
+
+    timerInterval =
+        setInterval(()=>{
+
+            secondsLeft--;
+
+            updateTimer();
+
+            if(secondsLeft<=0){
+
+                clearInterval(timerInterval);
+
+                finishGame(true);
+
+            }
+
+        },1000);
+
+}
+
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(secondsLeft/60);
+
+    const seconds =
+        secondsLeft%60;
+
+    document.getElementById("timer")
+        .textContent =
+            String(minutes).padStart(2,"0")+
+            ":"+
+            String(seconds).padStart(2,"0");
+
+
+    const box =
+        document.getElementById("timerBox");
+
+    box.classList.remove("danger");
+
+    if(secondsLeft<=60){
+
+        box.classList.add("danger");
+
+    }
+
+}
+
+
+/* ==========================================================
+   FINAL
+========================================================== */
+
+function finishGame(timeout=false){
+
+    clearInterval(timerInterval);
+
+    stopMusic();
+
+    document.getElementById("gameScreen")
+        .style.display="none";
+
+    document.getElementById("finishScreen")
+        .style.display="flex";
+
+
+    const used =
+        totalSeconds-secondsLeft;
+
+    const minutes =
+        Math.floor(used/60);
+
+    const seconds =
+        used%60;
+
+
+    document.getElementById("finalScore")
+        .textContent =
+            score+"/10";
+
+    document.getElementById("correctResult")
+        .textContent =
+            score;
+
+    document.getElementById("wrongResult")
+        .textContent =
+            wrong;
+
+    document.getElementById("timeResult")
+        .textContent =
+            String(minutes).padStart(2,"0")+
+            ":"+
+            String(seconds).padStart(2,"0");
+
+
+    let message="";
+
+
+    if(timeout){
+
+        message=
+            "TIME OVER. The reading mission ended before all the questions were completed. Review the story and try again.";
+
+    }else if(score===10){
+
+        message=
+            "PERFECT MISSION. You understood the story and identified important details about Sofia's daily routine.";
+
+    }else if(score>=8){
+
+        message=
+            "EXCELLENT WORK. You understood most of the information and important Simple Present details.";
+
+    }else if(score>=6){
+
+        message=
+            "GOOD WORK. You understood the main idea. Read the text again to improve your attention to details.";
+
+    }else{
+
+        message=
+            "MISSION COMPLETE. Read the five paragraphs again and pay attention to times, actions and routine expressions.";
+
+    }
+
+
+    document.getElementById("finalMessage")
+        .textContent=message;
+
+}
+
+
+/* ==========================================================
+   MÚSICA FUTURISTA
+========================================================== */
+
+function startMusic(){
+
+    if(musicPlaying) return;
+
+    try{
+
+        audioContext =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+        musicPlaying=true;
+
+        document.getElementById("musicButton")
+            .textContent="♫";
+
+        playNote();
+
+        musicInterval =
+            setInterval(playNote,850);
+
+    }catch(error){
+
+        console.log("Audio unavailable.");
+
+    }
+
+}
+
+
+function playNote(){
+
+    if(!audioContext||!musicPlaying)
+        return;
+
+    const now =
+        audioContext.currentTime;
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+    const filter =
+        audioContext.createBiquadFilter();
+
+
+    const notes=[
+        110,
+        138.59,
+        164.81,
+        220,
+        246.94,
+        293.66,
+        329.63
+    ];
+
+
+    oscillator.type="sine";
+
+    oscillator.frequency.value =
+        notes[
+            Math.floor(
+                Math.random()*notes.length
+            )
+        ];
+
+
+    filter.type="lowpass";
+
+    filter.frequency.value=900;
+
+
+    gain.gain.setValueAtTime(
+        0,
+        now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+        .045,
+        now+.08
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        now+.8
+    );
+
+
+    oscillator.connect(filter);
+
+    filter.connect(gain);
+
+    gain.connect(
+        audioContext.destination
+    );
+
+
+    oscillator.start(now);
+
+    oscillator.stop(now+.82);
+
+}
+
+
+function toggleMusic(){
+
+    if(!audioContext){
+
+        startMusic();
+
+        return;
+
+    }
+
+
+    if(musicPlaying){
+
+        stopMusic();
+
+    }else{
+
+        musicPlaying=true;
+
+        document.getElementById("musicButton")
+            .textContent="♫";
+
+        musicInterval =
+            setInterval(playNote,850);
+
+        playNote();
+
+    }
+
+}
+
+
+function stopMusic(){
+
+    musicPlaying=false;
+
+    if(musicInterval){
+
+        clearInterval(musicInterval);
+
+        musicInterval=null;
+
+    }
+
+    document.getElementById("musicButton")
+        .textContent="♪";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UNIDADE 2040 - Simulação de Cadetes</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 20% 10%,rgba(0,255,210,.12),transparent 30%),
+        radial-gradient(circle at 80% 80%,rgba(80,80,255,.15),transparent 35%),
+        #050a12;
+    color:#eaffff;
+}
+
+button{
+    font-family:inherit;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =====================================================
+   BASE
+===================================================== */
+
+.app{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.interface{
+    width:min(1250px,100%);
+    min-height:720px;
+    background:#071019;
+    border:1px solid #1e4b53;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:
+        0 0 50px rgba(0,255,210,.08),
+        0 30px 90px rgba(0,0,0,.6);
+    position:relative;
+}
+
+/* scanlines */
+
+.interface:after{
+    content:"";
+    pointer-events:none;
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,.012) 0px,
+        rgba(255,255,255,.012) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+/* =====================================================
+   START
+===================================================== */
+
+#startScreen{
+    min-height:720px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:45px;
+}
+
+.startBox{
+    max-width:900px;
+}
+
+.logo{
+    font-size:95px;
+    filter:drop-shadow(0 0 20px #00e5c3);
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+
+    0%,100%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.07);
+    }
+}
+
+.classified{
+    display:inline-block;
+    color:#00ffd5;
+    border:1px solid #00a88f;
+    padding:7px 14px;
+    letter-spacing:3px;
+    font-size:12px;
+    margin:15px 0;
+}
+
+.startBox h1{
+    font-size:clamp(38px,6vw,76px);
+    letter-spacing:4px;
+    color:#ecffff;
+    text-shadow:0 0 20px rgba(0,255,213,.3);
+}
+
+.startBox h2{
+    color:#00ffd5;
+    margin:12px 0 25px;
+    letter-spacing:2px;
+}
+
+.startDescription{
+    color:#9ab6ba;
+    font-size:19px;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.startDescription strong{
+    color:#eaffff;
+}
+
+.startButton{
+    border:1px solid #00ffd5;
+    background:#062923;
+    color:#00ffd5;
+    padding:18px 45px;
+    border-radius:8px;
+    font-size:20px;
+    font-weight:bold;
+    letter-spacing:2px;
+    cursor:pointer;
+    box-shadow:0 0 25px rgba(0,255,213,.12);
+    transition:.2s;
+}
+
+.startButton:hover{
+    background:#0a4138;
+    box-shadow:0 0 35px rgba(0,255,213,.25);
+    transform:translateY(-3px);
+}
+
+.startInfo{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:35px;
+}
+
+.info{
+    border:1px solid #173b42;
+    background:#0b1720;
+    padding:12px 18px;
+    border-radius:7px;
+    color:#89aeb2;
+}
+
+/* =====================================================
+   GAME HUD
+===================================================== */
+
+#gameScreen{
+    display:none;
+}
+
+.topbar{
+    height:78px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    background:#08151d;
+    border-bottom:1px solid #1c4850;
+}
+
+.systemName{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+.statusLight{
+    width:11px;
+    height:11px;
+    border-radius:50%;
+    background:#00ffd5;
+    box-shadow:0 0 12px #00ffd5;
+}
+
+.hud{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.hudItem{
+    border:1px solid #1c4b53;
+    background:#0b1821;
+    padding:9px 14px;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.progressArea{
+    padding:17px 28px 0;
+}
+
+.progressTop{
+    display:flex;
+    justify-content:space-between;
+    color:#719297;
+    font-size:13px;
+    margin-bottom:7px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.progress{
+    height:7px;
+    background:#10242a;
+    overflow:hidden;
+    border-radius:10px;
+}
+
+.progressFill{
+    width:0%;
+    height:100%;
+    background:#00ffd5;
+    box-shadow:0 0 12px #00ffd5;
+    transition:.4s;
+}
+
+/* =====================================================
+   GAME CONTENT
+===================================================== */
+
+.gameContent{
+    padding:28px;
+}
+
+.commandHeader{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.commandHeader small{
+    color:#00ffd5;
+    letter-spacing:3px;
+}
+
+.commandHeader h2{
+    margin-top:8px;
+    font-size:31px;
+}
+
+/* =====================================================
+   COMMAND CONSOLE
+===================================================== */
+
+.console{
+    border:1px solid #23555c;
+    background:#050c12;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:inset 0 0 30px rgba(0,255,213,.03);
+}
+
+.consoleHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 16px;
+    background:#0d2028;
+    border-bottom:1px solid #1c454c;
+    color:#719da1;
+    font-size:12px;
+    letter-spacing:1px;
+}
+
+.online{
+    color:#00ffd5;
+}
+
+.commandBody{
+    padding:30px;
+    text-align:center;
+}
+
+.captain{
+    font-size:68px;
+    margin-bottom:12px;
+}
+
+.commandLabel{
+    color:#00ffd5;
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.commandText{
+    font-size:26px;
+    line-height:1.5;
+    font-weight:bold;
+    max-width:900px;
+    margin:auto;
+}
+
+.commandSub{
+    margin-top:14px;
+    color:#7f9da1;
+    font-size:15px;
+}
+
+/* =====================================================
+   CLASSIFICATION
+===================================================== */
+
+.classification{
+    margin-top:18px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.tag{
+    padding:8px 13px;
+    border:1px solid #284d53;
+    color:#729398;
+    font-size:12px;
+    border-radius:5px;
+}
+
+/* =====================================================
+   OPTIONS
+===================================================== */
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-top:20px;
+}
+
+.option{
+    min-height:120px;
+    border:1px solid #24545b;
+    border-radius:10px;
+    background:#0b1820;
+    color:#dffafa;
+    padding:20px;
+    cursor:pointer;
+    transition:.2s;
+    text-align:left;
+}
+
+.option:hover{
+    border-color:#00ffd5;
+    background:#0e242a;
+    transform:translateY(-3px);
+}
+
+.optionNumber{
+    color:#00ffd5;
+    font-weight:bold;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.optionText{
+    font-size:16px;
+    line-height:1.4;
+    font-weight:bold;
+}
+
+.option:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+    transform:none;
+}
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+.feedback{
+    margin-top:18px;
+    padding:20px;
+    border-radius:9px;
+    display:none;
+    line-height:1.55;
+}
+
+.feedback.correct{
+    display:block;
+    border:1px solid #00c99f;
+    background:#06251f;
+    color:#a8fff0;
+}
+
+.feedback.wrong{
+    display:block;
+    border:1px solid #e04e5a;
+    background:#280d12;
+    color:#ffb0b5;
+}
+
+.feedbackTitle{
+    font-weight:bold;
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.nextButton{
+    display:none;
+    margin:18px auto 0;
+    border:1px solid #00ffd5;
+    background:#062923;
+    color:#00ffd5;
+    padding:14px 30px;
+    border-radius:7px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* =====================================================
+   CAPTAIN PANEL
+===================================================== */
+
+.captainPanel{
+    margin-top:20px;
+    border:1px dashed #315b61;
+    background:#08151c;
+    padding:17px;
+    border-radius:8px;
+}
+
+.captainPanelTitle{
+    color:#00ffd5;
+    font-size:12px;
+    letter-spacing:2px;
+    margin-bottom:7px;
+}
+
+.captainPanel p{
+    color:#819da1;
+    font-size:14px;
+    line-height:1.5;
+}
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+#resultScreen{
+    display:none;
+    min-height:720px;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+}
+
+.resultBox{
+    max-width:850px;
+}
+
+.resultIcon{
+    font-size:95px;
+}
+
+.resultBox h2{
+    font-size:44px;
+    margin:12px 0;
+}
+
+.resultDescription{
+    color:#92aeb2;
+    font-size:19px;
+    line-height:1.6;
+}
+
+.finalScore{
+    margin:30px auto;
+    width:210px;
+    padding:20px;
+    border:1px solid #00a991;
+    background:#06221e;
+    border-radius:10px;
+}
+
+.finalScore strong{
+    display:block;
+    color:#00ffd5;
+    font-size:52px;
+}
+
+.finalScore span{
+    color:#6f9599;
+    font-size:12px;
+    letter-spacing:2px;
+}
+
+.resultStats{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:30px;
+}
+
+.resultStat{
+    padding:13px 18px;
+    background:#0b1821;
+    border:1px solid #1c444c;
+    border-radius:6px;
+}
+
+.restart{
+    border:1px solid #00ffd5;
+    background:#062923;
+    color:#00ffd5;
+    padding:16px 35px;
+    border-radius:7px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media(max-width:800px){
+
+    .app{
+        padding:0;
+    }
+
+    .interface{
+        border-radius:0;
+        min-height:100vh;
+    }
+
+    .topbar{
+        height:auto;
+        padding:15px;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
+    }
+
+    .gameContent{
+        padding:18px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .commandText{
+        font-size:21px;
+    }
+
+    .commandBody{
+        padding:22px 15px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="interface">
+
+<!-- =====================================================
+     TELA INICIAL
+===================================================== -->
+
+<section id="startScreen">
+
+<div class="startBox">
+
+<div class="logo">🪖</div>
+
+<div class="classified">
+PROTOCOLO EDUCACIONAL // 2040
+</div>
+
+<h1>UNIDADE 2040</h1>
+
+<h2>SIMULAÇÃO DE CADETES</h2>
+
+<p class="startDescription">
+
+Você foi selecionado para uma unidade especial de treinamento.
+
+<br><br>
+
+O <strong>CAPITÃO</strong> dará as ordens.
+Sua missão será analisar cada situação e decidir como agir.
+
+<br><br>
+
+⚠️ Atenção: nesta unidade, disciplina não significa apenas obedecer.
+Significa também <strong>respeitar direitos, cumprir deveres,
+seguir obrigações e cuidar do coletivo.</strong>
+
+</p>
+
+<button class="startButton" onclick="startGame()">
+▶ INICIAR TREINAMENTO
+</button>
+
+<div class="startInfo">
+
+<div class="info">🎖️ 10 ordens</div>
+<div class="info">❤️ 3 pontos de disciplina</div>
+<div class="info">⚡ +100 por missão</div>
+<div class="info">🏫 Ambiente escolar</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     JOGO
+===================================================== -->
+
+<section id="gameScreen">
+
+<div class="topbar">
+
+<div class="systemName">
+
+<div class="statusLight"></div>
+
+UNIDADE 2040 // COMANDO CENTRAL
+
+</div>
+
+<div class="hud">
+
+<div class="hudItem">
+⭐ <span id="score">0</span>
+</div>
+
+<div class="hudItem">
+🎖️ <span id="discipline">3</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="progressArea">
+
+<div class="progressTop">
+
+<span>Protocolo de treinamento</span>
+
+<span id="progressText">
+ORDEM 01 / 10
+</span>
+
+</div>
+
+<div class="progress">
+
+<div class="progressFill" id="progressFill"></div>
+
+</div>
+
+</div>
+
+
+<div class="gameContent">
+
+<div class="commandHeader">
+
+<small>TRANSMISSÃO RECEBIDA</small>
+
+<h2 id="missionTitle">
+AGUARDANDO O CAPITÃO...
+</h2>
+
+</div>
+
+
+<div class="console">
+
+<div class="consoleHeader">
+
+<span>CANAL SEGURO // COMANDO</span>
+
+<span class="online">
+● TRANSMISSÃO ONLINE
+</span>
+
+</div>
+
+
+<div class="commandBody">
+
+<div class="captain">
+🪖
+</div>
+
+<div class="commandLabel">
+CAPITÃO
+</div>
+
+<div class="commandText" id="commandText">
+Carregando ordem...
+</div>
+
+<div class="commandSub">
+Analise a situação antes de escolher sua ação.
+</div>
+
+<div class="classification">
+
+<div class="tag" id="tag1">
+SITUAÇÃO
+</div>
+
+<div class="tag" id="tag2">
+ANÁLISE
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="options">
+
+<button class="option" onclick="choose(0)">
+
+<div class="optionNumber">
+OPÇÃO 01
+</div>
+
+<div class="optionText" id="option0">
+...
+</div>
+
+</button>
+
+
+<button class="option" onclick="choose(1)">
+
+<div class="optionNumber">
+OPÇÃO 02
+</div>
+
+<div class="optionText" id="option1">
+...
+</div>
+
+</button>
+
+
+<button class="option" onclick="choose(2)">
+
+<div class="optionNumber">
+OPÇÃO 03
+</div>
+
+<div class="optionText" id="option2">
+...
+</div>
+
+</button>
+
+</div>
+
+
+<div class="feedback" id="feedback"></div>
+
+
+<button class="nextButton" id="nextButton" onclick="nextMission()">
+PRÓXIMA ORDEM ➜
+</button>
+
+
+<div class="captainPanel">
+
+<div class="captainPanelTitle">
+📡 ORIENTAÇÃO AO CAPITÃO
+</div>
+
+<p>
+Professor: leia a ordem em voz alta e deixe os alunos
+discutirem antes de escolher uma opção. O objetivo não é
+apenas descobrir a resposta, mas justificar por que aquela
+atitude representa um direito, dever ou obrigação.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     RESULTADO
+===================================================== -->
+
+<section id="resultScreen">
+
+<div class="resultBox">
+
+<div class="resultIcon" id="resultIcon">
+🏆
+</div>
+
+<h2 id="resultTitle">
+TREINAMENTO CONCLUÍDO
+</h2>
+
+<p class="resultDescription" id="resultDescription">
+Missão finalizada.
+</p>
+
+<div class="finalScore">
+
+<strong id="finalScore">
+0
+</strong>
+
+<span>PONTOS DE MISSÃO</span>
+
+</div>
+
+<div class="resultStats">
+
+<div class="resultStat">
+🎯 Acertos: <strong id="finalCorrect">0</strong>
+</div>
+
+<div class="resultStat">
+⚠️ Falhas: <strong id="finalWrong">0</strong>
+</div>
+
+<div class="resultStat">
+🎖️ Disciplina: <strong id="finalDiscipline">0</strong>
+</div>
+
+</div>
+
+<button class="restart" onclick="startGame()">
+↻ NOVO TREINAMENTO
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   MISSÕES
+===================================================== */
+
+const missions = [
+
+{
+    title:"ORDEM 01 // ESPAÇO COLETIVO",
+
+    command:
+    "CADETES! A sala de aula está com papéis espalhados pelo chão. A ordem é manter o espaço coletivo organizado. Qual atitude representa melhor a missão?",
+
+    tags:["DEVER","RESPONSABILIDADE"],
+
+    options:[
+        "Recolher os papéis e ajudar a manter a sala limpa.",
+        "Ignorar porque você não colocou os papéis no chão.",
+        "Jogar mais papel no chão e esperar alguém limpar."
+    ],
+
+    correct:0,
+
+    concept:"DEVER",
+
+    explanation:
+    "Manter e cuidar do espaço coletivo é um DEVER. A sala é utilizada por todos, portanto todos podem colaborar para conservá-la."
+},
+
+{
+    title:"ORDEM 02 // CANAL DE COMUNICAÇÃO",
+
+    command:
+    "CADETES! Um colega está apresentando seu trabalho. Todos devem permitir que ele seja ouvido. Qual é a atitude correta?",
+
+    tags:["DEVER","RESPEITO"],
+
+    options:[
+        "Conversar baixinho enquanto ele fala.",
+        "Ouvir e respeitar o colega durante sua apresentação.",
+        "Fazer brincadeiras para chamar a atenção da turma."
+    ],
+
+    correct:1,
+
+    concept:"DEVER",
+
+    explanation:
+    "Respeitar quem está falando é um DEVER de convivência. Todos possuem o direito de serem ouvidos."
+},
+
+{
+    title:"ORDEM 03 // DIREITO DE EXPRESSÃO",
+
+    command:
+    "CADETES! Você deseja apresentar uma opinião durante uma discussão. Como deve agir?",
+
+    tags:["DIREITO","PARTICIPAÇÃO"],
+
+    options:[
+        "Pedir a palavra e apresentar sua opinião respeitosamente.",
+        "Gritar até todos serem obrigados a ouvir.",
+        "Impedir que os colegas apresentem opiniões diferentes."
+    ],
+
+    correct:0,
+
+    concept:"DIREITO",
+
+    explanation:
+    "Expressar opiniões é um DIREITO. Porém, esse direito deve ser exercido com respeito aos demais."
+},
+
+{
+    title:"ORDEM 04 // MATERIAL DE OUTRO CADETE",
+
+    command:
+    "CADETES! Você pegou o material de um colega sem pedir. Ele precisa do material agora. Qual atitude demonstra responsabilidade?",
+
+    tags:["DEVER","RESPEITO"],
+
+    options:[
+        "Continuar usando porque você também precisa.",
+        "Esconder o material para ninguém pegar.",
+        "Devolver o material e reconhecer que deveria ter pedido antes."
+    ],
+
+    correct:2,
+
+    concept:"DEVER",
+
+    explanation:
+    "Respeitar os pertences dos colegas é um DEVER. Pedir autorização antes de utilizar algo também demonstra respeito."
+},
+
+{
+    title:"ORDEM 05 // PATRIMÔNIO DA UNIDADE",
+
+    command:
+    "CADETES! Um estudante começa a riscar a carteira da escola. Qual atitude ajuda a proteger o patrimônio coletivo?",
+
+    tags:["DEVER","PATRIMÔNIO"],
+
+    options:[
+        "Fazer o mesmo para não ficar diferente.",
+        "Não participar e lembrar que o patrimônio da escola deve ser preservado.",
+        "Incentivar o colega a continuar."
+    ],
+
+    correct:1,
+
+    concept:"DEVER",
+
+    explanation:
+    "Preservar o patrimônio da escola é um DEVER. Os materiais e espaços são utilizados pela comunidade escolar."
+},
+
+{
+    title:"ORDEM 06 // PROTOCOLO ESCOLAR",
+
+    command:
+    "CADETES! A escola possui uma regra que precisa ser cumprida por todos. Qual deve ser a atitude do cadete?",
+
+    tags:["OBRIGAÇÃO","REGRA"],
+
+    options:[
+        "Cumprir a regra somente quando alguém estiver observando.",
+        "Cumprir a regra porque ela faz parte das normas da escola.",
+        "Decidir que cada aluno pode escolher se quer obedecer."
+    ],
+
+    correct:1,
+
+    concept:"OBRIGAÇÃO",
+
+    explanation:
+    "Quando uma regra estabelecida precisa ser cumprida, respeitá-la constitui uma OBRIGAÇÃO."
+},
+
+{
+    title:"ORDEM 07 // MISSÃO DE APOIO",
+
+    command:
+    "CADETES! Um colega está com dificuldade para entender uma atividade. Qual atitude fortalece a equipe?",
+
+    tags:["DEVER","COOPERAÇÃO"],
+
+    options:[
+        "Ajudar se puder ou incentivar o colega a pedir ajuda.",
+        "Dizer que o problema não é seu.",
+        "Esconder o material do colega."
+    ],
+
+    correct:0,
+
+    concept:"DEVER",
+
+    explanation:
+    "Cooperar, respeitar e apoiar os colegas são atitudes que fortalecem a convivência e a responsabilidade coletiva."
+},
+
+{
+    title:"ORDEM 08 // SEGURANÇA DA UNIDADE",
+
+    command:
+    "CADETES! Existe uma regra que proíbe correr dentro da sala porque isso pode causar acidentes. Qual é a atitude correta?",
+
+    tags:["OBRIGAÇÃO","SEGURANÇA"],
+
+    options:[
+        "Correr quando ninguém estiver olhando.",
+        "Correr apenas se estiver com pressa.",
+        "Respeitar a regra e evitar correr dentro da sala."
+    ],
+
+    correct:2,
+
+    concept:"OBRIGAÇÃO",
+
+    explanation:
+    "Respeitar uma regra de segurança estabelecida pela escola é uma OBRIGAÇÃO. As regras existem para proteger a convivência e a segurança."
+},
+
+{
+    title:"ORDEM 09 // CONSELHO DA TURMA",
+
+    command:
+    "CADETES! A turma precisa escolher uma ideia para uma atividade. Qual procedimento respeita a participação de todos?",
+
+    tags:["DIREITO","DEVER"],
+
+    options:[
+        "Ouvir as opiniões e participar da decisão respeitando os colegas.",
+        "Escolher sozinho e não permitir opiniões.",
+        "Impedir que colegas discordem."
+    ],
+
+    correct:0,
+
+    concept:"DIREITO + DEVER",
+
+    explanation:
+    "Participar e expressar sua opinião envolve um DIREITO. Ouvir e respeitar as opiniões dos demais também é um DEVER."
+},
+
+{
+    title:"ORDEM 10 // TESTE FINAL",
+
+    command:
+    "CADETES! Um colega cometeu um erro durante uma atividade. Alguns estudantes começaram a rir. Qual atitude demonstra que você está preparado para a missão?",
+
+    tags:["DEVER","RESPEITO","CIDADANIA"],
+
+    options:[
+        "Rir junto para fazer parte da brincadeira.",
+        "Fazer uma piada sobre o erro.",
+        "Respeitar o colega e incentivá-lo a tentar novamente."
+    ],
+
+    correct:2,
+
+    concept:"DEVER",
+
+    explanation:
+    "Respeitar a dignidade dos colegas é fundamental. Uma verdadeira equipe ajuda seus membros a aprenderem em vez de humilhá-los."
+}
+
+];
+
+
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+
+let current=0;
+let score=0;
+let discipline=3;
+let correct=0;
+let wrong=0;
+let answered=false;
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+function startGame(){
+
+    current=0;
+    score=0;
+    discipline=3;
+    correct=0;
+    wrong=0;
+    answered=false;
+
+    document.getElementById("startScreen").style.display="none";
+    document.getElementById("resultScreen").style.display="none";
+    document.getElementById("gameScreen").style.display="block";
+
+    updateHUD();
+    loadMission();
+}
+
+
+/* =====================================================
+   CARREGAR
+===================================================== */
+
+function loadMission(){
+
+    answered=false;
+
+    const mission=missions[current];
+
+    document.getElementById("missionTitle").textContent=
+        mission.title;
+
+    document.getElementById("commandText").textContent=
+        mission.command;
+
+    document.getElementById("progressText").textContent=
+        "ORDEM "+String(current+1).padStart(2,"0")+
+        " / "+missions.length;
+
+    document.getElementById("progressFill").style.width=
+        (current/missions.length*100)+"%";
+
+    document.getElementById("tag1").textContent=
+        mission.tags[0];
+
+    document.getElementById("tag2").textContent=
+        mission.tags[1];
+
+    for(let i=0;i<3;i++){
+
+        document.getElementById("option"+i).textContent=
+            mission.options[i];
+
+    }
+
+    document.querySelectorAll(".option").forEach(button=>{
+        button.disabled=false;
+    });
+
+    const feedback=document.getElementById("feedback");
+
+    feedback.className="feedback";
+    feedback.innerHTML="";
+
+    document.getElementById("nextButton").style.display="none";
+}
+
+
+/* =====================================================
+   ESCOLHA
+===================================================== */
+
+function choose(index){
+
+    if(answered) return;
+
+    answered=true;
+
+    const mission=missions[current];
+
+    document.querySelectorAll(".option").forEach(button=>{
+        button.disabled=true;
+    });
+
+    const feedback=document.getElementById("feedback");
+
+    if(index===mission.correct){
+
+        correct++;
+        score+=100;
+
+        feedback.className="feedback correct";
+
+        feedback.innerHTML=
+        "<div class='feedbackTitle'>✓ ORDEM CUMPRIDA</div>"+
+        mission.explanation+
+        "<br><br>"+
+        "CLASSIFICAÇÃO: <strong>"+
+        mission.concept+
+        "</strong>";
+
+    }else{
+
+        wrong++;
+        discipline--;
+
+        score=Math.max(0,score-50);
+
+        feedback.className="feedback wrong";
+
+        feedback.innerHTML=
+        "<div class='feedbackTitle'>⚠️ ORDEM NÃO EXECUTADA CORRETAMENTE</div>"+
+        "A atitude mais adequada seria:<br><br>"+
+        "<strong>“"+
+        mission.options[mission.correct]+
+        "”</strong>"+
+        "<br><br>"+
+        mission.explanation+
+        "<br><br>"+
+        "CLASSIFICAÇÃO: <strong>"+
+        mission.concept+
+        "</strong>";
+
+    }
+
+    updateHUD();
+
+    document.getElementById("nextButton").style.display="block";
+}
+
+
+/* =====================================================
+   PRÓXIMA MISSÃO
+===================================================== */
+
+function nextMission(){
+
+    current++;
+
+    if(current>=missions.length){
+
+        finishGame();
+        return;
+    }
+
+    loadMission();
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+function updateHUD(){
+
+    document.getElementById("score").textContent=score;
+
+    document.getElementById("discipline").textContent=
+        discipline;
+
+    document.getElementById("progressFill").style.width=
+        (current/missions.length*100)+"%";
+}
+
+
+/* =====================================================
+   RESULTADO
+===================================================== */
+
+function finishGame(){
+
+    document.getElementById("gameScreen").style.display="none";
+    document.getElementById("resultScreen").style.display="flex";
+
+    document.getElementById("finalScore").textContent=score;
+
+    document.getElementById("finalCorrect").textContent=correct;
+
+    document.getElementById("finalWrong").textContent=wrong;
+
+    document.getElementById("finalDiscipline").textContent=
+        discipline;
+
+
+    let icon;
+    let title;
+    let description;
+
+
+    if(correct===10){
+
+        icon="🏆";
+
+        title="CADETE EXEMPLAR";
+
+        description=
+        "Todas as ordens foram executadas corretamente. "+
+        "Você demonstrou que sabe transformar regras em atitudes.";
+
+    }
+
+    else if(correct>=8){
+
+        icon="🎖️";
+
+        title="UNIDADE APROVADA";
+
+        description=
+        "Excelente desempenho! Você demonstrou respeito, "+
+        "responsabilidade e compreensão das regras de convivência.";
+
+    }
+
+    else if(correct>=6){
+
+        icon="🪖";
+
+        title="TREINAMENTO CONCLUÍDO";
+
+        description=
+        "Bom trabalho. Algumas decisões ainda precisam ser "+
+        "melhoradas, mas você está aprendendo a agir de forma responsável.";
+
+    }
+
+    else{
+
+        icon="📡";
+
+        title="RECRUTA EM TREINAMENTO";
+
+        description=
+        "A simulação terminou. Agora a verdadeira missão começa "+
+        "na sala de aula: respeitar direitos, cumprir deveres e "+
+        "seguir as regras necessárias para uma boa convivência.";
+
+    }
+
+
+    document.getElementById("resultIcon").textContent=icon;
+
+    document.getElementById("resultTitle").textContent=title;
+
+    document.getElementById("resultDescription").textContent=
+        description;
+}
+
+</script>
+
+</body>
+</html>

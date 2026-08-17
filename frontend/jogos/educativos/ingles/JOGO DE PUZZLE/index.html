@@ -1,0 +1,504 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>English Puzzle | Instituto Acutis</title>
+
+    <link rel="stylesheet" href="puzzle.css">
+</head>
+
+<body>
+
+    <main class="game">
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <header class="game-header">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    🧩
+                </div>
+
+                <div>
+                    <h1>ENGLISH PUZZLE</h1>
+                    <span>Instituto Acutis</span>
+                </div>
+
+            </div>
+
+
+            <div class="game-stats">
+
+                <div class="stat">
+
+                    <span>🧩</span>
+
+                    <strong>PEÇAS</strong>
+
+                    <b id="piecesCounter">
+                        0/16
+                    </b>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span>⏱️</span>
+
+                    <strong>TEMPO</strong>
+
+                    <b id="gameTimer">
+                        00:00
+                    </b>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             ÁREA PRINCIPAL
+        ====================================================== -->
+
+        <section class="game-area">
+
+
+            <!-- =================================================
+                 INSTRUÇÕES
+            ================================================== -->
+
+            <aside class="instructions">
+
+                <div class="instruction-icon">
+                    🎯
+                </div>
+
+
+                <h2>
+                    MONTE O PUZZLE!
+                </h2>
+
+
+                <p>
+                    Responda às perguntas de inglês
+                    para liberar novas peças.
+                </p>
+
+
+                <!-- PROGRESSO -->
+
+                <div class="progress-container">
+
+                    <div class="progress-label">
+
+                        <span>
+                            PROGRESSO
+                        </span>
+
+                        <strong id="progressText">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REGRAS -->
+
+                <div class="rules">
+
+                    <div>
+
+                        <span>🔒</span>
+
+                        <p>
+                            Peças bloqueadas precisam
+                            de uma resposta.
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>✅</span>
+
+                        <p>
+                            Acertou? A peça é liberada!
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>🧠</span>
+
+                        <p>
+                            Use seus conhecimentos
+                            de inglês.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS DE PEÇAS -->
+
+                <div class="piece-status">
+
+                    <span>
+                        🧩 PEÇAS LIBERADAS
+                    </span>
+
+                    <strong id="unlockedText">
+                        4/16
+                    </strong>
+
+                </div>
+
+            </aside>
+
+
+
+            <!-- =================================================
+                 ÁREA DO PUZZLE
+            ================================================== -->
+
+            <section class="puzzle-section">
+
+
+                <div class="puzzle-title">
+
+                    <span>
+                        🧩
+                    </span>
+
+                    <h2>
+                        ENGLISH PUZZLE
+                    </h2>
+
+                </div>
+
+
+                <!-- =================================================
+                     TABULEIRO
+                ================================================== -->
+
+                <div
+                    class="puzzle-board"
+                    id="puzzleBoard"
+                >
+
+                    <!--
+                        O JavaScript cria
+                        os 16 espaços aqui.
+                    -->
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PEÇAS DISPONÍVEIS
+                ================================================== -->
+
+                <div class="pieces-area">
+
+                    <div class="pieces-header">
+
+                        <span>
+                            🧩 PEÇAS DISPONÍVEIS
+                        </span>
+
+                        <small>
+                            Arraste ou clique em uma peça
+                        </small>
+
+                    </div>
+
+
+                    <div
+                        class="pieces-container"
+                        id="piecesContainer"
+                    >
+
+                        <!--
+                            O JavaScript cria
+                            as peças aqui.
+                        -->
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MENSAGEM
+                ================================================== -->
+
+                <div
+                    class="puzzle-message"
+                    id="gameMessage"
+                >
+
+                    🔒 Responda uma pergunta
+                    para liberar a próxima peça.
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             PERGUNTA
+        ====================================================== -->
+
+        <div
+            class="question-overlay hidden"
+            id="questionOverlay"
+        >
+
+            <div class="question-card">
+
+
+                <!-- CABEÇALHO -->
+
+                <div class="question-top">
+
+                    <div class="question-icon">
+                        ❓
+                    </div>
+
+
+                    <div>
+
+                        <small>
+                            DESAFIO DE INGLÊS
+                        </small>
+
+                        <h2>
+                            Responda para liberar a peça!
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TIMER -->
+
+                <div class="question-timer-box">
+
+                    <span>
+                        ⏱️
+                    </span>
+
+                    <strong id="questionTimer">
+                        30
+                    </strong>
+
+                    <small>
+                        segundos
+                    </small>
+
+                </div>
+
+
+
+                <!-- CATEGORIA -->
+
+                <div
+                    class="question-category"
+                    id="questionCategory"
+                >
+                    VOCABULARY
+                </div>
+
+
+
+                <!-- PERGUNTA -->
+
+                <h3
+                    id="questionText"
+                    class="question-text"
+                >
+                    Question
+                </h3>
+
+
+
+                <!-- RESPOSTAS -->
+
+                <div
+                    class="answers"
+                    id="questionAnswers"
+                >
+
+                    <!-- JS cria as respostas -->
+
+                </div>
+
+
+
+                <!-- FEEDBACK -->
+
+                <div
+                    id="questionFeedback"
+                    class="question-feedback"
+                >
+                    Escolha uma resposta.
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             VITÓRIA
+        ====================================================== -->
+
+        <div
+            class="winner-overlay hidden"
+            id="victoryOverlay"
+        >
+
+            <div class="winner-card">
+
+
+                <div class="winner-icon">
+                    🏆
+                </div>
+
+
+                <span>
+                    PUZZLE COMPLETO!
+                </span>
+
+
+                <h1>
+                    CONGRATULATIONS!
+                </h1>
+
+
+                <p>
+                    Você conseguiu montar todo o
+                    quebra-cabeça e completou os
+                    desafios de inglês!
+                </p>
+
+
+
+                <!-- RESULTADOS -->
+
+                <div class="final-stats">
+
+
+                    <div>
+
+                        <strong id="finalTime">
+                            00:00
+                        </strong>
+
+                        <small>
+                            TEMPO
+                        </small>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            16/16
+                        </strong>
+
+                        <small>
+                            PEÇAS
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <button
+                    id="restartButton"
+                >
+                    🔄 JOGAR NOVAMENTE
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer>
+
+            <span>
+                🧩 Monte o puzzle
+            </span>
+
+
+            <span>
+                ❓ Responda às perguntas
+            </span>
+
+
+            <span>
+                🏆 Complete o desafio
+            </span>
+
+        </footer>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="puzzle.js"></script>
+
+</body>
+
+</html>
+```
