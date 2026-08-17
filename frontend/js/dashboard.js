@@ -1,32 +1,53 @@
-/* =========================================================
+﻿/* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
-   VERSÃO COMPLETA — DASHBOARD + API + PERFIL + JOGOS
+   VERSÃO COMPLETA — ONLINE + API + PERFIL + JOGOS
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
-       CONFIGURAÇÃO
+       CONFIGURAÇÃO DA API
     ====================================================== */
 
-    const API_URL = "http://localhost:3000";
+    /*
+     * DESENVOLVIMENTO:
+     * http://localhost:3000
+     *
+     * PRODUÇÃO:
+     * https://aldemarstudios.com
+     *
+     * O frontend publicado no GitHub Pages não deve
+     * apontar diretamente para localhost.
+     */
+
+    const IS_LOCAL =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
+
+    const API_URL = IS_LOCAL
+    ? "http://localhost:3000"
+    : "https://aldemar-studios-api.onrender.com/api";
 
 
     /* =====================================================
        ELEMENTOS PRINCIPAIS
     ====================================================== */
 
-    const menuItems = document.querySelectorAll(
-        ".menu-item[data-section]"
-    );
+    const menuItems =
+        document.querySelectorAll(
+            ".menu-item[data-section]"
+        );
 
-    const sections = document.querySelectorAll(
-        ".content-section"
-    );
+    const sections =
+        document.querySelectorAll(
+            ".content-section"
+        );
 
     const pageTitle =
-        document.getElementById("pageTitle");
+        document.getElementById(
+            "pageTitle"
+        );
 
 
     /* =====================================================
@@ -34,52 +55,84 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     const userNameElement =
-        document.getElementById("userName");
+        document.getElementById(
+            "userName"
+        );
 
     const welcomeNameElement =
-        document.getElementById("welcomeName");
+        document.getElementById(
+            "welcomeName"
+        );
 
     const userAvatarElement =
-        document.getElementById("userAvatar");
+        document.getElementById(
+            "userAvatar"
+        );
 
     const userPlanElement =
-        document.getElementById("userPlan");
+        document.getElementById(
+            "userPlan"
+        );
 
     const profileAvatarElement =
-        document.getElementById("profileAvatar");
+        document.getElementById(
+            "profileAvatar"
+        );
 
     const profileNameInput =
-        document.getElementById("profileNameInput");
+        document.getElementById(
+            "profileNameInput"
+        );
 
     const profileNickInput =
-        document.getElementById("profileNickInput");
+        document.getElementById(
+            "profileNickInput"
+        );
 
     const profileEmailInput =
-        document.getElementById("profileEmailInput");
+        document.getElementById(
+            "profileEmailInput"
+        );
 
     const profilePlanElement =
-        document.getElementById("profilePlan");
+        document.getElementById(
+            "profilePlan"
+        );
 
     const profilePlanBottom =
-        document.getElementById("profilePlanBottom");
+        document.getElementById(
+            "profilePlanBottom"
+        );
 
     const profilePhotoInput =
-        document.getElementById("profilePhotoInput");
+        document.getElementById(
+            "profilePhotoInput"
+        );
 
     const changePhotoButton =
-        document.getElementById("changePhotoButton");
+        document.getElementById(
+            "changeProfilePhoto"
+        );
 
     const removePhotoButton =
-        document.getElementById("removePhotoButton");
+        document.getElementById(
+            "removePhotoButton"
+        );
 
     const saveProfileButton =
-        document.getElementById("saveProfileButton");
+        document.getElementById(
+            "saveProfileButton"
+        );
 
     const cancelProfileButton =
-        document.getElementById("cancelProfileEdit");
+        document.getElementById(
+            "cancelProfileEdit"
+        );
 
     const changePasswordButton =
-        document.getElementById("changePasswordButton");
+        document.getElementById(
+            "changePasswordButton"
+        );
 
 
     /* =====================================================
@@ -91,12 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
 
         const savedUser =
-            sessionStorage.getItem("usuario");
+            sessionStorage.getItem(
+                "usuario"
+            );
 
         if (savedUser) {
 
             user =
-                JSON.parse(savedUser);
+                JSON.parse(
+                    savedUser
+                );
         }
 
     } catch (error) {
@@ -106,7 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
             error
         );
 
-        sessionStorage.removeItem("usuario");
+        sessionStorage.removeItem(
+            "usuario"
+        );
     }
 
 
@@ -119,12 +178,16 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
 
             const localUser =
-                localStorage.getItem("user");
+                localStorage.getItem(
+                    "user"
+                );
 
             if (localUser) {
 
                 user =
-                    JSON.parse(localUser);
+                    JSON.parse(
+                        localUser
+                    );
             }
 
         } catch (error) {
@@ -134,7 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
 
-            localStorage.removeItem("user");
+            localStorage.removeItem(
+                "user"
+            );
         }
     }
 
@@ -507,7 +572,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                showSection(sectionName);
+                showSection(
+                    sectionName
+                );
             }
         );
     });
@@ -528,11 +595,6 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener(
             "click",
             event => {
-
-                /*
-                 * Se clicou em um botão dentro do card,
-                 * não interfere no botão.
-                 */
 
                 if (
                     event.target.closest("button")
@@ -560,13 +622,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (section === "jogos") {
 
-                    showSection("jogos");
+                    showSection(
+                        "jogos"
+                    );
 
                     return;
                 }
 
 
-                showSection(section);
+                showSection(
+                    section
+                );
             }
         );
     });
@@ -594,7 +660,9 @@ document.addEventListener("DOMContentLoaded", () => {
     window.openEnglishGames =
         function() {
 
-            showSection("jogos");
+            showSection(
+                "jogos"
+            );
 
             setTimeout(() => {
 
@@ -683,18 +751,17 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            if (sectionName === "perfil") {
+            if (
+                sectionName === "perfil"
+            ) {
 
                 updateUserInterface();
             }
 
 
-            /*
-             * Ao entrar novamente em Jogos,
-             * mostramos a tela inicial das categorias.
-             */
-
-            if (sectionName === "jogos") {
+            if (
+                sectionName === "jogos"
+            ) {
 
                 backToGameCategories();
             }
@@ -711,7 +778,9 @@ document.addEventListener("DOMContentLoaded", () => {
        TÍTULOS
     ====================================================== */
 
-    function updatePageTitle(sectionName) {
+    function updatePageTitle(
+        sectionName
+    ) {
 
         if (!pageTitle) {
             return;
@@ -800,12 +869,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /*
-             * Sempre começa mostrando todos
-             * os jogos educativos.
-             */
-
-            if (category === "educativos") {
+            if (
+                category === "educativos"
+            ) {
 
                 const allFilter =
                     document.querySelector(
@@ -870,7 +936,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     window.filterGames =
-        function(filter, button) {
+        function(
+            filter,
+            button
+        ) {
 
             const games =
                 document.querySelectorAll(
@@ -962,8 +1031,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "";
 
 
-                /* NOME */
-
                 if (!newName) {
 
                     showNotification(
@@ -987,8 +1054,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-
-                /* NICK */
 
                 if (newNick.length > 30) {
 
@@ -1022,8 +1087,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* E-MAIL */
-
                 if (!newEmail) {
 
                     showNotification(
@@ -1036,7 +1099,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                if (!isValidEmail(newEmail)) {
+                if (
+                    !isValidEmail(
+                        newEmail
+                    )
+                ) {
 
                     showNotification(
                         "Digite um e-mail válido."
@@ -1195,7 +1262,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const response =
             await fetch(
-                `${API_URL}/api/auth/profile`,
+                `${API_URL}/auth/profile`,
                 {
 
                     method: "PUT",
@@ -1210,7 +1277,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
 
                     body:
-                        JSON.stringify(body)
+                        JSON.stringify(
+                            body
+                        )
                 }
             );
 
@@ -1294,7 +1363,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     5 * 1024 * 1024;
 
 
-                if (file.size > maxSize) {
+                if (
+                    file.size > maxSize
+                ) {
 
                     showNotification(
                         "A imagem deve ter no máximo 5 MB."
@@ -1315,7 +1386,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     async readerEvent => {
 
                         const photo =
-                            readerEvent.target.result;
+                            readerEvent
+                                .target
+                                .result;
 
 
                         try {
@@ -1459,7 +1532,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateUserInterface();
 
 
-                    if (profilePhotoInput) {
+                    if (
+                        profilePhotoInput
+                    ) {
 
                         profilePhotoInput.value =
                             "";
@@ -1560,7 +1635,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                if (newValue.length < 8) {
+                if (
+                    newValue.length < 8
+                ) {
 
                     showNotification(
                         "A nova senha deve possuir pelo menos 8 caracteres."
@@ -1572,7 +1649,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                if (newValue !== confirmValue) {
+                if (
+                    newValue !==
+                    confirmValue
+                ) {
 
                     showNotification(
                         "As senhas não coincidem."
@@ -1599,7 +1679,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     const response =
                         await fetch(
-                            `${API_URL}/api/auth/password`,
+                         `${API_URL}/auth/password`,
                             {
 
                                 method: "PUT",
@@ -1645,21 +1725,27 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    if (currentPassword) {
+                    if (
+                        currentPassword
+                    ) {
 
                         currentPassword.value =
                             "";
                     }
 
 
-                    if (newPassword) {
+                    if (
+                        newPassword
+                    ) {
 
                         newPassword.value =
                             "";
                     }
 
 
-                    if (confirmPassword) {
+                    if (
+                        confirmPassword
+                    ) {
 
                         confirmPassword.value =
                             "";
@@ -1703,7 +1789,9 @@ document.addEventListener("DOMContentLoaded", () => {
        VALIDAR E-MAIL
     ====================================================== */
 
-    function isValidEmail(email) {
+    function isValidEmail(
+        email
+    ) {
 
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
             .test(email);
@@ -1734,7 +1822,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         ) => {
 
                             if (
-                                starIndex <= index
+                                starIndex <=
+                                index
                             ) {
 
                                 item.classList.add(
@@ -1897,7 +1986,9 @@ document.addEventListener("DOMContentLoaded", () => {
        PARSE DA RESPOSTA DA API
     ====================================================== */
 
-    async function parseResponse(response) {
+    async function parseResponse(
+        response
+    ) {
 
         const text =
             await response.text();
@@ -1932,7 +2023,9 @@ document.addEventListener("DOMContentLoaded", () => {
        NOTIFICAÇÃO
     ====================================================== */
 
-    function showNotification(message) {
+    function showNotification(
+        message
+    ) {
 
         let notification =
             document.getElementById(
@@ -1999,3 +2092,5 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
+
+
