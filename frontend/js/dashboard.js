@@ -1309,18 +1309,17 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     if (
-        changePhotoButton &&
-        profilePhotoInput
-    ) {
+    changePhotoButton &&
+    profilePhotoInput
+) {
 
-        changePhotoButton.addEventListener(
-            "click",
-            () => {
+    changePhotoButton.onclick =
+        function () {
 
-                profilePhotoInput.click();
-            }
-        );
-    }
+            profilePhotoInput.click();
+
+        };
+}
 
 
     /* =====================================================
@@ -2092,5 +2091,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
+
 
 
