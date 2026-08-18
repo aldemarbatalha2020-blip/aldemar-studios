@@ -2082,6 +2082,120 @@ document.addEventListener("DOMContentLoaded", () => {
             );
     }
 
+    /* =====================================================
+   NAVEGAÇÃO — CENTRAL DE JOGOS
+====================================================== */
+
+const gameCategoryCards =
+    document.querySelectorAll(
+        ".game-category-card[data-game-category]"
+    );
+
+
+gameCategoryCards.forEach(
+    card => {
+
+        const category =
+            card.dataset.gameCategory;
+
+
+        if (!category) {
+            return;
+        }
+
+
+        function openGameCategory() {
+
+            /*
+             * PASSATEMPO
+             *
+             * O arquivo index.html fica diretamente
+             * dentro da pasta passatempo.
+             */
+
+            if (
+                category ===
+                "passatempo"
+            ) {
+
+                window.location.href =
+                    "jogos/passatempo/index.html";
+
+                return;
+            }
+
+
+            /*
+             * EDUCATIVOS
+             *
+             * A página principal dos jogos
+             * educativos será criada posteriormente.
+             */
+
+            if (
+                category ===
+                "educativos"
+            ) {
+
+                window.location.href =
+                    "jogos/educativos/index.html";
+
+                return;
+            }
+
+        }
+
+
+        /*
+         * Clique com o mouse
+         */
+
+        card.addEventListener(
+            "click",
+            event => {
+
+                /*
+                 * Evita executar duas vezes caso
+                 * exista algum botão interno.
+                 */
+
+                if (
+                    event.target.closest("button")
+                ) {
+                    return;
+                }
+
+
+                openGameCategory();
+            }
+        );
+
+
+        /*
+         * Acessibilidade pelo teclado
+         */
+
+        card.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
+
+                    event.preventDefault();
+
+                    openGameCategory();
+                }
+            }
+        );
+
+    }
+
+    
+);
+
 
     /* =====================================================
        INICIALIZAÇÃO FINAL

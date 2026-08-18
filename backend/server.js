@@ -1,5 +1,6 @@
 ﻿const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const { testarConexao } = require("./database/connection");
@@ -10,6 +11,17 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 const HOST = "0.0.0.0";
+
+
+// =========================================================
+// CAMINHO DO FRONTEND
+// =========================================================
+
+const frontendPath = path.join(
+    __dirname,
+    "..",
+    "frontend"
+);
 
 
 // =========================================================
@@ -31,21 +43,15 @@ const allowedOrigins = [
 
 ];
 
+
 app.use(
     cors({
 
         origin: function (origin, callback) {
 
-            /*
-             * Permite requisições sem Origin
-             * (ex.: algumas ferramentas e requisições
-             * internas).
-             */
-
             if (!origin) {
                 return callback(null, true);
             }
-
 
             if (allowedOrigins.includes(origin)) {
 
@@ -53,12 +59,10 @@ app.use(
 
             }
 
-
             console.warn(
                 "Origem bloqueada pelo CORS:",
                 origin
             );
-
 
             return callback(
                 new Error(
@@ -101,10 +105,19 @@ app.use(
 
 
 // =========================================================
-// ROTA PRINCIPAL
+// SERVIR FRONTEND
 // =========================================================
 
-app.get("/", (req, res) => {
+app.use(
+    express.static(frontendPath)
+);
+
+
+// =========================================================
+// ROTA PRINCIPAL DA API
+// =========================================================
+
+app.get("/api", (req, res) => {
 
     res.status(200).json({
 
@@ -158,6 +171,7 @@ app.use(
     "/api/auth",
     authRoutes
 );
+
 
 // =========================================================
 // ROTAS DE USUÁRIOS
@@ -265,6 +279,10 @@ app.listen(
         );
 
         console.log(
+            `Frontend: ${frontendPath}`
+        );
+
+        console.log(
             `Ambiente: ${
                 process.env.NODE_ENV ||
                 "development"
@@ -280,5 +298,3 @@ app.listen(
 
     }
 );
-
-

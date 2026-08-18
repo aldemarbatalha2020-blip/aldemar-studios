@@ -10,6 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#0b1220"
+    >
+
     <title>Aldemar Studios | Painel</title>
 
     <link
@@ -29,8 +34,7 @@
              SIDEBAR
         ====================================================== -->
 
-        <aside class="sidebar">
-
+        <aside class="sidebar" id="sidebar">
 
             <!-- MARCA -->
 
@@ -40,7 +44,7 @@
                     AS
                 </div>
 
-                <div>
+                <div class="brand-text">
 
                     <strong>
                         Aldemar
@@ -57,7 +61,7 @@
 
             <!-- MENU -->
 
-            <nav class="menu">
+            <nav class="menu" aria-label="Menu principal">
 
 
                 <!-- INÍCIO -->
@@ -68,9 +72,9 @@
                     data-section="inicio"
                 >
 
-                    <span>🏠</span>
+                    <span class="menu-icon">🏠</span>
 
-                    <span>
+                    <span class="menu-label">
                         Início
                     </span>
 
@@ -85,9 +89,9 @@
                     data-section="jogos"
                 >
 
-                    <span>🎮</span>
+                    <span class="menu-icon">🎮</span>
 
-                    <span>
+                    <span class="menu-label">
                         Jogos
                     </span>
 
@@ -102,9 +106,9 @@
                     data-section="ingles"
                 >
 
-                    <span>🇺🇸</span>
+                    <span class="menu-icon">🇺🇸</span>
 
-                    <span>
+                    <span class="menu-label">
                         Inglês
                     </span>
 
@@ -119,9 +123,9 @@
                     data-section="musica"
                 >
 
-                    <span>🎵</span>
+                    <span class="menu-icon">🎵</span>
 
-                    <span>
+                    <span class="menu-label">
                         Música
                     </span>
 
@@ -136,9 +140,9 @@
                     data-section="inclusivos"
                 >
 
-                    <span>♿</span>
+                    <span class="menu-icon">♿</span>
 
-                    <span>
+                    <span class="menu-label">
                         Inclusivos
                     </span>
 
@@ -160,69 +164,62 @@
                     data-section="cursos"
                 >
 
-                    <span>📚</span>
+                    <span class="menu-icon">📚</span>
 
-                    <span>
+                    <span class="menu-label">
                         Cursos
                     </span>
 
                 </button>
 
 
-                <!-- MATERIAIS -->
+                <!-- MATERIAIS — ATIVADO -->
 
                 <button
                     type="button"
-                    class="menu-item locked"
-                    data-locked="true"
+                    class="menu-item"
+                    data-section="materiais"
                 >
 
-                    <span>📂</span>
+                    <span class="menu-icon">📂</span>
 
-                    <span>
+                    <span class="menu-label">
                         Materiais
                     </span>
 
-                    <span class="lock">
-                        🔒
-                    </span>
-
                 </button>
 
 
-                <!-- SIMULADOS -->
+                <!-- SIMULADOS — ATIVADO -->
 
                 <button
                     type="button"
-                    class="menu-item locked"
-                    data-locked="true"
+                    class="menu-item"
+                    data-section="simulados"
                 >
 
-                    <span>📝</span>
+                    <span class="menu-icon">📝</span>
 
-                    <span>
+                    <span class="menu-label">
                         Simulados
                     </span>
 
-                    <span class="lock">
-                        🔒
-                    </span>
-
                 </button>
 
 
-                <!-- PREMIUM -->
+                <!-- PLANOS — ÚNICA ÁREA BLOQUEADA -->
 
                 <button
                     type="button"
                     class="menu-item locked"
                     data-locked="true"
+                    aria-disabled="true"
                 >
 
-                    <span>⭐</span>
+                    <span class="menu-icon">⭐</span>
 
-                    <span>
-                        Premium
+                    <span class="menu-label">
+                        Planos
                     </span>
 
                     <span class="lock">
@@ -249,9 +246,9 @@
                     data-section="feedback"
                 >
 
-                    <span>💬</span>
+                    <span class="menu-icon">💬</span>
 
-                    <span>
+                    <span class="menu-label">
                         Feedback
                     </span>
 
@@ -266,9 +263,9 @@
                     data-section="perfil"
                 >
 
-                    <span>👤</span>
+                    <span class="menu-icon">👤</span>
 
-                    <span>
+                    <span class="menu-label">
                         Meu Perfil
                     </span>
 
@@ -283,9 +280,9 @@
                     class="menu-item logout"
                 >
 
-                    <span>🚪</span>
+                    <span class="menu-icon">🚪</span>
 
-                    <span>
+                    <span class="menu-label">
                         Sair
                     </span>
 
@@ -309,7 +306,22 @@
 
             <header class="topbar">
 
-                <div>
+
+                <!-- BOTÃO MOBILE -->
+
+                <button
+                    type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Abrir menu"
+                    aria-controls="sidebar"
+                    aria-expanded="false"
+                >
+                    ☰
+                </button>
+
+
+                <div class="topbar-title">
 
                     <span class="topbar-small">
                         ALDEMAR STUDIOS
@@ -340,6 +352,7 @@
                     <div
                         class="user-avatar"
                         id="userAvatar"
+                        aria-label="Foto do usuário"
                     >
                         AS
                     </div>
@@ -413,51 +426,12 @@
 
                 <div class="cards-grid">
 
-
-                    <!-- JOGOS DE INGLÊS -->
-
-                    <article
-                        class="game-card educational-game"
-                        data-section-link="jogos"
-                    >
-
-                        <div class="game-cover">
-                            🇺🇸
-                        </div>
-
-                        <div class="game-card-content">
-
-                            <span class="game-tag">
-                                INGLÊS
-                            </span>
-
-                            <h3>
-                                Jogos de Inglês
-                            </h3>
-
-                            <p>
-                                Aprenda inglês através
-                                de desafios interativos.
-                            </p>
-
-                            <button
-                                type="button"
-                                class="primary-small"
-                                data-section-link="jogos"
-                            >
-                                VER JOGOS →
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
                     <!-- CURSOS -->
 
                     <article
                         class="access-card"
                         data-section-link="cursos"
+                        tabindex="0"
                     >
 
                         <div class="card-icon">
@@ -485,6 +459,7 @@
                     <article
                         class="access-card"
                         data-section-link="ingles"
+                        tabindex="0"
                     >
 
                         <div class="card-icon">
@@ -512,6 +487,7 @@
                     <article
                         class="access-card"
                         data-section-link="musica"
+                        tabindex="0"
                     >
 
                         <div class="card-icon">
@@ -539,6 +515,7 @@
                     <article
                         class="access-card"
                         data-section-link="inclusivos"
+                        tabindex="0"
                     >
 
                         <div class="card-icon">
@@ -561,19 +538,75 @@
                     </article>
 
 
+                    <!-- MATERIAIS -->
+
+                    <article
+                        class="access-card"
+                        data-section-link="materiais"
+                        tabindex="0"
+                    >
+
+                        <div class="card-icon">
+                            📂
+                        </div>
+
+                        <h3>
+                            Materiais
+                        </h3>
+
+                        <p>
+                            Acesse materiais e recursos
+                            educacionais.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </article>
+
+
+                    <!-- SIMULADOS -->
+
+                    <article
+                        class="access-card"
+                        data-section-link="simulados"
+                        tabindex="0"
+                    >
+
+                        <div class="card-icon">
+                            📝
+                        </div>
+
+                        <h3>
+                            Simulados
+                        </h3>
+
+                        <p>
+                            Pratique seus conhecimentos
+                            com avaliações.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </article>
+
                 </div>
 
 
-                <!-- EM BREVE -->
+                <!-- PLANOS -->
 
                 <div class="section-title">
 
                     <h2>
-                        Em breve
+                        ⭐ Planos
                     </h2>
 
                     <p>
-                        Estamos preparando novas áreas.
+                        Novos recursos e planos estão
+                        sendo preparados.
                     </p>
 
                 </div>
@@ -582,57 +615,10 @@
                 <div class="coming-grid">
 
 
-                    <div class="coming-card">
-
-                        <span>
-                            📂
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Materiais
-                            </strong>
-
-                            <p>
-                                Biblioteca educacional.
-                            </p>
-
-                        </div>
-
-                        <b>
-                            🔒
-                        </b>
-
-                    </div>
-
-
-                    <div class="coming-card">
-
-                        <span>
-                            📝
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Simulados
-                            </strong>
-
-                            <p>
-                                Avaliações e exercícios.
-                            </p>
-
-                        </div>
-
-                        <b>
-                            🔒
-                        </b>
-
-                    </div>
-
-
-                    <div class="coming-card">
+                    <div
+                        class="coming-card"
+                        data-locked-card="true"
+                    >
 
                         <span>
                             ⭐
@@ -641,11 +627,11 @@
                         <div>
 
                             <strong>
-                                Premium
+                                Planos Premium
                             </strong>
 
                             <p>
-                                Recursos exclusivos.
+                                Recursos exclusivos em desenvolvimento.
                             </p>
 
                         </div>
@@ -700,7 +686,9 @@
 
                         <div
                             class="category-card game-category-card"
-                            onclick="openGameCategory('passatempo')"
+                            data-game-category="passatempo"
+                            tabindex="0"
+                            role="button"
                         >
 
                             <span class="category-big-icon">
@@ -727,7 +715,9 @@
 
                         <div
                             class="category-card game-category-card"
-                            onclick="openGameCategory('educativos')"
+                            data-game-category="educativos"
+                            tabindex="0"
+                            role="button"
                         >
 
                             <span class="category-big-icon">
@@ -761,13 +751,13 @@
                 <div
                     id="passatempoArea"
                     class="games-area"
-                    style="display:none;"
+                    hidden
                 >
 
                     <button
                         type="button"
                         class="back-button"
-                        onclick="backToGameCategories()"
+                        data-games-back
                     >
                         ← VOLTAR
                     </button>
@@ -872,13 +862,13 @@
                 <div
                     id="educativosArea"
                     class="games-area"
-                    style="display:none;"
+                    hidden
                 >
 
                     <button
                         type="button"
                         class="back-button"
-                        onclick="backToGameCategories()"
+                        data-games-back
                     >
                         ← VOLTAR
                     </button>
@@ -909,7 +899,7 @@
                         <button
                             type="button"
                             class="game-filter active"
-                            onclick="filterGames('todos', this)"
+                            data-game-filter="todos"
                         >
                             TODOS
                         </button>
@@ -918,7 +908,7 @@
                         <button
                             type="button"
                             class="game-filter"
-                            onclick="filterGames('ingles', this)"
+                            data-game-filter="ingles"
                         >
                             🇺🇸 INGLÊS
                         </button>
@@ -927,7 +917,7 @@
                         <button
                             type="button"
                             class="game-filter"
-                            onclick="filterGames('portugues', this)"
+                            data-game-filter="portugues"
                         >
                             📖 PORTUGUÊS
                         </button>
@@ -936,7 +926,7 @@
                         <button
                             type="button"
                             class="game-filter"
-                            onclick="filterGames('matematica', this)"
+                            data-game-filter="matematica"
                         >
                             🔢 MATEMÁTICA
                         </button>
@@ -945,7 +935,7 @@
                         <button
                             type="button"
                             class="game-filter"
-                            onclick="filterGames('historia', this)"
+                            data-game-filter="historia"
                         >
                             🏛️ HISTÓRIA
                         </button>
@@ -954,7 +944,7 @@
                         <button
                             type="button"
                             class="game-filter"
-                            onclick="filterGames('geografia', this)"
+                            data-game-filter="geografia"
                         >
                             🌎 GEOGRAFIA
                         </button>
@@ -1177,6 +1167,15 @@
                 class="content-section"
             >
 
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-section="inicio"
+                >
+                    ← VOLTAR
+                </button>
+
+
                 <div class="section-title">
 
                     <span class="welcome-label">
@@ -1223,6 +1222,7 @@
                     <div
                         class="category-card"
                         data-section-link="jogos"
+                        tabindex="0"
                     >
 
                         <span class="category-big-icon">
@@ -1261,7 +1261,7 @@
                 <button
                     type="button"
                     class="back-button"
-                    onclick="showSection('inicio')"
+                    data-back-section="inicio"
                 >
                     ← VOLTAR
                 </button>
@@ -1370,7 +1370,7 @@
                         <button
                             type="button"
                             class="primary-small"
-                            onclick="openCourses()"
+                            data-open-courses
                         >
                             COMEÇAR
                         </button>
@@ -1424,7 +1424,20 @@
                 class="content-section"
             >
 
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-section="inicio"
+                >
+                    ← VOLTAR
+                </button>
+
+
                 <div class="section-title">
+
+                    <span class="welcome-label">
+                        CONTEÚDOS
+                    </span>
 
                     <h2>
                         🎵 Música
@@ -1487,7 +1500,20 @@
                 class="content-section"
             >
 
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-section="inicio"
+                >
+                    ← VOLTAR
+                </button>
+
+
                 <div class="section-title">
+
+                    <span class="welcome-label">
+                        ACESSIBILIDADE
+                    </span>
 
                     <h2>
                         ♿ Conteúdos Inclusivos
@@ -1543,6 +1569,257 @@
 
 
             <!-- =====================================================
+                 CURSOS / ÁREA DE MATERIAIS
+            ====================================================== -->
+
+            <section
+                id="materiais"
+                class="content-section"
+            >
+
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-section="inicio"
+                >
+                    ← VOLTAR
+                </button>
+
+
+                <div class="section-title">
+
+                    <span class="welcome-label">
+                        BIBLIOTECA
+                    </span>
+
+                    <h2>
+                        📂 Materiais
+                    </h2>
+
+                    <p>
+                        Acesse materiais e recursos
+                        educacionais do Aldemar Studios.
+                    </p>
+
+                </div>
+
+
+                <div class="category-grid">
+
+
+                    <div class="category-card">
+
+                        <span class="category-big-icon">
+                            📘
+                        </span>
+
+                        <h3>
+                            Materiais de Inglês
+                        </h3>
+
+                        <p>
+                            Atividades, textos e recursos
+                            para o aprendizado de inglês.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </div>
+
+
+                    <div class="category-card">
+
+                        <span class="category-big-icon">
+                            📖
+                        </span>
+
+                        <h3>
+                            Materiais de Português
+                        </h3>
+
+                        <p>
+                            Conteúdos de leitura, escrita
+                            e interpretação.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </div>
+
+
+                    <div class="category-card">
+
+                        <span class="category-big-icon">
+                            🎓
+                        </span>
+
+                        <h3>
+                            Materiais Educacionais
+                        </h3>
+
+                        <p>
+                            Recursos complementares para
+                            estudos e aprendizagem.
+                        </p>
+
+                        <span class="card-link">
+                            Explorar →
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
+                 SIMULADOS
+            ====================================================== -->
+
+            <section
+                id="simulados"
+                class="content-section"
+            >
+
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-section="inicio"
+                >
+                    ← VOLTAR
+                </button>
+
+
+                <div class="section-title">
+
+                    <span class="welcome-label">
+                        AVALIAÇÃO
+                    </span>
+
+                    <h2>
+                        📝 Simulados
+                    </h2>
+
+                    <p>
+                        Pratique seus conhecimentos através
+                        de avaliações e exercícios.
+                    </p>
+
+                </div>
+
+
+                <div class="category-grid">
+
+
+                    <div class="category-card">
+
+                        <span class="category-big-icon">
+                            🇺🇸
+                        </span>
+
+                        <h3>
+                            Simulados de Inglês
+                        </h3>
+
+                        <p>
+                            Exercite seus conhecimentos
+                            da língua inglesa.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </div>
+
+
+                    <div class="category-card">
+
+                        <span class="category-big-icon">
+                            📚
+                        </span>
+
+                        <h3>
+                            Simulados Gerais
+                        </h3>
+
+                        <p>
+                            Avaliações de diferentes
+                            áreas do conhecimento.
+                        </p>
+
+                        <span class="card-link">
+                            Acessar →
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
+                 PLANOS — BLOQUEADO
+            ====================================================== -->
+
+            <section
+                id="planos"
+                class="content-section"
+            >
+
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-section="inicio"
+                >
+                    ← VOLTAR
+                </button>
+
+
+                <div class="section-title">
+
+                    <span class="welcome-label">
+                        PREMIUM
+                    </span>
+
+                    <h2>
+                        ⭐ Planos
+                    </h2>
+
+                    <p>
+                        Esta área ainda está em desenvolvimento.
+                    </p>
+
+                </div>
+
+
+                <div class="locked-section-card">
+
+                    <div class="locked-icon">
+                        🔒
+                    </div>
+
+                    <h3>
+                        Área em desenvolvimento
+                    </h3>
+
+                    <p>
+                        Os planos do Aldemar Studios estarão
+                        disponíveis em breve.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================================
                  FEEDBACK
             ====================================================== -->
 
@@ -1551,7 +1828,20 @@
                 class="content-section"
             >
 
+                <button
+                    type="button"
+                    class="back-button"
+                    data-back-section="inicio"
+                >
+                    ← VOLTAR
+                </button>
+
+
                 <div class="section-title">
+
+                    <span class="welcome-label">
+                        SUA OPINIÃO
+                    </span>
 
                     <h2>
                         💬 Feedback
@@ -1576,13 +1866,50 @@
                     </p>
 
 
-                    <div class="stars">
+                    <div
+                        class="stars"
+                        aria-label="Avaliação de 1 a 5 estrelas"
+                    >
 
-                        <button type="button">★</button>
-                        <button type="button">★</button>
-                        <button type="button">★</button>
-                        <button type="button">★</button>
-                        <button type="button">★</button>
+                        <button
+                            type="button"
+                            data-rating="1"
+                            aria-label="1 estrela"
+                        >
+                            ★
+                        </button>
+
+                        <button
+                            type="button"
+                            data-rating="2"
+                            aria-label="2 estrelas"
+                        >
+                            ★
+                        </button>
+
+                        <button
+                            type="button"
+                            data-rating="3"
+                            aria-label="3 estrelas"
+                        >
+                            ★
+                        </button>
+
+                        <button
+                            type="button"
+                            data-rating="4"
+                            aria-label="4 estrelas"
+                        >
+                            ★
+                        </button>
+
+                        <button
+                            type="button"
+                            data-rating="5"
+                            aria-label="5 estrelas"
+                        >
+                            ★
+                        </button>
 
                     </div>
 
@@ -1590,12 +1917,14 @@
                     <textarea
                         id="feedbackText"
                         placeholder="Escreva sua sugestão..."
+                        maxlength="2000"
                     ></textarea>
 
 
                     <button
                         type="button"
                         class="primary-small"
+                        id="sendFeedbackButton"
                     >
                         ENVIAR FEEDBACK
                     </button>
@@ -1620,7 +1949,7 @@
                 <button
                     type="button"
                     class="back-button"
-                    onclick="showSection('inicio')"
+                    data-back-section="inicio"
                 >
                     ← VOLTAR
                 </button>
@@ -1693,7 +2022,9 @@
 
                         <p class="profile-photo-info">
                             JPG, PNG ou WEBP.
-                            Tamanho recomendado: 500 × 500 px.
+                            Tamanho máximo: 5 MB.
+                            A foto somente será salva ao clicar
+                            em <strong>Salvar Alterações</strong>.
                         </p>
 
                     </div>
@@ -1713,7 +2044,7 @@
 
                         <div class="input-group">
 
-                            <label for="editProfileName">
+                            <label for="profileNameInput">
                                 Nome completo
                             </label>
 
@@ -1722,6 +2053,7 @@
                                 id="profileNameInput"
                                 placeholder="Digite seu nome completo"
                                 autocomplete="name"
+                                maxlength="120"
                             >
 
                         </div>
@@ -1731,7 +2063,7 @@
 
                         <div class="input-group">
 
-                            <label for="editProfileNick">
+                            <label for="profileNickInput">
                                 Nick / nome de usuário
                             </label>
 
@@ -1763,7 +2095,7 @@
 
                         <div class="input-group">
 
-                            <label for="editProfileEmail">
+                            <label for="profileEmailInput">
                                 E-mail
                             </label>
 
@@ -1772,6 +2104,7 @@
                                 id="profileEmailInput"
                                 placeholder="Digite seu e-mail"
                                 autocomplete="email"
+                                maxlength="150"
                             >
 
                         </div>
@@ -1814,12 +2147,12 @@
 
 
                             <button
-    type="button"
-    id="saveProfileButton"
-    class="primary-button"
->
-    💾 SALVAR ALTERAÇÕES
-</button>
+                                type="submit"
+                                id="saveProfileButton"
+                                class="primary-button"
+                            >
+                                💾 SALVAR ALTERAÇÕES
+                            </button>
 
                         </div>
 
@@ -1993,6 +2326,17 @@
         </main>
 
     </div>
+
+
+    <!-- =========================================================
+         OVERLAY MOBILE
+    ========================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+        hidden
+    ></div>
 
 
     <!-- =========================================================

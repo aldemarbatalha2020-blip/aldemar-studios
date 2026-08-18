@@ -1,7 +1,21 @@
 ﻿/* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
-   VERSÃO COMPLETA — ONLINE + API + PERFIL + JOGOS
+   VERSÃO ATUALIZADA
+   =========================================================
+   PRINCIPAIS MELHORIAS:
+   - Navegação completa das áreas disponíveis
+   - Materiais, Simulados e Premium continuam bloqueados
+   - Perfil com salvamento completo
+   - Foto de perfil salva SOMENTE ao clicar em SALVAR
+   - Foto permanece após recarregar a página
+   - Foto sincronizada com API + armazenamento local
+   - Compatibilidade com celular, tablet e PC
+   - Navegação interna com botão VOLTAR
+   - Filtros de jogos
+   - Feedback
+   - Alteração de senha
+   - Logout
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,9 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
     const pageTitle =
-        document.getElementById(
-            "pageTitle"
-        );
+        document.getElementById("pageTitle");
 
 
     /* =====================================================
@@ -44,115 +56,94 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     const userNameElement =
-        document.getElementById(
-            "userName"
-        );
+        document.getElementById("userName");
 
     const welcomeNameElement =
-        document.getElementById(
-            "welcomeName"
-        );
+        document.getElementById("welcomeName");
 
     const userAvatarElement =
-        document.getElementById(
-            "userAvatar"
-        );
+        document.getElementById("userAvatar");
 
     const userPlanElement =
-        document.getElementById(
-            "userPlan"
-        );
+        document.getElementById("userPlan");
 
     const profileAvatarElement =
-        document.getElementById(
-            "profileAvatar"
-        );
+        document.getElementById("profileAvatar");
 
     const profileNameInput =
-        document.getElementById(
-            "profileNameInput"
-        );
+        document.getElementById("profileNameInput");
 
     const profileNickInput =
-        document.getElementById(
-            "profileNickInput"
-        );
+        document.getElementById("profileNickInput");
 
     const profileEmailInput =
-        document.getElementById(
-            "profileEmailInput"
-        );
+        document.getElementById("profileEmailInput");
 
     const profilePlanElement =
-        document.getElementById(
-            "profilePlan"
-        );
+        document.getElementById("profilePlan");
 
     const profilePlanBottom =
-        document.getElementById(
-            "profilePlanBottom"
-        );
+        document.getElementById("profilePlanBottom");
 
     const profilePhotoInput =
-        document.getElementById(
-            "profilePhotoInput"
-        );
+        document.getElementById("profilePhotoInput");
 
     const changePhotoButton =
-        document.getElementById(
-            "changeProfilePhoto"
-        );
+        document.getElementById("changeProfilePhoto");
 
-    /*
-     * CORRIGIDO:
-     * O dashboard.html utiliza:
-     * id="removeProfilePhoto"
-     */
     const removePhotoButton =
-        document.getElementById(
-            "removeProfilePhoto"
-        );
+        document.getElementById("removeProfilePhoto");
 
     const saveProfileButton =
-        document.getElementById(
-            "saveProfileButton"
-        );
+        document.getElementById("saveProfileButton");
 
     const cancelProfileButton =
-        document.getElementById(
-            "cancelProfileEdit"
-        );
+        document.getElementById("cancelProfileEdit");
+
+    const changePasswordForm =
+        document.getElementById("changePasswordForm");
+
+
+    /* =====================================================
+       ESTADO DO PERFIL
+    ====================================================== */
+
+    let user = null;
 
     /*
-     * CORRIGIDO:
-     * O dashboard.html possui um FORM:
-     * id="changePasswordForm"
+     * A foto escolhida fica temporariamente aqui.
+     *
+     * IMPORTANTE:
+     * A foto NÃO é enviada imediatamente.
+     *
+     * O usuário escolhe a foto → visualiza a prévia →
+     * clica em SALVAR ALTERAÇÕES → somente então a foto
+     * é enviada para o servidor.
      */
-    const changePasswordForm =
-        document.getElementById(
-            "changePasswordForm"
-        );
+
+    let pendingProfilePhoto = undefined;
+
+    /*
+     * undefined = nenhuma alteração feita
+     * string      = nova foto
+     * null        = remover foto
+     */
+
+    let originalProfileData = null;
 
 
     /* =====================================================
        RECUPERAR USUÁRIO
     ====================================================== */
 
-    let user = null;
-
     try {
 
         const savedUser =
-            sessionStorage.getItem(
-                "usuario"
-            );
+            sessionStorage.getItem("usuario");
 
         if (savedUser) {
 
-            user =
-                JSON.parse(
-                    savedUser
-                );
+            user = JSON.parse(savedUser);
         }
 
     } catch (error) {
@@ -162,9 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
             error
         );
 
-        sessionStorage.removeItem(
-            "usuario"
-        );
+        sessionStorage.removeItem("usuario");
     }
 
 
@@ -177,16 +166,11 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
 
             const localUser =
-                localStorage.getItem(
-                    "user"
-                );
+                localStorage.getItem("user");
 
             if (localUser) {
 
-                user =
-                    JSON.parse(
-                        localUser
-                    );
+                user = JSON.parse(localUser);
             }
 
         } catch (error) {
@@ -196,15 +180,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
 
-            localStorage.removeItem(
-                "user"
-            );
+            localStorage.removeItem("user");
         }
     }
 
 
     /* =====================================================
-       FUNÇÕES DE USUÁRIO
+       GARANTIR OBJETO DE USUÁRIO
+    ====================================================== */
+
+    if (!user) {
+
+        user = {
+            nome_completo: "Usuário",
+            nick: "",
+            email: "",
+            plano: "gratuito",
+            foto: ""
+        };
+    }
+
+
+    /* =====================================================
+       FUNÇÕES DO USUÁRIO
     ====================================================== */
 
     function getUserId() {
@@ -312,14 +310,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 .split(/\s+/)
                 .filter(Boolean);
 
-
         if (parts.length === 1) {
 
             return parts[0]
                 .substring(0, 2)
                 .toUpperCase();
         }
-
 
         return (
             parts[0][0] +
@@ -329,26 +325,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ATUALIZAR AVATAR
+       OBTER FOTO ATUAL
+    ====================================================== */
+
+    function getCurrentPhoto() {
+
+        if (!user) {
+            return "";
+        }
+
+        return (
+            user.foto ||
+            user.photo ||
+            user.foto_perfil ||
+            ""
+        );
+    }
+
+
+    /* =====================================================
+       ATUALIZAR UM AVATAR
     ====================================================== */
 
     function updateAvatarElement(
         element,
-        initials
+        initials,
+        photo = ""
     ) {
 
         if (!element) {
             return;
         }
 
-
-        if (
-            user &&
-            user.foto
-        ) {
+        if (photo) {
 
             element.style.backgroundImage =
-                `url("${user.foto}")`;
+                `url("${photo}")`;
 
             element.style.backgroundSize =
                 "cover";
@@ -359,31 +371,25 @@ document.addEventListener("DOMContentLoaded", () => {
             element.style.backgroundRepeat =
                 "no-repeat";
 
-            element.textContent =
-                "";
+            element.textContent = "";
 
         } else {
 
-            element.style.backgroundImage =
-                "";
+            element.style.backgroundImage = "";
 
-            element.style.backgroundSize =
-                "";
+            element.style.backgroundSize = "";
 
-            element.style.backgroundPosition =
-                "";
+            element.style.backgroundPosition = "";
 
-            element.style.backgroundRepeat =
-                "";
+            element.style.backgroundRepeat = "";
 
-            element.textContent =
-                initials;
+            element.textContent = initials;
         }
     }
 
 
     /* =====================================================
-       ATUALIZAR INTERFACE
+       ATUALIZAR INTERFACE DO USUÁRIO
     ====================================================== */
 
     function updateUserInterface() {
@@ -391,7 +397,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!user) {
             return;
         }
-
 
         const name =
             getUserName();
@@ -404,6 +409,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const plan =
             getUserPlan();
+
+        const photo =
+            getCurrentPhoto();
 
         const initials =
             getInitials(name);
@@ -425,13 +433,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (userAvatarElement) {
-
-            updateAvatarElement(
-                userAvatarElement,
-                initials
-            );
-        }
+        updateAvatarElement(
+            userAvatarElement,
+            initials,
+            photo
+        );
 
 
         /* BOAS-VINDAS */
@@ -480,18 +486,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (profileAvatarElement) {
-
-            updateAvatarElement(
-                profileAvatarElement,
-                initials
-            );
-        }
+        updateAvatarElement(
+            profileAvatarElement,
+            initials,
+            photo
+        );
     }
 
 
     /* =====================================================
-       SALVAR USUÁRIO
+       SALVAR USUÁRIO LOCALMENTE
     ====================================================== */
 
     function saveUser() {
@@ -499,7 +503,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!user) {
             return;
         }
-
 
         try {
 
@@ -519,7 +522,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Erro ao salvar usuário:",
                 error
             );
+
+            showNotification(
+                "Não foi possível salvar os dados localmente."
+            );
         }
+    }
+
+
+    /* =====================================================
+       CRIAR CÓPIA DOS DADOS ORIGINAIS
+    ====================================================== */
+
+    function saveOriginalProfileData() {
+
+        originalProfileData = {
+
+            nome_completo:
+                getUserName(),
+
+            nick:
+                getUserNick(),
+
+            email:
+                getUserEmail(),
+
+            foto:
+                getCurrentPhoto()
+        };
+
+        pendingProfilePhoto =
+            undefined;
     }
 
 
@@ -528,6 +561,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     updateUserInterface();
+
+    saveOriginalProfileData();
 
 
     /* =====================================================
@@ -543,6 +578,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const locked =
                     item.dataset.locked === "true";
 
+
+                /*
+                 * SOMENTE as áreas marcadas como locked
+                 * permanecem bloqueadas.
+                 */
 
                 if (locked) {
 
@@ -571,16 +611,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                showSection(
-                    sectionName
-                );
+                showSection(sectionName);
             }
         );
     });
 
 
     /* =====================================================
-       CARDS DE ACESSO
+       CARDS COM DATA-SECTION-LINK
     ====================================================== */
 
     const accessCards =
@@ -619,22 +657,46 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                if (section === "jogos") {
-
-                    showSection(
-                        "jogos"
-                    );
-
-                    return;
-                }
-
-
-                showSection(
-                    section
-                );
+                showSection(section);
             }
         );
     });
+
+
+    /* =====================================================
+       BOTÕES INTERNOS DATA-SECTION-LINK
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            "button[data-section-link]"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    const section =
+                        button.dataset.sectionLink;
+
+                    if (!section) {
+                        return;
+                    }
+
+                    if (section === "cursos") {
+
+                        openCourses();
+
+                        return;
+                    }
+
+                    showSection(section);
+                }
+            );
+        });
 
 
     /* =====================================================
@@ -647,7 +709,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "cursos/index.html";
     }
 
-
     window.openCourses =
         openCourses;
 
@@ -657,11 +718,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     window.openEnglishGames =
-        function() {
+        function () {
 
-            showSection(
-                "jogos"
-            );
+            showSection("jogos");
 
             setTimeout(() => {
 
@@ -692,22 +751,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     window.showSection =
-        function(sectionName) {
+        function (sectionName) {
 
-            sections.forEach(section => {
-
-                section.classList.remove(
-                    "active"
-                );
-            });
-
-
-            menuItems.forEach(item => {
-
-                item.classList.remove(
-                    "active"
-                );
-            });
+            if (!sectionName) {
+                return;
+            }
 
 
             const target =
@@ -724,6 +772,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 return;
             }
+
+
+            sections.forEach(section => {
+
+                section.classList.remove(
+                    "active"
+                );
+            });
+
+
+            menuItems.forEach(item => {
+
+                item.classList.remove(
+                    "active"
+                );
+            });
 
 
             target.classList.add(
@@ -750,17 +814,15 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            if (
-                sectionName === "perfil"
-            ) {
+            if (sectionName === "perfil") {
 
                 updateUserInterface();
+
+                saveOriginalProfileData();
             }
 
 
-            if (
-                sectionName === "jogos"
-            ) {
+            if (sectionName === "jogos") {
 
                 backToGameCategories();
             }
@@ -777,42 +839,30 @@ document.addEventListener("DOMContentLoaded", () => {
        TÍTULOS
     ====================================================== */
 
-    function updatePageTitle(
-        sectionName
-    ) {
+    function updatePageTitle(sectionName) {
 
         if (!pageTitle) {
             return;
         }
 
-
         const titles = {
 
-            inicio:
-                "Início",
+            inicio: "Início",
 
-            jogos:
-                "Jogos",
+            jogos: "Jogos",
 
-            ingles:
-                "Inglês",
+            ingles: "Inglês",
 
-            musica:
-                "Música",
+            musica: "Música",
 
-            inclusivos:
-                "Inclusivos",
+            inclusivos: "Inclusivos",
 
-            cursos:
-                "Cursos",
+            cursos: "Cursos",
 
-            feedback:
-                "Feedback",
+            feedback: "Feedback",
 
-            perfil:
-                "Meu Perfil"
+            perfil: "Meu Perfil"
         };
-
 
         pageTitle.textContent =
             titles[sectionName] ||
@@ -825,7 +875,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     window.openGameCategory =
-        function(category) {
+        function (category) {
 
             const categories =
                 document.getElementById(
@@ -890,7 +940,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     window.backToGameCategories =
-        function() {
+        function () {
 
             const categories =
                 document.getElementById(
@@ -935,7 +985,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     window.filterGames =
-        function(
+        function (
             filter,
             button
         ) {
@@ -991,6 +1041,213 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       PERFIL — ALTERAR FOTO
+    ====================================================== */
+
+    if (
+        changePhotoButton &&
+        profilePhotoInput
+    ) {
+
+        changePhotoButton.addEventListener(
+            "click",
+            () => {
+
+                profilePhotoInput.click();
+            }
+        );
+    }
+
+
+    /* =====================================================
+       PERFIL — SELECIONAR FOTO
+       NÃO ENVIA PARA A API AQUI
+    ====================================================== */
+
+    if (profilePhotoInput) {
+
+        profilePhotoInput.addEventListener(
+            "change",
+            event => {
+
+                const file =
+                    event.target.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                const allowedTypes = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp"
+                ];
+
+
+                if (
+                    !allowedTypes.includes(
+                        file.type
+                    )
+                ) {
+
+                    showNotification(
+                        "Selecione uma imagem JPG, PNG ou WEBP."
+                    );
+
+                    profilePhotoInput.value =
+                        "";
+
+                    return;
+                }
+
+
+                const maxSize =
+                    5 * 1024 * 1024;
+
+
+                if (
+                    file.size > maxSize
+                ) {
+
+                    showNotification(
+                        "A imagem deve ter no máximo 5 MB."
+                    );
+
+                    profilePhotoInput.value =
+                        "";
+
+                    return;
+                }
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    readerEvent => {
+
+                        const photo =
+                            readerEvent
+                                .target
+                                .result;
+
+
+                        /*
+                         * Guarda a foto somente como
+                         * alteração pendente.
+                         */
+
+                        pendingProfilePhoto =
+                            photo;
+
+
+                        /*
+                         * Mostra a prévia imediatamente.
+                         */
+
+                        const initials =
+                            getInitials(
+                                getUserName()
+                            );
+
+
+                        updateAvatarElement(
+                            profileAvatarElement,
+                            initials,
+                            photo
+                        );
+
+
+                        updateAvatarElement(
+                            userAvatarElement,
+                            initials,
+                            photo
+                        );
+
+
+                        showNotification(
+                            "Foto selecionada. Clique em SALVAR ALTERAÇÕES para confirmar."
+                        );
+                    };
+
+
+                reader.readAsDataURL(file);
+            }
+        );
+    }
+
+
+    /* =====================================================
+       PERFIL — REMOVER FOTO
+       TAMBÉM FICA PENDENTE ATÉ SALVAR
+    ====================================================== */
+
+    if (removePhotoButton) {
+
+        removePhotoButton.addEventListener(
+            "click",
+            () => {
+
+                const currentPhoto =
+                    getCurrentPhoto();
+
+
+                if (
+                    !currentPhoto &&
+                    pendingProfilePhoto === undefined
+                ) {
+
+                    showNotification(
+                        "Você não possui uma foto de perfil."
+                    );
+
+                    return;
+                }
+
+
+                pendingProfilePhoto =
+                    null;
+
+
+                const initials =
+                    getInitials(
+                        getUserName()
+                    );
+
+
+                updateAvatarElement(
+                    profileAvatarElement,
+                    initials,
+                    ""
+                );
+
+
+                updateAvatarElement(
+                    userAvatarElement,
+                    initials,
+                    ""
+                );
+
+
+                if (profilePhotoInput) {
+
+                    profilePhotoInput.value =
+                        "";
+                }
+
+
+                showNotification(
+                    "Remoção marcada. Clique em SALVAR ALTERAÇÕES para confirmar."
+                );
+            }
+        );
+    }
+
+
+    /* =====================================================
        PERFIL — SALVAR ALTERAÇÕES
     ====================================================== */
 
@@ -1030,6 +1287,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "";
 
 
+                /* VALIDAR NOME */
+
                 if (!newName) {
 
                     showNotification(
@@ -1053,6 +1312,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
+                /* VALIDAR NICK */
 
                 if (newNick.length > 30) {
 
@@ -1085,6 +1346,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
+                /* VALIDAR E-MAIL */
 
                 if (!newEmail) {
 
@@ -1127,11 +1390,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 try {
 
+                    /*
+                     * Envia TODOS os dados de uma vez.
+                     *
+                     * Se pendingProfilePhoto for:
+                     *
+                     * undefined → foto não foi alterada
+                     * string    → nova foto
+                     * null      → remover foto
+                     */
+
                     const data =
                         await updateProfileOnServer(
                             newName,
                             newNick,
-                            newEmail
+                            newEmail,
+                            pendingProfilePhoto
                         );
 
 
@@ -1152,12 +1426,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         user.email =
                             newEmail;
+
+
+                        if (
+                            pendingProfilePhoto !==
+                            undefined
+                        ) {
+
+                            user.foto =
+                                pendingProfilePhoto;
+                        }
                     }
 
 
+                    /*
+                     * SALVA A INFORMAÇÃO LOCALMENTE.
+                     *
+                     * Isso permite que a foto continue
+                     * aparecendo depois de recarregar.
+                     */
+
                     saveUser();
 
+
+                    /*
+                     * Limpa a alteração pendente.
+                     */
+
+                    pendingProfilePhoto =
+                        undefined;
+
+
+                    /*
+                     * Atualiza toda a interface.
+                     */
+
                     updateUserInterface();
+
+                    saveOriginalProfileData();
 
 
                     showNotification(
@@ -1174,6 +1480,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
+                    /*
+                     * IMPORTANTE:
+                     * Se a API estiver indisponível,
+                     * não apagamos a foto escolhida.
+                     */
+
                     showNotification(
                         error.message ||
                         "Erro ao atualizar perfil."
@@ -1188,26 +1500,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     saveProfileButton.textContent =
                         originalText;
                 }
-            }
-        );
-    }
-
-
-    /* =====================================================
-       CANCELAR ALTERAÇÕES
-    ====================================================== */
-
-    if (cancelProfileButton) {
-
-        cancelProfileButton.addEventListener(
-            "click",
-            () => {
-
-                updateUserInterface();
-
-                showNotification(
-                    "Alterações canceladas."
-                );
             }
         );
     }
@@ -1252,6 +1544,11 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
 
+        /*
+         * SOMENTE adiciona foto quando ela
+         * realmente foi alterada.
+         */
+
         if (foto !== undefined) {
 
             body.foto =
@@ -1276,9 +1573,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
 
                     body:
-                        JSON.stringify(
-                            body
-                        )
+                        JSON.stringify(body)
                 }
             );
 
@@ -1304,197 +1599,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FOTO — ALTERAR
+       CANCELAR ALTERAÇÕES
     ====================================================== */
 
-    if (
-        changePhotoButton &&
-        profilePhotoInput
-    ) {
+    if (cancelProfileButton) {
 
-        changePhotoButton.addEventListener(
+        cancelProfileButton.addEventListener(
             "click",
             () => {
 
-                profilePhotoInput.click();
+                if (
+                    originalProfileData
+                ) {
 
-            }
-        );
-    }
+                    if (profileNameInput) {
 
-
-    /* =====================================================
-       FOTO — SELECIONAR
-    ====================================================== */
-
-    if (profilePhotoInput) {
-
-        profilePhotoInput.addEventListener(
-            "change",
-            event => {
-
-                const file =
-                    event.target.files[0];
+                        profileNameInput.value =
+                            originalProfileData.nome_completo;
+                    }
 
 
-                if (!file) {
-                    return;
+                    if (profileNickInput) {
+
+                        profileNickInput.value =
+                            originalProfileData.nick;
+                    }
+
+
+                    if (profileEmailInput) {
+
+                        profileEmailInput.value =
+                            originalProfileData.email;
+                    }
+
+
+                    const initials =
+                        getInitials(
+                            originalProfileData.nome_completo
+                        );
+
+
+                    updateAvatarElement(
+                        profileAvatarElement,
+                        initials,
+                        originalProfileData.foto
+                    );
+
+
+                    updateAvatarElement(
+                        userAvatarElement,
+                        initials,
+                        originalProfileData.foto
+                    );
                 }
 
 
-                if (
-                    !file.type.startsWith(
-                        "image/"
-                    )
-                ) {
+                pendingProfilePhoto =
+                    undefined;
 
-                    showNotification(
-                        "Selecione uma imagem válida."
-                    );
+
+                if (profilePhotoInput) {
 
                     profilePhotoInput.value =
                         "";
-
-                    return;
                 }
 
 
-                const maxSize =
-                    5 * 1024 * 1024;
-
-
-                if (
-                    file.size > maxSize
-                ) {
-
-                    showNotification(
-                        "A imagem deve ter no máximo 5 MB."
-                    );
-
-                    profilePhotoInput.value =
-                        "";
-
-                    return;
-                }
-
-
-                const reader =
-                    new FileReader();
-
-
-                reader.onload =
-                    async readerEvent => {
-
-                        const photo =
-                            readerEvent
-                                .target
-                                .result;
-
-
-                        try {
-
-                            showNotification(
-                                "Enviando foto..."
-                            );
-
-
-                            const userId =
-                                getUserId();
-
-
-                            if (!userId) {
-
-                                throw new Error(
-                                    "ID do usuário não encontrado."
-                                );
-                            }
-
-
-                            const response =
-                                await fetch(
-                                    `${API_URL}/usuarios/${userId}/foto`,
-                                    {
-
-                                        method: "PUT",
-
-                                        headers: {
-
-                                            "Content-Type":
-                                                "application/json",
-
-                                            "Accept":
-                                                "application/json"
-
-                                        },
-
-                                        body:
-                                            JSON.stringify({
-                                                foto: photo
-                                            })
-
-                                    }
-                                );
-
-
-                            const data =
-                                await parseResponse(
-                                    response
-                                );
-
-
-                            if (!response.ok) {
-
-                                throw new Error(
-                                    data.mensagem ||
-                                    data.message ||
-                                    "Não foi possível atualizar a foto."
-                                );
-                            }
-
-
-                            if (data.usuario) {
-
-                                user = {
-                                    ...user,
-                                    ...data.usuario
-                                };
-
-                            } else {
-
-                                user.foto =
-                                    photo;
-                            }
-
-
-                            saveUser();
-
-                            updateUserInterface();
-
-
-                            showNotification(
-                                data.mensagem ||
-                                "Foto de perfil atualizada!"
-                            );
-
-
-                        } catch (error) {
-
-                            console.error(
-                                "Erro ao atualizar foto:",
-                                error
-                            );
-
-
-                            showNotification(
-                                error.message ||
-                                "Erro ao atualizar foto."
-                            );
-                        }
-                    };
-
-
-                reader.readAsDataURL(
-                    file
+                showNotification(
+                    "Alterações canceladas."
                 );
             }
         );
@@ -1502,118 +1674,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FOTO — REMOVER
-       CORRIGIDO PARA O ID DO HTML
-    ====================================================== */
-
-    if (removePhotoButton) {
-
-        removePhotoButton.addEventListener(
-            "click",
-            async () => {
-
-                if (!user) {
-
-                    showNotification(
-                        "Usuário não encontrado."
-                    );
-
-                    return;
-                }
-
-
-                if (!user.foto) {
-
-                    showNotification(
-                        "Você não possui uma foto de perfil."
-                    );
-
-                    return;
-                }
-
-
-                const confirmed =
-                    confirm(
-                        "Deseja realmente remover sua foto de perfil?"
-                    );
-
-
-                if (!confirmed) {
-                    return;
-                }
-
-
-                try {
-
-                    showNotification(
-                        "Removendo foto..."
-                    );
-
-
-                    const data =
-                        await updateProfileOnServer(
-                            getUserName(),
-                            getUserNick(),
-                            getUserEmail(),
-                            null
-                        );
-
-
-                    if (data.usuario) {
-
-                        user = {
-                            ...user,
-                            ...data.usuario
-                        };
-
-                    } else {
-
-                        user.foto =
-                            "";
-                    }
-
-
-                    saveUser();
-
-                    updateUserInterface();
-
-
-                    if (
-                        profilePhotoInput
-                    ) {
-
-                        profilePhotoInput.value =
-                            "";
-                    }
-
-
-                    showNotification(
-                        data.mensagem ||
-                        "Foto de perfil removida."
-                    );
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Erro ao remover foto:",
-                        error
-                    );
-
-
-                    showNotification(
-                        error.message ||
-                        "Erro ao remover foto."
-                    );
-                }
-            }
-        );
-    }
-
-
-    /* =====================================================
        ALTERAR SENHA
-       CORRIGIDO PARA O FORMULÁRIO DO HTML
     ====================================================== */
 
     if (changePasswordForm) {
@@ -1847,9 +1908,7 @@ document.addEventListener("DOMContentLoaded", () => {
        VALIDAR E-MAIL
     ====================================================== */
 
-    function isValidEmail(
-        email
-    ) {
+    function isValidEmail(email) {
 
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
             .test(email);
@@ -2044,9 +2103,7 @@ document.addEventListener("DOMContentLoaded", () => {
        PARSE DA RESPOSTA DA API
     ====================================================== */
 
-    async function parseResponse(
-        response
-    ) {
+    async function parseResponse(response) {
 
         const text =
             await response.text();
@@ -2059,9 +2116,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            return JSON.parse(
-                text
-            );
+            return JSON.parse(text);
 
         } catch (error) {
 
@@ -2081,9 +2136,7 @@ document.addEventListener("DOMContentLoaded", () => {
        NOTIFICAÇÃO
     ====================================================== */
 
-    function showNotification(
-        message
-    ) {
+    function showNotification(message) {
 
         let notification =
             document.getElementById(
@@ -2117,6 +2170,19 @@ document.addEventListener("DOMContentLoaded", () => {
             message;
 
 
+        notification.classList.remove(
+            "show"
+        );
+
+
+        /*
+         * Força uma pequena atualização para
+         * permitir que a animação seja repetida.
+         */
+
+        void notification.offsetWidth;
+
+
         notification.classList.add(
             "show"
         );
@@ -2142,11 +2208,276 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       PREVENIR ENVIO ACIDENTAL DOS FORMULÁRIOS
+    ====================================================== */
+
+    const profileEditForm =
+        document.getElementById(
+            "profileEditForm"
+        );
+
+
+    if (profileEditForm) {
+
+        profileEditForm.addEventListener(
+            "submit",
+            event => {
+
+                event.preventDefault();
+
+                if (saveProfileButton) {
+
+                    saveProfileButton.click();
+                }
+            }
+        );
+    }
+
+
+    /* =====================================================
+       RESPONSIVIDADE — MENU MOBILE
+    ====================================================== */
+
+    const sidebar =
+        document.querySelector(
+            ".sidebar"
+        );
+
+
+    /*
+     * Cria automaticamente um botão de menu
+     * caso o CSS utilize a classe mobile-menu-button.
+     */
+
+    if (
+        sidebar &&
+        !document.getElementById(
+            "mobileMenuButton"
+        )
+    ) {
+
+        const mobileButton =
+            document.createElement(
+                "button"
+            );
+
+
+        mobileButton.type =
+            "button";
+
+
+        mobileButton.id =
+            "mobileMenuButton";
+
+
+        mobileButton.className =
+            "mobile-menu-button";
+
+
+        mobileButton.setAttribute(
+            "aria-label",
+            "Abrir menu"
+        );
+
+
+        mobileButton.innerHTML =
+            "☰";
+
+
+        document.body.appendChild(
+            mobileButton
+        );
+
+
+        mobileButton.addEventListener(
+            "click",
+            () => {
+
+                sidebar.classList.toggle(
+                    "mobile-open"
+                );
+            }
+        );
+
+
+        /*
+         * Fecha o menu ao selecionar uma seção
+         * em dispositivos menores.
+         */
+
+        menuItems.forEach(item => {
+
+            item.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        window.innerWidth <=
+                        900
+                    ) {
+
+                        sidebar.classList.remove(
+                            "mobile-open"
+                        );
+                    }
+                }
+            );
+        });
+    }
+
+
+    /* =====================================================
+       FECHAR MENU COM ESC
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape" &&
+                sidebar
+            ) {
+
+                sidebar.classList.remove(
+                    "mobile-open"
+                );
+            }
+        }
+    );
+
+
+    /* =====================================================
+       AJUSTE DE ORIENTAÇÃO / REDIMENSIONAMENTO
+    ====================================================== */
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            /*
+             * Em telas grandes, garante que o menu
+             * mobile não permaneça aberto.
+             */
+
+            if (
+                window.innerWidth > 900 &&
+                sidebar
+            ) {
+
+                sidebar.classList.remove(
+                    "mobile-open"
+                );
+            }
+        }
+    );
+
+
+    /* =====================================================
+       GARANTIR QUE BOTÕES DE DESENVOLVIMENTO
+       CONTINUEM BLOQUEADOS
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            ".menu-item[data-locked='true']"
+        )
+        .forEach(item => {
+
+            item.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    showNotification(
+                        "Esta área ainda está em desenvolvimento."
+                    );
+                }
+            );
+        });
+/* =====================================================
+   NAVEGAÇÃO — CENTRAL DE JOGOS
+====================================================== */
+
+/*
+ * =====================================================
+ * JOGOS DE PASSATEMPO
+ * =====================================================
+ *
+ * O botão/card de Passatempo leva diretamente para:
+ *
+ * jogos/passatempo/index.html
+ *
+ * Essa página será responsável por apresentar
+ * os 10 jogos de passatempo.
+ */
+
+document
+    .querySelectorAll(
+        '[data-game-category="passatempo"]'
+    )
+    .forEach(
+        element => {
+
+            element.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    window.location.href =
+                        "jogos/passatempo/index.html";
+
+                }
+            );
+
+        }
+    );
+
+
+/*
+ * =====================================================
+ * JOGOS EDUCATIVOS
+ * =====================================================
+ *
+ * O destino já fica preparado mesmo que a página
+ * ainda não exista.
+ *
+ * Futuramente:
+ *
+ * jogos/educativos/index.html
+ */
+
+document
+    .querySelectorAll(
+        '[data-game-category="educativos"]'
+    )
+    .forEach(
+        element => {
+
+            element.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    window.location.href =
+                        "jogos/educativos/index.html";
+
+                }
+            );
+
+        }
+    );
+
+    /* =====================================================
        INICIALIZAÇÃO FINAL
     ====================================================== */
 
-    showSection(
-        "inicio"
-    );
+    showSection("inicio");
 
 });
