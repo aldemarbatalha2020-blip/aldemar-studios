@@ -1,542 +1,436 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Aldemar Studios</title>
+    <meta
+        name="description"
+        content="Aldemar Studios - Plataforma educacional"
+    >
 
-<link rel="stylesheet" href="css/style.css">
+    <title>Aldemar Studios</title>
 
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
 </head>
 
+
 <body>
+
 
 <main class="app">
 
 
-<!-- =================================================
-     TELA DE LOGIN
-================================================== -->
+    <!-- =====================================================
+         LOGIN
+    ====================================================== -->
 
-<section id="loginScreen" class="screen active">
+    <section
+        id="loginScreen"
+        class="screen active"
+    >
 
-    <div class="auth-container">
+        <div class="auth-container">
 
-        <div class="brand">
 
-            <div class="brand-icon">
-                AS
+            <!-- MARCA -->
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    AS
+                </div>
+
+                <h1>
+                    Aldemar Studios
+                </h1>
+
+                <p>
+                    Entre para acessar sua plataforma.
+                </p>
+
             </div>
 
-            <h1>Aldemar Studios</h1>
 
-            <p>
-                Entre para acessar sua plataforma.
-            </p>
+            <!-- CARD -->
+
+            <div class="auth-card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        Entrar
+                    </h2>
+
+                    <p>
+                        Acesse sua conta
+                    </p>
+
+                </div>
+
+
+                <!-- FORM LOGIN -->
+
+                <form id="loginForm">
+
+
+                    <div class="input-group">
+
+                        <label for="loginEmail">
+                            E-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="Digite seu e-mail"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="loginPassword">
+                            Senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        ACESSAR
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="forgotPassword"
+                        class="link-button"
+                    >
+                        Esqueci minha senha
+                    </button>
+
+
+                </form>
+
+
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+
+
+                <!-- CADASTRO -->
+
+                <div class="create-account">
+
+                    <p>
+                        Primeiro acesso?
+                    </p>
+
+                    <button
+                        type="button"
+                        id="openRegister"
+                        class="secondary-button"
+                    >
+                        CRIAR MINHA CONTA AGORA
+                    </button>
+
+                </div>
+
+
+            </div>
+
 
         </div>
 
-        <div class="auth-card">
+    </section>
 
-            <div class="card-header">
 
-                <h2>Entrar</h2>
+
+    <!-- =====================================================
+         CADASTRO
+    ====================================================== -->
+
+    <section
+        id="registerScreen"
+        class="screen"
+    >
+
+        <div class="auth-container">
+
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    AS
+                </div>
+
+                <h1>
+                    Aldemar Studios
+                </h1>
 
                 <p>
-                    Acesse sua conta
+                    Crie sua conta gratuitamente.
                 </p>
 
             </div>
 
-            <form id="loginForm">
 
-                <div class="input-group">
+            <div class="auth-card">
 
-                    <label for="loginEmail">
-                        E-mail
-                    </label>
 
-                    <input
-                        type="email"
-                        id="loginEmail"
-                        placeholder="Digite seu e-mail"
-                        autocomplete="email"
-                        required
-                    >
+                <div class="card-header">
+
+                    <h2>
+                        Criar minha conta
+                    </h2>
+
+                    <p>
+                        Preencha os dados abaixo
+                    </p>
 
                 </div>
 
-                <div class="input-group">
 
-                    <label for="loginPassword">
-                        Senha
-                    </label>
+                <form id="registerForm">
 
-                    <input
-                        type="password"
-                        id="loginPassword"
-                        placeholder="Digite sua senha"
-                        autocomplete="current-password"
-                        required
+
+                    <!-- NOME -->
+
+                    <div class="input-group">
+
+                        <label for="registerName">
+                            Nome completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerName"
+                            placeholder="Digite seu nome completo"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="input-group">
+
+                        <label for="registerEmail">
+                            E-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            placeholder="Digite seu e-mail"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SENHA -->
+
+                    <div class="input-group">
+
+                        <label for="registerPassword">
+                            Senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            placeholder="Crie uma senha"
+                            minlength="8"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="password-info">
+
+                        A senha deve possuir pelo menos
+                        8 caracteres.
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
                     >
+                        CRIAR CONTA
+                    </button>
+
+
+                </form>
+
+
+                <div class="divider">
+
+                    <span>
+                        Já possui uma conta?
+                    </span>
 
                 </div>
 
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    ACESSAR
-                </button>
 
                 <button
                     type="button"
-                    id="forgotPassword"
-                    class="link-button"
-                >
-                    Esqueci minha senha
-                </button>
-
-            </form>
-
-            <div class="divider">
-                <span>ou</span>
-            </div>
-
-            <div class="create-account">
-
-                <p>
-                    Primeiro acesso?
-                </p>
-
-                <button
-                    type="button"
-                    id="openRegister"
+                    id="backToLogin"
                     class="secondary-button"
                 >
-                    CRIAR MINHA CONTA AGORA
+                    VOLTAR PARA O LOGIN
                 </button>
 
+
             </div>
+
 
         </div>
 
-    </div>
+    </section>
 
-</section>
 
 
-<!-- =================================================
-     TELA DE CADASTRO
-================================================== -->
+    <!-- =====================================================
+         CENTRAL DE JOGOS
+    ====================================================== -->
 
-<section id="registerScreen" class="screen">
-
-    <div class="auth-container">
-
-        <div class="brand">
-
-            <div class="brand-icon">
-                AS
-            </div>
-
-            <h1>Aldemar Studios</h1>
-
-            <p>
-                Crie sua conta gratuitamente.
-            </p>
-
-        </div>
-
-        <div class="auth-card">
-
-            <div class="card-header">
-
-                <h2>Criar minha conta</h2>
-
-                <p>
-                    Preencha os dados abaixo
-                </p>
-
-            </div>
-
-            <form id="registerForm">
-
-                <div class="input-group">
-
-                    <label for="registerName">
-                        Nome completo
-                    </label>
-
-                    <input
-                        type="text"
-                        id="registerName"
-                        placeholder="Digite seu nome completo"
-                        autocomplete="name"
-                        required
-                    >
-
-                </div>
-
-                <div class="input-group">
-
-                    <label for="registerEmail">
-                        E-mail
-                    </label>
-
-                    <input
-                        type="email"
-                        id="registerEmail"
-                        placeholder="Digite seu e-mail"
-                        autocomplete="email"
-                        required
-                    >
-
-                </div>
-
-                <div class="input-group">
-
-                    <label for="registerPassword">
-                        Senha
-                    </label>
-
-                    <input
-                        type="password"
-                        id="registerPassword"
-                        placeholder="Crie uma senha"
-                        minlength="8"
-                        autocomplete="new-password"
-                        required
-                    >
-
-                </div>
-
-                <div class="password-info">
-                    A senha deve possuir pelo menos 8 caracteres.
-                </div>
-
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    CRIAR CONTA
-                </button>
-
-            </form>
-
-            <div class="divider">
-                <span>já possui uma conta?</span>
-            </div>
-
-            <button
-                type="button"
-                id="backToLogin"
-                class="secondary-button"
-            >
-                VOLTAR PARA O LOGIN
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =================================================
-     CENTRAL DE JOGOS
-================================================== -->
-
-<section
-    id="jogosSection"
-    class="content-section"
-    style="display: none;"
->
-
-    <button
-        class="back-button"
-        onclick="showSection('homeSection')"
-    >
-        ← VOLTAR
-    </button>
-
-    <div class="section-title">
-
-        <span class="welcome-label">
-            ALDEMAR STUDIOS
-        </span>
-
-        <h2>
-            🎮 Central de Jogos
-        </h2>
-
-        <p>
-            Divirta-se, aprenda e explore nossos jogos.
-        </p>
-
-    </div>
-
-    <div class="game-category-grid">
-
-        <div
-            class="game-category-card"
-            onclick="openGameCategory('passatempo')"
-        >
-
-            <div class="game-category-icon">
-                🎮
-            </div>
-
-            <div>
-
-                <span class="game-category-label">
-                    ENTRETENIMENTO
-                </span>
-
-                <h3>
-                    Jogos de Passatempo
-                </h3>
-
-                <p>
-                    Jogos para diversão, desafios
-                    e momentos de descontração.
-                </p>
-
-            </div>
-
-            <div class="game-arrow">
-                →
-            </div>
-
-        </div>
-
-
-        <div
-            class="game-category-card"
-            onclick="openGameCategory('educativos')"
-        >
-
-            <div class="game-category-icon">
-                📚
-            </div>
-
-            <div>
-
-                <span class="game-category-label">
-                    APRENDIZAGEM
-                </span>
-
-                <h3>
-                    Jogos Educativos
-                </h3>
-
-                <p>
-                    Aprenda enquanto joga com
-                    conteúdos de diversas disciplinas.
-                </p>
-
-            </div>
-
-            <div class="game-arrow">
-                →
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =================================================
-         PASSATEMPO
-    ================================================== -->
-
-    <div
-        id="passatempoArea"
-        class="games-area"
+    <section
+        id="jogosSection"
+        class="content-section"
         style="display: none;"
     >
 
+
         <button
+            type="button"
             class="back-button"
-            onclick="backToGameCategories()"
+            onclick="showSection('homeSection')"
         >
             ← VOLTAR
         </button>
 
-        <div class="section-title">
-
-            <span class="welcome-label">
-                ENTRETENIMENTO
-            </span>
-
-            <h2>
-                🎮 Jogos de Passatempo
-            </h2>
-
-            <p>
-                Escolha um jogo e divirta-se.
-            </p>
-
-        </div>
-
-        <div class="games-grid">
-
-            <article class="game-card">
-
-                <div class="game-cover">
-                    🎮
-                </div>
-
-                <div class="game-card-content">
-
-                    <span class="game-tag">
-                        PASSATEMPO
-                    </span>
-
-                    <h3>
-                        Jogo em breve
-                    </h3>
-
-                    <p>
-                        Nosso primeiro jogo será
-                        disponibilizado aqui.
-                    </p>
-
-                    <button
-                        class="primary-small"
-                        disabled
-                    >
-                        EM BREVE
-                    </button>
-
-                </div>
-
-            </article>
-
-
-            <article class="game-card">
-
-                <div class="game-cover">
-                    🧩
-                </div>
-
-                <div class="game-card-content">
-
-                    <span class="game-tag">
-                        PASSATEMPO
-                    </span>
-
-                    <h3>
-                        Mais jogos chegando
-                    </h3>
-
-                    <p>
-                        Novos jogos serão adicionados
-                        nas próximas atualizações.
-                    </p>
-
-                    <button
-                        class="primary-small"
-                        disabled
-                    >
-                        EM BREVE
-                    </button>
-
-                </div>
-
-            </article>
-
-        </div>
-
-    </div>
-
-
-    <!-- =================================================
-         JOGOS EDUCATIVOS
-    ================================================== -->
-
-    <div
-        id="educativosArea"
-        class="games-area"
-        style="display: none;"
-    >
-
-        <button
-            class="back-button"
-            onclick="backToGameCategories()"
-        >
-            ← VOLTAR
-        </button>
 
         <div class="section-title">
 
             <span class="welcome-label">
-                APRENDIZAGEM
+                ALDEMAR STUDIOS
             </span>
 
             <h2>
-                📚 Jogos Educativos
+                🎮 Central de Jogos
             </h2>
 
             <p>
-                Escolha uma área para encontrar
-                seus jogos educativos.
+                Aprenda enquanto joga.
             </p>
 
         </div>
+
+
+
+        <!-- FILTROS -->
 
         <div class="game-filters">
 
+
             <button
+                type="button"
                 class="game-filter active"
                 onclick="filterGames('todos', this)"
             >
-                TODOS
+                🎮 TODOS
             </button>
 
+
             <button
+                type="button"
                 class="game-filter"
                 onclick="filterGames('ingles', this)"
             >
                 🇺🇸 INGLÊS
             </button>
 
+
             <button
+                type="button"
                 class="game-filter"
                 onclick="filterGames('portugues', this)"
             >
                 📖 PORTUGUÊS
             </button>
 
+
             <button
+                type="button"
                 class="game-filter"
                 onclick="filterGames('matematica', this)"
             >
                 🔢 MATEMÁTICA
             </button>
 
+
             <button
+                type="button"
                 class="game-filter"
                 onclick="filterGames('historia', this)"
             >
                 🏛️ HISTÓRIA
             </button>
 
+
             <button
+                type="button"
                 class="game-filter"
                 onclick="filterGames('geografia', this)"
             >
                 🌎 GEOGRAFIA
             </button>
 
+
         </div>
 
+
+
+        <!-- JOGOS -->
+
         <div class="games-grid">
+
+
+            <!-- INGLÊS -->
 
             <article
                 class="game-card educational-game"
@@ -563,16 +457,20 @@
                     </p>
 
                     <button
+                        type="button"
                         class="primary-small"
-                        disabled
+                        onclick="abrirJogosIngles()"
                     >
-                        EM BREVE
+                        ACESSAR →
                     </button>
 
                 </div>
 
             </article>
 
+
+
+            <!-- PORTUGUÊS -->
 
             <article
                 class="game-card educational-game"
@@ -599,6 +497,7 @@
                     </p>
 
                     <button
+                        type="button"
                         class="primary-small"
                         disabled
                     >
@@ -609,6 +508,9 @@
 
             </article>
 
+
+
+            <!-- MATEMÁTICA -->
 
             <article
                 class="game-card educational-game"
@@ -635,6 +537,7 @@
                     </p>
 
                     <button
+                        type="button"
                         class="primary-small"
                         disabled
                     >
@@ -645,6 +548,9 @@
 
             </article>
 
+
+
+            <!-- HISTÓRIA -->
 
             <article
                 class="game-card educational-game"
@@ -671,6 +577,7 @@
                     </p>
 
                     <button
+                        type="button"
                         class="primary-small"
                         disabled
                     >
@@ -681,6 +588,9 @@
 
             </article>
 
+
+
+            <!-- GEOGRAFIA -->
 
             <article
                 class="game-card educational-game"
@@ -707,6 +617,7 @@
                     </p>
 
                     <button
+                        type="button"
                         class="primary-small"
                         disabled
                     >
@@ -717,157 +628,193 @@
 
             </article>
 
+
         </div>
 
-    </div>
 
-</section>
+    </section>
 
 
-<!-- =================================================
-     CURSOS
-================================================== -->
 
-<section
-    id="cursosSection"
-    class="content-section"
-    style="display: none;"
->
+    <!-- =====================================================
+         CURSOS
+    ====================================================== -->
 
-    <button
-        class="back-button"
-        onclick="showSection('homeSection')"
+    <section
+        id="cursosSection"
+        class="content-section"
+        style="display: none;"
     >
-        ← VOLTAR
-    </button>
-
-    <div class="section-title">
-
-        <span class="welcome-label">
-            ALDEMAR STUDIOS
-        </span>
-
-        <h2>
-            📚 Cursos
-        </h2>
-
-        <p>
-            Aprenda, pratique e evolua com nossos cursos.
-        </p>
-
-    </div>
 
 
-    <!-- =================================================
-         CURSO DE INGLÊS GRÁTIS
-    ================================================== -->
-
-    <div class="games-grid">
-
-        <article class="game-card">
-
-            <div class="game-cover">
-                🇺🇸
-            </div>
-
-            <div class="game-card-content">
-
-                <span class="game-tag">
-                    CURSO GRATUITO
-                </span>
-
-                <h3>
-                    Curso de Inglês Grátis
-                </h3>
-
-                <p>
-                    Aprenda inglês do nível iniciante
-                    através de uma jornada organizada
-                    em 10 módulos.
-                </p>
-
-                <p>
-                    📚 <strong>10 módulos</strong><br>
-                    🎓 <strong>100 aulas</strong><br>
-                    🆓 <strong>100% gratuito</strong><br>
-                    ❌ <strong>Sem certificado</strong>
-                </p>
-
-                <button
-                    class="primary-small"
-                    type="button"
-                    onclick="abrirCursoIngles()"
-                >
-                    COMEÇAR CURSO
-                </button>
-
-            </div>
-
-        </article>
+        <button
+            type="button"
+            class="back-button"
+            onclick="showSection('homeSection')"
+        >
+            ← VOLTAR
+        </button>
 
 
-        <!-- =================================================
-             ÁREA PARA FUTUROS CURSOS
-        ================================================== -->
+        <div class="section-title">
 
-        <article class="game-card">
+            <span class="welcome-label">
+                EDUCAÇÃO
+            </span>
 
-            <div class="game-cover">
-                🚀
-            </div>
+            <h2>
+                📚 Cursos
+            </h2>
 
-            <div class="game-card-content">
+            <p>
+                Aprenda através de cursos organizados.
+            </p>
 
-                <span class="game-tag">
-                    EM DESENVOLVIMENTO
-                </span>
+        </div>
 
-                <h3>
-                    Novos cursos
-                </h3>
 
-                <p>
-                    Novos cursos e conteúdos educacionais
-                    serão disponibilizados em breve.
-                </p>
 
-                <button
-                    class="primary-small"
-                    disabled
-                >
-                    EM BREVE
-                </button>
+        <div class="games-grid">
 
-            </div>
 
-        </article>
+            <!-- CURSO DE INGLÊS -->
 
-    </div>
+            <article class="game-card">
 
-</section>
+                <div class="game-cover">
+                    🇺🇸
+                </div>
+
+
+                <div class="game-card-content">
+
+                    <span class="game-tag">
+                        CURSO GRATUITO
+                    </span>
+
+
+                    <h3>
+                        Curso de Inglês Grátis
+                    </h3>
+
+
+                    <p>
+                        Aprenda inglês do nível iniciante
+                        através de uma jornada organizada
+                        em módulos e aulas.
+                    </p>
+
+
+                    <p>
+
+                        📚 <strong>10 módulos</strong><br>
+
+                        🎓 <strong>100 aulas</strong><br>
+
+                        🆓 <strong>100% gratuito</strong>
+
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="primary-small"
+                        onclick="abrirCursoIngles()"
+                    >
+                        ACESSAR CURSO →
+                    </button>
+
+
+                </div>
+
+            </article>
+
+
+
+            <!-- FUTUROS CURSOS -->
+
+            <article class="game-card">
+
+                <div class="game-cover">
+                    🚀
+                </div>
+
+
+                <div class="game-card-content">
+
+                    <span class="game-tag">
+                        EM DESENVOLVIMENTO
+                    </span>
+
+
+                    <h3>
+                        Novos cursos
+                    </h3>
+
+
+                    <p>
+                        Novos cursos e conteúdos
+                        educacionais serão
+                        disponibilizados em breve.
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="primary-small"
+                        disabled
+                    >
+                        EM BREVE
+                    </button>
+
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+
+    </section>
 
 
 </main>
 
+
+
 <!-- =====================================================
-     JAVASCRIPT
+     JAVASCRIPT PRINCIPAL
 ====================================================== -->
 
 <script src="js/app.js"></script>
 
+
+
 <!-- =====================================================
-     ACESSO AO CURSO
+     FUNÇÕES DE NAVEGAÇÃO
 ====================================================== -->
 
 <script>
 
 function abrirCursoIngles() {
 
-    window.location.href = "cursos/ingles-gratis/index.html";
+    window.location.href =
+        "cursos/ingles-gratis/index.html";
+
+}
+
+
+function abrirJogosIngles() {
+
+    window.location.href =
+        "jogos/educativos/ingles/index.html";
 
 }
 
 </script>
 
+
 </body>
+
 </html>
