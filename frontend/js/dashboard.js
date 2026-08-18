@@ -10,24 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
        CONFIGURAÇÃO DA API
     ====================================================== */
 
-    /*
-     * DESENVOLVIMENTO:
-     * http://localhost:3000
-     *
-     * PRODUÇÃO:
-     * https://aldemarstudios.com
-     *
-     * O frontend publicado no GitHub Pages não deve
-     * apontar diretamente para localhost.
-     */
-
     const IS_LOCAL =
         window.location.hostname === "localhost" ||
         window.location.hostname === "127.0.0.1";
 
     const API_URL = IS_LOCAL
-    ? "http://localhost:3000"
-    : "https://aldemar-studios-api.onrender.com/api";
+        ? "http://localhost:3000"
+        : "https://aldemar-studios-api.onrender.com/api";
 
 
     /* =====================================================
@@ -114,9 +103,14 @@ document.addEventListener("DOMContentLoaded", () => {
             "changeProfilePhoto"
         );
 
+    /*
+     * CORRIGIDO:
+     * O dashboard.html utiliza:
+     * id="removeProfilePhoto"
+     */
     const removePhotoButton =
         document.getElementById(
-            "removePhotoButton"
+            "removeProfilePhoto"
         );
 
     const saveProfileButton =
@@ -129,9 +123,14 @@ document.addEventListener("DOMContentLoaded", () => {
             "cancelProfileEdit"
         );
 
-    const changePasswordButton =
+    /*
+     * CORRIGIDO:
+     * O dashboard.html possui um FORM:
+     * id="changePasswordForm"
+     */
+    const changePasswordForm =
         document.getElementById(
-            "changePasswordButton"
+            "changePasswordForm"
         );
 
 
@@ -943,12 +942,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const games =
                 document.querySelectorAll(
-                    ".educational-game"
+                    "#educativosArea .educational-game"
                 );
 
             const filters =
                 document.querySelectorAll(
-                    ".game-filter"
+                    "#educativosArea .game-filter"
                 );
 
 
@@ -1309,17 +1308,19 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     if (
-    changePhotoButton &&
-    profilePhotoInput
-) {
+        changePhotoButton &&
+        profilePhotoInput
+    ) {
 
-    changePhotoButton.onclick =
-        function () {
+        changePhotoButton.addEventListener(
+            "click",
+            () => {
 
-            profilePhotoInput.click();
+                profilePhotoInput.click();
 
-        };
-}
+            }
+        );
+    }
 
 
     /* =====================================================
@@ -1406,7 +1407,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                 throw new Error(
                                     "ID do usuário não encontrado."
                                 );
-
                             }
 
 
@@ -1449,8 +1449,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                     data.message ||
                                     "Não foi possível atualizar a foto."
                                 );
-
                             }
+
 
                             if (data.usuario) {
 
@@ -1503,6 +1503,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        FOTO — REMOVER
+       CORRIGIDO PARA O ID DO HTML
     ====================================================== */
 
     if (removePhotoButton) {
@@ -1612,13 +1613,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        ALTERAR SENHA
+       CORRIGIDO PARA O FORMULÁRIO DO HTML
     ====================================================== */
 
-    if (changePasswordButton) {
+    if (changePasswordForm) {
 
-        changePasswordButton.addEventListener(
-            "click",
-            async () => {
+        changePasswordForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
 
                 const userId =
                     getUserId();
@@ -1709,22 +1714,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+                const submitButton =
+                    changePasswordForm.querySelector(
+                        'button[type="submit"]'
+                    );
+
+
                 const originalText =
-                    changePasswordButton.textContent;
+                    submitButton
+                        ? submitButton.textContent
+                        : "";
 
 
-                changePasswordButton.disabled =
-                    true;
+                if (submitButton) {
 
-                changePasswordButton.textContent =
-                    "ALTERANDO...";
+                    submitButton.disabled =
+                        true;
+
+                    submitButton.textContent =
+                        "ALTERANDO...";
+                }
 
 
                 try {
 
                     const response =
                         await fetch(
-                         `${API_URL}/auth/password`,
+                            `${API_URL}/auth/password`,
                             {
 
                                 method: "PUT",
@@ -1770,27 +1786,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    if (
-                        currentPassword
-                    ) {
+                    if (currentPassword) {
 
                         currentPassword.value =
                             "";
                     }
 
 
-                    if (
-                        newPassword
-                    ) {
+                    if (newPassword) {
 
                         newPassword.value =
                             "";
                     }
 
 
-                    if (
-                        confirmPassword
-                    ) {
+                    if (confirmPassword) {
 
                         confirmPassword.value =
                             "";
@@ -1819,11 +1829,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 } finally {
 
-                    changePasswordButton.disabled =
-                        false;
+                    if (submitButton) {
 
-                    changePasswordButton.textContent =
-                        originalText;
+                        submitButton.disabled =
+                            false;
+
+                        submitButton.textContent =
+                            originalText;
+                    }
                 }
             }
         );
@@ -2137,7 +2150,3 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
-
-
-
-

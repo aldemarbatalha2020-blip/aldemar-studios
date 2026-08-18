@@ -334,11 +334,11 @@
         style="display: none;"
     >
 
-
         <button
             type="button"
             class="back-button"
-            onclick="showSection('homeSection')"
+            id="jogosBackButton"
+            onclick="voltarJogos()"
         >
             ← VOLTAR
         </button>
@@ -350,150 +350,125 @@
                 ALDEMAR STUDIOS
             </span>
 
-            <h2>
+            <h2 id="jogosTitle">
                 🎮 Central de Jogos
             </h2>
 
-            <p>
-                Aprenda enquanto joga.
+            <p id="jogosDescription">
+                Diversão, desafios e aprendizado em um só lugar.
             </p>
 
         </div>
 
 
+        <!-- =================================================
+             NÍVEL PRINCIPAL
+        ================================================== -->
 
-        <!-- FILTROS -->
+        <div
+            id="jogosPrincipal"
+            class="games-grid jogos-view"
+        >
 
-        <div class="game-filters">
+            <article class="game-card">
 
+                <div class="game-cover">
+                    🎮
+                </div>
 
-            <button
-                type="button"
-                class="game-filter active"
-                onclick="filterGames('todos', this)"
-            >
-                🎮 TODOS
-            </button>
+                <div class="game-card-content">
 
+                    <span class="game-tag">
+                        PASSATEMPO
+                    </span>
 
-            <button
-                type="button"
-                class="game-filter"
-                onclick="filterGames('ingles', this)"
-            >
-                🇺🇸 INGLÊS
-            </button>
+                    <h3>
+                        Jogos de Passatempo
+                    </h3>
 
+                    <p>
+                        Jogos para diversão,
+                        desafios e entretenimento.
+                    </p>
 
-            <button
-                type="button"
-                class="game-filter"
-                onclick="filterGames('portugues', this)"
-            >
-                📖 PORTUGUÊS
-            </button>
+                    <button
+                        type="button"
+                        class="primary-small"
+                        onclick="abrirCategoriaPassatempo()"
+                    >
+                        EXPLORAR →
+                    </button>
 
+                </div>
 
-            <button
-                type="button"
-                class="game-filter"
-                onclick="filterGames('matematica', this)"
-            >
-                🔢 MATEMÁTICA
-            </button>
-
-
-            <button
-                type="button"
-                class="game-filter"
-                onclick="filterGames('historia', this)"
-            >
-                🏛️ HISTÓRIA
-            </button>
+            </article>
 
 
-            <button
-                type="button"
-                class="game-filter"
-                onclick="filterGames('geografia', this)"
-            >
-                🌎 GEOGRAFIA
-            </button>
+            <article class="game-card">
 
+                <div class="game-cover">
+                    📚
+                </div>
+
+                <div class="game-card-content">
+
+                    <span class="game-tag">
+                        APRENDIZAGEM
+                    </span>
+
+                    <h3>
+                        Jogos Educativos
+                    </h3>
+
+                    <p>
+                        Aprenda enquanto joga com
+                        conteúdos de diversas áreas.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="primary-small"
+                        onclick="abrirCategoriaEducativos()"
+                    >
+                        EXPLORAR →
+                    </button>
+
+                </div>
+
+            </article>
 
         </div>
 
 
+        <!-- =================================================
+             PASSATEMPO
+        ================================================== -->
 
-        <!-- JOGOS -->
+        <div
+            id="jogosPassatempo"
+            class="games-grid jogos-view"
+            style="display:none;"
+        >
 
-        <div class="games-grid">
-
-
-            <!-- INGLÊS -->
-
-            <article
-                class="game-card educational-game"
-                data-subject="ingles"
-            >
+            <article class="game-card">
 
                 <div class="game-cover">
-                    🇺🇸
+                    🎮
                 </div>
 
                 <div class="game-card-content">
 
                     <span class="game-tag">
-                        INGLÊS
+                        PASSATEMPO
                     </span>
 
                     <h3>
-                        Jogos de Inglês
+                        Jogos de Passatempo
                     </h3>
 
                     <p>
-                        Aprenda inglês através
-                        de desafios interativos.
-                    </p>
-
-                    <button
-                        type="button"
-                        class="primary-small"
-                        onclick="abrirJogosIngles()"
-                    >
-                        ACESSAR →
-                    </button>
-
-                </div>
-
-            </article>
-
-
-
-            <!-- PORTUGUÊS -->
-
-            <article
-                class="game-card educational-game"
-                data-subject="portugues"
-            >
-
-                <div class="game-cover">
-                    📖
-                </div>
-
-                <div class="game-card-content">
-
-                    <span class="game-tag">
-                        PORTUGUÊS
-                    </span>
-
-                    <h3>
-                        Jogos de Português
-                    </h3>
-
-                    <p>
-                        Desafios de leitura,
-                        escrita e interpretação.
+                        Jogos para diversão,
+                        desafios e entretenimento.
                     </p>
 
                     <button
@@ -509,31 +484,25 @@
             </article>
 
 
-
-            <!-- MATEMÁTICA -->
-
-            <article
-                class="game-card educational-game"
-                data-subject="matematica"
-            >
+            <article class="game-card">
 
                 <div class="game-cover">
-                    🔢
+                    🧩
                 </div>
 
                 <div class="game-card-content">
 
                     <span class="game-tag">
-                        MATEMÁTICA
+                        PASSATEMPO
                     </span>
 
                     <h3>
-                        Jogos de Matemática
+                        Mais jogos chegando
                     </h3>
 
                     <p>
-                        Resolva desafios matemáticos
-                        enquanto joga.
+                        Novos jogos serão adicionados
+                        ao Aldemar Studios.
                     </p>
 
                     <button
@@ -548,92 +517,261 @@
 
             </article>
 
+        </div>
 
 
-            <!-- HISTÓRIA -->
+        <!-- =================================================
+             EDUCATIVOS
+        ================================================== -->
 
-            <article
-                class="game-card educational-game"
-                data-subject="historia"
-            >
+        <div
+            id="jogosEducativos"
+            class="jogos-view"
+            style="display:none;"
+        >
 
-                <div class="game-cover">
-                    🏛️
-                </div>
+            <div class="game-filters">
 
-                <div class="game-card-content">
+                <button
+                    type="button"
+                    class="game-filter active"
+                    onclick="filtrarEducativos('todos', this)"
+                >
+                    TODOS
+                </button>
 
-                    <span class="game-tag">
-                        HISTÓRIA
-                    </span>
+                <button
+                    type="button"
+                    class="game-filter"
+                    onclick="filtrarEducativos('ingles', this)"
+                >
+                    🇺🇸 INGLÊS
+                </button>
 
-                    <h3>
-                        Jogos de História
-                    </h3>
+                <button
+                    type="button"
+                    class="game-filter"
+                    onclick="filtrarEducativos('portugues', this)"
+                >
+                    📖 PORTUGUÊS
+                </button>
 
-                    <p>
-                        Explore acontecimentos
-                        históricos de forma interativa.
-                    </p>
+                <button
+                    type="button"
+                    class="game-filter"
+                    onclick="filtrarEducativos('matematica', this)"
+                >
+                    🔢 MATEMÁTICA
+                </button>
 
-                    <button
-                        type="button"
-                        class="primary-small"
-                        disabled
-                    >
-                        EM BREVE
-                    </button>
+                <button
+                    type="button"
+                    class="game-filter"
+                    onclick="filtrarEducativos('historia', this)"
+                >
+                    🏛️ HISTÓRIA
+                </button>
 
-                </div>
+                <button
+                    type="button"
+                    class="game-filter"
+                    onclick="filtrarEducativos('geografia', this)"
+                >
+                    🌎 GEOGRAFIA
+                </button>
 
-            </article>
+            </div>
 
 
+            <div class="games-grid">
 
-            <!-- GEOGRAFIA -->
+                <article
+                    class="game-card educational-game"
+                    data-subject="ingles"
+                >
 
-            <article
-                class="game-card educational-game"
-                data-subject="geografia"
-            >
+                    <div class="game-cover">
+                        🇺🇸
+                    </div>
 
-                <div class="game-cover">
-                    🌎
-                </div>
+                    <div class="game-card-content">
 
-                <div class="game-card-content">
+                        <span class="game-tag">
+                            INGLÊS
+                        </span>
 
-                    <span class="game-tag">
-                        GEOGRAFIA
-                    </span>
+                        <h3>
+                            Jogos de Inglês
+                        </h3>
 
-                    <h3>
-                        Jogos de Geografia
-                    </h3>
+                        <p>
+                            Aprenda inglês através
+                            de desafios interativos.
+                        </p>
 
-                    <p>
-                        Descubra países, lugares,
-                        mapas e muito mais.
-                    </p>
+                        <button
+                            type="button"
+                            class="primary-small"
+                            onclick="abrirJogosIngles()"
+                        >
+                            ACESSAR →
+                        </button>
 
-                    <button
-                        type="button"
-                        class="primary-small"
-                        disabled
-                    >
-                        EM BREVE
-                    </button>
+                    </div>
 
-                </div>
+                </article>
 
-            </article>
 
+                <article
+                    class="game-card educational-game"
+                    data-subject="portugues"
+                >
+
+                    <div class="game-cover">
+                        📖
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-tag">
+                            PORTUGUÊS
+                        </span>
+
+                        <h3>
+                            Jogos de Português
+                        </h3>
+
+                        <p>
+                            Leitura, escrita e interpretação.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="primary-small"
+                            disabled
+                        >
+                            EM BREVE
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="game-card educational-game"
+                    data-subject="matematica"
+                >
+
+                    <div class="game-cover">
+                        🔢
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-tag">
+                            MATEMÁTICA
+                        </span>
+
+                        <h3>
+                            Jogos de Matemática
+                        </h3>
+
+                        <p>
+                            Resolva desafios matemáticos
+                            enquanto joga.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="primary-small"
+                            disabled
+                        >
+                            EM BREVE
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="game-card educational-game"
+                    data-subject="historia"
+                >
+
+                    <div class="game-cover">
+                        🏛️
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-tag">
+                            HISTÓRIA
+                        </span>
+
+                        <h3>
+                            Jogos de História
+                        </h3>
+
+                        <p>
+                            Explore acontecimentos históricos.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="primary-small"
+                            disabled
+                        >
+                            EM BREVE
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article
+                    class="game-card educational-game"
+                    data-subject="geografia"
+                >
+
+                    <div class="game-cover">
+                        🌎
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-tag">
+                            GEOGRAFIA
+                        </span>
+
+                        <h3>
+                            Jogos de Geografia
+                        </h3>
+
+                        <p>
+                            Países, mapas, lugares e muito mais.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="primary-small"
+                            disabled
+                        >
+                            EM BREVE
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
 
         </div>
 
 
     </section>
-
 
 
     <!-- =====================================================
@@ -805,10 +943,143 @@ function abrirCursoIngles() {
 }
 
 
+function mostrarTelaJogos(id) {
+
+    document
+        .querySelectorAll(".jogos-view")
+        .forEach(view => {
+            view.style.display = "none";
+        });
+
+    const tela = document.getElementById(id);
+
+    if (tela) {
+        tela.style.display =
+            id === "jogosEducativos"
+                ? "block"
+                : "grid";
+    }
+
+}
+
+
+function atualizarCabecalhoJogos(titulo, descricao) {
+
+    document.getElementById("jogosTitle").textContent =
+        titulo;
+
+    document.getElementById("jogosDescription").textContent =
+        descricao;
+
+}
+
+
+function abrirCategoriaPassatempo() {
+
+    mostrarTelaJogos("jogosPassatempo");
+
+    atualizarCabecalhoJogos(
+        "🎮 Jogos de Passatempo",
+        "Escolha um jogo e divirta-se."
+    );
+
+}
+
+
+function abrirCategoriaEducativos() {
+
+    mostrarTelaJogos("jogosEducativos");
+
+    atualizarCabecalhoJogos(
+        "📚 Jogos Educativos",
+        "Aprenda através de jogos interativos."
+    );
+
+}
+
+
 function abrirJogosIngles() {
 
     window.location.href =
         "jogos/educativos/ingles/index.html";
+
+}
+
+
+function voltarJogos() {
+
+    const principal =
+        document.getElementById("jogosPrincipal");
+
+    const passatempo =
+        document.getElementById("jogosPassatempo");
+
+    const educativos =
+        document.getElementById("jogosEducativos");
+
+    const principalVisivel =
+        principal &&
+        principal.style.display !== "none";
+
+    if (principalVisivel) {
+
+        showSection("homeSection");
+
+        atualizarCabecalhoJogos(
+            "🎮 Central de Jogos",
+            "Diversão, desafios e aprendizado em um só lugar."
+        );
+
+        return;
+
+    }
+
+    passatempo.style.display = "none";
+    educativos.style.display = "none";
+    principal.style.display = "grid";
+
+    atualizarCabecalhoJogos(
+        "🎮 Central de Jogos",
+        "Diversão, desafios e aprendizado em um só lugar."
+    );
+
+}
+
+
+function filtrarEducativos(filtro, botao) {
+
+    document
+        .querySelectorAll(
+            "#jogosEducativos .game-filter"
+        )
+        .forEach(button => {
+            button.classList.remove("active");
+        });
+
+    if (botao) {
+        botao.classList.add("active");
+    }
+
+    document
+        .querySelectorAll(
+            "#jogosEducativos .educational-game"
+        )
+        .forEach(card => {
+
+            if (
+                filtro === "todos" ||
+                card.dataset.subject === filtro
+            ) {
+
+                card.style.display = "";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
 
 }
 
