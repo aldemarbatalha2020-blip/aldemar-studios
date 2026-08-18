@@ -1397,14 +1397,60 @@ document.addEventListener("DOMContentLoaded", () => {
                             );
 
 
-                            const data =
-                                await updateProfileOnServer(
-                                    getUserName(),
-                                    getUserNick(),
-                                    getUserEmail(),
-                                    photo
+                            const userId =
+                                getUserId();
+
+
+                            if (!userId) {
+
+                                throw new Error(
+                                    "ID do usuário não encontrado."
                                 );
 
+                            }
+
+
+                            const response =
+                                await fetch(
+                                    `${API_URL}/usuarios/${userId}/foto`,
+                                    {
+
+                                        method: "PUT",
+
+                                        headers: {
+
+                                            "Content-Type":
+                                                "application/json",
+
+                                            "Accept":
+                                                "application/json"
+
+                                        },
+
+                                        body:
+                                            JSON.stringify({
+                                                foto: photo
+                                            })
+
+                                    }
+                                );
+
+
+                            const data =
+                                await parseResponse(
+                                    response
+                                );
+
+
+                            if (!response.ok) {
+
+                                throw new Error(
+                                    data.mensagem ||
+                                    data.message ||
+                                    "Não foi possível atualizar a foto."
+                                );
+
+                            }
 
                             if (data.usuario) {
 
@@ -2091,6 +2137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
+
 
 
 
