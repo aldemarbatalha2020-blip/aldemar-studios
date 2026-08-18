@@ -1,0 +1,4620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>LABIRINTO — 30 Segundos</title>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    background:#000;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:#fff;
+
+    touch-action:none;
+}
+
+body{
+
+    user-select:none;
+
+}
+
+/* =====================================================
+   GAME
+===================================================== */
+
+#game{
+
+    position:relative;
+
+    width:100vw;
+    height:100vh;
+
+    overflow:hidden;
+
+    background:#000;
+
+}
+
+#gameCanvas{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    display:block;
+
+}
+
+/* =====================================================
+   HUD
+===================================================== */
+
+#hud{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:20;
+
+    pointer-events:none;
+
+}
+
+.hudTop{
+
+    position:absolute;
+
+    top:18px;
+    left:18px;
+    right:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:10px;
+
+}
+
+.hudBox{
+
+    min-width:145px;
+
+    padding:11px 15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:12px;
+
+    background:
+        rgba(0,0,0,.60);
+
+    backdrop-filter:
+        blur(8px);
+
+    box-shadow:
+        0 8px 30px
+        rgba(0,0,0,.35);
+
+}
+
+.hudLabel{
+
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#8b949e;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+}
+
+.hudValue{
+
+    font-size:15px;
+
+    font-weight:900;
+
+}
+
+#batteryValue{
+
+    color:#facc15;
+
+}
+
+#timerValue{
+
+    color:#60a5fa;
+
+}
+
+#distanceValue{
+
+    color:#d1d5db;
+
+}
+
+#sanityValue{
+
+    color:#a78bfa;
+
+}
+
+/* =====================================================
+   DANGER
+===================================================== */
+
+#danger{
+
+    position:absolute;
+
+    top:105px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    padding:8px 18px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:20px;
+
+    background:
+        rgba(0,0,0,.55);
+
+    color:#9ca3af;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+}
+
+#danger.active{
+
+    color:#ef4444;
+
+    border-color:
+        rgba(239,68,68,.45);
+
+    background:
+        rgba(80,0,0,.45);
+
+    box-shadow:
+        0 0 25px
+        rgba(239,68,68,.2);
+
+    animation:
+        dangerPulse .8s
+        infinite alternate;
+
+}
+
+@keyframes dangerPulse{
+
+    from{
+        opacity:.55;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+/* =====================================================
+   SANITY EFFECT
+===================================================== */
+
+#sanityOverlay{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:15;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    background:
+
+        radial-gradient(
+            ellipse at center,
+            transparent 35%,
+            rgba(70,0,100,.12) 75%,
+            rgba(0,0,0,.55) 100%
+        );
+
+    transition:
+        opacity .5s;
+
+}
+
+#sanityOverlay.active{
+
+    opacity:.8;
+
+    animation:
+        sanityPulse 3s
+        infinite;
+
+}
+
+@keyframes sanityPulse{
+
+    0%{
+        opacity:.35;
+    }
+
+    50%{
+        opacity:.75;
+    }
+
+    100%{
+        opacity:.42;
+    }
+
+}
+
+/* =====================================================
+   CROSSHAIR
+===================================================== */
+
+#crosshair{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:18px;
+    height:18px;
+
+    transform:
+        translate(-50%,-50%);
+
+    opacity:.75;
+
+}
+
+#crosshair::before,
+#crosshair::after{
+
+    content:"";
+
+    position:absolute;
+
+    background:
+        rgba(255,255,255,.75);
+
+}
+
+#crosshair::before{
+
+    left:8px;
+    top:0;
+
+    width:2px;
+    height:18px;
+
+}
+
+#crosshair::after{
+
+    left:0;
+    top:8px;
+
+    width:18px;
+    height:2px;
+
+}
+
+/* =====================================================
+   FLASHLIGHT
+===================================================== */
+
+#flashlightStatus{
+
+    position:absolute;
+
+    bottom:28px;
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    padding:8px 14px;
+
+    border-radius:10px;
+
+    background:
+        rgba(0,0,0,.55);
+
+    color:#d1d5db;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+#flashlightStatus.off{
+
+    color:#ef4444;
+
+}
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+#message{
+
+    position:absolute;
+
+    left:50%;
+    bottom:80px;
+
+    transform:
+        translate(-50%,20px);
+
+    z-index:50;
+
+    max-width:80vw;
+
+    padding:11px 17px;
+
+    border-radius:10px;
+
+    background:
+        rgba(0,0,0,.82);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    color:#fff;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    text-align:center;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.3s;
+
+}
+
+#message.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+
+}
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+#backButton{
+
+    position:absolute;
+
+    left:18px;
+    bottom:18px;
+
+    z-index:80;
+
+    padding:9px 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    border-radius:9px;
+
+    background:
+        rgba(0,0,0,.65);
+
+    color:#d1d5db;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+}
+
+/* =====================================================
+   MOBILE CONTROLS
+===================================================== */
+
+#mobileControls{
+
+    display:none;
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:70;
+
+    pointer-events:none;
+
+}
+
+#joystick{
+
+    position:absolute;
+
+    left:25px;
+    bottom:35px;
+
+    width:125px;
+    height:125px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.07);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    pointer-events:auto;
+
+}
+
+#joystickKnob{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:55px;
+    height:55px;
+
+    margin-left:-27.5px;
+    margin-top:-27.5px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.20);
+
+    border:
+        1px solid
+        rgba(255,255,255,.25);
+
+}
+
+.mobileButton{
+
+    position:absolute;
+
+    width:65px;
+    height:65px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    background:
+        rgba(0,0,0,.55);
+
+    color:#fff;
+
+    font-size:24px;
+
+    pointer-events:auto;
+
+}
+
+#flashButton{
+
+    right:30px;
+    bottom:45px;
+
+}
+
+#lookButton{
+
+    right:110px;
+    bottom:120px;
+
+}
+
+/* =====================================================
+   START / END SCREENS
+===================================================== */
+
+.screen{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:100;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(35,40,45,.15),
+            rgba(0,0,0,.97) 72%
+        );
+
+}
+
+.panel{
+
+    width:min(700px,94vw);
+
+    max-height:92vh;
+
+    overflow:auto;
+
+    padding:35px 30px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:24px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(12,15,16,.98),
+            rgba(3,5,5,.98)
+        );
+
+    box-shadow:
+        0 35px 120px
+        rgba(0,0,0,.8);
+
+}
+
+.logo{
+
+    width:90px;
+    height:90px;
+
+    margin:
+        0 auto 20px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1f2937,
+            #030712
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    font-size:42px;
+
+}
+
+.panel h1{
+
+    text-align:center;
+
+    font-size:
+        clamp(28px,5vw,48px);
+
+    margin-bottom:8px;
+
+}
+
+.panel h1 span{
+
+    color:#ef4444;
+
+}
+
+.panel p{
+
+    color:#9ca3af;
+
+    text-align:center;
+
+    line-height:1.7;
+
+    font-size:13px;
+
+    margin-bottom:22px;
+
+}
+
+/* =====================================================
+   CONTROLS PANEL
+===================================================== */
+
+.controls{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+
+    margin:20px 0;
+
+}
+
+.control{
+
+    padding:13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:11px;
+
+    background:#0b0f10;
+
+}
+
+.control strong{
+
+    display:block;
+
+    color:#fff;
+
+    font-size:11px;
+
+    margin-bottom:4px;
+
+}
+
+.control span{
+
+    color:#8b949e;
+
+    font-size:10px;
+
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.mainButton{
+
+    width:100%;
+
+    min-height:53px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #991b1b,
+            #dc2626
+        );
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    letter-spacing:.7px;
+
+    cursor:pointer;
+
+}
+
+.secondaryButton{
+
+    width:100%;
+
+    min-height:46px;
+
+    margin-top:9px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:12px;
+
+    background:#101416;
+
+    color:#d1d5db;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px){
+
+    .hudTop{
+
+        top:10px;
+        left:8px;
+        right:8px;
+
+        gap:5px;
+
+    }
+
+    .hudBox{
+
+        min-width:0;
+
+        flex:1;
+
+        padding:8px 7px;
+
+    }
+
+    .hudLabel{
+
+        font-size:6px;
+
+    }
+
+    .hudValue{
+
+        font-size:10px;
+
+    }
+
+    #danger{
+
+        top:76px;
+
+        font-size:7px;
+
+    }
+
+    #mobileControls{
+
+        display:block;
+
+    }
+
+    .controls{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .panel{
+
+        padding:25px 18px;
+
+    }
+
+    #crosshair{
+
+        opacity:.45;
+
+    }
+
+    #backButton{
+
+        top:100px;
+
+        bottom:auto;
+
+        left:10px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="game">
+
+<canvas id="gameCanvas"></canvas>
+
+<!-- =====================================================
+     HUD
+===================================================== -->
+
+<div id="hud">
+
+    <div class="hudTop">
+
+        <div class="hudBox">
+
+            <span class="hudLabel">
+                Lanterna
+            </span>
+
+            <span
+                class="hudValue"
+                id="batteryValue"
+            >
+                🔋 100%
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudLabel">
+                Tempo
+            </span>
+
+            <span
+                class="hudValue"
+                id="timerValue"
+            >
+                ⏱ 30
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudLabel">
+                Sanidade
+            </span>
+
+            <span
+                class="hudValue"
+                id="sanityValue"
+            >
+                🧠 100%
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudLabel">
+                Saída
+            </span>
+
+            <span
+                class="hudValue"
+                id="distanceValue"
+            >
+                ?
+            </span>
+
+        </div>
+
+    </div>
+
+    <div id="danger">
+        A criatura ainda está adormecida
+    </div>
+
+    <div id="crosshair"></div>
+
+    <div id="flashlightStatus">
+        🔦 LANTERNA LIGADA
+    </div>
+
+</div>
+
+<div id="sanityOverlay"></div>
+
+<!-- =====================================================
+     MOBILE
+===================================================== -->
+
+<div id="mobileControls">
+
+    <div id="joystick">
+
+        <div id="joystickKnob"></div>
+
+    </div>
+
+    <button
+        class="mobileButton"
+        id="flashButton"
+    >
+        🔦
+    </button>
+
+</div>
+
+<button id="backButton">
+    ← VOLTAR
+</button>
+
+<div id="message"></div>
+
+<!-- =====================================================
+     START
+===================================================== -->
+
+<div
+    class="screen"
+    id="startScreen"
+>
+
+    <div class="panel">
+
+        <div class="logo">
+            🔦
+        </div>
+
+        <h1>
+            LABIRINTO
+            <span>30</span>
+        </h1>
+
+        <p>
+            Você acorda sozinho dentro de um enorme
+            labirinto escuro.
+        </p>
+
+        <p>
+            Sua única fonte de segurança é uma lanterna.
+            Encontre baterias, siga as pistas e encontre
+            a saída antes que alguma coisa acorde.
+        </p>
+
+        <div class="controls">
+
+            <div class="control">
+                <strong>W A S D</strong>
+                <span>Movimentar-se</span>
+            </div>
+
+            <div class="control">
+                <strong>MOUSE</strong>
+                <span>Olhar ao redor</span>
+            </div>
+
+            <div class="control">
+                <strong>F</strong>
+                <span>Ligar / desligar lanterna</span>
+            </div>
+
+            <div class="control">
+                <strong>CELULAR / TABLET</strong>
+                <span>Use o joystick virtual</span>
+            </div>
+
+        </div>
+
+        <p>
+
+            <strong style="color:#facc15;">
+                ⚠ ATENÇÃO
+            </strong>
+
+            <br>
+
+            A lanterna consome bateria.
+
+            Procure as pilhas amarelas.
+
+            <br><br>
+
+            <strong style="color:#a78bfa;">
+                🧠 E não confie completamente nos seus olhos.
+            </strong>
+
+        </p>
+
+        <button
+            class="mainButton"
+            id="startButton"
+        >
+            ENTRAR NO LABIRINTO
+        </button>
+
+        <button
+            class="secondaryButton"
+            id="howButton"
+        >
+            COMO SOBREVIVER?
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     END
+===================================================== -->
+
+<div
+    class="screen"
+    id="endScreen"
+    style="display:none;"
+>
+
+    <div class="panel">
+
+        <div
+            class="logo"
+            id="endIcon"
+        >
+            💀
+        </div>
+
+        <h1 id="endTitle">
+            Você morreu
+        </h1>
+
+        <p id="endText">
+            A criatura encontrou você.
+        </p>
+
+        <button
+            class="mainButton"
+            id="restartButton"
+        >
+            TENTAR NOVAMENTE
+        </button>
+
+        <button
+            class="secondaryButton"
+            id="menuButton"
+        >
+            MENU PRINCIPAL
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     THREE
+===================================================== -->
+
+<script type="importmap">
+
+{
+    "imports":{
+        "three":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+    }
+}
+
+</script>
+
+<script type="module">
+
+import * as THREE from "three";
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const canvas =
+    document.getElementById(
+        "gameCanvas"
+    );
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const endScreen =
+    document.getElementById(
+        "endScreen"
+    );
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+const restartButton =
+    document.getElementById(
+        "restartButton"
+    );
+
+const menuButton =
+    document.getElementById(
+        "menuButton"
+    );
+
+const howButton =
+    document.getElementById(
+        "howButton"
+    );
+
+const backButton =
+    document.getElementById(
+        "backButton"
+    );
+
+const batteryValue =
+    document.getElementById(
+        "batteryValue"
+    );
+
+const timerValue =
+    document.getElementById(
+        "timerValue"
+    );
+
+const distanceValue =
+    document.getElementById(
+        "distanceValue"
+    );
+
+const sanityValue =
+    document.getElementById(
+        "sanityValue"
+    );
+
+const danger =
+    document.getElementById(
+        "danger"
+    );
+
+const flashlightStatus =
+    document.getElementById(
+        "flashlightStatus"
+    );
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+const sanityOverlay =
+    document.getElementById(
+        "sanityOverlay"
+    );
+
+/* =====================================================
+   RENDERER
+===================================================== */
+
+const renderer =
+    new THREE.WebGLRenderer({
+
+        canvas,
+
+        antialias:true,
+
+        powerPreference:
+            "high-performance"
+
+    });
+
+renderer.setPixelRatio(
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+);
+
+renderer.setSize(
+    innerWidth,
+    innerHeight
+);
+
+renderer.shadowMap.enabled=true;
+
+renderer.shadowMap.type=
+    THREE.PCFSoftShadowMap;
+
+renderer.outputColorSpace=
+    THREE.SRGBColorSpace;
+
+/* =====================================================
+   SCENE
+===================================================== */
+
+const scene=
+    new THREE.Scene();
+
+scene.background=
+    new THREE.Color(
+        0x020303
+    );
+
+scene.fog=
+    new THREE.FogExp2(
+        0x020303,
+        .043
+    );
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+const camera=
+    new THREE.PerspectiveCamera(
+        75,
+        innerWidth/
+        innerHeight,
+        .05,
+        100
+    );
+
+camera.rotation.order=
+    "YXZ";
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+const player={
+
+    position:
+        new THREE.Vector3(
+            3,
+            1.65,
+            3
+        ),
+
+    yaw:0,
+
+    pitch:0,
+
+    speed:3.5,
+
+    battery:100,
+
+    flashlight:true,
+
+    sanity:100,
+
+    lastClueTime:0,
+
+    active:false
+
+};
+
+/* =====================================================
+   LIGHT
+===================================================== */
+
+const ambient=
+    new THREE.HemisphereLight(
+        0x39434d,
+        0x050505,
+        .10
+    );
+
+scene.add(
+    ambient
+);
+
+const flashlight=
+    new THREE.SpotLight(
+        0xffffff,
+        18,
+        19,
+        Math.PI/7,
+        .55,
+        1.5
+    );
+
+flashlight.castShadow=true;
+
+flashlight.shadow.mapSize.width=
+    1024;
+
+flashlight.shadow.mapSize.height=
+    1024;
+
+scene.add(
+    flashlight
+);
+
+scene.add(
+    flashlight.target
+);
+
+/* =====================================================
+   MAZE
+===================================================== */
+
+const CELL=3;
+
+const MAZE_W=27;
+
+const MAZE_H=27;
+
+let maze=[];
+
+let wallMeshes=[];
+
+let batteryObjects=[];
+
+let clueObjects=[];
+
+let lampObjects=[];
+
+let hallucinations=[];
+
+let exitObject=null;
+
+let floorObject=null;
+
+/* =====================================================
+   MONSTER
+===================================================== */
+
+const monster={
+
+    mesh:null,
+
+    active:false,
+
+    speed:1.55,
+
+    position:
+        new THREE.Vector3(),
+
+    attackDistance:1.05,
+
+    lastSeen:0
+
+};
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let gameRunning=false;
+
+let gameOver=false;
+
+let startTime=0;
+
+let monsterAwakeTime=0;
+
+let lastTime=
+    performance.now();
+
+let hallucinationTimer=0;
+
+let bloodTimer=0;
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+const keys={};
+
+window.addEventListener(
+    "keydown",
+    event=>{
+
+        keys[
+            event.key.toLowerCase()
+        ]=true;
+
+        if(
+            event.key.toLowerCase()==="f"
+        ){
+
+            toggleFlashlight();
+
+        }
+
+        if(
+            event.key==="Escape"
+        ){
+
+            document.exitPointerLock();
+
+        }
+
+    }
+);
+
+window.addEventListener(
+    "keyup",
+    event=>{
+
+        keys[
+            event.key.toLowerCase()
+        ]=false;
+
+    }
+);
+
+/* =====================================================
+   MOUSE
+===================================================== */
+
+document.addEventListener(
+    "mousemove",
+    event=>{
+
+        if(
+            document.pointerLockElement !==
+            canvas ||
+            !gameRunning ||
+            gameOver
+        ){
+
+            return;
+
+        }
+
+        const sensitivity=.0022;
+
+        player.yaw -=
+            event.movementX*
+            sensitivity;
+
+        player.pitch -=
+            event.movementY*
+            sensitivity;
+
+        const limit=
+            Math.PI/2-.08;
+
+        player.pitch=
+            Math.max(
+                -limit,
+                Math.min(
+                    limit,
+                    player.pitch
+                )
+            );
+
+    }
+);
+
+canvas.addEventListener(
+    "click",
+    ()=>{
+
+        if(
+            gameRunning &&
+            !gameOver &&
+            innerWidth>800
+        ){
+
+            canvas.requestPointerLock();
+
+        }
+
+    }
+);
+
+/* =====================================================
+   MAZE GENERATION
+===================================================== */
+
+function generateMaze(){
+
+    maze=[];
+
+    for(
+        let z=0;
+        z<MAZE_H;
+        z++
+    ){
+
+        maze[z]=[];
+
+        for(
+            let x=0;
+            x<MAZE_W;
+            x++
+        ){
+
+            maze[z][x]=1;
+
+        }
+
+    }
+
+    function carve(x,z){
+
+        maze[z][x]=0;
+
+        const dirs=[
+
+            [2,0],
+            [-2,0],
+            [0,2],
+            [0,-2]
+
+        ];
+
+        dirs.sort(
+            ()=>Math.random()-.5
+        );
+
+        for(
+            const [dx,dz]
+            of dirs
+        ){
+
+            const nx=x+dx;
+
+            const nz=z+dz;
+
+            if(
+
+                nx>0 &&
+                nx<MAZE_W-1 &&
+                nz>0 &&
+                nz<MAZE_H-1 &&
+                maze[nz][nx]===1
+
+            ){
+
+                maze[
+                    z+dz/2
+                ][
+                    x+dx/2
+                ]=0;
+
+                carve(
+                    nx,
+                    nz
+                );
+
+            }
+
+        }
+
+    }
+
+    carve(1,1);
+
+    maze[1][1]=0;
+
+    maze[
+        MAZE_H-2
+    ][
+        MAZE_W-2
+    ]=0;
+
+}
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearWorld(){
+
+    wallMeshes.forEach(
+        mesh=>{
+
+            scene.remove(mesh);
+
+            if(mesh.geometry)
+                mesh.geometry.dispose();
+
+            if(mesh.material)
+                mesh.material.dispose();
+
+        }
+    );
+
+    wallMeshes=[];
+
+    batteryObjects.forEach(
+        battery=>{
+            scene.remove(
+                battery.group
+            );
+        }
+    );
+
+    batteryObjects=[];
+
+    clueObjects.forEach(
+        clue=>{
+            scene.remove(
+                clue.group
+            );
+        }
+    );
+
+    clueObjects=[];
+
+    lampObjects.forEach(
+        lamp=>{
+
+            scene.remove(
+                lamp.group
+            );
+
+        }
+    );
+
+    lampObjects=[];
+
+    hallucinations.forEach(
+        object=>{
+            scene.remove(object);
+        }
+    );
+
+    hallucinations=[];
+
+    if(exitObject){
+
+        scene.remove(
+            exitObject
+        );
+
+        exitObject=null;
+
+    }
+
+    if(monster.mesh){
+
+        scene.remove(
+            monster.mesh
+        );
+
+        monster.mesh=null;
+
+    }
+
+}
+
+/* =====================================================
+   CREATE WORLD
+===================================================== */
+
+function createWorld(){
+
+    clearWorld();
+
+    generateMaze();
+
+    /* FLOOR */
+
+    const floorGeometry=
+        new THREE.PlaneGeometry(
+            MAZE_W*CELL,
+            MAZE_H*CELL
+        );
+
+    const floorMaterial=
+        new THREE.MeshStandardMaterial({
+
+            color:0x080a09,
+
+            roughness:.96
+
+        });
+
+    floorObject=
+        new THREE.Mesh(
+            floorGeometry,
+            floorMaterial
+        );
+
+    floorObject.rotation.x=
+        -Math.PI/2;
+
+    floorObject.position.set(
+
+        MAZE_W*CELL/2-CELL/2,
+        0,
+        MAZE_H*CELL/2-CELL/2
+
+    );
+
+    floorObject.receiveShadow=true;
+
+    scene.add(
+        floorObject
+    );
+
+    wallMeshes.push(
+        floorObject
+    );
+
+    /* CEILING */
+
+    const ceiling=
+        new THREE.Mesh(
+
+            new THREE.PlaneGeometry(
+                MAZE_W*CELL,
+                MAZE_H*CELL
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color:0x050606,
+                side:THREE.DoubleSide
+            })
+
+        );
+
+    ceiling.rotation.x=
+        Math.PI/2;
+
+    ceiling.position.set(
+
+        MAZE_W*CELL/2-CELL/2,
+        3.5,
+        MAZE_H*CELL/2-CELL/2
+
+    );
+
+    scene.add(
+        ceiling
+    );
+
+    wallMeshes.push(
+        ceiling
+    );
+
+    /* WALLS */
+
+    const wallGeometry=
+        new THREE.BoxGeometry(
+            CELL,
+            3.5,
+            CELL
+        );
+
+    const wallMaterial=
+        new THREE.MeshStandardMaterial({
+
+            color:0x171b1c,
+
+            roughness:.95,
+
+            metalness:.05
+
+        });
+
+    for(
+        let z=0;
+        z<MAZE_H;
+        z++
+    ){
+
+        for(
+            let x=0;
+            x<MAZE_W;
+            x++
+        ){
+
+            if(
+                maze[z][x]===1
+            ){
+
+                const wall=
+                    new THREE.Mesh(
+                        wallGeometry,
+                        wallMaterial
+                    );
+
+                wall.position.set(
+                    x*CELL,
+                    1.75,
+                    z*CELL
+                );
+
+                wall.castShadow=true;
+
+                wall.receiveShadow=true;
+
+                scene.add(
+                    wall
+                );
+
+                wallMeshes.push(
+                    wall
+                );
+
+            }
+
+        }
+
+    }
+
+    createBatteries();
+
+    createBloodTrail();
+
+    createLamps();
+
+    createExit();
+
+    createMonster();
+
+}
+
+/* =====================================================
+   FREE CELLS
+===================================================== */
+
+function getFreeCells(amount){
+
+    const cells=[];
+
+    for(
+        let z=1;
+        z<MAZE_H-1;
+        z++
+    ){
+
+        for(
+            let x=1;
+            x<MAZE_W-1;
+            x++
+        ){
+
+            if(
+                maze[z][x]===0
+            ){
+
+                if(
+                    x===1 &&
+                    z===1
+                ){
+
+                    continue;
+
+                }
+
+                if(
+                    x===MAZE_W-2 &&
+                    z===MAZE_H-2
+                ){
+
+                    continue;
+
+                }
+
+                cells.push({
+                    x,
+                    z
+                });
+
+            }
+
+        }
+
+    }
+
+    cells.sort(
+        ()=>Math.random()-.5
+    );
+
+    return cells.slice(
+        0,
+        amount
+    );
+
+}
+
+/* =====================================================
+   BATTERIES
+===================================================== */
+
+function createBatteries(){
+
+    const positions=
+        getFreeCells(11);
+
+    positions.forEach(
+        (cell,index)=>{
+
+            createBattery(
+                cell.x,
+                cell.z,
+                index
+            );
+
+        }
+    );
+
+}
+
+function createBattery(
+    x,
+    z,
+    index
+){
+
+    const group=
+        new THREE.Group();
+
+    const body=
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                .35,
+                .7,
+                .22
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:0xfacc15,
+
+                emissive:0x5c4800,
+
+                emissiveIntensity:.7
+
+            })
+
+        );
+
+    body.castShadow=true;
+
+    group.add(body);
+
+    const cap=
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                .22,
+                .1,
+                .18
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color:0x111827
+            })
+
+        );
+
+    cap.position.y=.4;
+
+    group.add(cap);
+
+    const glow=
+        new THREE.PointLight(
+            0xffcc33,
+            1,
+            3.5
+        );
+
+    glow.position.y=.1;
+
+    group.add(
+        glow
+    );
+
+    group.position.set(
+
+        x*CELL,
+        .45,
+        z*CELL
+
+    );
+
+    scene.add(
+        group
+    );
+
+    batteryObjects.push({
+
+        group,
+
+        collected:false,
+
+        phase:
+            Math.random()*
+            Math.PI*2
+
+    });
+
+}
+
+/* =====================================================
+   BLOOD TRAIL
+===================================================== */
+
+function createBloodTrail(){
+
+    /*
+       O sistema procura caminhos livres.
+       As manchas são colocadas em células
+       progressivamente próximas da região da saída.
+    */
+
+    const path=[];
+
+    let current={
+        x:1,
+        z:1
+    };
+
+    const visited=new Set();
+
+    for(
+        let i=0;
+        i<200;
+        i++
+    ){
+
+        const key=
+            current.x+
+            ","+
+            current.z;
+
+        if(
+            visited.has(key)
+        ){
+
+            break;
+
+        }
+
+        visited.add(key);
+
+        path.push({
+            x:current.x,
+            z:current.z
+        });
+
+        if(
+            current.x===MAZE_W-2 &&
+            current.z===MAZE_H-2
+        ){
+
+            break;
+
+        }
+
+        const neighbors=[
+
+            {
+                x:current.x+1,
+                z:current.z
+            },
+
+            {
+                x:current.x-1,
+                z:current.z
+            },
+
+            {
+                x:current.x,
+                z:current.z+1
+            },
+
+            {
+                x:current.x,
+                z:current.z-1
+            }
+
+        ].filter(
+            p=>
+                p.x>0 &&
+                p.x<MAZE_W-1 &&
+                p.z>0 &&
+                p.z<MAZE_H-1 &&
+                maze[p.z][p.x]===0 &&
+                !visited.has(
+                    p.x+","+p.z
+                )
+        );
+
+        if(!neighbors.length)
+            break;
+
+        neighbors.sort(
+            (a,b)=>{
+
+                const da=
+                    Math.abs(
+                        a.x-(MAZE_W-2)
+                    )+
+                    Math.abs(
+                        a.z-(MAZE_H-2)
+                    );
+
+                const db=
+                    Math.abs(
+                        b.x-(MAZE_W-2)
+                    )+
+                    Math.abs(
+                        b.z-(MAZE_H-2)
+                    );
+
+                return da-db;
+
+            }
+        );
+
+        current=
+            neighbors[0];
+
+    }
+
+    for(
+        let i=4;
+        i<path.length;
+        i+=3
+    ){
+
+        createBloodMark(
+            path[i].x,
+            path[i].z,
+            i
+        );
+
+    }
+
+}
+
+function createBloodMark(
+    x,
+    z,
+    index
+){
+
+    const group=
+        new THREE.Group();
+
+    const material=
+        new THREE.MeshBasicMaterial({
+
+            color:0x4b0000,
+
+            transparent:true,
+
+            opacity:.75,
+
+            depthWrite:false
+
+        });
+
+    const geometry=
+        new THREE.CircleGeometry(
+            .25+
+            Math.random()*.22,
+            12
+        );
+
+    const mark=
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+    mark.rotation.x=
+        -Math.PI/2;
+
+    mark.rotation.z=
+        Math.random()*
+        Math.PI*2;
+
+    mark.position.y=.012;
+
+    group.add(
+        mark
+    );
+
+    group.position.set(
+
+        x*CELL,
+        0,
+        z*CELL
+
+    );
+
+    scene.add(
+        group
+    );
+
+    clueObjects.push({
+
+        group,
+
+        type:"blood",
+
+        discovered:false
+
+    });
+
+}
+
+/* =====================================================
+   LAMPS
+===================================================== */
+
+function createLamps(){
+
+    const positions=
+        getFreeCells(18);
+
+    positions.forEach(
+        (cell,index)=>{
+
+            if(
+                index%2===0
+            ){
+
+                createLamp(
+                    cell.x,
+                    cell.z,
+                    index
+                );
+
+            }
+
+        }
+    );
+
+}
+
+function createLamp(
+    x,
+    z,
+    index
+){
+
+    const group=
+        new THREE.Group();
+
+    const fixture=
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                .55,
+                .15,
+                .55
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color:0x222222
+            })
+
+        );
+
+    fixture.position.y=3.35;
+
+    group.add(
+        fixture
+    );
+
+    const bulb=
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .13,
+                8,
+                8
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:0xffd89a,
+
+                emissive:0xffaa55,
+
+                emissiveIntensity:1
+
+            })
+
+        );
+
+    bulb.position.y=3.18;
+
+    group.add(
+        bulb
+    );
+
+    const light=
+        new THREE.PointLight(
+            0xffc477,
+            .28,
+            6
+        );
+
+    light.position.y=3.05;
+
+    light.castShadow=true;
+
+    light.shadow.mapSize.width=256;
+
+    light.shadow.mapSize.height=256;
+
+    group.add(
+        light
+    );
+
+    group.position.set(
+
+        x*CELL,
+        0,
+        z*CELL
+
+    );
+
+    scene.add(
+        group
+    );
+
+    lampObjects.push({
+
+        group,
+
+        light,
+
+        bulb,
+
+        phase:
+            Math.random()*10,
+
+        speed:
+            .8+
+            Math.random()*2,
+
+        active:
+            Math.random()>.25
+
+    });
+
+}
+
+/* =====================================================
+   EXIT
+===================================================== */
+
+function createExit(){
+
+    const x=
+        (MAZE_W-2)*CELL;
+
+    const z=
+        (MAZE_H-2)*CELL;
+
+    const group=
+        new THREE.Group();
+
+    const frame=
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                2.5,
+                3,
+                .3
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color:0x334155
+            })
+
+        );
+
+    frame.position.y=1.5;
+
+    group.add(
+        frame
+    );
+
+    const light=
+        new THREE.PointLight(
+            0x22c55e,
+            .8,
+            5
+        );
+
+    light.position.set(
+        0,
+        1.5,
+        -.5
+    );
+
+    group.add(
+        light
+    );
+
+    group.position.set(
+        x,
+        0,
+        z
+    );
+
+    scene.add(
+        group
+    );
+
+    exitObject=group;
+
+}
+
+/* =====================================================
+   MONSTER
+===================================================== */
+
+function createMonster(){
+
+    const group=
+        new THREE.Group();
+
+    const material=
+        new THREE.MeshStandardMaterial({
+
+            color:0x030303,
+
+            roughness:1
+
+        });
+
+    const body=
+        new THREE.Mesh(
+
+            new THREE.CapsuleGeometry(
+                .42,
+                1.35,
+                5,
+                8
+            ),
+
+            material
+
+        );
+
+    body.position.y=1.15;
+
+    body.castShadow=true;
+
+    group.add(
+        body
+    );
+
+    const head=
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .43,
+                16,
+                12
+            ),
+
+            material
+
+        );
+
+    head.position.y=2.05;
+
+    head.castShadow=true;
+
+    group.add(
+        head
+    );
+
+    const eyeMaterial=
+        new THREE.MeshBasicMaterial({
+            color:0xff0000
+        });
+
+    const eye1=
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .055,
+                8,
+                8
+            ),
+
+            eyeMaterial
+
+        );
+
+    const eye2=
+        eye1.clone();
+
+    eye1.position.set(
+        -.15,
+        2.1,
+        -.36
+    );
+
+    eye2.position.set(
+        .15,
+        2.1,
+        -.36
+    );
+
+    group.add(
+        eye1
+    );
+
+    group.add(
+        eye2
+    );
+
+    const redLight=
+        new THREE.PointLight(
+            0xff0000,
+            1.2,
+            4
+        );
+
+    redLight.position.set(
+        0,
+        2.05,
+        -.45
+    );
+
+    group.add(
+        redLight
+    );
+
+    group.visible=false;
+
+    scene.add(
+        group
+    );
+
+    monster.mesh=group;
+
+    monster.position.set(
+
+        (MAZE_W-2)*CELL,
+        0,
+        CELL
+
+    );
+
+}
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame(){
+
+    startScreen.style.display=
+        "none";
+
+    endScreen.style.display=
+        "none";
+
+    gameRunning=true;
+
+    gameOver=false;
+
+    player.position.set(
+        CELL,
+        1.65,
+        CELL
+    );
+
+    player.yaw=0;
+
+    player.pitch=0;
+
+    player.battery=100;
+
+    player.sanity=100;
+
+    player.flashlight=true;
+
+    player.lastClueTime=
+        performance.now();
+
+    monster.active=false;
+
+    monster.speed=1.55;
+
+    startTime=
+        performance.now();
+
+    monsterAwakeTime=0;
+
+    hallucinationTimer=0;
+
+    createWorld();
+
+    updateHUD();
+
+    danger.textContent=
+        "A criatura ainda está adormecida";
+
+    danger.classList.remove(
+        "active"
+    );
+
+    showMessage(
+        "Encontre a saída. Siga as pistas..."
+    );
+
+    if(innerWidth>800){
+
+        canvas.requestPointerLock();
+
+    }
+
+}
+
+/* =====================================================
+   FLASHLIGHT
+===================================================== */
+
+function toggleFlashlight(){
+
+    if(
+        !gameRunning ||
+        gameOver
+    ){
+
+        return;
+
+    }
+
+    if(
+        player.battery<=0
+    ){
+
+        player.flashlight=false;
+
+        showMessage(
+            "⚠ A bateria acabou."
+        );
+
+        updateFlashlight();
+
+        return;
+
+    }
+
+    player.flashlight=
+        !player.flashlight;
+
+    updateFlashlight();
+
+}
+
+function updateFlashlight(){
+
+    flashlight.visible=
+        player.flashlight &&
+        player.battery>0;
+
+    flashlightStatus.textContent=
+        player.flashlight
+            ? "🔦 LANTERNA LIGADA"
+            : "🔦 LANTERNA DESLIGADA";
+
+    flashlightStatus.classList.toggle(
+        "off",
+        !player.flashlight
+    );
+
+}
+
+/* =====================================================
+   MOVEMENT
+===================================================== */
+
+function updatePlayer(delta){
+
+    if(
+        !gameRunning ||
+        gameOver
+    ){
+
+        return;
+
+    }
+
+    const direction=
+        new THREE.Vector3();
+
+    if(
+        keys["w"]
+    )
+        direction.z-=1;
+
+    if(
+        keys["s"]
+    )
+        direction.z+=1;
+
+    if(
+        keys["a"]
+    )
+        direction.x-=1;
+
+    if(
+        keys["d"]
+    )
+        direction.x+=1;
+
+    /* MOBILE JOYSTICK */
+
+    direction.x+=
+        joystickInput.x;
+
+    direction.z+=
+        joystickInput.y;
+
+    if(
+        direction.length()>0
+    ){
+
+        direction.normalize();
+
+        direction.applyAxisAngle(
+
+            new THREE.Vector3(
+                0,
+                1,
+                0
+            ),
+
+            player.yaw
+
+        );
+
+        moveWithCollision(
+
+            direction.multiplyScalar(
+                player.speed*delta
+            )
+
+        );
+
+    }
+
+}
+
+/* =====================================================
+   COLLISION
+===================================================== */
+
+function isWall(x,z){
+
+    const cellX=
+        Math.round(
+            x/CELL
+        );
+
+    const cellZ=
+        Math.round(
+            z/CELL
+        );
+
+    if(
+        cellX<0 ||
+        cellX>=MAZE_W ||
+        cellZ<0 ||
+        cellZ>=MAZE_H
+    ){
+
+        return true;
+
+    }
+
+    return maze[cellZ][cellX]===1;
+
+}
+
+function moveWithCollision(
+    movement
+){
+
+    const radius=.28;
+
+    const nextX=
+        player.position.x+
+        movement.x;
+
+    const nextZ=
+        player.position.z+
+        movement.z;
+
+    if(
+
+        !isWall(
+            nextX+radius,
+            player.position.z
+        ) &&
+
+        !isWall(
+            nextX-radius,
+            player.position.z
+        )
+
+    ){
+
+        player.position.x=
+            nextX;
+
+    }
+
+    if(
+
+        !isWall(
+            player.position.x,
+            nextZ+radius
+        ) &&
+
+        !isWall(
+            player.position.x,
+            nextZ-radius
+        )
+
+    ){
+
+        player.position.z=
+            nextZ;
+
+    }
+
+}
+
+/* =====================================================
+   BATTERIES
+===================================================== */
+
+function updateBatteries(delta){
+
+    batteryObjects.forEach(
+        battery=>{
+
+            if(
+                battery.collected
+            )
+                return;
+
+            battery.phase+=
+                delta*2;
+
+            battery.group.position.y=
+                .45+
+                Math.sin(
+                    battery.phase
+                )*.08;
+
+            const distance=
+                battery.group
+                    .position
+                    .distanceTo(
+                        player.position
+                    );
+
+            if(
+                distance<1.15
+            ){
+
+                battery.collected=true;
+
+                battery.group.visible=false;
+
+                player.battery=
+                    Math.min(
+                        100,
+                        player.battery+40
+                    );
+
+                player.sanity=
+                    Math.min(
+                        100,
+                        player.sanity+3
+                    );
+
+                player.lastClueTime=
+                    performance.now();
+
+                showMessage(
+                    "🔋 BATERIA ENCONTRADA! +40%"
+                );
+
+                updateHUD();
+
+            }
+
+        }
+    );
+
+}
+
+/* =====================================================
+   BATTERY DRAIN
+===================================================== */
+
+function updateBattery(delta){
+
+    if(
+        !player.flashlight
+    )
+        return;
+
+    /*
+       Aproximadamente 2 minutos
+       de duração total.
+    */
+
+    player.battery-=
+        delta*
+        100/
+        120;
+
+    if(
+        player.battery<=0
+    ){
+
+        player.battery=0;
+
+        player.flashlight=false;
+
+        showMessage(
+            "⚠ A lanterna apagou."
+        );
+
+        updateFlashlight();
+
+    }
+
+}
+
+/* =====================================================
+   LAMPS
+===================================================== */
+
+function updateLamps(delta){
+
+    lampObjects.forEach(
+        lamp=>{
+
+            lamp.phase+=
+                delta*
+                lamp.speed;
+
+            const randomFlicker=
+                Math.random();
+
+            let intensity=.28;
+
+            if(
+                Math.sin(
+                    lamp.phase*4
+                )>.88
+            ){
+
+                intensity=.04;
+
+            }
+
+            if(
+                randomFlicker<.015
+            ){
+
+                intensity=0;
+
+            }
+
+            lamp.light.intensity=
+                intensity;
+
+            lamp.bulb.material.emissiveIntensity=
+                intensity*
+                3;
+
+        }
+    );
+
+}
+
+/* =====================================================
+   SANITY
+===================================================== */
+
+function updateSanity(delta){
+
+    if(
+        !gameRunning ||
+        gameOver
+    )
+        return;
+
+    const now=
+        performance.now();
+
+    const timeLost=
+        (
+            now-
+            player.lastClueTime
+        )/1000;
+
+    /*
+       Quanto mais perdido,
+       mais rapidamente a sanidade cai.
+    */
+
+    if(
+        timeLost>12
+    ){
+
+        player.sanity-=
+            delta*
+            .9;
+
+    }
+
+    if(
+        player.sanity<0
+    )
+        player.sanity=0;
+
+    /* recuperação muito pequena
+       ao encontrar pistas */
+
+    if(
+        player.sanity>100
+    )
+        player.sanity=100;
+
+    sanityOverlay.classList.toggle(
+        "active",
+        player.sanity<55
+    );
+
+    updateHUD();
+
+}
+
+/* =====================================================
+   HALLUCINATION SYSTEM
+===================================================== */
+
+function updateHallucinations(delta){
+
+    if(
+        !gameRunning ||
+        gameOver
+    )
+        return;
+
+    if(
+        player.sanity>72
+    )
+        return;
+
+    hallucinationTimer-=delta;
+
+    if(
+        hallucinationTimer>0
+    )
+        return;
+
+    const severity=
+        72-
+        player.sanity;
+
+    hallucinationTimer=
+        Math.max(
+            2.5,
+            8-
+            severity*.06
+        );
+
+    const type=
+        Math.random();
+
+    if(
+        type<.42
+    ){
+
+        createWallFigure();
+
+    }else if(
+        type<.72
+    ){
+
+        createFakePersonBehind();
+
+    }else{
+
+        createFalseObject();
+
+    }
+
+}
+
+/* =====================================================
+   WALL FIGURE
+===================================================== */
+
+function createWallFigure(){
+
+    const direction=
+        new THREE.Vector3(
+            0,
+            0,
+            -1
+        );
+
+    direction.applyAxisAngle(
+
+        new THREE.Vector3(
+            0,
+            1,
+            0
+        ),
+
+        player.yaw
+
+    );
+
+    const position=
+        player.position.clone()
+            .add(
+                direction.multiplyScalar(
+                    5+
+                    Math.random()*5
+                )
+            );
+
+    const x=
+        Math.round(
+            position.x/CELL
+        );
+
+    const z=
+        Math.round(
+            position.z/CELL
+        );
+
+    if(
+        isWall(
+            x*CELL,
+            z*CELL
+        )
+    ){
+
+        return;
+
+    }
+
+    const figure=
+        new THREE.Mesh(
+
+            new THREE.PlaneGeometry(
+                1.1,
+                2.5
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:0x050505,
+
+                transparent:true,
+
+                opacity:.82,
+
+                side:
+                    THREE.DoubleSide
+
+            })
+
+        );
+
+    figure.position.set(
+        position.x,
+        1.3,
+        position.z
+    );
+
+    figure.rotation.y=
+        player.yaw+
+        Math.PI;
+
+    scene.add(
+        figure
+    );
+
+    hallucinations.push(
+        figure
+    );
+
+    setTimeout(
+        ()=>{
+
+            scene.remove(
+                figure
+            );
+
+            const index=
+                hallucinations.indexOf(
+                    figure
+                );
+
+            if(index>=0)
+                hallucinations.splice(
+                    index,
+                    1
+                );
+
+        },
+        2200+
+        Math.random()*1800
+    );
+
+}
+
+/* =====================================================
+   PERSON BEHIND
+===================================================== */
+
+function createFakePersonBehind(){
+
+    const direction=
+        new THREE.Vector3(
+            0,
+            0,
+            1
+        );
+
+    direction.applyAxisAngle(
+
+        new THREE.Vector3(
+            0,
+            1,
+            0
+        ),
+
+        player.yaw
+
+    );
+
+    const position=
+        player.position.clone()
+            .add(
+                direction.multiplyScalar(
+                    3.5
+                )
+            );
+
+    const figure=
+        new THREE.Group();
+
+    const material=
+        new THREE.MeshBasicMaterial({
+            color:0x020202
+        });
+
+    const body=
+        new THREE.Mesh(
+
+            new THREE.CapsuleGeometry(
+                .32,
+                1,
+                4,
+                6
+            ),
+
+            material
+
+        );
+
+    body.position.y=1;
+
+    figure.add(
+        body
+    );
+
+    const head=
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .3,
+                8,
+                8
+            ),
+
+            material
+
+        );
+
+    head.position.y=1.8;
+
+    figure.add(
+        head
+    );
+
+    figure.position.copy(
+        position
+    );
+
+    figure.lookAt(
+        player.position.x,
+        1,
+        player.position.z
+    );
+
+    scene.add(
+        figure
+    );
+
+    hallucinations.push(
+        figure
+    );
+
+    /*
+       A figura fica atrás por pouco tempo.
+       Quando o jogador se vira,
+       ela desaparece.
+    */
+
+    setTimeout(
+        ()=>{
+
+            scene.remove(
+                figure
+            );
+
+            const index=
+                hallucinations.indexOf(
+                    figure
+                );
+
+            if(index>=0)
+                hallucinations.splice(
+                    index,
+                    1
+                );
+
+        },
+        1700
+    );
+
+}
+
+/* =====================================================
+   FALSE OBJECT
+===================================================== */
+
+function createFalseObject(){
+
+    const direction=
+        new THREE.Vector3(
+            0,
+            0,
+            -1
+        );
+
+    direction.applyAxisAngle(
+
+        new THREE.Vector3(
+            0,
+            1,
+            0
+        ),
+
+        player.yaw
+
+    );
+
+    const position=
+        player.position.clone()
+            .add(
+                direction.multiplyScalar(
+                    4+
+                    Math.random()*4
+                )
+            );
+
+    const object=
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                1.5,
+                2.7,
+                .25
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:0x080808,
+
+                transparent:true,
+
+                opacity:.9
+
+            })
+
+        );
+
+    object.position.copy(
+        position
+    );
+
+    object.position.y=
+        1.35;
+
+    scene.add(
+        object
+    );
+
+    hallucinations.push(
+        object
+    );
+
+    setTimeout(
+        ()=>{
+
+            scene.remove(
+                object
+            );
+
+            const index=
+                hallucinations.indexOf(
+                    object
+                );
+
+            if(index>=0)
+                hallucinations.splice(
+                    index,
+                    1
+                );
+
+        },
+        1800
+    );
+
+}
+
+/* =====================================================
+   MONSTER AWAKEN
+===================================================== */
+
+function awakenMonster(){
+
+    if(
+        monster.active
+    )
+        return;
+
+    monster.active=true;
+
+    monsterAwakeTime=
+        performance.now();
+
+    monster.mesh.visible=true;
+
+    monster.mesh.position.copy(
+        monster.position
+    );
+
+    danger.textContent=
+        "⚠ A CRIATURA DESPERTOU";
+
+    danger.classList.add(
+        "active"
+    );
+
+    showMessage(
+        "CORRA! ALGUMA COISA ESTÁ TE PERSEGUINDO."
+    );
+
+    playDangerSound();
+
+}
+
+/* =====================================================
+   MONSTER AI
+===================================================== */
+
+function updateMonster(delta){
+
+    if(
+        !monster.active ||
+        !monster.mesh ||
+        gameOver
+    )
+        return;
+
+    const target=
+        player.position;
+
+    const direction=
+        new THREE.Vector3()
+            .subVectors(
+                target,
+                monster.mesh.position
+            );
+
+    const distance=
+        direction.length();
+
+    direction.y=0;
+
+    if(
+        direction.length()>0
+    )
+        direction.normalize();
+
+    const seconds=
+        (
+            performance.now()-
+            monsterAwakeTime
+        )/1000;
+
+    monster.speed=
+        Math.min(
+            4.2,
+            1.55+
+            seconds*.04
+        );
+
+    const movement=
+        direction.multiplyScalar(
+            monster.speed*
+            delta
+        );
+
+    const old=
+        monster.mesh.position.clone();
+
+    const nextX=
+        monster.mesh.position.x+
+        movement.x;
+
+    const nextZ=
+        monster.mesh.position.z+
+        movement.z;
+
+    if(
+        !isWall(
+            nextX,
+            monster.mesh.position.z
+        )
+    ){
+
+        monster.mesh.position.x=
+            nextX;
+
+    }
+
+    if(
+        !isWall(
+            monster.mesh.position.x,
+            nextZ
+        )
+    ){
+
+        monster.mesh.position.z=
+            nextZ;
+
+    }
+
+    monster.mesh.lookAt(
+        player.position.x,
+        monster.mesh.position.y,
+        player.position.z
+    );
+
+    /*
+       CAPTURA REAL
+    */
+
+    const realDistance=
+        monster.mesh.position
+            .distanceTo(
+                player.position
+            );
+
+    if(
+        realDistance<
+        monster.attackDistance
+    ){
+
+        loseGame(false);
+
+    }
+
+}
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function updateTimer(){
+
+    if(
+        !gameRunning ||
+        gameOver
+    )
+        return;
+
+    const elapsed=
+        (
+            performance.now()-
+            startTime
+        )/1000;
+
+    const remaining=
+        Math.max(
+            0,
+            30-elapsed
+        );
+
+    timerValue.textContent=
+        "⏱ "+
+        Math.ceil(
+            remaining
+        );
+
+    if(
+        remaining<=10 &&
+        !monster.active
+    ){
+
+        timerValue.style.color=
+            "#f59e0b";
+
+    }
+
+    if(
+        remaining<=0 &&
+        !monster.active
+    ){
+
+        awakenMonster();
+
+    }
+
+}
+
+/* =====================================================
+   EXIT
+===================================================== */
+
+function checkExit(){
+
+    if(
+        !exitObject ||
+        gameOver
+    )
+        return;
+
+    const distance=
+        exitObject.position
+            .distanceTo(
+                player.position
+            );
+
+    distanceValue.textContent=
+        distance<10
+            ? Math.round(distance)+"m"
+            : "??";
+
+    if(
+        distance<1.6
+    ){
+
+        winGame();
+
+    }
+
+}
+
+/* =====================================================
+   HUD
+===================================================== */
+
+function updateHUD(){
+
+    batteryValue.textContent=
+        "🔋 "+
+        Math.ceil(
+            player.battery
+        )+
+        "%";
+
+    batteryValue.style.color=
+        player.battery<=20
+            ? "#ef4444"
+            : "#facc15";
+
+    sanityValue.textContent=
+        "🧠 "+
+        Math.ceil(
+            player.sanity
+        )+
+        "%";
+
+    if(
+        player.sanity<25
+    ){
+
+        sanityValue.style.color=
+            "#ef4444";
+
+    }else if(
+        player.sanity<55
+    ){
+
+        sanityValue.style.color=
+            "#c084fc";
+
+    }else{
+
+        sanityValue.style.color=
+            "#a78bfa";
+
+    }
+
+    updateFlashlight();
+
+}
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+let messageTimer=null;
+
+function showMessage(text){
+
+    message.textContent=
+        text;
+
+    message.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        messageTimer
+    );
+
+    messageTimer=
+        setTimeout(
+            ()=>{
+
+                message.classList.remove(
+                    "show"
+                );
+
+            },
+            2400
+        );
+
+}
+
+/* =====================================================
+   WIN
+===================================================== */
+
+function winGame(){
+
+    if(
+        gameOver
+    )
+        return;
+
+    gameOver=true;
+
+    gameRunning=false;
+
+    document.exitPointerLock();
+
+    endScreen.style.display=
+        "flex";
+
+    document.getElementById(
+        "endIcon"
+    ).textContent=
+        "🚪";
+
+    document.getElementById(
+        "endTitle"
+    ).textContent=
+        "VOCÊ ESCAPOU";
+
+    document.getElementById(
+        "endText"
+    ).textContent=
+        monster.active
+
+            ?
+
+        "Você encontrou a saída antes que a criatura alcançasse você."
+
+            :
+
+        "Você conseguiu escapar do labirinto antes que a criatura despertasse.";
+
+}
+
+/* =====================================================
+   LOSE
+===================================================== */
+
+function loseGame(timeout){
+
+    if(
+        gameOver
+    )
+        return;
+
+    gameOver=true;
+
+    gameRunning=false;
+
+    document.exitPointerLock();
+
+    endScreen.style.display=
+        "flex";
+
+    document.getElementById(
+        "endIcon"
+    ).textContent=
+        "💀";
+
+    document.getElementById(
+        "endTitle"
+    ).textContent=
+        "VOCÊ FOI ENCONTRADO";
+
+    document.getElementById(
+        "endText"
+    ).textContent=
+
+        timeout
+
+            ?
+
+        "O tempo acabou. A criatura encontrou você."
+
+            :
+
+        "A criatura alcançou você dentro do labirinto.";
+
+}
+
+/* =====================================================
+   DANGER SOUND
+===================================================== */
+
+let audioContext=null;
+
+function playDangerSound(){
+
+    try{
+
+        if(!audioContext){
+
+            audioContext=
+                new(
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
+        }
+
+        const oscillator=
+            audioContext.createOscillator();
+
+        const gain=
+            audioContext.createGain();
+
+        oscillator.type=
+            "sawtooth";
+
+        oscillator.frequency.value=
+            55;
+
+        gain.gain.setValueAtTime(
+            .0001,
+            audioContext.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .08,
+            audioContext.currentTime+.4
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            audioContext.currentTime+2
+        );
+
+        oscillator.connect(
+            gain
+        );
+
+        gain.connect(
+            audioContext.destination
+        );
+
+        oscillator.start();
+
+        oscillator.stop(
+            audioContext.currentTime+2
+        );
+
+    }catch(error){
+
+        console.log(
+            "Áudio indisponível."
+        );
+
+    }
+
+}
+
+/* =====================================================
+   MOBILE JOYSTICK
+===================================================== */
+
+const joystick=
+    document.getElementById(
+        "joystick"
+    );
+
+const joystickKnob=
+    document.getElementById(
+        "joystickKnob"
+    );
+
+const flashButton=
+    document.getElementById(
+        "flashButton"
+    );
+
+let joystickInput={
+    x:0,
+    y:0
+};
+
+let joystickActive=false;
+
+function updateJoystick(
+    clientX,
+    clientY
+){
+
+    const rect=
+        joystick.getBoundingClientRect();
+
+    const centerX=
+        rect.left+
+        rect.width/2;
+
+    const centerY=
+        rect.top+
+        rect.height/2;
+
+    let dx=
+        clientX-
+        centerX;
+
+    let dy=
+        clientY-
+        centerY;
+
+    const max=
+        rect.width/2-
+        27;
+
+    const distance=
+        Math.sqrt(
+            dx*dx+
+            dy*dy
+        );
+
+    if(
+        distance>max
+    ){
+
+        dx=
+            dx/distance*
+            max;
+
+        dy=
+            dy/distance*
+            max;
+
+    }
+
+    joystickKnob.style.transform=
+        `translate(${dx}px,${dy}px)`;
+
+    joystickInput.x=
+        dx/max;
+
+    joystickInput.y=
+        dy/max;
+
+}
+
+function resetJoystick(){
+
+    joystickActive=false;
+
+    joystickInput.x=0;
+
+    joystickInput.y=0;
+
+    joystickKnob.style.transform=
+        "translate(0,0)";
+
+}
+
+joystick.addEventListener(
+    "pointerdown",
+    event=>{
+
+        joystickActive=true;
+
+        joystick.setPointerCapture(
+            event.pointerId
+        );
+
+        updateJoystick(
+            event.clientX,
+            event.clientY
+        );
+
+    }
+);
+
+joystick.addEventListener(
+    "pointermove",
+    event=>{
+
+        if(
+            !joystickActive
+        )
+            return;
+
+        updateJoystick(
+            event.clientX,
+            event.clientY
+        );
+
+    }
+);
+
+joystick.addEventListener(
+    "pointerup",
+    resetJoystick
+);
+
+joystick.addEventListener(
+    "pointercancel",
+    resetJoystick
+);
+
+flashButton.addEventListener(
+    "pointerdown",
+    event=>{
+
+        event.preventDefault();
+
+        toggleFlashlight();
+
+    }
+);
+
+/* =====================================================
+   MOBILE LOOK
+===================================================== */
+
+let lookActive=false;
+
+let lastTouchX=0;
+
+let lastTouchY=0;
+
+document.addEventListener(
+    "pointerdown",
+    event=>{
+
+        if(
+            event.pointerType!=="touch"
+        )
+            return;
+
+        if(
+            event.target.closest(
+                "#joystick"
+            ) ||
+            event.target.closest(
+                "#flashButton"
+            )
+        )
+            return;
+
+        if(
+            !gameRunning ||
+            gameOver
+        )
+            return;
+
+        lookActive=true;
+
+        lastTouchX=
+            event.clientX;
+
+        lastTouchY=
+            event.clientY;
+
+    }
+);
+
+document.addEventListener(
+    "pointermove",
+    event=>{
+
+        if(
+            !lookActive ||
+            event.pointerType!=="touch"
+        )
+            return;
+
+        const dx=
+            event.clientX-
+            lastTouchX;
+
+        const dy=
+            event.clientY-
+            lastTouchY;
+
+        lastTouchX=
+            event.clientX;
+
+        lastTouchY=
+            event.clientY;
+
+        player.yaw-=
+            dx*.006;
+
+        player.pitch-=
+            dy*.006;
+
+        const limit=
+            Math.PI/2-.08;
+
+        player.pitch=
+            Math.max(
+                -limit,
+                Math.min(
+                    limit,
+                    player.pitch
+                )
+            );
+
+    }
+);
+
+document.addEventListener(
+    "pointerup",
+    ()=>{
+        lookActive=false;
+    }
+);
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function render(){
+
+    camera.position.copy(
+        player.position
+    );
+
+    camera.rotation.x=
+        player.pitch;
+
+    camera.rotation.y=
+        player.yaw;
+
+    flashlight.position.copy(
+        camera.position
+    );
+
+    flashlight.target.position.set(
+
+        camera.position.x-
+
+        Math.sin(
+            player.yaw
+        )*
+
+        Math.cos(
+            player.pitch
+        )*
+
+        5,
+
+        camera.position.y+
+
+        Math.sin(
+            player.pitch
+        )*
+
+        5,
+
+        camera.position.z-
+
+        Math.cos(
+            player.yaw
+        )*
+
+        Math.cos(
+            player.pitch
+        )*
+
+        5
+
+    );
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+/* =====================================================
+   LOOP
+===================================================== */
+
+function loop(currentTime){
+
+    requestAnimationFrame(
+        loop
+    );
+
+    const delta=
+        Math.min(
+            .05,
+            (
+                currentTime-
+                lastTime
+            )/1000
+        );
+
+    lastTime=
+        currentTime;
+
+    if(
+        gameRunning &&
+        !gameOver
+    ){
+
+        updatePlayer(
+            delta
+        );
+
+        updateBatteries(
+            delta
+        );
+
+        updateBattery(
+            delta
+        );
+
+        updateTimer();
+
+        updateMonster(
+            delta
+        );
+
+        updateLamps(
+            delta
+        );
+
+        updateSanity(
+            delta
+        );
+
+        updateHallucinations(
+            delta
+        );
+
+        checkExit();
+
+        updateHUD();
+
+    }
+
+    render();
+
+}
+
+requestAnimationFrame(
+    loop
+);
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+restartButton.addEventListener(
+    "click",
+    startGame
+);
+
+menuButton.addEventListener(
+    "click",
+    ()=>{
+
+        endScreen.style.display=
+            "none";
+
+        startScreen.style.display=
+            "flex";
+
+        gameRunning=false;
+
+        gameOver=false;
+
+        document.exitPointerLock();
+
+    }
+);
+
+backButton.addEventListener(
+    "click",
+    ()=>{
+
+        if(
+            gameRunning &&
+            !gameOver
+        ){
+
+            const leave=
+                confirm(
+                    "Deseja sair do labirinto e voltar ao menu?"
+                );
+
+            if(!leave)
+                return;
+
+        }
+
+        gameRunning=false;
+
+        gameOver=false;
+
+        endScreen.style.display=
+            "none";
+
+        startScreen.style.display=
+            "flex";
+
+        document.exitPointerLock();
+
+    }
+);
+
+/* =====================================================
+   HOW TO PLAY
+===================================================== */
+
+howButton.addEventListener(
+    "click",
+    ()=>{
+
+        alert(
+
+`COMO SOBREVIVER
+
+OBJETIVO
+
+Encontre a saída do labirinto.
+
+CONTROLES — PC
+
+W = andar para frente
+S = andar para trás
+A = esquerda
+D = direita
+
+MOUSE = olhar ao redor
+
+F = ligar/desligar lanterna
+
+ESC = liberar o mouse
+
+
+CELULAR / TABLET
+
+Use o joystick para andar.
+
+Arraste o dedo pela tela para olhar.
+
+Use o botão 🔦 para controlar a lanterna.
+
+
+BATERIAS
+
+A lanterna dura aproximadamente
+2 minutos.
+
+Procure as baterias amarelas.
+
+Ao encontrar uma bateria,
+ela recupera 40% da lanterna.
+
+
+PISTAS
+
+Observe as manchas de sangue.
+
+Elas indicam que você está
+se aproximando do caminho correto.
+
+
+SANIDADE
+
+Quanto mais tempo você passa
+perdido, menor fica sua sanidade.
+
+Quando ela diminuir:
+
+Você poderá ver sombras.
+
+Pessoas podem aparecer atrás de você.
+
+Objetos podem aparecer nas paredes.
+
+Algumas coisas desaparecerão
+quando você se aproximar.
+
+
+IMPORTANTE
+
+As alucinações NÃO podem matar você.
+
+Mas podem fazer você perder tempo.
+
+
+OS 30 SEGUNDOS
+
+Você começa com 30 segundos.
+
+Quando chegar a zero...
+
+A criatura desperta.
+
+
+CRIATURA
+
+Depois que acordar,
+ela começará a perseguir você.
+
+Ela ficará progressivamente
+mais rápida.
+
+Se ela alcançar você:
+
+GAME OVER.
+
+
+DICA
+
+Não desperdice bateria.
+
+Observe o sangue.
+
+Não confie em tudo que seus olhos veem.
+
+E, principalmente...
+
+NÃO FIQUE PARADO.`
+        );
+
+    }
+);
+
+</script>
+
+</div>
+
+</body>
+
+</html>

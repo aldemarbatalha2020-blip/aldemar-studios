@@ -1,0 +1,3326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Life English — Aldemar Studios</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#101827;
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    color:white;
+    touch-action:none;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:#172033;
+}
+
+canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+#hud{
+    position:absolute;
+    top:12px;
+    left:12px;
+    right:12px;
+
+    z-index:20;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:8px;
+
+    pointer-events:none;
+}
+
+.hudBox{
+    padding:9px 12px;
+
+    min-width:105px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:12px;
+
+    background:
+        rgba(8,14,25,.84);
+
+    backdrop-filter:blur(8px);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.2);
+}
+
+.hudLabel{
+    display:block;
+
+    color:#8ea4bf;
+
+    font-size:8px;
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    margin-bottom:4px;
+}
+
+.hudValue{
+    font-size:14px;
+    font-weight:900;
+}
+
+#stats{
+    display:flex;
+    gap:6px;
+}
+
+.stat{
+    min-width:75px;
+}
+
+.bar{
+    width:100%;
+    height:6px;
+
+    margin-top:5px;
+
+    border-radius:20px;
+
+    background:#263449;
+
+    overflow:hidden;
+}
+
+.barFill{
+    height:100%;
+    width:100%;
+
+    border-radius:20px;
+
+    transition:.25s;
+}
+
+#hungerFill{
+    background:#f59e0b;
+}
+
+#energyFill{
+    background:#38bdf8;
+}
+
+#happyFill{
+    background:#ec4899;
+}
+
+#money{
+    color:#facc15;
+}
+
+
+/* =====================================================
+   TOP BUTTONS
+===================================================== */
+
+#topButtons{
+    position:absolute;
+
+    top:95px;
+    right:15px;
+
+    z-index:30;
+
+    display:flex;
+
+    gap:7px;
+}
+
+.topButton{
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:9px;
+
+    background:
+        rgba(8,14,25,.82);
+
+    color:white;
+
+    padding:8px 11px;
+
+    font-size:10px;
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   ACTION PANEL
+===================================================== */
+
+#actionPanel{
+    position:absolute;
+
+    left:50%;
+    bottom:15px;
+
+    transform:translateX(-50%);
+
+    z-index:25;
+
+    width:min(700px,94vw);
+
+    padding:10px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:7px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:15px;
+
+    background:
+        rgba(7,13,24,.88);
+
+    backdrop-filter:blur(10px);
+}
+
+.actionButton{
+    flex:1;
+
+    min-height:45px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:9px;
+
+    background:#17243a;
+
+    color:white;
+
+    font-family:inherit;
+
+    font-size:10px;
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.actionButton:hover{
+    background:#24385a;
+    transform:translateY(-2px);
+}
+
+.actionButton:active{
+    transform:scale(.96);
+}
+
+
+/* =====================================================
+   INTERACTION
+===================================================== */
+
+#interaction{
+    position:absolute;
+
+    left:50%;
+    bottom:90px;
+
+    transform:translateX(-50%);
+
+    z-index:26;
+
+    width:min(430px,90vw);
+
+    padding:15px;
+
+    text-align:center;
+
+    border:
+        1px solid
+        rgba(56,189,248,.25);
+
+    border-radius:15px;
+
+    background:
+        rgba(7,13,24,.96);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.35);
+
+    display:none;
+}
+
+#interaction.show{
+    display:block;
+}
+
+#interactionTitle{
+    color:#38bdf8;
+
+    font-size:9px;
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    margin-bottom:7px;
+}
+
+#interactionText{
+    font-size:15px;
+    font-weight:800;
+
+    line-height:1.4;
+
+    margin-bottom:12px;
+}
+
+.interactionButtons{
+    display:flex;
+    gap:7px;
+}
+
+.interactionButtons button{
+    flex:1;
+
+    min-height:40px;
+
+    border:0;
+
+    border-radius:8px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   QUESTION
+===================================================== */
+
+#question{
+    position:absolute;
+
+    inset:0;
+
+    z-index:100;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(2,7,15,.82);
+}
+
+#question.show{
+    display:flex;
+}
+
+.questionPanel{
+    width:min(560px,94vw);
+
+    padding:28px;
+
+    border:
+        1px solid
+        rgba(56,189,248,.25);
+
+    border-radius:20px;
+
+    background:#0b1424;
+
+    text-align:center;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.5);
+}
+
+.questionTag{
+    color:#38bdf8;
+
+    font-size:9px;
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    margin-bottom:10px;
+}
+
+#questionText{
+    font-size:20px;
+    font-weight:900;
+
+    line-height:1.4;
+
+    margin-bottom:18px;
+}
+
+.answers{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+}
+
+.answer{
+    min-height:48px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:9px;
+
+    background:#16253b;
+
+    color:white;
+
+    font-family:inherit;
+
+    font-size:11px;
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.answer:hover{
+    background:#21406c;
+}
+
+.answer.correct{
+    background:#075e43;
+    border-color:#34d399;
+}
+
+.answer.wrong{
+    background:#682338;
+    border-color:#fb7185;
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+.screen{
+    position:absolute;
+    inset:0;
+
+    z-index:200;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(37,99,235,.18),
+            rgba(2,7,15,.97) 70%
+        );
+}
+
+.panel{
+    width:min(650px,94vw);
+
+    padding:38px 30px;
+
+    text-align:center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:24px;
+
+    background:
+        rgba(8,15,27,.96);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.55);
+}
+
+.logo{
+    width:80px;
+    height:80px;
+
+    margin:0 auto 18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #38bdf8
+        );
+
+    font-size:38px;
+
+    box-shadow:
+        0 15px 35px rgba(37,99,235,.3);
+}
+
+.panel h1{
+    font-size:
+        clamp(28px,5vw,44px);
+
+    font-weight:950;
+
+    margin-bottom:10px;
+}
+
+.panel h1 span{
+    color:#38bdf8;
+}
+
+.panel p{
+    color:#91a5bd;
+
+    font-size:13px;
+
+    line-height:1.7;
+
+    margin-bottom:22px;
+}
+
+.infoGrid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:7px;
+
+    margin-bottom:22px;
+}
+
+.info{
+    padding:11px 5px;
+
+    border-radius:10px;
+
+    background:#111e32;
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+}
+
+.info strong{
+    display:block;
+
+    color:#60a5fa;
+
+    font-size:17px;
+
+    margin-bottom:3px;
+}
+
+.info span{
+    color:#71869d;
+
+    font-size:8px;
+
+    text-transform:uppercase;
+}
+
+.mainButton{
+    width:100%;
+
+    min-height:52px;
+
+    border:0;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color:white;
+
+    font-family:inherit;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 10px 25px rgba(37,99,235,.25);
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.backButton{
+    position:absolute;
+
+    left:15px;
+    top:95px;
+
+    z-index:35;
+
+    padding:8px 12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius:9px;
+
+    background:
+        rgba(8,14,25,.82);
+
+    color:#dbeafe;
+
+    font-size:10px;
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+#mobileControls{
+    position:absolute;
+
+    left:12px;
+    right:12px;
+    bottom:75px;
+
+    z-index:40;
+
+    display:none;
+
+    justify-content:space-between;
+
+    pointer-events:none;
+}
+
+.mobileGroup{
+    display:flex;
+    gap:8px;
+}
+
+.mobileButton{
+    width:56px;
+    height:56px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:15px;
+
+    background:
+        rgba(7,13,24,.82);
+
+    color:white;
+
+    font-size:20px;
+
+    pointer-events:auto;
+
+    user-select:none;
+}
+
+@media(max-width:850px){
+
+    #mobileControls{
+        display:flex;
+    }
+
+    #stats{
+        display:none;
+    }
+
+    .hudBox{
+        min-width:auto;
+    }
+
+    #topButtons{
+        top:62px;
+    }
+
+    .backButton{
+        top:62px;
+    }
+
+    #actionPanel{
+        bottom:8px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .panel{
+        padding:28px 18px;
+    }
+
+    .logo{
+        width:65px;
+        height:65px;
+        font-size:30px;
+    }
+
+    .infoGrid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    #actionPanel{
+        overflow-x:auto;
+        justify-content:flex-start;
+    }
+
+    .actionButton{
+        min-width:92px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="game">
+
+<canvas id="canvas"></canvas>
+
+
+<!-- =====================================================
+     HUD
+===================================================== -->
+
+<div id="hud">
+
+    <div class="hudBox">
+
+        <span class="hudLabel">
+            Day
+        </span>
+
+        <span
+            class="hudValue"
+            id="dayValue"
+        >
+            1 / 10
+        </span>
+
+    </div>
+
+
+    <div id="stats">
+
+        <div class="hudBox stat">
+
+            <span class="hudLabel">
+                Hunger
+            </span>
+
+            <div class="bar">
+                <div
+                    class="barFill"
+                    id="hungerFill"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="hudBox stat">
+
+            <span class="hudLabel">
+                Energy
+            </span>
+
+            <div class="bar">
+                <div
+                    class="barFill"
+                    id="energyFill"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="hudBox stat">
+
+            <span class="hudLabel">
+                Happiness
+            </span>
+
+            <div class="bar">
+                <div
+                    class="barFill"
+                    id="happyFill"
+                ></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="hudBox">
+
+        <span class="hudLabel">
+            Money
+        </span>
+
+        <span
+            class="hudValue"
+            id="money"
+        >
+            $100
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<button
+    class="backButton"
+    id="backButton"
+>
+    ← BACK
+</button>
+
+
+<div id="topButtons">
+
+    <button
+        class="topButton"
+        id="saveButton"
+    >
+        💾 SAVE
+    </button>
+
+    <button
+        class="topButton"
+        id="pauseButton"
+    >
+        ⏸ PAUSE
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     ACTIONS
+===================================================== -->
+
+<div id="actionPanel">
+
+    <button
+        class="actionButton"
+        data-action="eat"
+    >
+        🍎 EAT
+    </button>
+
+    <button
+        class="actionButton"
+        data-action="study"
+    >
+        📚 STUDY
+    </button>
+
+    <button
+        class="actionButton"
+        data-action="sleep"
+    >
+        🛏 SLEEP
+    </button>
+
+    <button
+        class="actionButton"
+        data-action="shower"
+    >
+        🚿 SHOWER
+    </button>
+
+    <button
+        class="actionButton"
+        data-action="fun"
+    >
+        🎮 FUN
+    </button>
+
+    <button
+        class="actionButton"
+        data-action="work"
+    >
+        💼 WORK
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     INTERACTION
+===================================================== -->
+
+<div id="interaction">
+
+    <div id="interactionTitle">
+        Activity
+    </div>
+
+    <div id="interactionText">
+        Activity
+    </div>
+
+    <div class="interactionButtons">
+
+        <button id="doAction">
+            DO IT
+        </button>
+
+        <button id="cancelAction">
+            CANCEL
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MOBILE
+===================================================== -->
+
+<div id="mobileControls">
+
+    <div class="mobileGroup">
+
+        <button
+            class="mobileButton"
+            id="left"
+        >
+            ◀
+        </button>
+
+        <button
+            class="mobileButton"
+            id="right"
+        >
+            ▶
+        </button>
+
+    </div>
+
+
+    <div class="mobileGroup">
+
+        <button
+            class="mobileButton"
+            id="up"
+        >
+            ▲
+        </button>
+
+        <button
+            class="mobileButton"
+            id="interact"
+        >
+            ●
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     QUESTION
+===================================================== -->
+
+<div id="question">
+
+    <div class="questionPanel">
+
+        <div class="questionTag">
+            English Challenge
+        </div>
+
+        <div id="questionText">
+            Question
+        </div>
+
+        <div
+            class="answers"
+            id="answers"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
+
+<div
+    class="screen"
+    id="startScreen"
+>
+
+    <div class="panel">
+
+        <div class="logo">
+            🏠
+        </div>
+
+        <h1>
+            Life
+            <span>
+                English
+            </span>
+        </h1>
+
+        <p>
+            Build your daily life, take care of
+            your character, work, study English,
+            have fun and complete 10 days.
+        </p>
+
+
+        <div class="infoGrid">
+
+            <div class="info">
+                <strong>10</strong>
+                <span>Days</span>
+            </div>
+
+            <div class="info">
+                <strong>🏠</strong>
+                <span>Home</span>
+            </div>
+
+            <div class="info">
+                <strong>📚</strong>
+                <span>English</span>
+            </div>
+
+            <div class="info">
+                <strong>💰</strong>
+                <span>Life</span>
+            </div>
+
+        </div>
+
+
+        <button
+            class="mainButton"
+            id="startButton"
+        >
+            START LIFE
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FINISH
+===================================================== -->
+
+<div
+    class="screen"
+    id="finishScreen"
+    style="display:none;"
+>
+
+    <div class="panel">
+
+        <div class="logo">
+            🏆
+        </div>
+
+        <h1>
+            Life
+            <span>
+                Complete!
+            </span>
+        </h1>
+
+        <p id="finishText">
+            You completed your 10-day English life adventure!
+        </p>
+
+        <button
+            class="mainButton"
+            id="restartButton"
+        >
+            PLAY AGAIN
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById("canvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let W = 0;
+let H = 0;
+let DPR = 1;
+
+function resize(){
+
+    DPR =
+        window.devicePixelRatio || 1;
+
+    W = window.innerWidth;
+    H = window.innerHeight;
+
+    canvas.width =
+        W * DPR;
+
+    canvas.height =
+        H * DPR;
+
+    canvas.style.width =
+        W + "px";
+
+    canvas.style.height =
+        H + "px";
+
+    ctx.setTransform(
+        DPR,
+        0,
+        0,
+        DPR,
+        0,
+        0
+    );
+}
+
+resize();
+
+window.addEventListener(
+    "resize",
+    resize
+);
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const finishScreen =
+    document.getElementById("finishScreen");
+
+const startButton =
+    document.getElementById("startButton");
+
+const restartButton =
+    document.getElementById("restartButton");
+
+const dayValue =
+    document.getElementById("dayValue");
+
+const money =
+    document.getElementById("money");
+
+const hungerFill =
+    document.getElementById("hungerFill");
+
+const energyFill =
+    document.getElementById("energyFill");
+
+const happyFill =
+    document.getElementById("happyFill");
+
+const interaction =
+    document.getElementById("interaction");
+
+const interactionText =
+    document.getElementById("interactionText");
+
+const doAction =
+    document.getElementById("doAction");
+
+const cancelAction =
+    document.getElementById("cancelAction");
+
+const question =
+    document.getElementById("question");
+
+const questionText =
+    document.getElementById("questionText");
+
+const answers =
+    document.getElementById("answers");
+
+const pauseButton =
+    document.getElementById("pauseButton");
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let running = false;
+
+let paused = false;
+
+let day = 1;
+
+let score = 0;
+
+let coins = 100;
+
+let hunger = 80;
+
+let energy = 85;
+
+let happiness = 75;
+
+let actionPending = null;
+
+let questionOpen = false;
+
+let time = 0;
+
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+const player = {
+
+    x: 220,
+    y: 430,
+
+    width:34,
+    height:50,
+
+    vx:0,
+    vy:0,
+
+    speed:3.7,
+
+    jump:-10,
+
+    grounded:false,
+
+    direction:1
+};
+
+
+/* =====================================================
+   WORLD
+===================================================== */
+
+const house = {
+
+    x:80,
+    y:150,
+
+    width:1000,
+    height:500
+};
+
+
+const objects = [
+
+    {
+        type:"bed",
+        x:190,
+        y:460,
+        w:110,
+        h:65,
+        label:"BED"
+    },
+
+    {
+        type:"table",
+        x:430,
+        y:470,
+        w:120,
+        h:55,
+        label:"TABLE"
+    },
+
+    {
+        type:"kitchen",
+        x:680,
+        y:450,
+        w:120,
+        h:90,
+        label:"KITCHEN"
+    },
+
+    {
+        type:"shower",
+        x:900,
+        y:420,
+        w:80,
+        h:120,
+        label:"SHOWER"
+    }
+
+];
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+const keys = {};
+
+window.addEventListener(
+    "keydown",
+    e => {
+
+        keys[
+            e.key.toLowerCase()
+        ] = true;
+
+        if(
+            e.key === " " ||
+            e.key === "ArrowUp"
+        ){
+
+            jump();
+
+            e.preventDefault();
+        }
+
+        if(
+            e.key.toLowerCase() === "e"
+        ){
+
+            interactObject();
+        }
+
+        if(
+            e.key.toLowerCase() === "p"
+        ){
+
+            togglePause();
+        }
+
+    }
+);
+
+window.addEventListener(
+    "keyup",
+    e => {
+
+        keys[
+            e.key.toLowerCase()
+        ] = false;
+    }
+);
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+function holdButton(
+    id,
+    key
+){
+
+    const button =
+        document.getElementById(id);
+
+    button.addEventListener(
+        "pointerdown",
+        e => {
+
+            e.preventDefault();
+
+            keys[key] = true;
+        }
+    );
+
+    const release = e => {
+
+        e.preventDefault();
+
+        keys[key] = false;
+    };
+
+    button.addEventListener(
+        "pointerup",
+        release
+    );
+
+    button.addEventListener(
+        "pointercancel",
+        release
+    );
+
+    button.addEventListener(
+        "pointerleave",
+        release
+    );
+}
+
+holdButton(
+    "left",
+    "arrowleft"
+);
+
+holdButton(
+    "right",
+    "arrowright"
+);
+
+document
+    .getElementById("up")
+    .addEventListener(
+        "pointerdown",
+        jump
+    );
+
+document
+    .getElementById("interact")
+    .addEventListener(
+        "pointerdown",
+        interactObject
+    );
+
+
+/* =====================================================
+   MOVEMENT
+===================================================== */
+
+function updatePlayer(){
+
+    if(
+        paused ||
+        questionOpen
+    ){
+
+        return;
+    }
+
+    const left =
+        keys["arrowleft"] ||
+        keys["a"];
+
+    const right =
+        keys["arrowright"] ||
+        keys["d"];
+
+    if(left){
+
+        player.vx =
+            -player.speed;
+
+        player.direction =
+            -1;
+
+    }else if(right){
+
+        player.vx =
+            player.speed;
+
+        player.direction =
+            1;
+
+    }else{
+
+        player.vx *= .78;
+    }
+
+    player.vy += .55;
+
+    player.x +=
+        player.vx;
+
+    player.y +=
+        player.vy;
+
+
+    if(
+        player.y +
+        player.height >=
+        540
+    ){
+
+        player.y =
+            540 -
+            player.height;
+
+        player.vy = 0;
+
+        player.grounded =
+            true;
+
+    }else{
+
+        player.grounded =
+            false;
+    }
+
+
+    if(
+        player.x < 110
+    ){
+
+        player.x = 110;
+    }
+
+    if(
+        player.x >
+        1010
+    ){
+
+        player.x = 1010;
+    }
+}
+
+
+/* =====================================================
+   JUMP
+===================================================== */
+
+function jump(){
+
+    if(
+        !running ||
+        paused ||
+        questionOpen
+    ){
+
+        return;
+    }
+
+    if(
+        player.grounded
+    ){
+
+        player.vy =
+            player.jump;
+
+        player.grounded =
+            false;
+    }
+}
+
+
+/* =====================================================
+   OBJECT INTERACTION
+===================================================== */
+
+function interactObject(){
+
+    if(
+        !running ||
+        paused ||
+        questionOpen
+    ){
+
+        return;
+    }
+
+    let nearest = null;
+
+    let distance = Infinity;
+
+    for(
+        const object
+        of objects
+    ){
+
+        const center =
+            object.x +
+            object.w / 2;
+
+        const d =
+            Math.abs(
+                player.x -
+                center
+            );
+
+        if(
+            d < distance &&
+            d < 130
+        ){
+
+            nearest =
+                object;
+
+            distance =
+                d;
+        }
+    }
+
+    if(!nearest){
+
+        showMessage(
+            "Move closer to an object."
+        );
+
+        return;
+    }
+
+    const actions = {
+
+        bed:"sleep",
+        kitchen:"eat",
+        shower:"shower",
+        table:"study"
+
+    };
+
+    performAction(
+        actions[nearest.type]
+    );
+}
+
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+
+const actionDescriptions = {
+
+    eat:
+        "Eat a meal and recover hunger.",
+
+    study:
+        "Study English and complete a challenge.",
+
+    sleep:
+        "Sleep and recover your energy.",
+
+    shower:
+        "Take a shower and improve your happiness.",
+
+    fun:
+        "Play games and relax.",
+
+    work:
+        "Work to earn money."
+
+};
+
+
+document
+    .querySelectorAll(".actionButton")
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    performAction(
+                        button.dataset.action
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+function performAction(
+    action
+){
+
+    if(
+        paused ||
+        !running ||
+        questionOpen
+    ){
+
+        return;
+    }
+
+    actionPending =
+        action;
+
+    interactionText.textContent =
+        actionDescriptions[action];
+
+    interaction.classList.add(
+        "show"
+    );
+}
+
+
+cancelAction.addEventListener(
+    "click",
+    () => {
+
+        interaction.classList.remove(
+            "show"
+        );
+
+        actionPending = null;
+    }
+);
+
+
+doAction.addEventListener(
+    "click",
+    () => {
+
+        interaction.classList.remove(
+            "show"
+        );
+
+        executeAction(
+            actionPending
+        );
+
+        actionPending = null;
+    }
+);
+
+
+/* =====================================================
+   EXECUTE ACTION
+===================================================== */
+
+function executeAction(
+    action
+){
+
+    switch(action){
+
+        case "eat":
+
+            hunger =
+                Math.min(
+                    100,
+                    hunger + 30
+                );
+
+            energy =
+                Math.min(
+                    100,
+                    energy + 5
+                );
+
+            coins =
+                Math.max(
+                    0,
+                    coins - 5
+                );
+
+            showMessage(
+                "🍎 You ate a meal."
+            );
+
+            break;
+
+
+        case "sleep":
+
+            energy =
+                Math.min(
+                    100,
+                    energy + 45
+                );
+
+            hunger =
+                Math.max(
+                    0,
+                    hunger - 10
+                );
+
+            happiness =
+                Math.min(
+                    100,
+                    happiness + 5
+                );
+
+            showMessage(
+                "🛏 You feel rested."
+            );
+
+            break;
+
+
+        case "shower":
+
+            happiness =
+                Math.min(
+                    100,
+                    happiness + 20
+                );
+
+            energy =
+                Math.max(
+                    0,
+                    energy - 5
+                );
+
+            showMessage(
+                "🚿 Fresh and clean!"
+            );
+
+            break;
+
+
+        case "fun":
+
+            happiness =
+                Math.min(
+                    100,
+                    happiness + 25
+                );
+
+            energy =
+                Math.max(
+                    0,
+                    energy - 12
+                );
+
+            coins =
+                Math.max(
+                    0,
+                    coins - 3
+                );
+
+            showMessage(
+                "🎮 You had some fun."
+            );
+
+            break;
+
+
+        case "work":
+
+            if(
+                energy < 20
+            ){
+
+                showMessage(
+                    "⚡ You need more energy."
+                );
+
+                return;
+            }
+
+            coins += 25;
+
+            energy =
+                Math.max(
+                    0,
+                    energy - 20
+                );
+
+            happiness =
+                Math.max(
+                    0,
+                    happiness - 5
+                );
+
+            showMessage(
+                "💼 You earned $25."
+            );
+
+            break;
+
+
+        case "study":
+
+            if(
+                energy < 15
+            ){
+
+                showMessage(
+                    "⚡ You are too tired to study."
+                );
+
+                return;
+            }
+
+            energy =
+                Math.max(
+                    0,
+                    energy - 15
+                );
+
+            openEnglishChallenge();
+
+            break;
+
+    }
+
+    updateHUD();
+}
+
+
+/* =====================================================
+   ENGLISH CHALLENGES
+===================================================== */
+
+const challenges = [
+
+    {
+        word:"HOUSE",
+        question:"What does HOUSE mean?",
+        options:[
+            "Casa",
+            "Escola",
+            "Rua",
+            "Carro"
+        ],
+        answer:0
+    },
+
+    {
+        word:"KITCHEN",
+        question:"What does KITCHEN mean?",
+        options:[
+            "Quarto",
+            "Cozinha",
+            "Banheiro",
+            "Jardim"
+        ],
+        answer:1
+    },
+
+    {
+        word:"BEDROOM",
+        question:"What does BEDROOM mean?",
+        options:[
+            "Sala",
+            "Cozinha",
+            "Quarto",
+            "Garagem"
+        ],
+        answer:2
+    },
+
+    {
+        word:"WINDOW",
+        question:"What does WINDOW mean?",
+        options:[
+            "Janela",
+            "Porta",
+            "Mesa",
+            "Cadeira"
+        ],
+        answer:0
+    },
+
+    {
+        word:"CHAIR",
+        question:"What does CHAIR mean?",
+        options:[
+            "Cama",
+            "Cadeira",
+            "Sofá",
+            "Armário"
+        ],
+        answer:1
+    },
+
+    {
+        word:"MORNING",
+        question:"What does MORNING mean?",
+        options:[
+            "Noite",
+            "Tarde",
+            "Manhã",
+            "Semana"
+        ],
+        answer:2
+    },
+
+    {
+        word:"DINNER",
+        question:"What does DINNER mean?",
+        options:[
+            "Café da manhã",
+            "Almoço",
+            "Jantar",
+            "Lanche"
+        ],
+        answer:2
+    },
+
+    {
+        word:"CLEAN",
+        question:"What does CLEAN mean?",
+        options:[
+            "Limpar",
+            "Comprar",
+            "Dormir",
+            "Correr"
+        ],
+        answer:0
+    },
+
+    {
+        word:"WORK",
+        question:"What does WORK mean?",
+        options:[
+            "Brincar",
+            "Trabalhar",
+            "Descansar",
+            "Viajar"
+        ],
+        answer:1
+    },
+
+    {
+        word:"FAMILY",
+        question:"What does FAMILY mean?",
+        options:[
+            "Família",
+            "Amigo",
+            "Vizinho",
+            "Professor"
+        ],
+        answer:0
+    }
+
+];
+
+
+function openEnglishChallenge(){
+
+    questionOpen =
+        true;
+
+    const data =
+        challenges[day - 1];
+
+    questionText.textContent =
+        data.question;
+
+    answers.innerHTML =
+        "";
+
+    data.options.forEach(
+        (
+            option,
+            index
+        ) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "answer";
+
+            button.textContent =
+                option;
+
+            button.onclick =
+                () => {
+
+                    checkAnswer(
+                        index,
+                        button,
+                        data
+                    );
+
+                };
+
+            answers.appendChild(
+                button
+            );
+
+        }
+    );
+
+    question.classList.add(
+        "show"
+    );
+}
+
+
+function checkAnswer(
+    selected,
+    button,
+    data
+){
+
+    const all =
+        answers.querySelectorAll(
+            "button"
+        );
+
+    all.forEach(
+        b => {
+            b.disabled = true;
+        }
+    );
+
+
+    if(
+        selected ===
+        data.answer
+    ){
+
+        button.classList.add(
+            "correct"
+        );
+
+        score += 100;
+
+        happiness =
+            Math.min(
+                100,
+                happiness + 10
+            );
+
+        setTimeout(
+            () => {
+
+                question.classList.remove(
+                    "show"
+                );
+
+                questionOpen =
+                    false;
+
+                nextDay();
+
+            },
+            750
+        );
+
+    }else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+        happiness =
+            Math.max(
+                0,
+                happiness - 10
+            );
+
+        setTimeout(
+            () => {
+
+                question.classList.remove(
+                    "show"
+                );
+
+                questionOpen =
+                    false;
+
+                showMessage(
+                    "❌ Not quite. Keep studying!"
+                );
+
+            },
+            900
+        );
+    }
+
+    updateHUD();
+}
+
+
+/* =====================================================
+   NEXT DAY
+===================================================== */
+
+function nextDay(){
+
+    day++;
+
+    if(
+        day > 10
+    ){
+
+        finishGame();
+
+        return;
+    }
+
+    hunger =
+        Math.max(
+            0,
+            hunger - 8
+        );
+
+    energy =
+        Math.max(
+            0,
+            energy - 5
+        );
+
+    happiness =
+        Math.max(
+            0,
+            happiness - 3
+        );
+
+    player.x = 220;
+    player.y = 490;
+
+    updateHUD();
+
+    showMessage(
+        `🌅 Day ${day} begins!`
+    );
+
+    saveGame();
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+let messageTimer = null;
+
+function showMessage(
+    text
+){
+
+    clearTimeout(
+        messageTimer
+    );
+
+    interactionText.textContent =
+        text;
+
+    document.getElementById(
+        "interactionTitle"
+    ).textContent =
+        "Life";
+
+    interaction.classList.add(
+        "show"
+    );
+
+    messageTimer =
+        setTimeout(
+            () => {
+
+                interaction.classList.remove(
+                    "show"
+                );
+
+            },
+            1600
+        );
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+function updateHUD(){
+
+    dayValue.textContent =
+        `${day} / 10`;
+
+    money.textContent =
+        "$" + coins;
+
+    hungerFill.style.width =
+        hunger + "%";
+
+    energyFill.style.width =
+        energy + "%";
+
+    happyFill.style.width =
+        happiness + "%";
+}
+
+
+/* =====================================================
+   SAVE
+===================================================== */
+
+function saveGame(){
+
+    localStorage.setItem(
+        "lifeEnglishSave",
+        JSON.stringify({
+
+            day,
+            score,
+            coins,
+            hunger,
+            energy,
+            happiness
+
+        })
+    );
+}
+
+
+document
+    .getElementById("saveButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            saveGame();
+
+            showMessage(
+                "💾 Game saved!"
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   LOAD
+===================================================== */
+
+function loadGame(){
+
+    const saved =
+        localStorage.getItem(
+            "lifeEnglishSave"
+        );
+
+    if(!saved){
+        return false;
+    }
+
+    try{
+
+        const data =
+            JSON.parse(saved);
+
+        day =
+            data.day || 1;
+
+        score =
+            data.score || 0;
+
+        coins =
+            data.coins ?? 100;
+
+        hunger =
+            data.hunger ?? 80;
+
+        energy =
+            data.energy ?? 85;
+
+        happiness =
+            data.happiness ?? 75;
+
+        updateHUD();
+
+        return true;
+
+    }catch{
+
+        return false;
+    }
+}
+
+
+/* =====================================================
+   PAUSE
+===================================================== */
+
+function togglePause(){
+
+    if(
+        !running ||
+        questionOpen
+    ){
+
+        return;
+    }
+
+    paused =
+        !paused;
+
+    pauseButton.textContent =
+        paused
+            ? "▶ RESUME"
+            : "⏸ PAUSE";
+}
+
+
+pauseButton.addEventListener(
+    "click",
+    togglePause
+);
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+document
+    .getElementById("backButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "../index.html";
+
+        }
+    );
+
+
+/* =====================================================
+   FINISH
+===================================================== */
+
+function finishGame(){
+
+    running =
+        false;
+
+    localStorage.setItem(
+        "lifeEnglishCompleted",
+        "true"
+    );
+
+    saveGame();
+
+    document.getElementById(
+        "finishText"
+    ).textContent =
+        `Congratulations! You completed all 10 days with $${coins} and ${score} points.`;
+
+    finishScreen.style.display =
+        "flex";
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetGame(){
+
+    day = 1;
+
+    score = 0;
+
+    coins = 100;
+
+    hunger = 80;
+
+    energy = 85;
+
+    happiness = 75;
+
+    player.x = 220;
+
+    player.y = 490;
+
+    player.vx = 0;
+
+    player.vy = 0;
+
+    updateHUD();
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+startButton.addEventListener(
+    "click",
+    () => {
+
+        startScreen.style.display =
+            "none";
+
+        finishScreen.style.display =
+            "none";
+
+        resetGame();
+
+        running =
+            true;
+
+        paused =
+            false;
+
+        pauseButton.textContent =
+            "⏸ PAUSE";
+
+    }
+);
+
+
+restartButton.addEventListener(
+    "click",
+    () => {
+
+        finishScreen.style.display =
+            "none";
+
+        resetGame();
+
+        running =
+            true;
+
+        paused =
+            false;
+
+        pauseButton.textContent =
+            "⏸ PAUSE";
+
+    }
+);
+
+
+/* =====================================================
+   DRAW BACKGROUND
+===================================================== */
+
+function drawBackground(){
+
+    const sky =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+    sky.addColorStop(
+        0,
+        "#7dd3fc"
+    );
+
+    sky.addColorStop(
+        .55,
+        "#bae6fd"
+    );
+
+    sky.addColorStop(
+        1,
+        "#86efac"
+    );
+
+    ctx.fillStyle =
+        sky;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* SUN */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        W - 100,
+        120,
+        42,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "#fde68a";
+
+    ctx.fill();
+
+
+    /* clouds */
+
+    for(
+        let i=0;
+        i<5;
+        i++
+    ){
+
+        const x =
+            80 +
+            i * 250;
+
+        const y =
+            90 +
+            Math.sin(
+                time / 1000 +
+                i
+            ) * 8;
+
+        drawCloud(
+            x,
+            y
+        );
+    }
+
+
+    /* ground */
+
+    ctx.fillStyle =
+        "#65a30d";
+
+    ctx.fillRect(
+        0,
+        540,
+        W,
+        H - 540
+    );
+
+
+    ctx.fillStyle =
+        "#4d7c0f";
+
+    ctx.fillRect(
+        0,
+        540,
+        W,
+        12
+    );
+
+
+    /* street */
+
+    ctx.fillStyle =
+        "#64748b";
+
+    ctx.fillRect(
+        0,
+        590,
+        W,
+        100
+    );
+
+
+    ctx.fillStyle =
+        "#cbd5e1";
+
+    for(
+        let x=0;
+        x<W;
+        x+=100
+    ){
+
+        ctx.fillRect(
+            x,
+            635,
+            55,
+            6
+        );
+    }
+}
+
+
+/* =====================================================
+   CLOUD
+===================================================== */
+
+function drawCloud(
+    x,
+    y
+){
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.72)";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        22,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x+25,
+        y-8,
+        28,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x+55,
+        y,
+        22,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+}
+
+
+/* =====================================================
+   HOUSE
+===================================================== */
+
+function drawHouse(){
+
+    /* wall */
+
+    ctx.fillStyle =
+        "#f8fafc";
+
+    ctx.fillRect(
+        house.x,
+        house.y,
+        house.width,
+        390
+    );
+
+
+    /* roof */
+
+    ctx.fillStyle =
+        "#7c2d12";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        house.x - 25,
+        house.y
+    );
+
+    ctx.lineTo(
+        house.x +
+        house.width / 2,
+        house.y - 115
+    );
+
+    ctx.lineTo(
+        house.x +
+        house.width +
+        25,
+        house.y
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* windows */
+
+    drawWindow(
+        125,
+        230
+    );
+
+    drawWindow(
+        790,
+        230
+    );
+
+
+    /* door */
+
+    ctx.fillStyle =
+        "#78350f";
+
+    ctx.fillRect(
+        500,
+        420,
+        80,
+        120
+    );
+
+    ctx.fillStyle =
+        "#facc15";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        560,
+        480,
+        5,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* room division */
+
+    ctx.strokeStyle =
+        "rgba(30,41,59,.25)";
+
+    ctx.lineWidth =
+        3;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        600,
+        250
+    );
+
+    ctx.lineTo(
+        600,
+        540
+    );
+
+    ctx.stroke();
+
+
+    /* floor */
+
+    ctx.fillStyle =
+        "#c08457";
+
+    ctx.fillRect(
+        house.x,
+        530,
+        house.width,
+        10
+    );
+}
+
+
+function drawWindow(
+    x,
+    y
+){
+
+    ctx.fillStyle =
+        "#38bdf8";
+
+    ctx.fillRect(
+        x,
+        y,
+        80,
+        65
+    );
+
+    ctx.strokeStyle =
+        "#475569";
+
+    ctx.lineWidth =
+        5;
+
+    ctx.strokeRect(
+        x,
+        y,
+        80,
+        65
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x+40,
+        y
+    );
+
+    ctx.lineTo(
+        x+40,
+        y+65
+    );
+
+    ctx.moveTo(
+        x,
+        y+32
+    );
+
+    ctx.lineTo(
+        x+80,
+        y+32
+    );
+
+    ctx.stroke();
+}
+
+
+/* =====================================================
+   OBJECTS
+===================================================== */
+
+function drawObjects(){
+
+    objects.forEach(
+        object => {
+
+            if(
+                object.type === "bed"
+            ){
+
+                ctx.fillStyle =
+                    "#be123c";
+
+                ctx.fillRect(
+                    object.x,
+                    object.y,
+                    object.w,
+                    object.h
+                );
+
+                ctx.fillStyle =
+                    "#fda4af";
+
+                ctx.fillRect(
+                    object.x+8,
+                    object.y+8,
+                    38,
+                    28
+                );
+
+            }
+
+
+            if(
+                object.type === "table"
+            ){
+
+                ctx.fillStyle =
+                    "#92400e";
+
+                ctx.fillRect(
+                    object.x,
+                    object.y,
+                    object.w,
+                    20
+                );
+
+                ctx.fillRect(
+                    object.x+10,
+                    object.y+20,
+                    12,
+                    35
+                );
+
+                ctx.fillRect(
+                    object.x+object.w-22,
+                    object.y+20,
+                    12,
+                    35
+                );
+
+            }
+
+
+            if(
+                object.type === "kitchen"
+            ){
+
+                ctx.fillStyle =
+                    "#475569";
+
+                ctx.fillRect(
+                    object.x,
+                    object.y,
+                    object.w,
+                    object.h
+                );
+
+                ctx.fillStyle =
+                    "#111827";
+
+                ctx.fillRect(
+                    object.x+15,
+                    object.y+15,
+                    35,
+                    25
+                );
+
+                ctx.fillRect(
+                    object.x+65,
+                    object.y+15,
+                    35,
+                    25
+                );
+
+            }
+
+
+            if(
+                object.type === "shower"
+            ){
+
+                ctx.fillStyle =
+                    "#bae6fd";
+
+                ctx.fillRect(
+                    object.x,
+                    object.y,
+                    object.w,
+                    object.h
+                );
+
+                ctx.strokeStyle =
+                    "#0f172a";
+
+                ctx.lineWidth =
+                    3;
+
+                ctx.strokeRect(
+                    object.x,
+                    object.y,
+                    object.w,
+                    object.h
+                );
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    object.x+40,
+                    object.y+25,
+                    15,
+                    0,
+                    Math.PI*2
+                );
+
+                ctx.stroke();
+            }
+
+
+            ctx.fillStyle =
+                "#334155";
+
+            ctx.font =
+                "900 8px Arial";
+
+            ctx.textAlign =
+                "center";
+
+            ctx.fillText(
+                object.label,
+                object.x +
+                object.w/2,
+                object.y +
+                object.h +
+                15
+            );
+
+        }
+    );
+}
+
+
+/* =====================================================
+   PLAYER DRAW
+===================================================== */
+
+function drawPlayer(){
+
+    const x =
+        player.x;
+
+    const y =
+        player.y;
+
+
+    /* shadow */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.18)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x+17,
+        542,
+        22,
+        6,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* body */
+
+    ctx.fillStyle =
+        "#2563eb";
+
+    ctx.fillRect(
+        x,
+        y+15,
+        34,
+        35
+    );
+
+
+    /* head */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+17,
+        y+9,
+        13,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle =
+        "#f2c6a0";
+
+    ctx.fill();
+
+
+    /* hair */
+
+    ctx.fillStyle =
+        "#3f2a20";
+
+    ctx.fillRect(
+        x+5,
+        y-4,
+        24,
+        8
+    );
+
+
+    /* eye */
+
+    ctx.fillStyle =
+        "#111827";
+
+    ctx.fillRect(
+        player.direction === 1
+            ? x+21
+            : x+7,
+        y+7,
+        4,
+        4
+    );
+
+
+    /* legs */
+
+    ctx.fillStyle =
+        "#172554";
+
+    ctx.fillRect(
+        x+3,
+        y+48,
+        10,
+        14
+    );
+
+    ctx.fillRect(
+        x+21,
+        y+48,
+        10,
+        14
+    );
+}
+
+
+/* =====================================================
+   DRAW
+===================================================== */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    drawBackground();
+
+    drawHouse();
+
+    drawObjects();
+
+    drawPlayer();
+
+
+    if(
+        paused &&
+        running
+    ){
+
+        ctx.fillStyle =
+            "rgba(0,0,0,.55)";
+
+        ctx.fillRect(
+            0,
+            0,
+            W,
+            H
+        );
+
+        ctx.fillStyle =
+            "white";
+
+        ctx.font =
+            "900 32px Arial";
+
+        ctx.textAlign =
+            "center";
+
+        ctx.fillText(
+            "PAUSED",
+            W/2,
+            H/2
+        );
+    }
+}
+
+
+/* =====================================================
+   GAME LOOP
+===================================================== */
+
+function loop(){
+
+    time++;
+
+    if(
+        running
+    ){
+
+        updatePlayer();
+    }
+
+    draw();
+
+    requestAnimationFrame(
+        loop
+    );
+}
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+updateHUD();
+
+loadGame();
+
+loop();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#07111f"
+    >
+
+    <title>Aldemar Studios | Jogo 01</title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            min-height: 100%;
+        }
+
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(37, 99, 235, 0.16),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 90%,
+                    rgba(56, 189, 248, 0.10),
+                    transparent 30%
+                ),
+                #07111f;
+
+            color: #e8f2ff;
+
+            -webkit-font-smoothing: antialiased;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           APP
+        ===================================================== */
+
+        .game-app {
+            width: 100%;
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            width: 100%;
+            min-height: 76px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding:
+                14px
+                clamp(16px, 4vw, 45px);
+
+            background:
+                rgba(7, 17, 31, 0.88);
+
+            border-bottom:
+                1px solid
+                rgba(96, 165, 250, 0.14);
+
+            backdrop-filter: blur(15px);
+
+            position: sticky;
+            top: 0;
+
+            z-index: 100;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            min-width: 0;
+        }
+
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #0ea5e9
+                );
+
+            color: #fff;
+
+            font-size: 17px;
+            font-weight: 900;
+
+            box-shadow:
+                0 7px 22px
+                rgba(37, 99, 235, 0.22);
+        }
+
+
+        .brand-text strong {
+            display: block;
+
+            font-size: 14px;
+            font-weight: 850;
+
+            white-space: nowrap;
+        }
+
+
+        .brand-text span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #7f95ad;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .back-button {
+            flex-shrink: 0;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            min-height: 40px;
+
+            padding:
+                0
+                14px;
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.20);
+
+            border-radius: 9px;
+
+            background:
+                rgba(13, 30, 49, 0.9);
+
+            color: #b8c9dc;
+
+            font-family: inherit;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .back-button:hover {
+            background:
+                rgba(37, 99, 235, 0.12);
+
+            border-color:
+                rgba(96, 165, 250, 0.35);
+
+            color: #fff;
+
+            transform: translateX(-2px);
+        }
+
+
+        /* =====================================================
+           CONTEÚDO
+        ===================================================== */
+
+        .game-container {
+            width: min(100%, 900px);
+
+            margin:
+                0 auto;
+
+            padding:
+                35px
+                clamp(16px, 4vw, 35px)
+                55px;
+        }
+
+
+        /* =====================================================
+           HEADER DO JOGO
+        ===================================================== */
+
+        .game-header {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .game-label {
+            display: inline-block;
+
+            margin-bottom: 9px;
+
+            color: #38bdf8;
+
+            font-size: 9px;
+            font-weight: 850;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .game-header h1 {
+            margin-bottom: 8px;
+
+            font-size:
+                clamp(25px, 5vw, 38px);
+
+            font-weight: 900;
+
+            letter-spacing: -1px;
+        }
+
+
+        .game-header p {
+            max-width: 620px;
+
+            margin:
+                0 auto;
+
+            color: #7f95ad;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .status-card {
+            padding: 14px;
+
+            text-align: center;
+
+            background:
+                rgba(13, 30, 49, 0.82);
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.12);
+
+            border-radius: 12px;
+        }
+
+
+        .status-card span {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #7f95ad;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .status-card strong {
+            color: #e8f2ff;
+
+            font-size: 19px;
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           PROGRESSO
+        ===================================================== */
+
+        .progress-area {
+            margin-bottom: 22px;
+        }
+
+
+        .progress-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 7px;
+
+            color: #7f95ad;
+
+            font-size: 9px;
+            font-weight: 750;
+        }
+
+
+        .progress-track {
+            width: 100%;
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                rgba(96, 165, 250, 0.09);
+        }
+
+
+        .progress-bar {
+            width: 10%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #38bdf8
+                );
+
+            transition:
+                width 0.35s ease;
+        }
+
+
+        /* =====================================================
+           CARD PRINCIPAL
+        ===================================================== */
+
+        .challenge-card {
+            padding:
+                clamp(22px, 5vw, 40px);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(14, 31, 51, 0.98),
+                    rgba(9, 23, 39, 0.98)
+                );
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.15);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 18px 50px
+                rgba(0, 0, 0, 0.24);
+        }
+
+
+        .challenge-number {
+            margin-bottom: 10px;
+
+            color: #38bdf8;
+
+            font-size: 9px;
+            font-weight: 850;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .question {
+            margin-bottom: 25px;
+
+            color: #e8f2ff;
+
+            font-size:
+                clamp(20px, 4vw, 27px);
+
+            font-weight: 850;
+
+            line-height: 1.3;
+        }
+
+
+        .question strong {
+            color: #60a5fa;
+        }
+
+
+        /* =====================================================
+           OPÇÕES
+        ===================================================== */
+
+        .options {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .option {
+            min-height: 58px;
+
+            padding:
+                12px
+                16px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.13);
+
+            border-radius: 11px;
+
+            background:
+                rgba(7, 17, 31, 0.60);
+
+            color: #b8c9dc;
+
+            font-family: inherit;
+
+            font-size: 12px;
+            font-weight: 750;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .option:hover:not(:disabled) {
+            background:
+                rgba(37, 99, 235, 0.10);
+
+            border-color:
+                rgba(96, 165, 250, 0.30);
+
+            color: #fff;
+
+            transform: translateY(-2px);
+        }
+
+
+        .option-letter {
+            width: 29px;
+            height: 29px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(37, 99, 235, 0.12);
+
+            color: #60a5fa;
+
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+
+        .option.correct {
+            background:
+                rgba(52, 211, 153, 0.10);
+
+            border-color:
+                rgba(52, 211, 153, 0.40);
+
+            color: #86efac;
+        }
+
+
+        .option.correct .option-letter {
+            background:
+                rgba(52, 211, 153, 0.18);
+
+            color: #6ee7b7;
+        }
+
+
+        .option.wrong {
+            background:
+                rgba(251, 113, 133, 0.10);
+
+            border-color:
+                rgba(251, 113, 133, 0.40);
+
+            color: #fda4af;
+        }
+
+
+        .option.wrong .option-letter {
+            background:
+                rgba(251, 113, 133, 0.18);
+
+            color: #fda4af;
+        }
+
+
+        .option:disabled {
+            cursor: default;
+        }
+
+
+        /* =====================================================
+           FEEDBACK
+        ===================================================== */
+
+        .feedback {
+            min-height: 23px;
+
+            margin-top: 18px;
+
+            font-size: 12px;
+            font-weight: 750;
+
+            text-align: center;
+        }
+
+
+        .feedback.success {
+            color: #6ee7b7;
+        }
+
+
+        .feedback.error {
+            color: #fda4af;
+        }
+
+
+        /* =====================================================
+           BOTÃO PRÓXIMO
+        ===================================================== */
+
+        .next-area {
+            display: flex;
+            justify-content: center;
+
+            margin-top: 20px;
+        }
+
+
+        .next-button {
+            min-width: 180px;
+
+            min-height: 45px;
+
+            padding:
+                0
+                20px;
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.20);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: #fff;
+
+            font-family: inherit;
+
+            font-size: 10px;
+            font-weight: 850;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 22px
+                rgba(37, 99, 235, 0.15);
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .next-button:hover {
+            transform: translateY(-2px);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3b82f6,
+                    #2563eb
+                );
+
+            box-shadow:
+                0 10px 28px
+                rgba(37, 99, 235, 0.22);
+        }
+
+
+        .next-button:disabled {
+            opacity: 0.45;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* =====================================================
+           RESULTADO
+        ===================================================== */
+
+        .result-screen {
+            display: none;
+
+            text-align: center;
+
+            padding:
+                20px
+                0
+                10px;
+        }
+
+
+        .result-screen.active {
+            display: block;
+        }
+
+
+        .result-icon {
+            width: 85px;
+            height: 85px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin:
+                0 auto
+                20px;
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.18);
+
+            border-radius: 22px;
+
+            background:
+                rgba(37, 99, 235, 0.10);
+
+            color: #38bdf8;
+
+            font-size: 38px;
+        }
+
+
+        .result-screen h2 {
+            margin-bottom: 9px;
+
+            font-size: 27px;
+            font-weight: 900;
+        }
+
+
+        .result-screen p {
+            color: #7f95ad;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .result-score {
+            margin:
+                25px
+                0;
+
+            color: #60a5fa;
+
+            font-size: 44px;
+            font-weight: 950;
+        }
+
+
+        .result-message {
+            margin-bottom: 25px;
+
+            color: #b8c9dc;
+
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+
+        .restart-button {
+            min-height: 45px;
+
+            padding:
+                0
+                22px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: #fff;
+
+            font-family: inherit;
+
+            font-size: 10px;
+            font-weight: 850;
+
+            cursor: pointer;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .restart-button:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
+
+        .footer {
+            padding:
+                0
+                20px
+                25px;
+
+            color: #536a82;
+
+            font-size: 9px;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           RESPONSIVIDADE TABLET
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .game-container {
+                padding-top: 28px;
+            }
+
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+
+            .challenge-card {
+                border-radius: 17px;
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVIDADE CELULAR
+        ===================================================== */
+
+        @media (max-width: 550px) {
+
+            .topbar {
+                min-height: 68px;
+
+                padding:
+                    10px
+                    13px;
+            }
+
+
+            .brand-icon {
+                width: 38px;
+                height: 38px;
+
+                border-radius: 10px;
+
+                font-size: 15px;
+            }
+
+
+            .brand-text strong {
+                font-size: 12px;
+            }
+
+
+            .brand-text span {
+                font-size: 8px;
+            }
+
+
+            .back-button {
+                min-height: 36px;
+
+                padding:
+                    0
+                    10px;
+
+                font-size: 9px;
+            }
+
+
+            .game-container {
+                padding:
+                    24px
+                    13px
+                    35px;
+            }
+
+
+            .game-header {
+                margin-bottom: 22px;
+            }
+
+
+            .game-header h1 {
+                font-size: 25px;
+            }
+
+
+            .game-header p {
+                font-size: 11px;
+            }
+
+
+            .status-grid {
+                gap: 7px;
+            }
+
+
+            .status-card {
+                padding: 11px 6px;
+            }
+
+
+            .status-card span {
+                font-size: 7px;
+            }
+
+
+            .status-card strong {
+                font-size: 16px;
+            }
+
+
+            .challenge-card {
+                padding: 20px 15px;
+
+                border-radius: 15px;
+            }
+
+
+            .question {
+                font-size: 20px;
+            }
+
+
+            .option {
+                min-height: 55px;
+
+                font-size: 11px;
+            }
+
+
+            .footer {
+                font-size: 8px;
+            }
+
+        }
+
+
+        /* =====================================================
+           ACESSIBILIDADE
+        ===================================================== */
+
+        button:focus-visible {
+            outline:
+                2px solid
+                #60a5fa;
+
+            outline-offset: 3px;
+        }
+
+
+        /* =====================================================
+           REDUZIR MOVIMENTO
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+
+                transition: none !important;
+
+                animation: none !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="game-app">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    AS
+                </div>
+
+                <div class="brand-text">
+
+                    <strong>
+                        Aldemar Studios
+                    </strong>
+
+                    <span>
+                        Passatempo • Jogo 01
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="back-button"
+                id="backButton"
+                type="button"
+            >
+                ← Voltar
+            </button>
+
+        </header>
+
+
+
+        <!-- =================================================
+             CONTAINER
+        ================================================== -->
+
+        <main class="game-container">
+
+
+            <!-- =================================================
+                 CABEÇALHO
+            ================================================== -->
+
+            <section class="game-header">
+
+                <span class="game-label">
+                    English Challenge
+                </span>
+
+                <h1>
+                    Desafio de Vocabulário
+                </h1>
+
+                <p>
+                    Leia a palavra em inglês e escolha
+                    a tradução correta. São 10 desafios
+                    diferentes.
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STATUS
+            ================================================== -->
+
+            <section class="status-grid">
+
+                <div class="status-card">
+
+                    <span>
+                        Desafio
+                    </span>
+
+                    <strong id="challengeCounter">
+                        1 / 10
+                    </strong>
+
+                </div>
+
+
+                <div class="status-card">
+
+                    <span>
+                        Acertos
+                    </span>
+
+                    <strong id="score">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="status-card">
+
+                    <span>
+                        Erros
+                    </span>
+
+                    <strong id="errors">
+                        0
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROGRESSO
+            ================================================== -->
+
+            <section class="progress-area">
+
+                <div class="progress-info">
+
+                    <span>
+                        PROGRESSO
+                    </span>
+
+                    <span id="progressText">
+                        10%
+                    </span>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-bar"
+                        id="progressBar"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DESAFIO
+            ================================================== -->
+
+            <section
+                class="challenge-card"
+                id="challengeCard"
+            >
+
+                <div
+                    class="challenge-number"
+                    id="challengeNumber"
+                >
+                    DESAFIO 01
+                </div>
+
+
+                <h2
+                    class="question"
+                    id="question"
+                >
+                    Qual é a tradução de
+                    <strong>BOOK</strong>?
+                </h2>
+
+
+                <div
+                    class="options"
+                    id="options"
+                ></div>
+
+
+                <div
+                    class="feedback"
+                    id="feedback"
+                ></div>
+
+
+                <div class="next-area">
+
+                    <button
+                        class="next-button"
+                        id="nextButton"
+                        type="button"
+                        disabled
+                    >
+                        Próximo desafio →
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 RESULTADO
+            ================================================== -->
+
+            <section
+                class="challenge-card result-screen"
+                id="resultScreen"
+            >
+
+                <div class="result-icon">
+                    ★
+                </div>
+
+
+                <h2>
+                    Desafios concluídos!
+                </h2>
+
+
+                <p>
+                    Você terminou os 10 desafios
+                    de vocabulário.
+                </p>
+
+
+                <div
+                    class="result-score"
+                    id="resultScore"
+                >
+                    0 / 10
+                </div>
+
+
+                <div
+                    class="result-message"
+                    id="resultMessage"
+                >
+                    Continue praticando!
+                </div>
+
+
+                <button
+                    class="restart-button"
+                    id="restartButton"
+                    type="button"
+                >
+                    Jogar novamente
+                </button>
+
+            </section>
+
+
+        </main>
+
+
+
+        <footer class="footer">
+
+            Aldemar Studios •
+            Aprendendo Inglês com diversão
+
+        </footer>
+
+
+    </div>
+
+
+
+    <script>
+
+        /* =====================================================
+           DESAFIOS
+        ===================================================== */
+
+        const challenges = [
+
+            {
+                word: "BOOK",
+
+                options: [
+                    "Casa",
+                    "Livro",
+                    "Mesa",
+                    "Janela"
+                ],
+
+                answer: "Livro"
+            },
+
+
+            {
+                word: "APPLE",
+
+                options: [
+                    "Laranja",
+                    "Banana",
+                    "Maçã",
+                    "Uva"
+                ],
+
+                answer: "Maçã"
+            },
+
+
+            {
+                word: "CHAIR",
+
+                options: [
+                    "Cadeira",
+                    "Cama",
+                    "Porta",
+                    "Parede"
+                ],
+
+                answer: "Cadeira"
+            },
+
+
+            {
+                word: "SCHOOL",
+
+                options: [
+                    "Hospital",
+                    "Escola",
+                    "Igreja",
+                    "Mercado"
+                ],
+
+                answer: "Escola"
+            },
+
+
+            {
+                word: "WINDOW",
+
+                options: [
+                    "Telhado",
+                    "Chão",
+                    "Janela",
+                    "Escada"
+                ],
+
+                answer: "Janela"
+            },
+
+
+            {
+                word: "FRIEND",
+
+                options: [
+                    "Professor",
+                    "Irmão",
+                    "Amigo",
+                    "Vizinho"
+                ],
+
+                answer: "Amigo"
+            },
+
+
+            {
+                word: "MORNING",
+
+                options: [
+                    "Noite",
+                    "Tarde",
+                    "Manhã",
+                    "Madrugada"
+                ],
+
+                answer: "Manhã"
+            },
+
+
+            {
+                word: "WATER",
+
+                options: [
+                    "Água",
+                    "Leite",
+                    "Suco",
+                    "Café"
+                ],
+
+                answer: "Água"
+            },
+
+
+            {
+                word: "BEAUTIFUL",
+
+                options: [
+                    "Pequeno",
+                    "Bonito",
+                    "Rápido",
+                    "Forte"
+                ],
+
+                answer: "Bonito"
+            },
+
+
+            {
+                word: "TEACHER",
+
+                options: [
+                    "Médico",
+                    "Aluno",
+                    "Professor",
+                    "Motorista"
+                ],
+
+                answer: "Professor"
+            }
+
+        ];
+
+
+
+        /* =====================================================
+           ELEMENTOS
+        ===================================================== */
+
+        const challengeCounter =
+            document.getElementById(
+                "challengeCounter"
+            );
+
+
+        const scoreElement =
+            document.getElementById(
+                "score"
+            );
+
+
+        const errorsElement =
+            document.getElementById(
+                "errors"
+            );
+
+
+        const progressText =
+            document.getElementById(
+                "progressText"
+            );
+
+
+        const progressBar =
+            document.getElementById(
+                "progressBar"
+            );
+
+
+        const challengeNumber =
+            document.getElementById(
+                "challengeNumber"
+            );
+
+
+        const question =
+            document.getElementById(
+                "question"
+            );
+
+
+        const optionsContainer =
+            document.getElementById(
+                "options"
+            );
+
+
+        const feedback =
+            document.getElementById(
+                "feedback"
+            );
+
+
+        const nextButton =
+            document.getElementById(
+                "nextButton"
+            );
+
+
+        const challengeCard =
+            document.getElementById(
+                "challengeCard"
+            );
+
+
+        const resultScreen =
+            document.getElementById(
+                "resultScreen"
+            );
+
+
+        const resultScore =
+            document.getElementById(
+                "resultScore"
+            );
+
+
+        const resultMessage =
+            document.getElementById(
+                "resultMessage"
+            );
+
+
+        const restartButton =
+            document.getElementById(
+                "restartButton"
+            );
+
+
+        const backButton =
+            document.getElementById(
+                "backButton"
+            );
+
+
+
+        /* =====================================================
+           ESTADO
+        ===================================================== */
+
+        let currentChallenge = 0;
+
+        let score = 0;
+
+        let errors = 0;
+
+        let answered = false;
+
+
+
+        /* =====================================================
+           EMBARALHAR
+        ===================================================== */
+
+        function shuffle(array) {
+
+            const newArray =
+                [...array];
+
+            for (
+                let i = newArray.length - 1;
+                i > 0;
+                i--
+            ) {
+
+                const j =
+                    Math.floor(
+                        Math.random() *
+                        (i + 1)
+                    );
+
+                [
+                    newArray[i],
+                    newArray[j]
+                ] =
+                [
+                    newArray[j],
+                    newArray[i]
+                ];
+            }
+
+            return newArray;
+        }
+
+
+
+        /* =====================================================
+           CARREGAR DESAFIO
+        ===================================================== */
+
+        function loadChallenge() {
+
+            answered = false;
+
+            nextButton.disabled =
+                true;
+
+            feedback.textContent =
+                "";
+
+            feedback.className =
+                "feedback";
+
+
+            const challenge =
+                challenges[
+                    currentChallenge
+                ];
+
+
+            challengeCounter.textContent =
+                `${currentChallenge + 1} / ${challenges.length}`;
+
+
+            challengeNumber.textContent =
+                `DESAFIO ${String(
+                    currentChallenge + 1
+                ).padStart(2, "0")}`;
+
+
+            question.innerHTML =
+                `Qual é a tradução de <strong>${challenge.word}</strong>?`;
+
+
+            optionsContainer.innerHTML =
+                "";
+
+
+            const shuffledOptions =
+                shuffle(
+                    challenge.options
+                );
+
+
+            shuffledOptions.forEach(
+                (option, index) => {
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.type =
+                        "button";
+
+
+                    button.className =
+                        "option";
+
+
+                    button.innerHTML = `
+                        <span class="option-letter">
+                            ${String.fromCharCode(65 + index)}
+                        </span>
+
+                        <span>
+                            ${option}
+                        </span>
+                    `;
+
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            selectAnswer(
+                                button,
+                                option,
+                                challenge.answer
+                            );
+
+                        }
+                    );
+
+
+                    optionsContainer.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+
+            const percentage =
+                (
+                    (currentChallenge + 1) /
+                    challenges.length
+                ) *
+                100;
+
+
+            progressBar.style.width =
+                `${percentage}%`;
+
+
+            progressText.textContent =
+                `${Math.round(percentage)}%`;
+
+
+            scoreElement.textContent =
+                score;
+
+
+            errorsElement.textContent =
+                errors;
+
+        }
+
+
+
+        /* =====================================================
+           SELECIONAR RESPOSTA
+        ===================================================== */
+
+        function selectAnswer(
+            selectedButton,
+            selectedAnswer,
+            correctAnswer
+        ) {
+
+            if (answered) {
+                return;
+            }
+
+
+            answered = true;
+
+
+            const buttons =
+                optionsContainer
+                    .querySelectorAll(
+                        ".option"
+                    );
+
+
+            buttons.forEach(
+                button => {
+
+                    button.disabled =
+                        true;
+
+                }
+            );
+
+
+            if (
+                selectedAnswer ===
+                correctAnswer
+            ) {
+
+                score++;
+
+                selectedButton.classList.add(
+                    "correct"
+                );
+
+
+                feedback.textContent =
+                    "✓ Muito bem! Resposta correta!";
+
+
+                feedback.className =
+                    "feedback success";
+
+            } else {
+
+                errors++;
+
+
+                selectedButton.classList.add(
+                    "wrong"
+                );
+
+
+                buttons.forEach(
+                    button => {
+
+                        const text =
+                            button
+                                .querySelector(
+                                    "span:last-child"
+                                )
+                                ?.textContent
+                                .trim();
+
+
+                        if (
+                            text ===
+                            correctAnswer
+                        ) {
+
+                            button.classList.add(
+                                "correct"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                feedback.textContent =
+                    `✗ Resposta correta: ${correctAnswer}`;
+
+
+                feedback.className =
+                    "feedback error";
+
+            }
+
+
+            scoreElement.textContent =
+                score;
+
+
+            errorsElement.textContent =
+                errors;
+
+
+            nextButton.disabled =
+                false;
+
+
+            if (
+                currentChallenge ===
+                challenges.length - 1
+            ) {
+
+                nextButton.textContent =
+                    "Ver resultado →";
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           PRÓXIMO
+        ===================================================== */
+
+        nextButton.addEventListener(
+            "click",
+            () => {
+
+                if (!answered) {
+                    return;
+                }
+
+
+                currentChallenge++;
+
+
+                if (
+                    currentChallenge >=
+                    challenges.length
+                ) {
+
+                    showResult();
+
+                    return;
+                }
+
+
+                loadChallenge();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+
+        /* =====================================================
+           RESULTADO
+        ===================================================== */
+
+        function showResult() {
+
+            challengeCard.style.display =
+                "none";
+
+
+            resultScreen.classList.add(
+                "active"
+            );
+
+
+            resultScore.textContent =
+                `${score} / ${challenges.length}`;
+
+
+            let message =
+                "Continue praticando!";
+
+
+            if (score === 10) {
+
+                message =
+                    "Excelente! Você acertou todos os desafios!";
+
+            } else if (score >= 8) {
+
+                message =
+                    "Muito bem! Seu vocabulário está excelente!";
+
+            } else if (score >= 6) {
+
+                message =
+                    "Muito bom! Continue praticando para evoluir ainda mais.";
+
+            } else if (score >= 4) {
+
+                message =
+                    "Bom começo! Revise as palavras e tente novamente.";
+
+            } else {
+
+                message =
+                    "Não desista! A prática vai ajudar você a aprender.";
+
+            }
+
+
+            resultMessage.textContent =
+                message;
+
+
+            progressBar.style.width =
+                "100%";
+
+
+            progressText.textContent =
+                "100%";
+
+        }
+
+
+
+        /* =====================================================
+           REINICIAR
+        ===================================================== */
+
+        restartButton.addEventListener(
+            "click",
+            () => {
+
+                currentChallenge =
+                    0;
+
+                score =
+                    0;
+
+                errors =
+                    0;
+
+
+                resultScreen.classList.remove(
+                    "active"
+                );
+
+
+                challengeCard.style.display =
+                    "";
+
+
+                loadChallenge();
+
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+
+        /* =====================================================
+           VOLTAR
+        ===================================================== */
+
+        backButton.addEventListener(
+            "click",
+            () => {
+
+                /*
+                 * O jogo está dentro de:
+                 *
+                 * frontend/passatempo/jogo-01/
+                 *
+                 * O dashboard está no frontend.
+                 *
+                 * Por isso voltamos dois níveis.
+                 */
+
+                window.location.href =
+                    "../../dashboard.html";
+
+            }
+        );
+
+
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        loadChallenge();
+
+    </script>
+
+</body>
+
+</html>

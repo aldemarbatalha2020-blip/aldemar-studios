@@ -1,0 +1,4823 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Zombie Survival 2.0</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#030504;
+    font-family:Arial,Helvetica,sans-serif;
+    color:white;
+    touch-action:none;
+}
+
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+}
+
+canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+/* =====================================================
+HUD
+===================================================== */
+
+#hud{
+    position:absolute;
+    top:14px;
+    left:14px;
+    right:14px;
+    z-index:30;
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+
+    pointer-events:none;
+}
+
+.hudGroup{
+    display:flex;
+    gap:8px;
+}
+
+.hudBox{
+    min-width:110px;
+
+    padding:9px 12px;
+
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:12px;
+
+    background:rgba(4,7,6,.78);
+
+    backdrop-filter:blur(8px);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.35);
+}
+
+.hudTitle{
+    display:block;
+
+    color:#9ca3af;
+
+    font-size:8px;
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    margin-bottom:4px;
+}
+
+.hudValue{
+    font-size:14px;
+    font-weight:900;
+}
+
+.health{
+    color:#ef4444;
+}
+
+.energy{
+    color:#facc15;
+}
+
+.ammo{
+    color:#60a5fa;
+}
+
+.score{
+    color:#c084fc;
+}
+
+#weaponHud{
+    color:#f59e0b;
+}
+
+/* =====================================================
+OBJECTIVE
+===================================================== */
+
+#objective{
+
+    position:absolute;
+
+    top:78px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:30;
+
+    padding:8px 16px;
+
+    border-radius:20px;
+
+    background:rgba(0,0,0,.68);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    color:#d1d5db;
+
+    font-size:11px;
+    font-weight:900;
+
+    white-space:nowrap;
+
+    pointer-events:none;
+}
+
+/* =====================================================
+CROSSHAIR
+===================================================== */
+
+#crosshair{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:34px;
+    height:34px;
+
+    transform:translate(-50%,-50%);
+
+    z-index:25;
+
+    pointer-events:none;
+
+    display:none;
+}
+
+.crossLine{
+    position:absolute;
+
+    background:rgba(255,255,255,.9);
+}
+
+.crossTop{
+    width:2px;
+    height:10px;
+
+    left:16px;
+    top:0;
+}
+
+.crossBottom{
+    width:2px;
+    height:10px;
+
+    left:16px;
+    bottom:0;
+}
+
+.crossLeft{
+    width:10px;
+    height:2px;
+
+    left:0;
+    top:16px;
+}
+
+.crossRight{
+    width:10px;
+    height:2px;
+
+    right:0;
+    top:16px;
+}
+
+.crossDot{
+    position:absolute;
+
+    width:4px;
+    height:4px;
+
+    border-radius:50%;
+
+    background:#ef4444;
+
+    left:15px;
+    top:15px;
+}
+
+/* =====================================================
+BUTTONS
+===================================================== */
+
+#pauseButton,
+#backButton{
+
+    position:absolute;
+
+    z-index:40;
+
+    padding:8px 12px;
+
+    border-radius:9px;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    background:rgba(3,6,5,.78);
+
+    color:#ddd;
+
+    font-size:9px;
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+#pauseButton{
+
+    top:15px;
+    left:50%;
+
+    transform:translateX(-50%);
+}
+
+#backButton{
+
+    bottom:15px;
+    left:15px;
+}
+
+/* =====================================================
+NOTIFICATION
+===================================================== */
+
+#notification{
+
+    position:absolute;
+
+    left:50%;
+    bottom:115px;
+
+    transform:translateX(-50%);
+
+    z-index:60;
+
+    padding:10px 16px;
+
+    max-width:90vw;
+
+    border-radius:10px;
+
+    background:rgba(0,0,0,.82);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    font-size:11px;
+    font-weight:900;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+}
+
+#notification.show{
+    opacity:1;
+}
+
+/* =====================================================
+SCREENS
+===================================================== */
+
+.screen{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:100;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(80,20,20,.18),
+            rgba(0,0,0,.97) 72%
+        );
+}
+
+.panel{
+
+    width:min(760px,95vw);
+
+    max-height:94vh;
+
+    overflow:auto;
+
+    padding:30px;
+
+    border-radius:24px;
+
+    border:1px solid rgba(255,255,255,.13);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(11,15,13,.98),
+            rgba(4,7,6,.98)
+        );
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.8);
+}
+
+.logo{
+
+    width:82px;
+    height:82px;
+
+    margin:0 auto 15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4b5563,
+            #111827
+        );
+
+    font-size:42px;
+}
+
+.panel h1{
+
+    text-align:center;
+
+    font-size:clamp(28px,5vw,46px);
+
+    margin-bottom:8px;
+}
+
+.panel h1 span{
+    color:#ef4444;
+}
+
+.panel p{
+
+    color:#9ca3af;
+
+    text-align:center;
+
+    line-height:1.65;
+
+    font-size:13px;
+
+    margin-bottom:20px;
+}
+
+/* =====================================================
+MODE
+===================================================== */
+
+.modeGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:12px;
+
+    margin-bottom:18px;
+}
+
+.modeButton{
+
+    padding:18px 12px;
+
+    border-radius:15px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    background:#0d1311;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.modeButton:hover{
+    transform:translateY(-2px);
+}
+
+.modeButton.selected{
+
+    border-color:#ef4444;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(127,29,29,.5),
+            rgba(40,10,10,.4)
+        );
+
+    box-shadow:
+        0 0 25px rgba(239,68,68,.12);
+}
+
+.modeIcon{
+
+    display:block;
+
+    font-size:32px;
+
+    margin-bottom:7px;
+}
+
+.modeTitle{
+
+    display:block;
+
+    font-size:13px;
+
+    font-weight:900;
+
+    margin-bottom:5px;
+}
+
+.modeDescription{
+
+    display:block;
+
+    color:#9ca3af;
+
+    font-size:10px;
+
+    line-height:1.5;
+}
+
+/* =====================================================
+DIFFICULTY
+===================================================== */
+
+.difficultyGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:8px;
+
+    margin-bottom:18px;
+}
+
+.diffButton{
+
+    min-height:42px;
+
+    border-radius:10px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    background:#0c1110;
+
+    color:#9ca3af;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+.diffButton.selected{
+
+    border-color:#f59e0b;
+
+    background:
+        rgba(120,53,15,.35);
+
+    color:white;
+}
+
+/* =====================================================
+CONTROLS INFO
+===================================================== */
+
+.controlsBox{
+
+    margin:18px 0;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:#080d0b;
+
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.controlsTitle{
+
+    text-align:center;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    margin-bottom:12px;
+
+    color:#f59e0b;
+}
+
+.controlsGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:8px;
+}
+
+.controlInfo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:8px 10px;
+
+    border-radius:8px;
+
+    background:rgba(255,255,255,.035);
+
+    font-size:10px;
+}
+
+.controlKey{
+
+    color:#facc15;
+
+    font-weight:900;
+}
+
+.controlText{
+    color:#9ca3af;
+}
+
+/* =====================================================
+MAIN BUTTON
+===================================================== */
+
+.mainButton{
+
+    width:100%;
+
+    min-height:52px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #991b1b,
+            #dc2626
+        );
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    letter-spacing:.7px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.mainButton:hover{
+    transform:translateY(-2px);
+}
+
+.secondaryButton{
+
+    width:100%;
+
+    min-height:45px;
+
+    margin-top:9px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    background:#111827;
+
+    color:#ddd;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+/* =====================================================
+MOBILE CONTROLS
+===================================================== */
+
+#mobileControls{
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:14px;
+
+    z-index:35;
+
+    display:none;
+
+    justify-content:space-between;
+
+    padding:0 15px;
+
+    pointer-events:none;
+}
+
+.controlGroup{
+
+    display:flex;
+
+    gap:8px;
+}
+
+.controlButton{
+
+    width:55px;
+    height:55px;
+
+    border-radius:15px;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    background:rgba(3,6,5,.8);
+
+    color:white;
+
+    font-size:18px;
+
+    pointer-events:auto;
+
+    user-select:none;
+}
+
+.controlButton:active{
+
+    transform:scale(.92);
+
+    background:rgba(127,29,29,.7);
+}
+
+.shootButton{
+
+    background:
+        rgba(127,29,29,.75);
+
+    border-color:
+        rgba(239,68,68,.45);
+}
+
+/* =====================================================
+RESPONSIVE
+===================================================== */
+
+@media(max-width:800px){
+
+    #mobileControls{
+        display:flex;
+    }
+
+    #objective{
+        top:70px;
+        font-size:9px;
+        max-width:80vw;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .hudBox{
+        min-width:auto;
+        padding:7px 8px;
+    }
+
+    .hudTitle{
+        font-size:7px;
+    }
+
+    .hudValue{
+        font-size:10px;
+    }
+
+    .modeGrid{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        padding:22px 17px;
+    }
+
+    .controlsGrid{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="game">
+
+<canvas id="canvas"></canvas>
+
+<!-- HUD -->
+
+<div id="hud">
+
+    <div class="hudGroup">
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                VIDA
+            </span>
+
+            <span
+                id="healthHud"
+                class="hudValue health"
+            >
+                ❤️ 100
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                ENERGIA
+            </span>
+
+            <span
+                id="energyHud"
+                class="hudValue energy"
+            >
+                ⚡ 100
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="hudGroup">
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                ARMA
+            </span>
+
+            <span
+                id="weaponHud"
+                class="hudValue"
+            >
+                🔫 PISTOLA
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                MUNIÇÃO
+            </span>
+
+            <span
+                id="ammoHud"
+                class="hudValue ammo"
+            >
+                🔫 12
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                PONTOS
+            </span>
+
+            <span
+                id="scoreHud"
+                class="hudValue score"
+            >
+                ⭐ 0
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="objective">
+    Escolha seu lado.
+</div>
+
+<div id="crosshair">
+
+    <div class="crossLine crossTop"></div>
+    <div class="crossLine crossBottom"></div>
+    <div class="crossLine crossLeft"></div>
+    <div class="crossLine crossRight"></div>
+    <div class="crossDot"></div>
+
+</div>
+
+<button id="pauseButton">
+    PAUSE
+</button>
+
+<button id="backButton">
+    ← VOLTAR
+</button>
+
+<div id="notification"></div>
+
+<!-- MOBILE -->
+
+<div id="mobileControls">
+
+    <div class="controlGroup">
+
+        <button
+            class="controlButton"
+            id="leftButton"
+        >
+            ◀
+        </button>
+
+        <button
+            class="controlButton"
+            id="rightButton"
+        >
+            ▶
+        </button>
+
+    </div>
+
+    <div class="controlGroup">
+
+        <button
+            class="controlButton"
+            id="jumpButton"
+        >
+            ▲
+        </button>
+
+        <button
+            class="controlButton shootButton"
+            id="shootButton"
+        >
+            🔫
+        </button>
+
+    </div>
+
+</div>
+
+<!-- START -->
+
+<div
+    class="screen"
+    id="startScreen"
+>
+
+    <div class="panel">
+
+        <div class="logo">
+            🧟
+        </div>
+
+        <h1>
+            ZOMBIE
+            <span>SURVIVAL</span>
+        </h1>
+
+        <p>
+            O mundo acabou. A cidade está tomada pelo caos.
+            Escolha seu lado, sobreviva e tente dominar o apocalipse.
+        </p>
+
+        <div class="modeGrid">
+
+            <button
+                class="modeButton selected"
+                data-mode="human"
+            >
+
+                <span class="modeIcon">
+                    🧑
+                </span>
+
+                <span class="modeTitle">
+                    SOBREVIVENTE
+                </span>
+
+                <span class="modeDescription">
+                    Explore a cidade, encontre recursos,
+                    utilize armas e elimine as hordas.
+                </span>
+
+            </button>
+
+            <button
+                class="modeButton"
+                data-mode="zombie"
+            >
+
+                <span class="modeIcon">
+                    🧟
+                </span>
+
+                <span class="modeTitle">
+                    ZUMBI
+                </span>
+
+                <span class="modeDescription">
+                    Cace sobreviventes, aproxime-se
+                    deles e infecte toda a cidade.
+                </span>
+
+            </button>
+
+        </div>
+
+        <p style="margin-bottom:9px;">
+            NÍVEL DE PERIGO
+        </p>
+
+        <div class="difficultyGrid">
+
+            <button
+                class="diffButton selected"
+                data-difficulty="easy"
+            >
+                FÁCIL
+            </button>
+
+            <button
+                class="diffButton"
+                data-difficulty="normal"
+            >
+                NORMAL
+            </button>
+
+            <button
+                class="diffButton"
+                data-difficulty="hard"
+            >
+                EXTREMO
+            </button>
+
+        </div>
+
+        <div class="controlsBox">
+
+            <div class="controlsTitle">
+                🎮 CONTROLES PRINCIPAIS
+            </div>
+
+            <div class="controlsGrid">
+
+                <div class="controlInfo">
+                    <span class="controlKey">
+                        A / D
+                    </span>
+                    <span class="controlText">
+                        Mover
+                    </span>
+                </div>
+
+                <div class="controlInfo">
+                    <span class="controlKey">
+                        ← / →
+                    </span>
+                    <span class="controlText">
+                        Mover
+                    </span>
+                </div>
+
+                <div class="controlInfo">
+                    <span class="controlKey">
+                        ESPAÇO
+                    </span>
+                    <span class="controlText">
+                        Pular
+                    </span>
+                </div>
+
+                <div class="controlInfo">
+                    <span class="controlKey">
+                        X / CLIQUE
+                    </span>
+                    <span class="controlText">
+                        Atacar / Atirar
+                    </span>
+                </div>
+
+                <div class="controlInfo">
+                    <span class="controlKey">
+                        Q
+                    </span>
+                    <span class="controlText">
+                        Trocar arma
+                    </span>
+                </div>
+
+                <div class="controlInfo">
+                    <span class="controlKey">
+                        P
+                    </span>
+                    <span class="controlText">
+                        Pausar
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <button
+            class="mainButton"
+            id="startButton"
+        >
+            INICIAR APOCALIPSE
+        </button>
+
+        <button
+            class="secondaryButton"
+            id="helpButton"
+        >
+            COMO JOGAR
+        </button>
+
+    </div>
+
+</div>
+
+<!-- END -->
+
+<div
+    class="screen"
+    id="endScreen"
+    style="display:none;"
+>
+
+    <div class="panel">
+
+        <div
+            class="logo"
+            id="endIcon"
+        >
+            🏆
+        </div>
+
+        <h1 id="endTitle">
+            Você sobreviveu!
+        </h1>
+
+        <p id="endText">
+            A cidade ainda está de pé.
+        </p>
+
+        <button
+            class="mainButton"
+            id="restartButton"
+        >
+            JOGAR NOVAMENTE
+        </button>
+
+        <button
+            class="secondaryButton"
+            id="menuButton"
+        >
+            MENU PRINCIPAL
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =====================================================
+CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById("canvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let W = innerWidth;
+let H = innerHeight;
+
+function resize(){
+
+    W = innerWidth;
+    H = innerHeight;
+
+    canvas.width =
+        W * devicePixelRatio;
+
+    canvas.height =
+        H * devicePixelRatio;
+
+    canvas.style.width =
+        W + "px";
+
+    canvas.style.height =
+        H + "px";
+
+    ctx.setTransform(
+        devicePixelRatio,
+        0,
+        0,
+        devicePixelRatio,
+        0,
+        0
+    );
+
+}
+
+resize();
+
+window.addEventListener(
+    "resize",
+    resize
+);
+
+/* =====================================================
+ELEMENTS
+===================================================== */
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const endScreen =
+    document.getElementById(
+        "endScreen"
+    );
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+const restartButton =
+    document.getElementById(
+        "restartButton"
+    );
+
+const menuButton =
+    document.getElementById(
+        "menuButton"
+    );
+
+const pauseButton =
+    document.getElementById(
+        "pauseButton"
+    );
+
+const backButton =
+    document.getElementById(
+        "backButton"
+    );
+
+const objective =
+    document.getElementById(
+        "objective"
+    );
+
+const notification =
+    document.getElementById(
+        "notification"
+    );
+
+const crosshair =
+    document.getElementById(
+        "crosshair"
+    );
+
+const healthHud =
+    document.getElementById(
+        "healthHud"
+    );
+
+const energyHud =
+    document.getElementById(
+        "energyHud"
+    );
+
+const ammoHud =
+    document.getElementById(
+        "ammoHud"
+    );
+
+const scoreHud =
+    document.getElementById(
+        "scoreHud"
+    );
+
+const weaponHud =
+    document.getElementById(
+        "weaponHud"
+    );
+
+/* =====================================================
+GAME STATE
+===================================================== */
+
+let running = false;
+let paused = false;
+
+let mode = "human";
+
+let difficulty = "easy";
+
+let cameraX = 0;
+
+let worldWidth = 9000;
+
+let score = 0;
+
+let kills = 0;
+
+let infected = 0;
+
+let shots = 0;
+
+let hits = 0;
+
+let wave = 1;
+
+let time = 0;
+
+let combo = 0;
+
+let comboTimer = 0;
+
+let objectiveTarget = 0;
+
+let nextWaveTimer = 0;
+
+/* =====================================================
+DIFFICULTY
+===================================================== */
+
+const difficulties = {
+
+    easy:{
+        enemyHealth:55,
+        enemyDamage:7,
+        enemySpeed:.8,
+        waveSize:5
+    },
+
+    normal:{
+        enemyHealth:75,
+        enemyDamage:11,
+        enemySpeed:1.1,
+        waveSize:8
+    },
+
+    hard:{
+        enemyHealth:100,
+        enemyDamage:16,
+        enemySpeed:1.5,
+        waveSize:12
+    }
+
+};
+
+/* =====================================================
+PLAYER
+===================================================== */
+
+const player = {
+
+    x:600,
+
+    y:0,
+
+    width:38,
+
+    height:65,
+
+    vx:0,
+
+    vy:0,
+
+    speed:4.6,
+
+    jumpPower:12,
+
+    gravity:.65,
+
+    grounded:false,
+
+    health:100,
+
+    energy:100,
+
+    ammo:18,
+
+    medkits:1,
+
+    invincible:0,
+
+    attackCooldown:0,
+
+    facing:1,
+
+    weapon:"pistol",
+
+    weaponCooldown:0
+
+};
+
+/* =====================================================
+WEAPONS
+===================================================== */
+
+const weapons = {
+
+    pistol:{
+        name:"PISTOLA",
+        damage:38,
+        range:520,
+        cooldown:18,
+        ammo:1,
+        spread:0
+    },
+
+    shotgun:{
+        name:"ESCOPETA",
+        damage:24,
+        range:360,
+        cooldown:42,
+        ammo:2,
+        spread:3
+    }
+
+};
+
+/* =====================================================
+WORLD
+===================================================== */
+
+let buildings = [];
+
+let cars = [];
+
+let trees = [];
+
+let lamps = [];
+
+let barricades = [];
+
+let supplies = [];
+
+let enemies = [];
+
+let survivors = [];
+
+let bullets = [];
+
+let particles = [];
+
+let blood = [];
+
+/* =====================================================
+INPUT
+===================================================== */
+
+const keys = {};
+
+window.addEventListener(
+    "keydown",
+    e=>{
+
+        const key =
+            e.key.toLowerCase();
+
+        keys[key]=true;
+
+        if(
+            e.key===" " ||
+            e.key==="ArrowUp"
+        ){
+
+            e.preventDefault();
+
+            jump();
+
+        }
+
+        if(
+            key==="x" ||
+            key==="enter"
+        ){
+
+            shootOrAttack();
+
+        }
+
+        if(
+            key==="q"
+        ){
+
+            switchWeapon();
+
+        }
+
+        if(
+            key==="p"
+        ){
+
+            togglePause();
+
+        }
+
+    }
+);
+
+window.addEventListener(
+    "keyup",
+    e=>{
+
+        keys[
+            e.key.toLowerCase()
+        ]=false;
+
+    }
+);
+
+/* =====================================================
+MOUSE
+===================================================== */
+
+canvas.addEventListener(
+    "pointerdown",
+    e=>{
+
+        if(
+            running &&
+            !paused
+        ){
+
+            shootOrAttack();
+
+        }
+
+    }
+);
+
+/* =====================================================
+MOBILE
+===================================================== */
+
+function mobileHold(
+    id,
+    key
+){
+
+    const button =
+        document.getElementById(id);
+
+    button.addEventListener(
+        "pointerdown",
+        e=>{
+
+            e.preventDefault();
+
+            keys[key]=true;
+
+        }
+    );
+
+    button.addEventListener(
+        "pointerup",
+        e=>{
+
+            e.preventDefault();
+
+            keys[key]=false;
+
+        }
+    );
+
+    button.addEventListener(
+        "pointercancel",
+        ()=>{
+
+            keys[key]=false;
+
+        }
+    );
+
+}
+
+mobileHold(
+    "leftButton",
+    "arrowleft"
+);
+
+mobileHold(
+    "rightButton",
+    "arrowright"
+);
+
+document
+.getElementById("jumpButton")
+.addEventListener(
+    "pointerdown",
+    jump
+);
+
+document
+.getElementById("shootButton")
+.addEventListener(
+    "pointerdown",
+    shootOrAttack
+);
+
+/* =====================================================
+MODE SELECT
+===================================================== */
+
+document
+.querySelectorAll(".modeButton")
+.forEach(
+    button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                document
+                .querySelectorAll(
+                    ".modeButton"
+                )
+                .forEach(
+                    b=>
+                    b.classList.remove(
+                        "selected"
+                    )
+                );
+
+                button.classList.add(
+                    "selected"
+                );
+
+                mode =
+                    button.dataset.mode;
+
+                if(
+                    mode==="human"
+                ){
+
+                    objective.textContent =
+                        "Você é um sobrevivente. Prepare-se para as hordas.";
+
+                }else{
+
+                    objective.textContent =
+                        "Você é um zumbi. Cace todos os sobreviventes.";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+/* =====================================================
+DIFFICULTY SELECT
+===================================================== */
+
+document
+.querySelectorAll(".diffButton")
+.forEach(
+    button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                document
+                .querySelectorAll(
+                    ".diffButton"
+                )
+                .forEach(
+                    b=>
+                    b.classList.remove(
+                        "selected"
+                    )
+                );
+
+                button.classList.add(
+                    "selected"
+                );
+
+                difficulty =
+                    button.dataset.difficulty;
+
+            }
+        );
+
+    }
+);
+
+/* =====================================================
+WORLD GENERATION
+===================================================== */
+
+function createWorld(){
+
+    buildings=[];
+    cars=[];
+    trees=[];
+    lamps=[];
+    barricades=[];
+    supplies=[];
+    enemies=[];
+    survivors=[];
+    bullets=[];
+    particles=[];
+    blood=[];
+
+    for(
+        let x=0;
+        x<worldWidth;
+        x+=420
+    ){
+
+        buildings.push({
+
+            x:x+30,
+
+            y:H-330,
+
+            width:
+                240+
+                Math.random()*130,
+
+            height:
+                250+
+                Math.random()*100
+
+        });
+
+    }
+
+    for(
+        let i=0;
+        i<55;
+        i++
+    ){
+
+        barricades.push({
+
+            x:
+                300+
+                Math.random()*
+                (worldWidth-600),
+
+            width:
+                25+
+                Math.random()*50,
+
+            height:
+                25+
+                Math.random()*45
+
+        });
+
+    }
+
+    for(
+        let i=0;
+        i<45;
+        i++
+    ){
+
+        cars.push({
+
+            x:
+                200+
+                Math.random()*
+                (worldWidth-400),
+
+            type:
+                Math.random()>.5
+                    ? "car"
+                    : "truck"
+
+        });
+
+    }
+
+    for(
+        let i=0;
+        i<70;
+        i++
+    ){
+
+        trees.push({
+
+            x:
+                100+
+                Math.random()*
+                (worldWidth-200),
+
+            size:
+                20+
+                Math.random()*25
+
+        });
+
+    }
+
+    for(
+        let i=0;
+        i<50;
+        i++
+    ){
+
+        lamps.push({
+
+            x:
+                100+
+                Math.random()*
+                (worldWidth-200)
+
+        });
+
+    }
+
+    if(
+        mode==="human"
+    ){
+
+        spawnWave();
+
+        for(
+            let i=0;
+            i<22;
+            i++
+        ){
+
+            createSupply();
+
+        }
+
+    }else{
+
+        for(
+            let i=0;
+            i<18;
+            i++
+        ){
+
+            createSurvivor();
+
+        }
+
+    }
+
+}
+
+/* =====================================================
+SPAWN WAVE
+===================================================== */
+
+function spawnWave(){
+
+    const config =
+        difficulties[difficulty];
+
+    const amount =
+        config.waveSize+
+        (wave-1)*2;
+
+    for(
+        let i=0;
+        i<amount;
+        i++
+    ){
+
+        createZombie();
+
+    }
+
+    objectiveTarget=amount;
+
+    notify(
+        "🌊 ONDA "+wave+" INICIADA!"
+    );
+
+}
+
+/* =====================================================
+ZOMBIE TYPES
+===================================================== */
+
+function createZombie(){
+
+    const roll =
+        Math.random();
+
+    let type;
+
+    if(
+        roll<.55
+    ){
+
+        type="walker";
+
+    }else if(
+        roll<.78
+    ){
+
+        type="runner";
+
+    }else if(
+        roll<.93
+    ){
+
+        type="brute";
+
+    }else{
+
+        type="hunter";
+
+    }
+
+    const config =
+        difficulties[difficulty];
+
+    let health =
+        config.enemyHealth;
+
+    let speed =
+        config.enemySpeed;
+
+    let damage =
+        config.enemyDamage;
+
+    let color="#65a30d";
+
+    let width=42;
+
+    let height=60;
+
+    if(
+        type==="runner"
+    ){
+
+        health*=.65;
+        speed*=1.9;
+        damage*=.65;
+
+        color="#84cc16";
+
+    }
+
+    if(
+        type==="brute"
+    ){
+
+        health*=2.6;
+        speed*=.45;
+        damage*=2.2;
+
+        color="#7f1d1d";
+
+        width=58;
+        height=75;
+
+    }
+
+    if(
+        type==="hunter"
+    ){
+
+        health*=1.25;
+        speed*=1.35;
+        damage*=1.1;
+
+        color="#581c87";
+
+    }
+
+    enemies.push({
+
+        x:
+            player.x+
+            800+
+            Math.random()*2200,
+
+        y:
+            H-105-height,
+
+        width,
+        height,
+
+        health,
+
+        maxHealth:health,
+
+        speed,
+
+        damage,
+
+        color,
+
+        type,
+
+        alive:true,
+
+        attackCooldown:0,
+
+        leapCooldown:0
+
+    });
+
+}
+
+/* =====================================================
+SURVIVORS
+===================================================== */
+
+function createSurvivor(){
+
+    const roll=
+        Math.random();
+
+    let type;
+
+    if(
+        roll<.6
+    ){
+
+        type="civilian";
+
+    }else if(
+        roll<.85
+    ){
+
+        type="soldier";
+
+    }else{
+
+        type="medic";
+
+    }
+
+    let health=60;
+
+    let speed=1.8;
+
+    if(
+        type==="soldier"
+    ){
+
+        health=110;
+        speed=2.2;
+
+    }
+
+    if(
+        type==="medic"
+    ){
+
+        health=75;
+        speed=1.7;
+
+    }
+
+    survivors.push({
+
+        x:
+            700+
+            Math.random()*
+            (worldWidth-1000),
+
+        y:
+            H-165,
+
+        width:35,
+
+        height:60,
+
+        health,
+
+        maxHealth:health,
+
+        speed,
+
+        type,
+
+        alive:true,
+
+        cooldown:0
+
+    });
+
+}
+
+/* =====================================================
+SUPPLIES
+===================================================== */
+
+function createSupply(){
+
+    const types=[
+        "ammo",
+        "medkit",
+        "energy",
+        "shotgun"
+    ];
+
+    supplies.push({
+
+        x:
+            700+
+            Math.random()*
+            (worldWidth-900),
+
+        y:
+            H-110,
+
+        type:
+            types[
+                Math.floor(
+                    Math.random()*
+                    types.length
+                )
+            ],
+
+        collected:false
+
+    });
+
+}
+
+/* =====================================================
+START
+===================================================== */
+
+function startGame(){
+
+    startScreen.style.display=
+        "none";
+
+    endScreen.style.display=
+        "none";
+
+    running=true;
+
+    paused=false;
+
+    score=0;
+
+    kills=0;
+
+    infected=0;
+
+    shots=0;
+
+    hits=0;
+
+    combo=0;
+
+    comboTimer=0;
+
+    wave=1;
+
+    time=0;
+
+    player.x=600;
+
+    player.y=
+        H-170;
+
+    player.vx=0;
+
+    player.vy=0;
+
+    player.health=100;
+
+    player.energy=100;
+
+    player.ammo=
+        mode==="human"
+            ? 18
+            : 0;
+
+    player.weapon="pistol";
+
+    player.medkits=1;
+
+    cameraX=0;
+
+    createWorld();
+
+    crosshair.style.display=
+        mode==="human"
+            ? "block"
+            : "none";
+
+    pauseButton.textContent=
+        "PAUSE";
+
+    updateHUD();
+
+}
+
+/* =====================================================
+MOVEMENT
+===================================================== */
+
+function updatePlayer(){
+
+    if(
+        !running ||
+        paused
+    ){
+
+        return;
+
+    }
+
+    const left =
+        keys["a"] ||
+        keys["arrowleft"];
+
+    const right =
+        keys["d"] ||
+        keys["arrowright"];
+
+    if(left){
+
+        player.vx=
+            -player.speed;
+
+        player.facing=-1;
+
+    }else if(right){
+
+        player.vx=
+            player.speed;
+
+        player.facing=1;
+
+    }else{
+
+        player.vx*=.78;
+
+    }
+
+    player.x+=
+        player.vx;
+
+    player.vy+=
+        player.gravity;
+
+    player.y+=
+        player.vy;
+
+    const floor=
+        H-105;
+
+    if(
+        player.y+
+        player.height>=
+        floor
+    ){
+
+        player.y=
+            floor-
+            player.height;
+
+        player.vy=0;
+
+        player.grounded=true;
+
+    }else{
+
+        player.grounded=false;
+
+    }
+
+    player.x=
+        Math.max(
+            20,
+            Math.min(
+                worldWidth-
+                player.width,
+                player.x
+            )
+        );
+
+    if(
+        player.invincible>0
+    ){
+
+        player.invincible--;
+
+    }
+
+    if(
+        player.attackCooldown>0
+    ){
+
+        player.attackCooldown--;
+
+    }
+
+    if(
+        player.weaponCooldown>0
+    ){
+
+        player.weaponCooldown--;
+
+    }
+
+    cameraX=
+        player.x-
+        W*.38;
+
+    cameraX=
+        Math.max(
+            0,
+            Math.min(
+                cameraX,
+                worldWidth-W
+            )
+        );
+
+    checkSupplies();
+
+    if(
+        mode==="human"
+    ){
+
+        updateZombies();
+
+    }else{
+
+        updateSurvivors();
+
+    }
+
+}
+
+/* =====================================================
+JUMP
+===================================================== */
+
+function jump(){
+
+    if(
+        !running ||
+        paused
+    ){
+
+        return;
+
+    }
+
+    if(
+        player.grounded &&
+        player.energy>=10
+    ){
+
+        player.vy=
+            -player.jumpPower;
+
+        player.energy-=10;
+
+        createParticles(
+            player.x+20,
+            H-105,
+            "#facc15",
+            4
+        );
+
+    }
+
+}
+
+/* =====================================================
+WEAPON
+===================================================== */
+
+function switchWeapon(){
+
+    if(
+        !running ||
+        paused ||
+        mode!=="human"
+    ){
+
+        return;
+
+    }
+
+    player.weapon=
+        player.weapon==="pistol"
+            ? "shotgun"
+            : "pistol";
+
+    notify(
+        "Arma: "+
+        weapons[player.weapon].name
+    );
+
+    updateHUD();
+
+}
+
+/* =====================================================
+ATTACK
+===================================================== */
+
+function shootOrAttack(){
+
+    if(
+        !running ||
+        paused
+    ){
+
+        return;
+
+    }
+
+    if(
+        mode==="human"
+    ){
+
+        shoot();
+
+    }else{
+
+        bite();
+
+    }
+
+}
+
+/* =====================================================
+SHOOT
+===================================================== */
+
+function shoot(){
+
+    if(
+        player.weaponCooldown>0
+    ){
+
+        return;
+
+    }
+
+    const weapon=
+        weapons[player.weapon];
+
+    if(
+        player.ammo<
+        weapon.ammo
+    ){
+
+        notify(
+            "🔴 SEM MUNIÇÃO!"
+        );
+
+        return;
+
+    }
+
+    player.ammo-=
+        weapon.ammo;
+
+    player.weaponCooldown=
+        weapon.cooldown;
+
+    shots++;
+
+    const direction=
+        player.facing;
+
+    bullets.push({
+
+        x:
+            player.x+
+            (direction>0
+                ? player.width
+                : 0),
+
+        y:
+            player.y+27,
+
+        vx:
+            direction*12,
+
+        life:
+            weapon.range/12,
+
+        damage:
+            weapon.damage,
+
+        spread:
+            weapon.spread,
+
+        shotgun:
+            player.weapon==="shotgun"
+
+    });
+
+    if(
+        player.weapon==="shotgun"
+    ){
+
+        for(
+            let i=0;
+            i<4;
+            i++
+        ){
+
+            bullets.push({
+
+                x:
+                    player.x+
+                    (direction>0
+                        ? player.width
+                        : 0),
+
+                y:
+                    player.y+27,
+
+                vx:
+                    direction*
+                    (11+
+                    Math.random()*2),
+
+                vy:
+                    (Math.random()-.5)*
+                    4,
+
+                life:25,
+
+                damage:weapon.damage,
+
+                shotgun:true
+
+            });
+
+        }
+
+    }
+
+    createParticles(
+        player.x+
+        player.facing*35,
+        player.y+28,
+        "#facc15",
+        7
+    );
+
+}
+
+/* =====================================================
+BITE
+===================================================== */
+
+function bite(){
+
+    if(
+        player.attackCooldown>0
+    ){
+
+        return;
+
+    }
+
+    player.attackCooldown=
+        28;
+
+    let target=null;
+
+    let distance=Infinity;
+
+    survivors.forEach(
+        survivor=>{
+
+            if(
+                !survivor.alive
+            ){
+
+                return;
+
+            }
+
+            const d=
+                Math.abs(
+                    survivor.x-
+                    player.x
+                );
+
+            if(
+                d<distance &&
+                d<90
+            ){
+
+                target=
+                    survivor;
+
+                distance=d;
+
+            }
+
+        }
+    );
+
+    if(
+        !target
+    ){
+
+        notify(
+            "Nenhum sobrevivente próximo."
+        );
+
+        return;
+
+    }
+
+    target.health-=45;
+
+    createParticles(
+        target.x,
+        target.y,
+        "#991b1b",
+        12
+    );
+
+    if(
+        target.health<=0
+    ){
+
+        target.alive=false;
+
+        infected++;
+
+        combo++;
+
+        score+=
+            180+
+            combo*20;
+
+        comboTimer=180;
+
+        notify(
+            "☣️ INFECTADO! +"+
+            (180+combo*20)
+        );
+
+    }
+
+}
+
+/* =====================================================
+BULLETS
+===================================================== */
+
+function updateBullets(){
+
+    bullets.forEach(
+        bullet=>{
+
+            bullet.x+=
+                bullet.vx;
+
+            if(
+                bullet.vy
+            ){
+
+                bullet.y+=
+                    bullet.vy;
+
+            }
+
+            bullet.life--;
+
+            enemies.forEach(
+                enemy=>{
+
+                    if(
+                        !enemy.alive
+                    ){
+
+                        return;
+
+                    }
+
+                    if(
+                        bullet.x>
+                        enemy.x-10 &&
+                        bullet.x<
+                        enemy.x+
+                        enemy.width+10 &&
+                        bullet.y>
+                        enemy.y-10 &&
+                        bullet.y<
+                        enemy.y+
+                        enemy.height
+                    ){
+
+                        enemy.health-=
+                            bullet.damage;
+
+                        bullet.life=0;
+
+                        hits++;
+
+                        createParticles(
+                            bullet.x,
+                            bullet.y,
+                            "#dc2626",
+                            7
+                        );
+
+                        blood.push({
+
+                            x:bullet.x,
+
+                            y:bullet.y,
+
+                            life:100
+
+                        });
+
+                        if(
+                            enemy.health<=0
+                        ){
+
+                            enemy.alive=false;
+
+                            kills++;
+
+                            combo++;
+
+                            comboTimer=180;
+
+                            const reward=
+                                100+
+                                combo*25;
+
+                            score+=reward;
+
+                            notify(
+                                "🧟 ELIMINADO! +"+
+                                reward
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+    bullets=
+        bullets.filter(
+            b=>b.life>0
+        );
+
+}
+
+/* =====================================================
+ZOMBIE AI
+===================================================== */
+
+function updateZombies(){
+
+    enemies.forEach(
+        enemy=>{
+
+            if(
+                !enemy.alive
+            ){
+
+                return;
+
+            }
+
+            const distance=
+                player.x-
+                enemy.x;
+
+            const abs=
+                Math.abs(distance);
+
+            if(
+                abs<950
+            ){
+
+                let direction=
+                    Math.sign(distance);
+
+                enemy.x+=
+                    direction*
+                    enemy.speed;
+
+                if(
+                    enemy.type==="runner"
+                ){
+
+                    enemy.x+=
+                        direction*
+                        .4;
+
+                }
+
+                if(
+                    enemy.type==="hunter" &&
+                    abs<300
+                ){
+
+                    if(
+                        enemy.leapCooldown<=0
+                    ){
+
+                        enemy.x+=
+                            direction*35;
+
+                        enemy.leapCooldown=
+                            100;
+
+                    }
+
+                }
+
+            }
+
+            if(
+                enemy.attackCooldown>0
+            ){
+
+                enemy.attackCooldown--;
+
+            }
+
+            if(
+                enemy.leapCooldown>0
+            ){
+
+                enemy.leapCooldown--;
+
+            }
+
+            if(
+                abs<60 &&
+                player.invincible<=0 &&
+                enemy.attackCooldown<=0
+            ){
+
+                player.health-=
+                    enemy.damage;
+
+                player.invincible=
+                    40;
+
+                enemy.attackCooldown=
+                    enemy.type==="brute"
+                        ? 70
+                        : 45;
+
+                createParticles(
+                    player.x,
+                    player.y+25,
+                    "#ef4444",
+                    12
+                );
+
+                notify(
+                    "💥 VOCÊ FOI ATACADO!"
+                );
+
+                if(
+                    player.health<=0
+                ){
+
+                    endGame(false);
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+/* =====================================================
+SURVIVOR AI
+===================================================== */
+
+function updateSurvivors(){
+
+    survivors.forEach(
+        survivor=>{
+
+            if(
+                !survivor.alive
+            ){
+
+                return;
+
+            }
+
+            const distance=
+                player.x-
+                survivor.x;
+
+            const abs=
+                Math.abs(distance);
+
+            if(
+                abs<800
+            ){
+
+                survivor.x-=
+                    Math.sign(distance)*
+                    survivor.speed;
+
+            }else{
+
+                survivor.x+=
+                    Math.sin(
+                        time/80+
+                        survivor.x
+                    )*.6;
+
+            }
+
+            survivor.x=
+                Math.max(
+                    100,
+                    Math.min(
+                        worldWidth-100,
+                        survivor.x
+                    )
+                );
+
+            if(
+                survivor.cooldown>0
+            ){
+
+                survivor.cooldown--;
+
+            }
+
+            if(
+                survivor.type==="soldier" &&
+                abs<420 &&
+                survivor.cooldown<=0
+            ){
+
+                player.health-=7;
+
+                player.invincible=20;
+
+                survivor.cooldown=40;
+
+                createParticles(
+                    player.x,
+                    player.y,
+                    "#f59e0b",
+                    5
+                );
+
+            }
+
+            if(
+                survivor.type==="civilian" &&
+                abs<75 &&
+                survivor.cooldown<=0
+            ){
+
+                player.health-=4;
+
+                survivor.cooldown=45;
+
+            }
+
+            if(
+                survivor.type==="medic" &&
+                survivor.health<survivor.maxHealth
+            ){
+
+                survivor.health=
+                    Math.min(
+                        survivor.maxHealth,
+                        survivor.health+.02
+                    );
+
+            }
+
+            if(
+                player.health<=0
+            ){
+
+                endGame(false);
+
+            }
+
+        }
+    );
+
+}
+
+/* =====================================================
+SUPPLIES
+===================================================== */
+
+function checkSupplies(){
+
+    supplies.forEach(
+        supply=>{
+
+            if(
+                supply.collected
+            ){
+
+                return;
+
+            }
+
+            if(
+                Math.abs(
+                    supply.x-
+                    player.x
+                )<45
+            ){
+
+                supply.collected=true;
+
+                if(
+                    supply.type==="ammo"
+                ){
+
+                    player.ammo+=12;
+
+                    notify(
+                        "📦 Munição +12"
+                    );
+
+                }
+
+                if(
+                    supply.type==="medkit"
+                ){
+
+                    player.health=
+                        Math.min(
+                            100,
+                            player.health+35
+                        );
+
+                    notify(
+                        "❤️ Kit médico +35"
+                    );
+
+                }
+
+                if(
+                    supply.type==="energy"
+                ){
+
+                    player.energy=
+                        Math.min(
+                            100,
+                            player.energy+40
+                        );
+
+                    notify(
+                        "⚡ Energia +40"
+                    );
+
+                }
+
+                if(
+                    supply.type==="shotgun"
+                ){
+
+                    player.ammo+=6;
+
+                    player.weapon="shotgun";
+
+                    notify(
+                        "💥 ESCOPETA ENCONTRADA!"
+                    );
+
+                }
+
+                score+=50;
+
+            }
+
+        }
+    );
+
+}
+
+/* =====================================================
+PARTICLES
+===================================================== */
+
+function createParticles(
+    x,
+    y,
+    color,
+    amount
+){
+
+    for(
+        let i=0;
+        i<amount;
+        i++
+    ){
+
+        particles.push({
+
+            x,
+            y,
+
+            vx:
+                (Math.random()-.5)*7,
+
+            vy:
+                (Math.random()-.5)*7,
+
+            life:
+                25+
+                Math.random()*30,
+
+            size:
+                2+
+                Math.random()*4,
+
+            color
+
+        });
+
+    }
+
+}
+
+/* =====================================================
+UPDATE PARTICLES
+===================================================== */
+
+function updateParticles(){
+
+    particles.forEach(
+        p=>{
+
+            p.x+=p.vx;
+
+            p.y+=p.vy;
+
+            p.vy+=.12;
+
+            p.life--;
+
+        }
+    );
+
+    particles=
+        particles.filter(
+            p=>p.life>0
+        );
+
+    blood.forEach(
+        b=>b.life--
+    );
+
+    blood=
+        blood.filter(
+            b=>b.life>0
+        );
+
+}
+
+/* =====================================================
+HUD
+===================================================== */
+
+function updateHUD(){
+
+    healthHud.textContent=
+        "❤️ "+
+        Math.max(
+            0,
+            Math.floor(
+                player.health
+            )
+        );
+
+    energyHud.textContent=
+        "⚡ "+
+        Math.floor(
+            player.energy
+        );
+
+    scoreHud.textContent=
+        "⭐ "+
+        score;
+
+    weaponHud.textContent=
+        mode==="human"
+            ? "🔫 "+
+              weapons[
+                  player.weapon
+              ].name
+            : "☣️ GARRAS";
+
+    ammoHud.textContent=
+        mode==="human"
+            ? "🔫 "+
+              player.ammo
+            : "☣️ "+
+              infected;
+
+}
+
+/* =====================================================
+BACKGROUND
+===================================================== */
+
+function drawBackground(){
+
+    const danger=
+        Math.min(
+            1,
+            time/5000
+        );
+
+    const gradient=
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+    gradient.addColorStop(
+        0,
+        mode==="human"
+            ? "#101827"
+            : "#21090d"
+    );
+
+    gradient.addColorStop(
+        .55,
+        mode==="human"
+            ? "#29333c"
+            : "#48151a"
+    );
+
+    gradient.addColorStop(
+        1,
+        "#050706"
+    );
+
+    ctx.fillStyle=
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    /* lua */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        W-130,
+        110,
+        48,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        mode==="human"
+            ? "rgba(229,231,235,.16)"
+            : "rgba(239,68,68,.18)";
+
+    ctx.fill();
+
+    /* prédios */
+
+    buildings.forEach(
+        building=>{
+
+            const x=
+                building.x-
+                cameraX;
+
+            if(
+                x+building.width<0 ||
+                x>W
+            ){
+
+                return;
+
+            }
+
+            ctx.fillStyle=
+                "#131918";
+
+            ctx.fillRect(
+                x,
+                building.y,
+                building.width,
+                building.height
+            );
+
+            ctx.fillStyle=
+                "#202725";
+
+            ctx.fillRect(
+                x+8,
+                building.y+8,
+                building.width-16,
+                8
+            );
+
+            for(
+                let wx=x+20;
+                wx<x+
+                    building.width-20;
+                wx+=42
+            ){
+
+                for(
+                    let wy=
+                        building.y+30;
+                    wy<
+                        building.y+
+                        building.height-25;
+                    wy+=48
+                ){
+
+                    ctx.fillStyle=
+                        Math.random()>.3
+                            ? "rgba(245,158,11,.25)"
+                            : "rgba(0,0,0,.6)";
+
+                    ctx.fillRect(
+                        wx,
+                        wy,
+                        15,
+                        20
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+    /* chão */
+
+    ctx.fillStyle=
+        "#080b0a";
+
+    ctx.fillRect(
+        0,
+        H-105,
+        W,
+        105
+    );
+
+    /* estrada */
+
+    ctx.strokeStyle=
+        "rgba(245,158,11,.2)";
+
+    ctx.lineWidth=3;
+
+    ctx.setLineDash([
+        28,
+        28
+    ]);
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -cameraX%56,
+        H-52
+    );
+
+    ctx.lineTo(
+        W,
+        H-52
+    );
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+}
+
+/* =====================================================
+CARS
+===================================================== */
+
+function drawCars(){
+
+    cars.forEach(
+        car=>{
+
+            const x=
+                car.x-
+                cameraX;
+
+            if(
+                x<-100 ||
+                x>W+100
+            ){
+
+                return;
+
+            }
+
+            const y=
+                H-135;
+
+            ctx.fillStyle=
+                car.type==="truck"
+                    ? "#374151"
+                    : "#1f2937";
+
+            ctx.fillRect(
+                x,
+                y,
+                car.type==="truck"
+                    ? 100
+                    : 70,
+                35
+            );
+
+            ctx.fillStyle=
+                "#050505";
+
+            ctx.fillRect(
+                x+10,
+                y+28,
+                15,
+                15
+            );
+
+            ctx.fillRect(
+                x+
+                (car.type==="truck"
+                    ? 80
+                    : 50),
+                y+28,
+                15,
+                15
+            );
+
+            ctx.fillStyle=
+                "rgba(255,255,255,.1)";
+
+            ctx.fillRect(
+                x+12,
+                y+7,
+                25,
+                12
+            );
+
+        }
+    );
+
+}
+
+/* =====================================================
+TREES
+===================================================== */
+
+function drawTrees(){
+
+    trees.forEach(
+        tree=>{
+
+            const x=
+                tree.x-
+                cameraX;
+
+            if(
+                x<-80 ||
+                x>W+80
+            ){
+
+                return;
+
+            }
+
+            const y=
+                H-105;
+
+            ctx.fillStyle=
+                "#4b2e1d";
+
+            ctx.fillRect(
+                x-5,
+                y-tree.size,
+                10,
+                tree.size
+            );
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y-tree.size,
+                tree.size,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fillStyle=
+                "#14281a";
+
+            ctx.fill();
+
+        }
+    );
+
+}
+
+/* =====================================================
+LAMPS
+===================================================== */
+
+function drawLamps(){
+
+    lamps.forEach(
+        lamp=>{
+
+            const x=
+                lamp.x-
+                cameraX;
+
+            if(
+                x<0 ||
+                x>W
+            ){
+
+                return;
+
+            }
+
+            ctx.strokeStyle=
+                "#4b5563";
+
+            ctx.lineWidth=4;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                H-105
+            );
+
+            ctx.lineTo(
+                x,
+                H-260
+            );
+
+            ctx.stroke();
+
+            ctx.fillStyle=
+                "rgba(245,158,11,.2)";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                H-260,
+                35,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+            ctx.fillStyle=
+                "#facc15";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                H-260,
+                5,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+}
+
+/* =====================================================
+BARRICADES
+===================================================== */
+
+function drawBarricades(){
+
+    barricades.forEach(
+        b=>{
+
+            const x=
+                b.x-
+                cameraX;
+
+            if(
+                x<-100 ||
+                x>W+100
+            ){
+
+                return;
+
+            }
+
+            ctx.fillStyle=
+                "#5b4633";
+
+            ctx.fillRect(
+                x,
+                H-105-b.height,
+                b.width,
+                b.height
+            );
+
+            ctx.strokeStyle=
+                "#9a7650";
+
+            ctx.lineWidth=4;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                H-105-b.height
+            );
+
+            ctx.lineTo(
+                x+b.width,
+                H-105
+            );
+
+            ctx.stroke();
+
+        }
+    );
+
+}
+
+/* =====================================================
+SUPPLIES DRAW
+===================================================== */
+
+function drawSupplies(){
+
+    supplies.forEach(
+        supply=>{
+
+            if(
+                supply.collected
+            ){
+
+                return;
+
+            }
+
+            const x=
+                supply.x-
+                cameraX;
+
+            const y=
+                supply.y;
+
+            ctx.fillStyle=
+                supply.type==="ammo"
+                    ? "#2563eb"
+                    : supply.type==="medkit"
+                        ? "#dc2626"
+                        : supply.type==="energy"
+                            ? "#facc15"
+                            : "#9333ea";
+
+            ctx.fillRect(
+                x-14,
+                y-14,
+                28,
+                28
+            );
+
+            ctx.fillStyle=
+                "white";
+
+            ctx.font=
+                "900 13px Arial";
+
+            ctx.textAlign=
+                "center";
+
+            ctx.fillText(
+                supply.type==="ammo"
+                    ? "A"
+                    : supply.type==="medkit"
+                        ? "+"
+                        : supply.type==="energy"
+                            ? "E"
+                            : "S",
+                x,
+                y+5
+            );
+
+        }
+    );
+
+}
+
+/* =====================================================
+DRAW ZOMBIES
+===================================================== */
+
+function drawZombies(){
+
+    enemies.forEach(
+        enemy=>{
+
+            if(
+                !enemy.alive
+            ){
+
+                return;
+
+            }
+
+            const x=
+                enemy.x-
+                cameraX;
+
+            const y=
+                enemy.y;
+
+            ctx.fillStyle=
+                enemy.color;
+
+            ctx.fillRect(
+                x,
+                y,
+                enemy.width,
+                enemy.height
+            );
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x+
+                enemy.width/2,
+                y,
+                enemy.width*.42,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+            ctx.fillStyle=
+                "#ef4444";
+
+            ctx.fillRect(
+                x+9,
+                y-4,
+                5,
+                5
+            );
+
+            ctx.fillRect(
+                x+
+                enemy.width-14,
+                y-4,
+                5,
+                5
+            );
+
+            /* barra */
+
+            ctx.fillStyle=
+                "rgba(0,0,0,.65)";
+
+            ctx.fillRect(
+                x,
+                y-18,
+                enemy.width,
+                5
+            );
+
+            ctx.fillStyle=
+                enemy.type==="brute"
+                    ? "#f97316"
+                    : "#22c55e";
+
+            ctx.fillRect(
+                x,
+                y-18,
+                enemy.width*
+                Math.max(
+                    0,
+                    enemy.health/
+                    enemy.maxHealth
+                ),
+                5
+            );
+
+            /* nome */
+
+            ctx.fillStyle=
+                "rgba(255,255,255,.6)";
+
+            ctx.font=
+                "8px Arial";
+
+            ctx.textAlign=
+                "center";
+
+            ctx.fillText(
+                enemy.type.toUpperCase(),
+                x+
+                enemy.width/2,
+                y-23
+            );
+
+        }
+    );
+
+}
+
+/* =====================================================
+DRAW SURVIVORS
+===================================================== */
+
+function drawSurvivors(){
+
+    survivors.forEach(
+        survivor=>{
+
+            if(
+                !survivor.alive
+            ){
+
+                return;
+
+            }
+
+            const x=
+                survivor.x-
+                cameraX;
+
+            const y=
+                survivor.y;
+
+            ctx.fillStyle=
+                survivor.type==="soldier"
+                    ? "#374151"
+                    : survivor.type==="medic"
+                        ? "#f8fafc"
+                        : "#2563eb";
+
+            ctx.fillRect(
+                x,
+                y,
+                survivor.width,
+                survivor.height
+            );
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x+
+                survivor.width/2,
+                y,
+                13,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fillStyle=
+                "#d9a77b";
+
+            ctx.fill();
+
+            ctx.fillStyle=
+                "#22c55e";
+
+            ctx.fillRect(
+                x,
+                y-17,
+                survivor.width,
+                4
+            );
+
+            ctx.fillStyle=
+                "#22c55e";
+
+            ctx.fillRect(
+                x,
+                y-17,
+                survivor.width*
+                Math.max(
+                    0,
+                    survivor.health/
+                    survivor.maxHealth
+                ),
+                4
+            );
+
+            ctx.fillStyle=
+                "rgba(255,255,255,.65)";
+
+            ctx.font=
+                "8px Arial";
+
+            ctx.textAlign=
+                "center";
+
+            ctx.fillText(
+                survivor.type.toUpperCase(),
+                x+
+                survivor.width/2,
+                y-22
+            );
+
+        }
+    );
+
+}
+
+/* =====================================================
+PLAYER
+===================================================== */
+
+function drawPlayer(){
+
+    if(
+        player.invincible>0 &&
+        Math.floor(
+            player.invincible/5
+        )%2===0
+    ){
+
+        return;
+
+    }
+
+    const x=
+        player.x-
+        cameraX;
+
+    const y=
+        player.y;
+
+    if(
+        mode==="human"
+    ){
+
+        ctx.fillStyle=
+            "#2563eb";
+
+        ctx.fillRect(
+            x,
+            y+18,
+            player.width,
+            player.height-18
+        );
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x+19,
+            y+8,
+            14,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle=
+            "#e5b58a";
+
+        ctx.fill();
+
+        ctx.fillStyle=
+            "#111827";
+
+        ctx.fillRect(
+            x+5,
+            y-4,
+            28,
+            8
+        );
+
+        /* arma */
+
+        ctx.strokeStyle=
+            "#d1d5db";
+
+        ctx.lineWidth=5;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x+
+            (player.facing>0
+                ? 28
+                : 10),
+            y+30
+        );
+
+        ctx.lineTo(
+            x+
+            (player.facing>0
+                ? 58
+                : -20),
+            y+23
+        );
+
+        ctx.stroke();
+
+    }else{
+
+        ctx.fillStyle=
+            "#65a30d";
+
+        ctx.fillRect(
+            x,
+            y+15,
+            player.width,
+            player.height-15
+        );
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x+19,
+            y+7,
+            15,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        ctx.fillStyle=
+            "#ef4444";
+
+        ctx.fillRect(
+            x+7,
+            y+3,
+            6,
+            6
+        );
+
+        ctx.fillRect(
+            x+25,
+            y+3,
+            6,
+            6
+        );
+
+    }
+
+}
+
+/* =====================================================
+DRAW BULLETS
+===================================================== */
+
+function drawBullets(){
+
+    bullets.forEach(
+        bullet=>{
+
+            const x=
+                bullet.x-
+                cameraX;
+
+            ctx.fillStyle=
+                bullet.shotgun
+                    ? "#f97316"
+                    : "#facc15";
+
+            ctx.fillRect(
+                x,
+                bullet.y,
+                8,
+                3
+            );
+
+        }
+    );
+
+}
+
+/* =====================================================
+DRAW BLOOD
+===================================================== */
+
+function drawBlood(){
+
+    blood.forEach(
+        b=>{
+
+            ctx.globalAlpha=
+                b.life/100;
+
+            ctx.fillStyle=
+                "#991b1b";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                b.x-cameraX,
+                b.y,
+                3,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+    ctx.globalAlpha=1;
+
+}
+
+/* =====================================================
+DRAW PARTICLES
+===================================================== */
+
+function drawParticles(){
+
+    particles.forEach(
+        p=>{
+
+            ctx.globalAlpha=
+                p.life/50;
+
+            ctx.fillStyle=
+                p.color;
+
+            ctx.fillRect(
+                p.x-cameraX,
+                p.y,
+                p.size,
+                p.size
+            );
+
+        }
+    );
+
+    ctx.globalAlpha=1;
+
+}
+
+/* =====================================================
+DRAW
+===================================================== */
+
+function draw(){
+
+    drawBackground();
+
+    drawTrees();
+
+    drawLamps();
+
+    drawCars();
+
+    drawBarricades();
+
+    drawSupplies();
+
+    drawBlood();
+
+    if(
+        mode==="human"
+    ){
+
+        drawZombies();
+
+    }else{
+
+        drawSurvivors();
+
+    }
+
+    drawBullets();
+
+    drawParticles();
+
+    drawPlayer();
+
+    if(
+        paused &&
+        running
+    ){
+
+        ctx.fillStyle=
+            "rgba(0,0,0,.7)";
+
+        ctx.fillRect(
+            0,
+            0,
+            W,
+            H
+        );
+
+        ctx.fillStyle=
+            "#fff";
+
+        ctx.font=
+            "900 36px Arial";
+
+        ctx.textAlign=
+            "center";
+
+        ctx.fillText(
+            "PAUSADO",
+            W/2,
+            H/2
+        );
+
+        ctx.font=
+            "12px Arial";
+
+        ctx.fillStyle=
+            "#9ca3af";
+
+        ctx.fillText(
+            "Pressione P ou PAUSE para continuar",
+            W/2,
+            H/2+28
+        );
+
+    }
+
+}
+
+/* =====================================================
+OBJECTIVES
+===================================================== */
+
+function updateObjectives(){
+
+    if(
+        mode==="human"
+    ){
+
+        const remaining=
+            enemies.filter(
+                e=>e.alive
+            ).length;
+
+        if(
+            remaining>0
+        ){
+
+            objective.textContent=
+                "🌊 Onda "+
+                wave+
+                " • Zumbis restantes: "+
+                remaining+
+                " • Combo: "+
+                combo;
+
+        }else{
+
+            if(
+                nextWaveTimer<=0
+            ){
+
+                nextWaveTimer=150;
+
+                notify(
+                    "⚠️ Prepare-se para a próxima onda!"
+                );
+
+            }
+
+            objective.textContent=
+                "🏆 Onda "+
+                wave+
+                " concluída! Próxima onda em breve.";
+
+        }
+
+    }else{
+
+        const remaining=
+            survivors.filter(
+                s=>s.alive
+            ).length;
+
+        objective.textContent=
+            "☣️ Sobreviventes restantes: "+
+            remaining+
+            " • Infectados: "+
+            infected;
+
+        if(
+            remaining===0
+        ){
+
+            endGame(true);
+
+        }
+
+    }
+
+}
+
+/* =====================================================
+NEXT WAVE
+===================================================== */
+
+function updateWave(){
+
+    if(
+        mode!=="human"
+    ){
+
+        return;
+
+    }
+
+    const remaining=
+        enemies.filter(
+            e=>e.alive
+        ).length;
+
+    if(
+        remaining===0 &&
+        nextWaveTimer>0
+    ){
+
+        nextWaveTimer--;
+
+        if(
+            nextWaveTimer===0
+        ){
+
+            wave++;
+
+            spawnWave();
+
+        }
+
+    }
+
+}
+
+/* =====================================================
+ENERGY
+===================================================== */
+
+function updateEnergy(){
+
+    if(
+        time%18===0
+    ){
+
+        player.energy=
+            Math.min(
+                100,
+                player.energy+.4
+            );
+
+    }
+
+}
+
+/* =====================================================
+COMBO
+===================================================== */
+
+function updateCombo(){
+
+    if(
+        comboTimer>0
+    ){
+
+        comboTimer--;
+
+    }else{
+
+        combo=0;
+
+    }
+
+}
+
+/* =====================================================
+END
+===================================================== */
+
+function endGame(
+    victory
+){
+
+    running=false;
+
+    crosshair.style.display=
+        "none";
+
+    const title=
+        document.getElementById(
+            "endTitle"
+        );
+
+    const text=
+        document.getElementById(
+            "endText"
+        );
+
+    const icon=
+        document.getElementById(
+            "endIcon"
+        );
+
+    const accuracy=
+        shots>0
+            ? Math.floor(
+                hits/shots*100
+            )
+            : 0;
+
+    if(
+        victory
+    ){
+
+        icon.textContent=
+            mode==="human"
+                ? "🏆"
+                : "☣️";
+
+        title.textContent=
+            mode==="human"
+                ? "VOCÊ SOBREVIVEU!"
+                : "A CIDADE FOI INFECTADA!";
+
+        text.innerHTML=
+            mode==="human"
+                ?
+                `
+                Ondas sobrevividas: <b>${wave}</b><br>
+                Zumbis eliminados: <b>${kills}</b><br>
+                Precisão: <b>${accuracy}%</b><br>
+                Pontuação final: <b>${score}</b>
+                `
+                :
+                `
+                Sobreviventes infectados:
+                <b>${infected}</b><br>
+                Pontuação final:
+                <b>${score}</b>
+                `;
+
+    }else{
+
+        icon.textContent=
+            "💀";
+
+        title.textContent=
+            "VOCÊ MORREU!";
+
+        text.innerHTML=
+            mode==="human"
+                ?
+                `
+                Você foi derrotado pelo apocalipse.<br><br>
+                Zumbis eliminados:
+                <b>${kills}</b><br>
+                Pontuação:
+                <b>${score}</b>
+                `
+                :
+                `
+                Os sobreviventes conseguiram derrotá-lo.<br><br>
+                Infectados:
+                <b>${infected}</b><br>
+                Pontuação:
+                <b>${score}</b>
+                `;
+
+    }
+
+    endScreen.style.display=
+        "flex";
+
+}
+
+/* =====================================================
+PAUSE
+===================================================== */
+
+function togglePause(){
+
+    if(
+        !running
+    ){
+
+        return;
+
+    }
+
+    paused=
+        !paused;
+
+    pauseButton.textContent=
+        paused
+            ? "CONTINUAR"
+            : "PAUSE";
+
+}
+
+/* =====================================================
+NOTIFICATION
+===================================================== */
+
+let notificationTimer;
+
+function notify(
+    text
+){
+
+    notification.textContent=
+        text;
+
+    notification.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        notificationTimer
+    );
+
+    notificationTimer=
+        setTimeout(
+            ()=>{
+                notification.classList.remove(
+                    "show"
+                );
+            },
+            1700
+        );
+
+}
+
+/* =====================================================
+BACK
+===================================================== */
+
+backButton.addEventListener(
+    "click",
+    ()=>{
+
+        if(
+            !running
+        ){
+
+            startScreen.style.display=
+                "flex";
+
+            endScreen.style.display=
+                "none";
+
+            return;
+
+        }
+
+        if(
+            confirm(
+                "Deseja sair da partida e voltar ao menu?"
+            )
+        ){
+
+            running=false;
+
+            paused=false;
+
+            crosshair.style.display=
+                "none";
+
+            endScreen.style.display=
+                "none";
+
+            startScreen.style.display=
+                "flex";
+
+            objective.textContent=
+                "Escolha seu lado.";
+
+        }
+
+    }
+);
+
+/* =====================================================
+BUTTONS
+===================================================== */
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+restartButton.addEventListener(
+    "click",
+    startGame
+);
+
+menuButton.addEventListener(
+    "click",
+    ()=>{
+
+        running=false;
+
+        endScreen.style.display=
+            "none";
+
+        startScreen.style.display=
+            "flex";
+
+        objective.textContent=
+            "Escolha seu lado.";
+
+    }
+);
+
+pauseButton.addEventListener(
+    "click",
+    togglePause
+);
+
+/* =====================================================
+HELP
+===================================================== */
+
+document
+.getElementById("helpButton")
+.addEventListener(
+    "click",
+    ()=>{
+
+        alert(
+
+`ZOMBIE SURVIVAL 2.0
+
+========================
+SOBREVIVENTE
+========================
+
+A / D
+Mover
+
+← / →
+Mover
+
+ESPAÇO
+Pular
+
+X / ENTER / CLIQUE
+Atirar
+
+Q
+Trocar arma
+
+P
+Pausar
+
+
+ARMAS
+
+PISTOLA
+Mais rápida e precisa.
+
+ESCOPETA
+Mais poderosa, porém
+consome mais munição.
+
+
+RECURSOS
+
+🔵 Munição
+❤️ Kit médico
+⚡ Energia
+🟣 Munição de escopeta
+
+
+TIPOS DE ZUMBI
+
+🟢 WALKER
+Zumbi comum.
+
+🟢 RUNNER
+Muito rápido e frágil.
+
+🔴 BRUTE
+Lento, mas extremamente forte.
+
+🟣 HUNTER
+Rápido e agressivo.
+
+
+OBJETIVO
+
+Sobreviva às ondas,
+elimine os zumbis,
+encontre recursos e
+aumente sua pontuação.
+
+
+========================
+MODO ZUMBI
+========================
+
+Você não possui armas.
+
+Aproxime-se dos humanos
+e use o ataque para infectá-los.
+
+Existem:
+
+CIVIS
+SOLDADOS
+MÉDICOS
+
+Infecte todos para vencer.
+
+Boa sorte no apocalipse!`
+
+        );
+
+    }
+);
+
+/* =====================================================
+GAME LOOP
+===================================================== */
+
+function loop(){
+
+    if(
+        running &&
+        !paused
+    ){
+
+        time++;
+
+        updatePlayer();
+
+        updateBullets();
+
+        updateParticles();
+
+        updateEnergy();
+
+        updateCombo();
+
+        updateWave();
+
+        updateObjectives();
+
+        updateHUD();
+
+    }
+
+    draw();
+
+    requestAnimationFrame(
+        loop
+    );
+
+}
+
+loop();
+
+</script>
+
+</div>
+
+</body>
+
+</html>

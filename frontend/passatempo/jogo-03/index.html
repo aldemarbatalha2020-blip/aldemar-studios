@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>English Memory Adventure</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07111f;
+    color:white;
+    touch-action:manipulation;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 15%,rgba(56,189,248,.15),transparent 35%),
+        linear-gradient(180deg,#08182d,#0b213d 55%,#050c16);
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    z-index:20;
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 18px;
+    background:rgba(3,10,20,.78);
+    border-bottom:1px solid rgba(96,165,250,.18);
+    backdrop-filter:blur(12px);
+}
+
+.topInfo{
+    min-width:100px;
+}
+
+.label{
+    display:block;
+    color:#60a5fa;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:3px;
+}
+
+.value{
+    font-size:15px;
+    font-weight:900;
+}
+
+#levelText{
+    text-align:center;
+}
+
+#scoreText{
+    color:#facc15;
+}
+
+.backButton{
+    position:absolute;
+    top:88px;
+    left:18px;
+    z-index:25;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:10px;
+    padding:9px 14px;
+    background:rgba(3,10,20,.8);
+    color:white;
+    font-weight:900;
+    font-size:11px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.backButton:hover{
+    background:#2563eb;
+    transform:translateY(-2px);
+}
+
+/* =========================
+   GAME AREA
+========================= */
+
+.gameArea{
+    position:absolute;
+    top:74px;
+    left:0;
+    right:0;
+    bottom:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow:auto;
+    padding:75px 20px 30px;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:8px;
+    font-size:clamp(22px,4vw,34px);
+    font-weight:950;
+}
+
+.title span{
+    color:#38bdf8;
+}
+
+.subtitle{
+    color:#94a9c0;
+    text-align:center;
+    font-size:12px;
+    margin-bottom:22px;
+}
+
+.progress{
+    width:min(700px,94vw);
+    height:7px;
+    background:rgba(255,255,255,.08);
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progressBar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#2563eb,#38bdf8);
+    transition:.35s;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.board{
+    width:min(850px,94vw);
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    perspective:1000px;
+}
+
+.card{
+    position:relative;
+    aspect-ratio:1/1;
+    min-height:110px;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform .45s;
+}
+
+.card.flipped,
+.card.matched{
+    transform:rotateY(180deg);
+}
+
+.cardFace{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:16px;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+}
+
+.cardBack{
+    border:1px solid rgba(96,165,250,.25);
+    background:
+        linear-gradient(135deg,#12335c,#0b1d36);
+    box-shadow:0 12px 25px rgba(0,0,0,.25);
+    font-size:30px;
+}
+
+.cardBack::after{
+    content:"?";
+    color:#38bdf8;
+    font-weight:950;
+    opacity:.8;
+}
+
+.cardFront{
+    transform:rotateY(180deg);
+    flex-direction:column;
+    gap:5px;
+    padding:8px;
+    text-align:center;
+    border:1px solid rgba(56,189,248,.3);
+    background:linear-gradient(145deg,#102d4b,#0a1c32);
+}
+
+.cardFront .english{
+    color:#38bdf8;
+    font-size:clamp(13px,2vw,20px);
+    font-weight:950;
+}
+
+.cardFront .portuguese{
+    color:#dbeafe;
+    font-size:clamp(9px,1.3vw,12px);
+}
+
+.card.matched .cardFront{
+    border-color:#34d399;
+    background:rgba(16,80,63,.8);
+}
+
+.card.matched .english{
+    color:#6ee7b7;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message{
+    min-height:45px;
+    margin-top:18px;
+    text-align:center;
+    font-size:13px;
+    font-weight:800;
+    color:#94a9c0;
+}
+
+.message.success{
+    color:#6ee7b7;
+}
+
+.message.error{
+    color:#fb7185;
+}
+
+/* =========================
+   SCREENS
+========================= */
+
+.screen{
+    position:absolute;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:
+        radial-gradient(circle at center,rgba(37,99,235,.2),rgba(2,8,18,.97) 70%);
+}
+
+.panel{
+    width:min(600px,94vw);
+    padding:40px 28px;
+    border:1px solid rgba(96,165,250,.22);
+    border-radius:24px;
+    background:rgba(7,17,31,.96);
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+    text-align:center;
+}
+
+.icon{
+    width:82px;
+    height:82px;
+    margin:0 auto 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:22px;
+    background:linear-gradient(135deg,#2563eb,#38bdf8);
+    font-size:38px;
+    box-shadow:0 15px 35px rgba(37,99,235,.3);
+}
+
+.panel h1{
+    font-size:clamp(26px,5vw,42px);
+    margin-bottom:10px;
+}
+
+.panel h1 span{
+    color:#38bdf8;
+}
+
+.panel p{
+    color:#94a9c0;
+    line-height:1.7;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-bottom:22px;
+}
+
+.stat{
+    padding:13px 7px;
+    border-radius:12px;
+    background:rgba(13,30,49,.75);
+    border:1px solid rgba(96,165,250,.12);
+}
+
+.stat strong{
+    display:block;
+    color:#60a5fa;
+    font-size:19px;
+    margin-bottom:4px;
+}
+
+.stat span{
+    color:#71869d;
+    font-size:8px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.mainButton{
+    width:100%;
+    min-height:52px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    font-weight:950;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.mainButton:hover{
+    transform:translateY(-2px);
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px){
+
+    .topbar{
+        height:64px;
+        padding:9px 10px;
+    }
+
+    .gameArea{
+        top:64px;
+        padding:70px 10px 25px;
+    }
+
+    .backButton{
+        top:75px;
+        left:10px;
+        font-size:10px;
+        padding:8px 11px;
+    }
+
+    .board{
+        grid-template-columns:repeat(3,1fr);
+        gap:8px;
+    }
+
+    .card{
+        min-height:90px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        padding:28px 20px;
+    }
+
+    .icon{
+        width:65px;
+        height:65px;
+        font-size:30px;
+    }
+}
+
+@media(max-width:420px){
+
+    .board{
+        grid-template-columns:repeat(3,1fr);
+        gap:6px;
+    }
+
+    .card{
+        min-height:80px;
+    }
+
+    .cardFront{
+        border-radius:10px;
+    }
+
+    .topInfo{
+        min-width:auto;
+    }
+
+    .label{
+        font-size:7px;
+    }
+
+    .value{
+        font-size:11px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <!-- =========================
+         TOP BAR
+    ========================= -->
+
+    <div class="topbar">
+
+        <div class="topInfo">
+            <span class="label">Score</span>
+            <span class="value" id="scoreText">0</span>
+        </div>
+
+        <div class="topInfo" id="levelText">
+            <span class="label">Level</span>
+            <span class="value">1 / 10</span>
+        </div>
+
+        <div class="topInfo">
+            <span class="label">Pairs</span>
+            <span class="value" id="pairsText">0 / 4</span>
+        </div>
+
+    </div>
+
+    <!-- =========================
+         BACK BUTTON
+    ========================= -->
+
+    <button
+        class="backButton"
+        id="backButton"
+    >
+        ← VOLTAR
+    </button>
+
+    <!-- =========================
+         GAME AREA
+    ========================= -->
+
+    <main class="gameArea">
+
+        <h1 class="title">
+            English <span>Memory</span>
+        </h1>
+
+        <p class="subtitle" id="instruction">
+            Match each English word with its Portuguese translation.
+        </p>
+
+        <div class="progress">
+            <div
+                class="progressBar"
+                id="progressBar"
+            ></div>
+        </div>
+
+        <div
+            class="board"
+            id="board"
+        ></div>
+
+        <div
+            class="message"
+            id="message"
+        >
+            Find the matching pairs!
+        </div>
+
+    </main>
+
+    <!-- =========================
+         START SCREEN
+    ========================= -->
+
+    <div
+        class="screen"
+        id="startScreen"
+    >
+
+        <div class="panel">
+
+            <div class="icon">
+                🧠
+            </div>
+
+            <h1>
+                English <span>Memory</span>
+            </h1>
+
+            <p>
+                Test your memory by matching
+                English words with their Portuguese
+                meanings. Complete all 10 levels!
+            </p>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <strong>10</strong>
+                    <span>Levels</span>
+                </div>
+
+                <div class="stat">
+                    <strong>40</strong>
+                    <span>Words</span>
+                </div>
+
+                <div class="stat">
+                    <strong>🧠</strong>
+                    <span>Memory</span>
+                </div>
+
+            </div>
+
+            <button
+                class="mainButton"
+                id="startButton"
+            >
+                START MEMORY
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         COMPLETE SCREEN
+    ========================= -->
+
+    <div
+        class="screen hidden"
+        id="completeScreen"
+    >
+
+        <div class="panel">
+
+            <div class="icon">
+                🏆
+            </div>
+
+            <h1>
+                Memory <span>Master!</span>
+            </h1>
+
+            <p>
+                Congratulations! You completed
+                all 10 English Memory levels.
+            </p>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <strong id="finalScore">0</strong>
+                    <span>Score</span>
+                </div>
+
+                <div class="stat">
+                    <strong>10</strong>
+                    <span>Levels</span>
+                </div>
+
+                <div class="stat">
+                    <strong>40</strong>
+                    <span>Words</span>
+                </div>
+
+            </div>
+
+            <button
+                class="mainButton"
+                id="againButton"
+            >
+                PLAY AGAIN
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const board =
+    document.getElementById("board");
+
+const scoreText =
+    document.getElementById("scoreText");
+
+const levelText =
+    document.getElementById("levelText");
+
+const pairsText =
+    document.getElementById("pairsText");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const message =
+    document.getElementById("message");
+
+const instruction =
+    document.getElementById("instruction");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const completeScreen =
+    document.getElementById("completeScreen");
+
+const startButton =
+    document.getElementById("startButton");
+
+const againButton =
+    document.getElementById("againButton");
+
+const backButton =
+    document.getElementById("backButton");
+
+const finalScore =
+    document.getElementById("finalScore");
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let level = 1;
+let score = 0;
+let matchedPairs = 0;
+let flippedCards = [];
+let locked = false;
+
+
+/* =========================================================
+   10 LEVELS
+   4 WORDS PER LEVEL
+   40 UNIQUE WORDS
+========================================================= */
+
+const levels = [
+
+    /* LEVEL 1 */
+
+    [
+        ["APPLE","MAÇÃ"],
+        ["HOUSE","CASA"],
+        ["BOOK","LIVRO"],
+        ["CHAIR","CADEIRA"]
+    ],
+
+    /* LEVEL 2 */
+
+    [
+        ["WINDOW","JANELA"],
+        ["DOOR","PORTA"],
+        ["TABLE","MESA"],
+        ["SCHOOL","ESCOLA"]
+    ],
+
+    /* LEVEL 3 */
+
+    [
+        ["TEACHER","PROFESSOR"],
+        ["STUDENT","ALUNO"],
+        ["PENCIL","LÁPIS"],
+        ["BAG","MOCHILA"]
+    ],
+
+    /* LEVEL 4 */
+
+    [
+        ["WATER","ÁGUA"],
+        ["BREAD","PÃO"],
+        ["MILK","LEITE"],
+        ["CHEESE","QUEIJO"]
+    ],
+
+    /* LEVEL 5 */
+
+    [
+        ["MORNING","MANHÃ"],
+        ["NIGHT","NOITE"],
+        ["TODAY","HOJE"],
+        ["TOMORROW","AMANHÃ"]
+    ],
+
+    /* LEVEL 6 */
+
+    [
+        ["HAPPY","FELIZ"],
+        ["ANGRY","ZANGADO"],
+        ["TIRED","CANSADO"],
+        ["AFRAID","ASSUSTADO"]
+    ],
+
+    /* LEVEL 7 */
+
+    [
+        ["MOUNTAIN","MONTANHA"],
+        ["RIVER","RIO"],
+        ["FOREST","FLORESTA"],
+        ["BEACH","PRAIA"]
+    ],
+
+    /* LEVEL 8 */
+
+    [
+        ["DOCTOR","MÉDICO"],
+        ["POLICE","POLÍCIA"],
+        ["FARMER","FAZENDEIRO"],
+        ["DRIVER","MOTORISTA"]
+    ],
+
+    /* LEVEL 9 */
+
+    [
+        ["TRAVEL","VIAJAR"],
+        ["ARRIVE","CHEGAR"],
+        ["LEAVE","PARTIR"],
+        ["VISIT","VISITAR"]
+    ],
+
+    /* LEVEL 10 */
+
+    [
+        ["COURAGE","CORAGEM"],
+        ["FREEDOM","LIBERDADE"],
+        ["SUCCESS","SUCESSO"],
+        ["KNOWLEDGE","CONHECIMENTO"]
+    ]
+
+];
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array){
+
+    const copy = [...array];
+
+    for(
+        let i = copy.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            copy[i],
+            copy[j]
+        ] =
+        [
+            copy[j],
+            copy[i]
+        ];
+    }
+
+    return copy;
+}
+
+
+/* =========================================================
+   START GAME
+========================================================= */
+
+function startGame(){
+
+    level = 1;
+    score = 0;
+
+    startScreen.classList.add("hidden");
+    completeScreen.classList.add("hidden");
+
+    loadLevel();
+}
+
+
+/* =========================================================
+   LOAD LEVEL
+========================================================= */
+
+function loadLevel(){
+
+    matchedPairs = 0;
+    flippedCards = [];
+    locked = false;
+
+    board.innerHTML = "";
+
+    const data =
+        levels[level - 1];
+
+    const cards = [];
+
+    data.forEach(
+        (pair,index) => {
+
+            cards.push({
+                id:index,
+                type:"english",
+                text:pair[0]
+            });
+
+            cards.push({
+                id:index,
+                type:"portuguese",
+                text:pair[1]
+            });
+
+        }
+    );
+
+    const shuffled =
+        shuffle(cards);
+
+    shuffled.forEach(
+        card => createCard(card)
+    );
+
+    updateHUD();
+
+    message.className = "message";
+
+    message.textContent =
+        "Find the matching pairs!";
+
+    instruction.textContent =
+        level === 10
+        ? "Final level! Match all the pairs!"
+        : "Match each English word with its Portuguese translation.";
+}
+
+
+/* =========================================================
+   CREATE CARD
+========================================================= */
+
+function createCard(data){
+
+    const card =
+        document.createElement("div");
+
+    card.className = "card";
+
+    card.dataset.id =
+        data.id;
+
+    card.dataset.type =
+        data.type;
+
+    const back =
+        document.createElement("div");
+
+    back.className =
+        "cardFace cardBack";
+
+
+    const front =
+        document.createElement("div");
+
+    front.className =
+        "cardFace cardFront";
+
+
+    const word =
+        document.createElement("div");
+
+    word.className =
+        data.type === "english"
+        ? "english"
+        : "portuguese";
+
+    word.textContent =
+        data.text;
+
+
+    front.appendChild(word);
+
+    card.appendChild(back);
+    card.appendChild(front);
+
+    card.addEventListener(
+        "click",
+        () => flipCard(card)
+    );
+
+    board.appendChild(card);
+}
+
+
+/* =========================================================
+   FLIP CARD
+========================================================= */
+
+function flipCard(card){
+
+    if(
+        locked ||
+        card.classList.contains("flipped") ||
+        card.classList.contains("matched")
+    ){
+        return;
+    }
+
+    card.classList.add("flipped");
+
+    flippedCards.push(card);
+
+    if(
+        flippedCards.length === 2
+    ){
+
+        checkMatch();
+    }
+}
+
+
+/* =========================================================
+   CHECK MATCH
+========================================================= */
+
+function checkMatch(){
+
+    locked = true;
+
+    const first =
+        flippedCards[0];
+
+    const second =
+        flippedCards[1];
+
+    const sameId =
+        first.dataset.id ===
+        second.dataset.id;
+
+    const differentTypes =
+        first.dataset.type !==
+        second.dataset.type;
+
+
+    if(
+        sameId &&
+        differentTypes
+    ){
+
+        setTimeout(
+            () => {
+
+                first.classList.add("matched");
+                second.classList.add("matched");
+
+                matchedPairs++;
+
+                score += 100;
+
+                flippedCards = [];
+
+                locked = false;
+
+                updateHUD();
+
+                message.className =
+                    "message success";
+
+                message.textContent =
+                    "✓ Correct match!";
+
+                if(
+                    matchedPairs ===
+                    levels[level - 1].length
+                ){
+
+                    completeLevel();
+                }
+
+            },
+            350
+        );
+
+    }else{
+
+        score =
+            Math.max(
+                0,
+                score - 10
+            );
+
+        setTimeout(
+            () => {
+
+                first.classList.remove("flipped");
+                second.classList.remove("flipped");
+
+                flippedCards = [];
+
+                locked = false;
+
+                updateHUD();
+
+                message.className =
+                    "message error";
+
+                message.textContent =
+                    "Try again! Find the correct pair.";
+
+            },
+            800
+        );
+    }
+}
+
+
+/* =========================================================
+   COMPLETE LEVEL
+========================================================= */
+
+function completeLevel(){
+
+    locked = true;
+
+    score += 250;
+
+    updateHUD();
+
+    if(
+        level >= 10
+    ){
+
+        setTimeout(
+            finishGame,
+            900
+        );
+
+        return;
+    }
+
+    message.className =
+        "message success";
+
+    message.textContent =
+        `Level ${level} complete! +250 bonus`;
+
+    setTimeout(
+        () => {
+
+            level++;
+
+            loadLevel();
+
+        },
+        1200
+    );
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD(){
+
+    scoreText.textContent =
+        score;
+
+    levelText.innerHTML = `
+        <span class="label">Level</span>
+        <span class="value">${level} / 10</span>
+    `;
+
+    pairsText.textContent =
+        `${matchedPairs} / ${levels[level - 1].length}`;
+
+    const total =
+        levels[level - 1].length;
+
+    const percentage =
+        (matchedPairs / total) * 100;
+
+    progressBar.style.width =
+        percentage + "%";
+}
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+function finishGame(){
+
+    locked = true;
+
+    localStorage.setItem(
+        "englishMemoryCompleted",
+        "true"
+    );
+
+    finalScore.textContent =
+        score;
+
+    completeScreen.classList.remove(
+        "hidden"
+    );
+}
+
+
+/* =========================================================
+   PLAY AGAIN
+========================================================= */
+
+againButton.addEventListener(
+    "click",
+    () => {
+
+        completeScreen.classList.add(
+            "hidden"
+        );
+
+        startGame();
+
+    }
+);
+
+
+/* =========================================================
+   START BUTTON
+========================================================= */
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+backButton.addEventListener(
+    "click",
+    () => {
+
+        /*
+         * O jogo está dentro de:
+         *
+         * passatempo/jogo-03/index.html
+         *
+         * Portanto o botão retorna
+         * para a página principal do
+         * passatempo.
+         */
+
+        window.location.href =
+            "../index.html";
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+window.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Escape"
+        ){
+
+            window.location.href =
+                "../index.html";
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
