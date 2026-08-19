@@ -2588,3 +2588,4 @@ document.addEventListener("DOMContentLoaded", () => {
     showSection("inicio");
 
 });
+
