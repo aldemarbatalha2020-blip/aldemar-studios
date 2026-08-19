@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Módulo 09 - Aula 05</title></head>
+<body>
+<h1>Módulo 09 — Aula 05: Verbos com -ing</h1>
+<p>Aprenda regras básicas para formar o gerúndio em inglês.</p>
+<h2>Regras</h2>
+<p>play → playing</p>
+<p>read → reading</p>
+<p>work → working</p>
+<p>write → writing</p>
+<p>make → making</p>
+<p>run → running</p>
+<h2>Atenção</h2>
+<p>Alguns verbos sofrem alterações na escrita antes de receber -ing.</p>
+<h2>Prática</h2>
+<p>Transforme: study, dance, run, swim, make.</p>
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+</html>
+

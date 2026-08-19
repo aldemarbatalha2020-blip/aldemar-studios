@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Módulo 09 - Aula 08</title></head>
+<body>
+<h1>Módulo 09 — Aula 08: Present Simple × Present Continuous</h1>
+<p>Vamos diferenciar hábitos de ações que estão acontecendo agora.</p>
+<h2>Present Simple</h2>
+<p>I study English every day.</p>
+<p>Eu estudo inglês todos os dias.</p>
+<h2>Present Continuous</h2>
+<p>I am studying English now.</p>
+<p>Eu estou estudando inglês agora.</p>
+<h2>Compare</h2>
+<p>She works at a school. — Ela trabalha em uma escola.</p>
+<p>She is working now. — Ela está trabalhando agora.</p>
+<h2>Prática</h2>
+<p>Identifique se cada frase representa hábito ou ação acontecendo agora.</p>
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+</html>
+

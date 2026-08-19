@@ -1,0 +1,981 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aldemar Studios | Aula 07 - Family</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef5f6;
+            color: #30434a;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #315c67, #47727b);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        header .brand {
+            font-size: 14px;
+            letter-spacing: 2px;
+            opacity: .9;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: clamp(28px, 5vw, 44px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 17px;
+            opacity: .9;
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: 30px auto 60px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: white;
+            color: #315c67;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        }
+
+        .back:hover {
+            background: #dcecef;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 25px rgba(49,92,103,.08);
+        }
+
+        .card h2 {
+            color: #315c67;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .card h3 {
+            color: #47727b;
+            margin: 20px 0 8px;
+        }
+
+        .objectives li {
+            margin-left: 22px;
+            margin-bottom: 7px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: #dcecef;
+            color: #315c67;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            border: 1px solid #cbdde0;
+        }
+
+        tr:nth-child(even) {
+            background: #f6fafb;
+        }
+
+        .highlight {
+            background: #eef6f7;
+            border-left: 5px solid #47727b;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff8e8;
+            border-left: 5px solid #d2a74a;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .dialogue {
+            background: #f3f8f8;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .dialogue p {
+            margin-bottom: 8px;
+        }
+
+        .question {
+            background: #f8fbfb;
+            border: 1px solid #d8e5e7;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 14px 0;
+        }
+
+        .question strong {
+            color: #315c67;
+        }
+
+        .answer-line {
+            display: block;
+            border-bottom: 1px solid #8ca2a8;
+            margin-top: 15px;
+            height: 28px;
+        }
+
+        .challenge {
+            background: linear-gradient(135deg,#e4f1f2,#f5fafa);
+            border: 1px solid #cbdfe2;
+        }
+
+        .complete-button {
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            background: #315c67;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .complete-button:hover {
+            background: #244a54;
+        }
+
+        .pdf-button {
+            display: inline-block;
+            padding: 13px 22px;
+            background: #315c67;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .pdf-button:hover {
+            background: #244a54;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #315c67;
+            color: white;
+        }
+
+        footer strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width:700px) {
+
+            .card {
+                padding: 20px;
+                border-radius: 14px;
+            }
+
+            .card h2 {
+                font-size: 21px;
+            }
+
+            header {
+                padding: 28px 15px;
+            }
+
+            .container {
+                width: 94%;
+            }
+        }
+
+        @media print {
+
+            body {
+                background: white;
+            }
+
+            header {
+                background: white;
+                color: black;
+                border-bottom: 2px solid #315c67;
+            }
+
+            .back,
+            .complete-button,
+            .pdf-button {
+                display: none;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+
+            footer {
+                background: white;
+                color: black;
+                border-top: 1px solid #ddd;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        ALDEMAR STUDIOS
+    </div>
+
+    <h1>👨‍👩‍👧‍👦 FAMILY — FAMÍLIA</h1>
+
+    <p>
+        Mini-Curso de Inglês Gratuito • Módulo 1 • Aula 07
+    </p>
+
+</header>
+
+
+<main class="container">
+
+    <a href="../../index.html" class="back">
+        ← Voltar para o módulo
+    </a>
+
+
+    <!-- OBJETIVOS -->
+
+    <section class="card">
+
+        <h2>📚 1. Objetivos da Aula</h2>
+
+        <ul class="objectives">
+
+            <li>Aprender o vocabulário básico sobre família.</li>
+
+            <li>Reconhecer os nomes dos principais membros da família em inglês.</li>
+
+            <li>Compreender frases simples sobre familiares.</li>
+
+            <li>Praticar a apresentação da própria família.</li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- VOCABULÁRIO -->
+
+    <section class="card">
+
+        <h2>👨‍👩‍👧‍👦 2. Vocabulário Principal</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>English</th>
+                        <th>Português</th>
+                        <th>Exemplo</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Family</td>
+                        <td>Família</td>
+                        <td>My family</td>
+                    </tr>
+
+                    <tr>
+                        <td>Father</td>
+                        <td>Pai</td>
+                        <td>My father</td>
+                    </tr>
+
+                    <tr>
+                        <td>Mother</td>
+                        <td>Mãe</td>
+                        <td>My mother</td>
+                    </tr>
+
+                    <tr>
+                        <td>Parents</td>
+                        <td>Pais</td>
+                        <td>My parents</td>
+                    </tr>
+
+                    <tr>
+                        <td>Son</td>
+                        <td>Filho</td>
+                        <td>My son</td>
+                    </tr>
+
+                    <tr>
+                        <td>Daughter</td>
+                        <td>Filha</td>
+                        <td>My daughter</td>
+                    </tr>
+
+                    <tr>
+                        <td>Brother</td>
+                        <td>Irmão</td>
+                        <td>My brother</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sister</td>
+                        <td>Irmã</td>
+                        <td>My sister</td>
+                    </tr>
+
+                    <tr>
+                        <td>Grandfather</td>
+                        <td>Avô</td>
+                        <td>My grandfather</td>
+                    </tr>
+
+                    <tr>
+                        <td>Grandmother</td>
+                        <td>Avó</td>
+                        <td>My grandmother</td>
+                    </tr>
+
+                    <tr>
+                        <td>Uncle</td>
+                        <td>Tio</td>
+                        <td>My uncle</td>
+                    </tr>
+
+                    <tr>
+                        <td>Aunt</td>
+                        <td>Tia</td>
+                        <td>My aunt</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cousin</td>
+                        <td>Primo / Prima</td>
+                        <td>My cousin</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXPLICAÇÃO -->
+
+    <section class="card">
+
+        <h2>🏠 3. Como falar sobre a família</h2>
+
+        <p>
+            Para falar sobre familiares, podemos usar
+            <strong>my</strong>, que significa
+            <strong>meu</strong> ou <strong>minha</strong>.
+        </p>
+
+        <div class="highlight">
+
+            <strong>my father</strong>
+            — meu pai
+
+            <br><br>
+
+            <strong>my mother</strong>
+            — minha mãe
+
+            <br><br>
+
+            <strong>my brother</strong>
+            — meu irmão
+
+            <br><br>
+
+            <strong>my sister</strong>
+            — minha irmã
+
+        </div>
+
+
+        <h3>My family</h3>
+
+        <p>
+            Podemos utilizar frases simples para apresentar
+            nossa família.
+        </p>
+
+        <div class="highlight">
+
+            <strong>This is my family.</strong>
+
+            <br>
+
+            Esta é minha família.
+
+            <br><br>
+
+            <strong>This is my mother.</strong>
+
+            <br>
+
+            Esta é minha mãe.
+
+            <br><br>
+
+            <strong>This is my father.</strong>
+
+            <br>
+
+            Este é meu pai.
+
+        </div>
+
+    </section>
+
+
+    <!-- FRASES -->
+
+    <section class="card">
+
+        <h2>💬 4. Frases Importantes</h2>
+
+        <div class="highlight">
+
+            <strong>I have one brother.</strong>
+            — Eu tenho um irmão.
+
+            <br><br>
+
+            <strong>I have two sisters.</strong>
+            — Eu tenho duas irmãs.
+
+            <br><br>
+
+            <strong>This is my mother.</strong>
+            — Esta é minha mãe.
+
+            <br><br>
+
+            <strong>This is my father.</strong>
+            — Este é meu pai.
+
+            <br><br>
+
+            <strong>My family is big.</strong>
+            — Minha família é grande.
+
+            <br><br>
+
+            <strong>My family is small.</strong>
+            — Minha família é pequena.
+
+        </div>
+
+    </section>
+
+
+    <!-- ILUSTRAÇÃO TEXTUAL -->
+
+    <section class="card challenge">
+
+        <h2>🖼️ 5. Observe a Família</h2>
+
+        <div class="highlight">
+
+            👴 <strong>Grandfather</strong> — Avô
+
+            <br><br>
+
+            👵 <strong>Grandmother</strong> — Avó
+
+            <br><br>
+
+            👨 <strong>Father</strong> — Pai
+
+            <br><br>
+
+            👩 <strong>Mother</strong> — Mãe
+
+            <br><br>
+
+            👦 <strong>Son / Brother</strong> — Filho / Irmão
+
+            <br><br>
+
+            👧 <strong>Daughter / Sister</strong> — Filha / Irmã
+
+        </div>
+
+    </section>
+
+
+    <!-- DIÁLOGO -->
+
+    <section class="card">
+
+        <h2>🗣️ 6. Diálogo</h2>
+
+        <div class="dialogue">
+
+            <p>
+                <strong>Anna:</strong>
+                Who is this?
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                This is my mother.
+            </p>
+
+            <p>
+                <strong>Anna:</strong>
+                And who is he?
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                He is my father.
+            </p>
+
+            <p>
+                <strong>Anna:</strong>
+                Do you have brothers?
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                Yes. I have one brother.
+            </p>
+
+        </div>
+
+
+        <h3>Tradução</h3>
+
+        <div class="highlight">
+
+            Anna: Quem é esta?
+
+            <br>
+
+            John: Esta é minha mãe.
+
+            <br>
+
+            Anna: E quem é ele?
+
+            <br>
+
+            John: Ele é meu pai.
+
+            <br>
+
+            Anna: Você tem irmãos?
+
+            <br>
+
+            John: Sim. Eu tenho um irmão.
+
+        </div>
+
+    </section>
+
+
+    <!-- ATIVIDADES -->
+
+    <section class="card">
+
+        <h2>✏️ 7. Atividades</h2>
+
+
+        <div class="question">
+
+            <strong>1. Relacione:</strong>
+
+            <p>
+
+                1. Father<br>
+                2. Mother<br>
+                3. Brother<br>
+                4. Sister<br>
+                5. Grandmother
+
+            </p>
+
+            <p>
+
+                a) Irmã<br>
+                b) Mãe<br>
+                c) Avó<br>
+                d) Pai<br>
+                e) Irmão
+
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>2. Complete as frases.</strong>
+
+            <p>
+                Use:
+                <strong>father — mother — brother — sister</strong>
+            </p>
+
+            <p>
+                1. My __________ is a man.
+            </p>
+
+            <p>
+                2. My __________ is a woman.
+            </p>
+
+            <p>
+                3. My __________ is a boy.
+            </p>
+
+            <p>
+                4. My __________ is a girl.
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>3. Escolha a alternativa correta.</strong>
+
+            <p>
+                Como dizemos "mãe" em inglês?
+            </p>
+
+            <p>
+
+                ( &nbsp; ) A) Father
+
+                <br>
+
+                ( &nbsp; ) B) Mother
+
+                <br>
+
+                ( &nbsp; ) C) Sister
+
+                <br>
+
+                ( &nbsp; ) D) Brother
+
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>4. Traduza:</strong>
+
+            <p>
+                Meu pai.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Minha mãe.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Meu irmão.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Minha irmã.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>5. Traduza para o inglês.</strong>
+
+            <p>
+                Esta é minha família.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Esta é minha mãe.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Este é meu pai.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUÇÃO -->
+
+    <section class="card">
+
+        <h2>📝 8. Produção</h2>
+
+        <p>
+            Agora é sua vez!
+            Escreva algumas frases simples sobre sua família
+            utilizando o vocabulário aprendido.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Exemplo:</strong>
+
+            <br><br>
+
+            My name is Lucas.
+
+            <br>
+
+            This is my family.
+
+            <br>
+
+            This is my mother.
+
+            <br>
+
+            This is my father.
+
+            <br>
+
+            I have one sister.
+
+        </div>
+
+        <p>
+            Agora escreva sobre sua própria família:
+        </p>
+
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+
+    </section>
+
+
+    <!-- DESAFIO -->
+
+    <section class="card challenge">
+
+        <h2>🎯 9. Desafio da Aula</h2>
+
+        <p>
+            Tente escrever em inglês cinco palavras
+            relacionadas à família sem consultar a tabela.
+        </p>
+
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+
+    </section>
+
+
+    <!-- MATERIAL -->
+
+    <section class="card">
+
+        <h2>📄 10. Material Didático</h2>
+
+        <p>
+            O material didático desta aula poderá ser
+            disponibilizado em PDF para download.
+        </p>
+
+        <a href="#" class="pdf-button">
+            📥 Baixar material em PDF
+        </a>
+
+    </section>
+
+
+    <!-- CONCLUSÃO -->
+
+    <section class="card">
+
+        <h2>✅ 11. Conclusão da Aula</h2>
+
+        <p>
+            Nesta aula você aprendeu palavras e expressões
+            básicas para falar sobre sua família em inglês.
+        </p>
+
+        <p>
+            Revise o vocabulário e pratique as frases
+            antes de avançar para a próxima aula.
+        </p>
+
+        <button
+            type="button"
+            class="complete-button"
+            onclick="marcarConcluida()"
+        >
+            ✅ MARCAR AULA COMO CONCLUÍDA
+        </button>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>ALDEMAR STUDIOS</strong>
+
+    Mini-Curso de Inglês Gratuito
+
+    <br>
+
+    Módulo 1 • Aula 07
+
+</footer>
+
+
+<script>
+
+    function marcarConcluida() {
+
+        localStorage.setItem(
+            "modulo01_aula07_concluida",
+            "true"
+        );
+
+        alert(
+            "Aula 07 concluída com sucesso!"
+        );
+
+    }
+
+</script>
+
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+
+</html>

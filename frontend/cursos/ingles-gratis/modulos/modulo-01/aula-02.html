@@ -1,0 +1,1357 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Aldemar Studios | Aula 02 - Introducing Yourself</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #eef5f6;
+
+            color: #30434a;
+
+            line-height: 1.7;
+        }
+
+        header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #315c67,
+                    #47727b
+                );
+
+            color: white;
+
+            padding: 35px 20px;
+
+            text-align: center;
+        }
+
+        header .brand {
+
+            font-size: 14px;
+
+            letter-spacing: 2px;
+
+            opacity: .9;
+
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+
+            font-size:
+                clamp(28px, 5vw, 44px);
+
+            margin-bottom: 8px;
+        }
+
+        header p {
+
+            font-size: 17px;
+
+            opacity: .9;
+        }
+
+        .container {
+
+            width: min(1100px, 92%);
+
+            margin:
+                30px auto
+                60px;
+        }
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            padding:
+                10px 18px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #315c67;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,.06);
+        }
+
+        .back:hover {
+
+            background: #dcecef;
+        }
+
+        .card {
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            padding: 28px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(49,92,103,.08);
+        }
+
+        .card h2 {
+
+            color: #315c67;
+
+            margin-bottom: 15px;
+
+            font-size: 24px;
+        }
+
+        .card h3 {
+
+            color: #47727b;
+
+            margin:
+                20px 0
+                8px;
+        }
+
+        .highlight {
+
+            background: #eef6f7;
+
+            border-left:
+                5px solid #47727b;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin: 15px 0;
+        }
+
+        .warning {
+
+            background: #fff8e8;
+
+            border-left:
+                5px solid #d2a74a;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin: 15px 0;
+        }
+
+        .vocabulary {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+        }
+
+        .vocabulary th {
+
+            background: #dcecef;
+
+            color: #315c67;
+
+            text-align: left;
+        }
+
+        .vocabulary th,
+        .vocabulary td {
+
+            padding: 13px;
+
+            border:
+                1px solid #cbdde0;
+        }
+
+        .vocabulary tr:nth-child(even) {
+
+            background: #f6fafb;
+        }
+
+        .table-wrapper {
+
+            overflow-x: auto;
+        }
+
+        .dialogue {
+
+            background: #f3f8f8;
+
+            border-radius: 14px;
+
+            padding: 20px;
+        }
+
+        .dialogue p {
+
+            margin-bottom: 9px;
+        }
+
+        .question {
+
+            background: #f8fbfb;
+
+            border:
+                1px solid #d8e5e7;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            margin: 14px 0;
+        }
+
+        .question strong {
+
+            color: #315c67;
+        }
+
+        .answer-line {
+
+            display: block;
+
+            border-bottom:
+                1px solid #8ca2a8;
+
+            margin-top: 15px;
+
+            height: 28px;
+        }
+
+        .challenge {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e4f1f2,
+                    #f5fafa
+                );
+
+            border:
+                1px solid #cbdfe2;
+        }
+
+        .pdf-box {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f1f7f8,
+                    #ffffff
+                );
+
+            border:
+                1px solid #cbdfe2;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            margin-top: 15px;
+        }
+
+        .pdf-button {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding:
+                12px 20px;
+
+            border-radius: 10px;
+
+            background: #315c67;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .pdf-button:hover {
+
+            background: #244a54;
+        }
+
+        .complete-button {
+
+            width: 100%;
+
+            border: none;
+
+            padding: 16px;
+
+            border-radius: 12px;
+
+            background: #315c67;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 15px;
+        }
+
+        .complete-button:hover {
+
+            background: #244a54;
+        }
+
+        .navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+        .navigation a {
+
+            flex: 1;
+
+            text-align: center;
+
+            padding: 13px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #315c67;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,.06);
+        }
+
+        .navigation a:hover {
+
+            background: #dcecef;
+        }
+
+        footer {
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            background: #315c67;
+
+            color: white;
+        }
+
+        footer strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 700px) {
+
+            .card {
+
+                padding: 20px;
+
+                border-radius: 14px;
+            }
+
+            .card h2 {
+
+                font-size: 21px;
+            }
+
+            header {
+
+                padding:
+                    28px 15px;
+            }
+
+            .container {
+
+                width: 94%;
+            }
+
+            .navigation {
+
+                flex-direction: column;
+            }
+
+        }
+
+        @media print {
+
+            body {
+
+                background: white;
+            }
+
+            header {
+
+                background: white;
+
+                color: black;
+
+                border-bottom:
+                    2px solid #315c67;
+            }
+
+            .back,
+            .complete-button,
+            .navigation,
+            .pdf-button {
+
+                display: none;
+            }
+
+            .card {
+
+                box-shadow: none;
+
+                border:
+                    1px solid #ddd;
+
+                break-inside: avoid;
+            }
+
+            footer {
+
+                background: white;
+
+                color: black;
+
+                border-top:
+                    1px solid #ddd;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="brand">
+        ALDEMAR STUDIOS
+    </div>
+
+    <h1>
+        👋 INTRODUCING YOURSELF
+    </h1>
+
+    <p>
+        Mini-Curso de Inglês Gratuito
+        • Módulo 01 • Aula 02
+    </p>
+
+</header>
+
+
+<main class="container">
+
+
+    <a
+        href="../../index.html"
+        class="back"
+    >
+        ← Voltar ao módulo
+    </a>
+
+
+    <!-- =================================================
+         OBJETIVOS
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            📚 1. Objetivos da Aula
+        </h2>
+
+        <p>
+            Nesta aula, você aprenderá
+            como se apresentar em inglês.
+        </p>
+
+        <br>
+
+        <ul>
+
+            <li>
+                Dizer seu nome.
+            </li>
+
+            <li>
+                Perguntar o nome de outra pessoa.
+            </li>
+
+            <li>
+                Usar
+                <strong>My name is...</strong>.
+            </li>
+
+            <li>
+                Usar
+                <strong>I am...</strong>
+                e
+                <strong>I'm...</strong>.
+            </li>
+
+            <li>
+                Dizer que é um prazer
+                conhecer alguém.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- =================================================
+         VOCABULÁRIO
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            🗣️ 2. Vocabulário Principal
+        </h2>
+
+        <div class="table-wrapper">
+
+            <table class="vocabulary">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            English
+                        </th>
+
+                        <th>
+                            Português
+                        </th>
+
+                        <th>
+                            Uso
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            My name is...
+                        </td>
+
+                        <td>
+                            Meu nome é...
+                        </td>
+
+                        <td>
+                            Apresentar o nome
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            I am...
+                        </td>
+
+                        <td>
+                            Eu sou / Eu estou...
+                        </td>
+
+                        <td>
+                            Apresentação
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            I'm...
+                        </td>
+
+                        <td>
+                            Eu sou / Eu estou...
+                        </td>
+
+                        <td>
+                            Forma contraída
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            My
+                        </td>
+
+                        <td>
+                            Meu / Minha
+                        </td>
+
+                        <td>
+                            Posse
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            name
+                        </td>
+
+                        <td>
+                            nome
+                        </td>
+
+                        <td>
+                            Identificação
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            Nice to meet you.
+                        </td>
+
+                        <td>
+                            Prazer em conhecer você.
+                        </td>
+
+                        <td>
+                            Primeiro encontro
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            Nice to meet you too.
+                        </td>
+
+                        <td>
+                            Prazer em conhecer você também.
+                        </td>
+
+                        <td>
+                            Resposta
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         EXPLICAÇÃO
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            💡 3. Como se Apresentar
+        </h2>
+
+        <h3>
+            My name is...
+        </h3>
+
+        <p>
+            A expressão
+            <strong>My name is...</strong>
+            significa:
+            <strong>Meu nome é...</strong>
+        </p>
+
+        <div class="highlight">
+
+            <strong>
+                My name is Aldemar.
+            </strong>
+
+            <br>
+
+            Meu nome é Aldemar.
+
+        </div>
+
+
+        <h3>
+            I am...
+        </h3>
+
+        <p>
+            Também podemos utilizar
+            <strong>I am...</strong>
+            para dizer quem somos.
+        </p>
+
+        <div class="highlight">
+
+            <strong>
+                I am Aldemar.
+            </strong>
+
+            <br>
+
+            Eu sou Aldemar.
+
+        </div>
+
+
+        <h3>
+            I'm...
+        </h3>
+
+        <p>
+            <strong>I'm</strong>
+            é a forma contraída de
+            <strong>I am</strong>.
+        </p>
+
+        <div class="highlight">
+
+            <strong>
+                I'm Aldemar.
+            </strong>
+
+            <br>
+
+            Eu sou Aldemar.
+
+        </div>
+
+
+        <div class="warning">
+
+            <strong>
+                ⚠️ Atenção!
+            </strong>
+
+            <br><br>
+
+            <strong>I am</strong> e
+            <strong>I'm</strong>
+            possuem o mesmo significado.
+
+            <br><br>
+
+            A diferença é que
+            <strong>I'm</strong>
+            é uma forma contraída,
+            muito comum em conversas.
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         EXEMPLOS
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            ✏️ 4. Exemplos
+        </h2>
+
+        <div class="highlight">
+
+            <strong>
+                My name is Maria.
+            </strong>
+
+            <br>
+
+            Meu nome é Maria.
+
+            <br><br>
+
+            <strong>
+                My name is John.
+            </strong>
+
+            <br>
+
+            Meu nome é John.
+
+            <br><br>
+
+            <strong>
+                I am Ana.
+            </strong>
+
+            <br>
+
+            Eu sou Ana.
+
+            <br><br>
+
+            <strong>
+                I'm Peter.
+            </strong>
+
+            <br>
+
+            Eu sou Peter.
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         NICE TO MEET YOU
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            🤝 5. Nice to Meet You
+        </h2>
+
+        <p>
+            Quando conhecemos alguém pela
+            primeira vez, podemos dizer:
+        </p>
+
+        <div class="highlight">
+
+            <strong>
+                Nice to meet you.
+            </strong>
+
+            <br>
+
+            Prazer em conhecer você.
+
+        </div>
+
+        <p>
+            A outra pessoa pode responder:
+        </p>
+
+        <div class="highlight">
+
+            <strong>
+                Nice to meet you too.
+            </strong>
+
+            <br>
+
+            Prazer em conhecer você também.
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         DIÁLOGO
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            💬 6. Diálogo
+        </h2>
+
+        <div class="dialogue">
+
+            <p>
+                <strong>Maria:</strong>
+                Hello!
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                Hi!
+            </p>
+
+            <p>
+                <strong>Maria:</strong>
+                My name is Maria.
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                My name is John.
+            </p>
+
+            <p>
+                <strong>Maria:</strong>
+                Nice to meet you.
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                Nice to meet you too.
+            </p>
+
+        </div>
+
+
+        <h3>
+            Tradução
+        </h3>
+
+        <div class="highlight">
+
+            Maria: Olá!
+
+            <br>
+
+            John: Oi!
+
+            <br>
+
+            Maria: Meu nome é Maria.
+
+            <br>
+
+            John: Meu nome é John.
+
+            <br>
+
+            Maria: Prazer em conhecer você.
+
+            <br>
+
+            John: Prazer em conhecer você também.
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ATIVIDADES
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            ✏️ 7. Atividades
+        </h2>
+
+
+        <div class="question">
+
+            <strong>
+                1. Complete:
+            </strong>
+
+            <p>
+                My ______ is Ana.
+            </p>
+
+            <p>
+                a) name
+                <br>
+                b) meet
+                <br>
+                c) nice
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                2. Traduza:
+            </strong>
+
+            <p>
+                My name is Carlos.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                3. Traduza para o inglês:
+            </strong>
+
+            <p>
+                Meu nome é Ana.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                4. Escolha a alternativa correta:
+            </strong>
+
+            <p>
+                Como dizemos
+                "Prazer em conhecer você"?
+            </p>
+
+            <p>
+                ( &nbsp; )
+                Goodbye.
+
+                <br>
+
+                ( &nbsp; )
+                Nice to meet you.
+
+                <br>
+
+                ( &nbsp; )
+                Good night.
+
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                5. Complete:
+            </strong>
+
+            <p>
+                Nice to meet you ______.
+            </p>
+
+            <p>
+                a) name
+                <br>
+                b) too
+                <br>
+                c) am
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                6. Traduza:
+            </strong>
+
+            <p>
+                I am Peter.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         DESAFIO
+    ================================================== -->
+
+    <section class="card challenge">
+
+        <h2>
+            🎯 8. Desafio da Aula
+        </h2>
+
+        <p>
+            Imagine que você acabou de conhecer
+            uma pessoa que fala inglês.
+        </p>
+
+        <br>
+
+        <p>
+            Escreva uma pequena apresentação
+            utilizando as estruturas aprendidas.
+        </p>
+
+        <br>
+
+        <div class="highlight">
+
+            <strong>
+                Hello!
+            </strong>
+
+            <br><br>
+
+            My name is __________.
+
+            <br><br>
+
+            I am __________.
+
+            <br><br>
+
+            Nice to meet you!
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         MATERIAL PDF
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            📄 9. Material Didático
+        </h2>
+
+        <p>
+            O material didático complementar
+            desta aula ficará disponível para
+            download nesta área.
+        </p>
+
+        <div class="pdf-box">
+
+            <strong>
+                📘 Aula 02 — Introducing Yourself
+            </strong>
+
+            <p>
+                Material de apoio em PDF.
+            </p>
+
+            <!--
+                O arquivo PDF será conectado aqui
+                quando for criado.
+
+                Exemplo:
+
+                aula-02.pdf
+            -->
+
+            <a
+                href="#"
+                class="pdf-button"
+                onclick="alert('O material em PDF desta aula será disponibilizado em breve.'); return false;"
+            >
+                📥 Baixar material PDF
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         CONCLUSÃO
+    ================================================== -->
+
+    <section class="card">
+
+        <h2>
+            ✅ 10. Conclusão
+        </h2>
+
+        <p>
+            Parabéns! Você chegou ao final
+            da Aula 02.
+        </p>
+
+        <br>
+
+        <p>
+            Nesta aula você aprendeu a dizer
+            seu nome e a se apresentar em inglês.
+        </p>
+
+        <button
+            type="button"
+            class="complete-button"
+            onclick="concluirAula()"
+        >
+            ✅ CONCLUIR AULA
+        </button>
+
+    </section>
+
+
+    <!-- =================================================
+         NAVEGAÇÃO
+    ================================================== -->
+
+    <div class="navigation">
+
+        <a href="aula-01.html">
+            ← Aula anterior
+        </a>
+
+        <a href="aula-03.html">
+            Próxima aula →
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<footer>
+
+    <strong>
+        ALDEMAR STUDIOS
+    </strong>
+
+    Mini-Curso de Inglês Gratuito
+
+</footer>
+
+
+<script>
+
+    function concluirAula() {
+
+        localStorage.setItem(
+            "cursoInglesModulo01Aula02",
+            "concluida"
+        );
+
+        alert(
+            "Aula 02 concluída com sucesso!"
+        );
+
+    }
+
+</script>
+
+
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+
+</html>

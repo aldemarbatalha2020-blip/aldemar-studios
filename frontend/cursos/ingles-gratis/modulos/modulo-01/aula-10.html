@@ -1,0 +1,1189 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aldemar Studios | Aula 10 - Revisão do Módulo 1</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef5f6;
+            color: #30434a;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #315c67, #47727b);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        header .brand {
+            font-size: 14px;
+            letter-spacing: 2px;
+            opacity: .9;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: clamp(28px, 5vw, 44px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 17px;
+            opacity: .9;
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: 30px auto 60px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: white;
+            color: #315c67;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        }
+
+        .back:hover {
+            background: #dcecef;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 25px rgba(49, 92, 103, .08);
+        }
+
+        .card h2 {
+            color: #315c67;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .card h3 {
+            color: #47727b;
+            margin: 20px 0 8px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: #dcecef;
+            color: #315c67;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            border: 1px solid #cbdde0;
+        }
+
+        tr:nth-child(even) {
+            background: #f6fafb;
+        }
+
+        .highlight {
+            background: #eef6f7;
+            border-left: 5px solid #47727b;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff8e8;
+            border-left: 5px solid #d2a74a;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .example {
+            background: #f3f8f8;
+            border-radius: 14px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .example p {
+            margin-bottom: 8px;
+        }
+
+        .question {
+            background: #f8fbfb;
+            border: 1px solid #d8e5e7;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 14px 0;
+        }
+
+        .question strong {
+            color: #315c67;
+        }
+
+        .answer-line {
+            display: block;
+            border-bottom: 1px solid #8ca2a8;
+            margin-top: 15px;
+            height: 28px;
+        }
+
+        .challenge {
+            background: linear-gradient(135deg, #e4f1f2, #f5fafa);
+            border: 1px solid #cbdfe2;
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .complete-button {
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            background: #315c67;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .complete-button:hover {
+            background: #244a54;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #315c67;
+            color: white;
+        }
+
+        footer strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 700px) {
+
+            .card {
+                padding: 20px;
+                border-radius: 14px;
+            }
+
+            .card h2 {
+                font-size: 21px;
+            }
+
+            header {
+                padding: 28px 15px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+        }
+
+        @media print {
+
+            body {
+                background: white;
+            }
+
+            header {
+                background: white;
+                color: black;
+                border-bottom: 2px solid #315c67;
+            }
+
+            .back,
+            .complete-button {
+                display: none;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+
+            footer {
+                background: white;
+                color: black;
+                border-top: 1px solid #ddd;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="brand">
+        ALDEMAR STUDIOS
+    </div>
+
+    <h1>🇺🇸 REVIEW — MODULE 1</h1>
+
+    <p>
+        Curso de Inglês Gratuito • Módulo 1 • Aula 10
+    </p>
+
+</header>
+
+
+<main class="container">
+
+
+    <a href="../../index.html" class="back">
+        ← Voltar para o módulo
+    </a>
+
+
+    <!-- INTRODUÇÃO -->
+
+    <section class="card">
+
+        <h2>📚 1. Revisão do Módulo 1</h2>
+
+        <p>
+            Parabéns! Você chegou à última aula do
+            <strong>Módulo 1</strong>.
+        </p>
+
+        <p>
+            Nesta aula, vamos revisar os principais conteúdos
+            estudados nas aulas anteriores.
+        </p>
+
+        <div class="highlight">
+
+            <strong>Nesta revisão você estudará:</strong>
+
+            <br><br>
+
+            • Greetings — Cumprimentos
+            <br>
+            • Personal Pronouns — Pronomes pessoais
+            <br>
+            • Verb To Be — Verbo ser/estar
+            <br>
+            • Articles — Artigos
+            <br>
+            • Vocabulary — Vocabulário básico
+            <br>
+            • Basic sentences — Frases básicas
+
+        </div>
+
+    </section>
+
+
+    <!-- GREETINGS -->
+
+    <section class="card">
+
+        <h2>👋 2. Greetings — Cumprimentos</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>English</th>
+                        <th>Português</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Hello</td>
+                        <td>Olá</td>
+                    </tr>
+
+                    <tr>
+                        <td>Hi</td>
+                        <td>Oi</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good morning</td>
+                        <td>Bom dia</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good afternoon</td>
+                        <td>Boa tarde</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good evening</td>
+                        <td>Boa noite — cumprimento</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good night</td>
+                        <td>Boa noite — despedida</td>
+                    </tr>
+
+                    <tr>
+                        <td>Goodbye</td>
+                        <td>Tchau / Adeus</td>
+                    </tr>
+
+                    <tr>
+                        <td>See you</td>
+                        <td>Até mais</td>
+                    </tr>
+
+                    <tr>
+                        <td>See you later</td>
+                        <td>Até mais tarde</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRONOMES -->
+
+    <section class="card">
+
+        <h2>👤 3. Personal Pronouns</h2>
+
+        <p>
+            Os pronomes pessoais são utilizados para indicar
+            pessoas, animais ou coisas.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Pronome</th>
+                        <th>Português</th>
+                        <th>Exemplo</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>I</td>
+                        <td>Eu</td>
+                        <td>I am Aldemar.</td>
+                    </tr>
+
+                    <tr>
+                        <td>You</td>
+                        <td>Você / Vocês</td>
+                        <td>You are my friend.</td>
+                    </tr>
+
+                    <tr>
+                        <td>He</td>
+                        <td>Ele</td>
+                        <td>He is a teacher.</td>
+                    </tr>
+
+                    <tr>
+                        <td>She</td>
+                        <td>Ela</td>
+                        <td>She is a student.</td>
+                    </tr>
+
+                    <tr>
+                        <td>It</td>
+                        <td>Ele / Ela — coisas e animais</td>
+                        <td>It is a dog.</td>
+                    </tr>
+
+                    <tr>
+                        <td>We</td>
+                        <td>Nós</td>
+                        <td>We are friends.</td>
+                    </tr>
+
+                    <tr>
+                        <td>They</td>
+                        <td>Eles / Elas</td>
+                        <td>They are students.</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- TO BE -->
+
+    <section class="card">
+
+        <h2>🔤 4. Verb To Be</h2>
+
+        <p>
+            O verbo <strong>to be</strong> pode significar
+            <strong>ser</strong> ou <strong>estar</strong>.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Pronome</th>
+                        <th>Verb To Be</th>
+                        <th>Exemplo</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>I</td>
+                        <td>AM</td>
+                        <td>I am happy.</td>
+                    </tr>
+
+                    <tr>
+                        <td>You</td>
+                        <td>ARE</td>
+                        <td>You are nice.</td>
+                    </tr>
+
+                    <tr>
+                        <td>He</td>
+                        <td>IS</td>
+                        <td>He is tall.</td>
+                    </tr>
+
+                    <tr>
+                        <td>She</td>
+                        <td>IS</td>
+                        <td>She is beautiful.</td>
+                    </tr>
+
+                    <tr>
+                        <td>It</td>
+                        <td>IS</td>
+                        <td>It is small.</td>
+                    </tr>
+
+                    <tr>
+                        <td>We</td>
+                        <td>ARE</td>
+                        <td>We are friends.</td>
+                    </tr>
+
+                    <tr>
+                        <td>They</td>
+                        <td>ARE</td>
+                        <td>They are students.</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="warning">
+
+            <strong>⚠️ Regra importante:</strong>
+
+            <br><br>
+
+            I → <strong>AM</strong>
+            <br>
+
+            He / She / It → <strong>IS</strong>
+            <br>
+
+            You / We / They → <strong>ARE</strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- ARTICLES -->
+
+    <section class="card">
+
+        <h2>📖 5. Articles — A, An e The</h2>
+
+        <p>
+            Os artigos são palavras que acompanham os substantivos.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Artigo</th>
+                        <th>Uso</th>
+                        <th>Exemplo</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>A</td>
+                        <td>Antes de som de consoante</td>
+                        <td>a teacher</td>
+                    </tr>
+
+                    <tr>
+                        <td>An</td>
+                        <td>Antes de som de vogal</td>
+                        <td>an apple</td>
+                    </tr>
+
+                    <tr>
+                        <td>The</td>
+                        <td>Algo específico</td>
+                        <td>the teacher</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="example">
+
+            <p>
+                <strong>I am a teacher.</strong>
+            </p>
+
+            <p>
+                Eu sou um professor.
+            </p>
+
+            <br>
+
+            <p>
+                <strong>She is an actress.</strong>
+            </p>
+
+            <p>
+                Ela é uma atriz.
+            </p>
+
+            <br>
+
+            <p>
+                <strong>The teacher is here.</strong>
+            </p>
+
+            <p>
+                O professor está aqui.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- VOCABULARIO -->
+
+    <section class="card">
+
+        <h2>📝 6. Vocabulário Essencial</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>English</th>
+                        <th>Português</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Teacher</td>
+                        <td>Professor</td>
+                    </tr>
+
+                    <tr>
+                        <td>Student</td>
+                        <td>Estudante</td>
+                    </tr>
+
+                    <tr>
+                        <td>Friend</td>
+                        <td>Amigo</td>
+                    </tr>
+
+                    <tr>
+                        <td>School</td>
+                        <td>Escola</td>
+                    </tr>
+
+                    <tr>
+                        <td>House</td>
+                        <td>Casa</td>
+                    </tr>
+
+                    <tr>
+                        <td>Book</td>
+                        <td>Livro</td>
+                    </tr>
+
+                    <tr>
+                        <td>Pen</td>
+                        <td>Caneta</td>
+                    </tr>
+
+                    <tr>
+                        <td>Happy</td>
+                        <td>Feliz</td>
+                    </tr>
+
+                    <tr>
+                        <td>Good</td>
+                        <td>Bom / Boa</td>
+                    </tr>
+
+                    <tr>
+                        <td>Beautiful</td>
+                        <td>Bonito / Bonita</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- FRASES -->
+
+    <section class="card">
+
+        <h2>💬 7. Frases Básicas</h2>
+
+        <div class="example">
+
+            <p>
+                <strong>Hello! My name is Aldemar.</strong>
+                — Olá! Meu nome é Aldemar.
+            </p>
+
+            <p>
+                <strong>I am a teacher.</strong>
+                — Eu sou professor.
+            </p>
+
+            <p>
+                <strong>I am Brazilian.</strong>
+                — Eu sou brasileiro.
+            </p>
+
+            <p>
+                <strong>She is my friend.</strong>
+                — Ela é minha amiga.
+            </p>
+
+            <p>
+                <strong>He is a student.</strong>
+                — Ele é estudante.
+            </p>
+
+            <p>
+                <strong>We are at school.</strong>
+                — Nós estamos na escola.
+            </p>
+
+            <p>
+                <strong>They are happy.</strong>
+                — Eles estão felizes.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- REVISÃO -->
+
+    <section class="card">
+
+        <h2>✏️ 8. Exercícios de Revisão</h2>
+
+
+        <div class="question">
+
+            <strong>1. Complete com AM, IS ou ARE.</strong>
+
+            <p>
+                a) I ______ a student.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                b) She ______ my friend.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                c) They ______ happy.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                d) We ______ teachers.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                e) He ______ Brazilian.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>2. Escolha a alternativa correta.</strong>
+
+            <p>
+                Como dizemos "Bom dia"?
+            </p>
+
+            <p>
+                ( &nbsp; ) A) Good night
+                <br>
+                ( &nbsp; ) B) Good morning
+                <br>
+                ( &nbsp; ) C) Goodbye
+                <br>
+                ( &nbsp; ) D) Hi
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>3. Escolha a alternativa correta.</strong>
+
+            <p>
+                Qual pronome significa "ela"?
+            </p>
+
+            <p>
+                ( &nbsp; ) A) He
+                <br>
+                ( &nbsp; ) B) She
+                <br>
+                ( &nbsp; ) C) They
+                <br>
+                ( &nbsp; ) D) We
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>4. Complete com A ou AN.</strong>
+
+            <p>
+                a) ______ teacher
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                b) ______ apple
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                c) ______ student
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                d) ______ orange
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>5. Traduza para o português.</strong>
+
+            <p>
+                I am a student.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                She is my teacher.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                They are friends.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>6. Traduza para o inglês.</strong>
+
+            <p>
+                Eu sou professor.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Ela é minha amiga.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                Nós somos estudantes.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>7. Traduza.</strong>
+
+            <p>
+                "Olá! Meu nome é Maria."
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>8. Escreva uma frase com cada pronome.</strong>
+
+            <p>
+                I:
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                He:
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                She:
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                We:
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                They:
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- DESAFIO -->
+
+    <section class="card">
+
+        <h2>🏆 9. Desafio Final do Módulo</h2>
+
+        <p>
+            Agora é hora de colocar tudo o que você aprendeu
+            em prática.
+        </p>
+
+        <div class="challenge">
+
+            <strong>Escreva uma pequena apresentação em inglês.</strong>
+
+            <br><br>
+
+            Inclua:
+
+            <br><br>
+
+            • Seu nome
+            <br>
+            • Sua profissão ou ocupação
+            <br>
+            • Sua nacionalidade
+            <br>
+            • Como você está
+            <br>
+            • Uma informação sobre você
+
+        </div>
+
+        <br>
+
+        <p>
+            <strong>Exemplo:</strong>
+        </p>
+
+        <div class="highlight">
+
+            Hello! My name is Aldemar.
+
+            <br>
+
+            I am a teacher.
+
+            <br>
+
+            I am Brazilian.
+
+            <br>
+
+            I am happy.
+
+            <br>
+
+            I am a student.
+
+        </div>
+
+        <p>
+            Agora escreva sua própria apresentação:
+        </p>
+
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+        <span class="answer-line"></span>
+
+    </section>
+
+
+    <!-- CONCLUSÃO -->
+
+    <section class="card">
+
+        <h2>🎉 10. Parabéns!</h2>
+
+        <p>
+            Você concluiu o <strong>Módulo 1</strong> do
+            Mini-Curso de Inglês Gratuito do
+            <strong>Aldemar Studios</strong>.
+        </p>
+
+        <br>
+
+        <div class="highlight">
+
+            <strong>Você já estudou:</strong>
+
+            <br><br>
+
+            ✓ Greetings
+            <br>
+
+            ✓ Personal Pronouns
+            <br>
+
+            ✓ Verb To Be
+            <br>
+
+            ✓ Articles
+            <br>
+
+            ✓ Basic Vocabulary
+            <br>
+
+            ✓ Basic Sentences
+
+        </div>
+
+        <p>
+            Continue estudando e pratique um pouco de inglês
+            todos os dias.
+        </p>
+
+        <p>
+            Na próxima etapa, você poderá avançar para novos
+            conteúdos e ampliar ainda mais seu vocabulário.
+        </p>
+
+        <button
+            class="complete-button"
+            onclick="alert('Parabéns! Você concluiu o Módulo 1!')"
+        >
+            ✓ CONCLUIR MÓDULO 1
+        </button>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <strong>ALDEMAR STUDIOS</strong>
+
+    Mini-Curso de Inglês Gratuito
+
+    <br>
+
+    Módulo 1 • Aula 10
+
+</footer>
+
+
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1834 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Aldemar Studios | Aula 05 - Articles</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #eef5f6;
+
+            color: #30434a;
+
+            line-height: 1.7;
+        }
+
+
+        header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #315c67,
+                    #47727b
+                );
+
+            color: white;
+
+            padding: 35px 20px;
+
+            text-align: center;
+        }
+
+
+        header .brand {
+
+            font-size: 14px;
+
+            letter-spacing: 2px;
+
+            opacity: .9;
+
+            margin-bottom: 10px;
+        }
+
+
+        header h1 {
+
+            font-size:
+                clamp(
+                    28px,
+                    5vw,
+                    44px
+                );
+
+            margin-bottom: 8px;
+        }
+
+
+        header p {
+
+            font-size: 17px;
+
+            opacity: .9;
+        }
+
+
+        .container {
+
+            width:
+                min(
+                    1100px,
+                    92%
+                );
+
+            margin:
+                30px auto 60px;
+        }
+
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            padding:
+                10px 18px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #315c67;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,.06);
+        }
+
+
+        .back:hover {
+
+            background: #dcecef;
+        }
+
+
+        .card {
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            padding: 28px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(
+                    49,
+                    92,
+                    103,
+                    .08
+                );
+        }
+
+
+        .card h2 {
+
+            color: #315c67;
+
+            margin-bottom: 15px;
+
+            font-size: 24px;
+        }
+
+
+        .card h3 {
+
+            color: #47727b;
+
+            margin:
+                20px 0 8px;
+        }
+
+
+        .table-wrapper {
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 650px;
+        }
+
+
+        th {
+
+            background: #dcecef;
+
+            color: #315c67;
+
+            text-align: left;
+        }
+
+
+        th,
+        td {
+
+            padding: 13px;
+
+            border:
+                1px solid #cbdde0;
+        }
+
+
+        tr:nth-child(even) {
+
+            background: #f6fafb;
+        }
+
+
+        .highlight {
+
+            background: #eef6f7;
+
+            border-left:
+                5px solid #47727b;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin: 15px 0;
+        }
+
+
+        .warning {
+
+            background: #fff8e8;
+
+            border-left:
+                5px solid #d2a74a;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin: 15px 0;
+        }
+
+
+        .dialogue {
+
+            background: #f3f8f8;
+
+            border-radius: 14px;
+
+            padding: 20px;
+        }
+
+
+        .dialogue p {
+
+            margin-bottom: 8px;
+        }
+
+
+        .question {
+
+            background: #f8fbfb;
+
+            border:
+                1px solid #d8e5e7;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            margin: 14px 0;
+        }
+
+
+        .question strong {
+
+            color: #315c67;
+        }
+
+
+        .answer-line {
+
+            display: block;
+
+            border-bottom:
+                1px solid #8ca2a8;
+
+            margin-top: 15px;
+
+            height: 28px;
+        }
+
+
+        .challenge {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e4f1f2,
+                    #f5fafa
+                );
+
+            border:
+                1px solid #cbdfe2;
+        }
+
+
+        .complete-button {
+
+            width: 100%;
+
+            border: none;
+
+            padding: 16px;
+
+            border-radius: 12px;
+
+            background: #315c67;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 15px;
+        }
+
+
+        .complete-button:hover {
+
+            background: #244a54;
+        }
+
+
+        .success {
+
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            background: #e3f4e8;
+
+            color: #28633a;
+
+            font-weight: bold;
+
+            text-align: center;
+        }
+
+
+        footer {
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            background: #315c67;
+
+            color: white;
+        }
+
+
+        footer strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+        }
+
+
+        @media (max-width: 700px) {
+
+            .card {
+
+                padding: 20px;
+
+                border-radius: 14px;
+            }
+
+
+            .card h2 {
+
+                font-size: 21px;
+            }
+
+
+            header {
+
+                padding: 28px 15px;
+            }
+
+
+            .container {
+
+                width: 94%;
+            }
+
+        }
+
+
+        @media print {
+
+            body {
+
+                background: white;
+            }
+
+
+            header {
+
+                background: white;
+
+                color: black;
+
+                border-bottom:
+                    2px solid #315c67;
+            }
+
+
+            .back,
+            .complete-button {
+
+                display: none;
+            }
+
+
+            .card {
+
+                box-shadow: none;
+
+                border:
+                    1px solid #ddd;
+
+                break-inside: avoid;
+            }
+
+
+            footer {
+
+                background: white;
+
+                color: black;
+
+                border-top:
+                    1px solid #ddd;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="brand">
+        ALDEMAR STUDIOS
+    </div>
+
+    <h1>📚 ARTICLES</h1>
+
+    <p>
+        Curso de Inglês Gratuito • Módulo 1 • Aula 05
+    </p>
+
+</header>
+
+
+<main class="container">
+
+
+    <a
+        href="../../index.html"
+        class="back"
+    >
+        ← Voltar para o curso
+    </a>
+
+
+    <!-- INTRODUÇÃO -->
+
+    <section class="card">
+
+        <h2>
+            📖 1. O que são Articles?
+        </h2>
+
+        <p>
+
+            Em inglês, os
+            <strong>Articles</strong>
+            são palavras utilizadas antes
+            de substantivos.
+
+        </p>
+
+        <p>
+
+            Em português, usamos palavras como
+            <strong>o, a, um, uma</strong>.
+
+            Em inglês, os principais artigos
+            são:
+
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>
+                A
+            </strong>
+            → um / uma
+
+            <br><br>
+
+            <strong>
+                AN
+            </strong>
+            → um / uma
+
+            <br><br>
+
+            <strong>
+                THE
+            </strong>
+            → o / a / os / as
+
+        </div>
+
+    </section>
+
+
+    <!-- A -->
+
+    <section class="card">
+
+        <h2>
+            🔵 2. O artigo A
+        </h2>
+
+        <p>
+
+            Usamos <strong>A</strong>
+            antes de palavras que começam
+            com <strong>som de consoante</strong>.
+
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>
+                A + palavra
+            </strong>
+
+            <br><br>
+
+            a book
+            → um livro
+
+            <br>
+
+            a car
+            → um carro
+
+            <br>
+
+            a house
+            → uma casa
+
+            <br>
+
+            a teacher
+            → um professor
+
+            <br>
+
+            a student
+            → um estudante
+
+        </div>
+
+
+        <h3>
+            Exemplos em frases
+        </h3>
+
+
+        <p>
+
+            <strong>
+                I have a book.
+            </strong>
+
+            <br>
+
+            Eu tenho um livro.
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                She is a teacher.
+            </strong>
+
+            <br>
+
+            Ela é professora.
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                He has a car.
+            </strong>
+
+            <br>
+
+            Ele tem um carro.
+
+        </p>
+
+    </section>
+
+
+    <!-- AN -->
+
+    <section class="card">
+
+        <h2>
+            🟢 3. O artigo AN
+        </h2>
+
+        <p>
+
+            Usamos <strong>AN</strong>
+            antes de palavras que começam
+            com <strong>som de vogal</strong>.
+
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>
+                AN + palavra
+            </strong>
+
+            <br><br>
+
+            an apple
+            → uma maçã
+
+            <br>
+
+            an orange
+            → uma laranja
+
+            <br>
+
+            an egg
+            → um ovo
+
+            <br>
+
+            an elephant
+            → um elefante
+
+            <br>
+
+            an animal
+            → um animal
+
+        </div>
+
+
+        <h3>
+            Exemplos em frases
+        </h3>
+
+
+        <p>
+
+            <strong>
+                I have an apple.
+            </strong>
+
+            <br>
+
+            Eu tenho uma maçã.
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                She eats an orange.
+            </strong>
+
+            <br>
+
+            Ela come uma laranja.
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                It is an animal.
+            </strong>
+
+            <br>
+
+            É um animal.
+
+        </p>
+
+
+        <div class="warning">
+
+            <strong>
+                ⚠️ Atenção!
+            </strong>
+
+            <br><br>
+
+            O mais importante é observar o
+            <strong>som inicial</strong>
+            da palavra.
+
+            <br><br>
+
+            O artigo
+            <strong>AN</strong>
+            é utilizado quando a palavra começa
+            com som de vogal.
+
+        </div>
+
+    </section>
+
+
+    <!-- A X AN -->
+
+    <section class="card">
+
+        <h2>
+            🔎 4. A ou AN?
+        </h2>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Artigo
+                        </th>
+
+                        <th>
+                            Palavra
+                        </th>
+
+                        <th>
+                            Tradução
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            A
+                        </td>
+
+                        <td>
+                            a book
+                        </td>
+
+                        <td>
+                            um livro
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            A
+                        </td>
+
+                        <td>
+                            a car
+                        </td>
+
+                        <td>
+                            um carro
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            A
+                        </td>
+
+                        <td>
+                            a house
+                        </td>
+
+                        <td>
+                            uma casa
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            AN
+                        </td>
+
+                        <td>
+                            an apple
+                        </td>
+
+                        <td>
+                            uma maçã
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            AN
+                        </td>
+
+                        <td>
+                            an egg
+                        </td>
+
+                        <td>
+                            um ovo
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            AN
+                        </td>
+
+                        <td>
+                            an elephant
+                        </td>
+
+                        <td>
+                            um elefante
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- THE -->
+
+    <section class="card">
+
+        <h2>
+            🟣 5. O artigo THE
+        </h2>
+
+        <p>
+
+            O artigo
+            <strong>THE</strong>
+            pode significar:
+
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>
+                THE = o / a / os / as
+            </strong>
+
+        </div>
+
+
+        <p>
+
+            Diferentemente de
+            <strong>A</strong>
+            e
+            <strong>AN</strong>,
+            usamos
+            <strong>THE</strong>
+            quando estamos falando de algo
+            específico ou conhecido.
+
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>
+                the book
+            </strong>
+
+            <br>
+
+            o livro
+
+            <br><br>
+
+            <strong>
+                the house
+            </strong>
+
+            <br>
+
+            a casa
+
+            <br><br>
+
+            <strong>
+                the students
+            </strong>
+
+            <br>
+
+            os estudantes
+
+            <br><br>
+
+            <strong>
+                the teacher
+            </strong>
+
+            <br>
+
+            o professor / a professora
+
+        </div>
+
+    </section>
+
+
+    <!-- COMPARAÇÃO -->
+
+    <section class="card">
+
+        <h2>
+            📊 6. A, AN e THE
+        </h2>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Artigo
+                        </th>
+
+                        <th>
+                            Uso
+                        </th>
+
+                        <th>
+                            Exemplo
+                        </th>
+
+                        <th>
+                            Tradução
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            A
+                        </td>
+
+                        <td>
+                            Som de consoante
+                        </td>
+
+                        <td>
+                            a dog
+                        </td>
+
+                        <td>
+                            um cachorro
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            AN
+                        </td>
+
+                        <td>
+                            Som de vogal
+                        </td>
+
+                        <td>
+                            an apple
+                        </td>
+
+                        <td>
+                            uma maçã
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            THE
+                        </td>
+
+                        <td>
+                            Algo específico
+                        </td>
+
+                        <td>
+                            the dog
+                        </td>
+
+                        <td>
+                            o cachorro
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXEMPLOS -->
+
+    <section class="card">
+
+        <h2>
+            💬 7. Exemplos do Dia a Dia
+        </h2>
+
+
+        <div class="highlight">
+
+            <strong>
+                I have a dog.
+            </strong>
+
+            <br>
+
+            Eu tenho um cachorro.
+
+            <br><br>
+
+
+            <strong>
+                She has an orange.
+            </strong>
+
+            <br>
+
+            Ela tem uma laranja.
+
+            <br><br>
+
+
+            <strong>
+                He is a student.
+            </strong>
+
+            <br>
+
+            Ele é estudante.
+
+            <br><br>
+
+
+            <strong>
+                The dog is big.
+            </strong>
+
+            <br>
+
+            O cachorro é grande.
+
+            <br><br>
+
+
+            <strong>
+                The teacher is here.
+            </strong>
+
+            <br>
+
+            O professor está aqui.
+
+        </div>
+
+    </section>
+
+
+    <!-- DIÁLOGO -->
+
+    <section class="card">
+
+        <h2>
+            🗣️ 8. Diálogo
+        </h2>
+
+
+        <div class="dialogue">
+
+            <p>
+                <strong>Anna:</strong>
+                What is this?
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                It is a book.
+            </p>
+
+            <p>
+                <strong>Anna:</strong>
+                Is it an English book?
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                Yes, it is.
+            </p>
+
+            <p>
+                <strong>Anna:</strong>
+                Is the book new?
+            </p>
+
+            <p>
+                <strong>John:</strong>
+                Yes. The book is new.
+            </p>
+
+        </div>
+
+
+        <h3>
+            Tradução
+        </h3>
+
+
+        <div class="highlight">
+
+            Anna: O que é isso?
+
+            <br>
+
+            John: É um livro.
+
+            <br>
+
+            Anna: É um livro de inglês?
+
+            <br>
+
+            John: Sim.
+
+            <br>
+
+            Anna: O livro é novo?
+
+            <br>
+
+            John: Sim. O livro é novo.
+
+        </div>
+
+    </section>
+
+
+    <!-- ATIVIDADES -->
+
+    <section class="card">
+
+        <h2>
+            ✏️ 9. Atividades
+        </h2>
+
+
+        <div class="question">
+
+            <strong>
+                1. Complete com A ou AN.
+            </strong>
+
+            <p>
+                1. ______ apple
+            </p>
+
+            <p>
+                2. ______ car
+            </p>
+
+            <p>
+                3. ______ elephant
+            </p>
+
+            <p>
+                4. ______ book
+            </p>
+
+            <p>
+                5. ______ orange
+            </p>
+
+            <p>
+                6. ______ teacher
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                2. Complete com A, AN ou THE.
+            </strong>
+
+            <p>
+                1. I have ______ dog.
+            </p>
+
+            <p>
+                2. She has ______ apple.
+            </p>
+
+            <p>
+                3. ______ dog is big.
+            </p>
+
+            <p>
+                4. He is ______ student.
+            </p>
+
+            <p>
+                5. ______ teacher is here.
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                3. Escolha a alternativa correta.
+            </strong>
+
+            <p>
+
+                "uma maçã" em inglês é:
+
+                <br><br>
+
+                ( &nbsp; ) A) a apple
+
+                <br>
+
+                ( &nbsp; ) B) an apple
+
+                <br>
+
+                ( &nbsp; ) C) the apple
+
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                4. Escolha a alternativa correta.
+            </strong>
+
+            <p>
+
+                "um carro" em inglês é:
+
+                <br><br>
+
+                ( &nbsp; ) A) an car
+
+                <br>
+
+                ( &nbsp; ) B) the car
+
+                <br>
+
+                ( &nbsp; ) C) a car
+
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                5. Escolha a alternativa correta.
+            </strong>
+
+            <p>
+
+                "o professor" em inglês é:
+
+                <br><br>
+
+                ( &nbsp; ) A) a teacher
+
+                <br>
+
+                ( &nbsp; ) B) an teacher
+
+                <br>
+
+                ( &nbsp; ) C) the teacher
+
+            </p>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                6. Traduza para o inglês.
+            </strong>
+
+            <p>
+                um livro
+            </p>
+
+            <span class="answer-line"></span>
+
+
+            <p>
+                uma maçã
+            </p>
+
+            <span class="answer-line"></span>
+
+
+            <p>
+                um professor
+            </p>
+
+            <span class="answer-line"></span>
+
+
+            <p>
+                o carro
+            </p>
+
+            <span class="answer-line"></span>
+
+
+            <p>
+                uma casa
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                7. Corrija as frases.
+            </strong>
+
+            <p>
+                1. I have an book.
+            </p>
+
+            <span class="answer-line"></span>
+
+
+            <p>
+                2. She has a apple.
+            </p>
+
+            <span class="answer-line"></span>
+
+
+            <p>
+                3. He is an teacher.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- DESAFIO -->
+
+    <section class="card challenge">
+
+        <h2>
+            🏆 10. Desafio da Aula
+        </h2>
+
+        <p>
+
+            Escreva <strong>5 frases em inglês</strong>
+            utilizando os artigos
+            <strong>A, AN</strong> e
+            <strong>THE</strong>.
+
+        </p>
+
+
+        <div class="question">
+
+            <p>
+                1.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                2.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                3.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                4.
+            </p>
+
+            <span class="answer-line"></span>
+
+            <p>
+                5.
+            </p>
+
+            <span class="answer-line"></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESUMO -->
+
+    <section class="card">
+
+        <h2>
+            📌 11. Resumo da Aula
+        </h2>
+
+
+        <div class="highlight">
+
+            <strong>
+                A
+            </strong>
+
+            → usado antes de palavras
+            com som de consoante.
+
+            <br><br>
+
+            a book
+
+            <br><br>
+
+
+            <strong>
+                AN
+            </strong>
+
+            → usado antes de palavras
+            com som de vogal.
+
+            <br><br>
+
+            an apple
+
+            <br><br>
+
+
+            <strong>
+                THE
+            </strong>
+
+            → usado para algo específico
+            ou conhecido.
+
+            <br><br>
+
+            the book
+
+        </div>
+
+
+        <p>
+
+            Lembre-se:
+
+            <strong>
+                A, AN e THE
+            </strong>
+            aparecem constantemente
+            nas frases em inglês.
+
+        </p>
+
+    </section>
+
+
+    <!-- CONCLUSÃO -->
+
+    <section class="card">
+
+        <h2>
+            🎯 12. Conclusão
+        </h2>
+
+        <p>
+
+            Nesta aula, você aprendeu os três
+            principais artigos da língua inglesa:
+            <strong>A, AN e THE</strong>.
+
+        </p>
+
+        <br>
+
+        <p>
+
+            Você também aprendeu a diferença
+            entre utilizar
+            <strong>A</strong> e
+            <strong>AN</strong>,
+            além de compreender quando usar
+            <strong>THE</strong>.
+
+        </p>
+
+
+        <div class="highlight">
+
+            <strong>
+                A book.
+            </strong>
+
+            <br>
+
+            Um livro.
+
+            <br><br>
+
+            <strong>
+                An apple.
+            </strong>
+
+            <br>
+
+            Uma maçã.
+
+            <br><br>
+
+            <strong>
+                The book.
+            </strong>
+
+            <br>
+
+            O livro.
+
+        </div>
+
+    </section>
+
+
+    <!-- CONCLUSÃO DA AULA -->
+
+    <section class="card">
+
+        <h2>
+            ✅ Aula concluída
+        </h2>
+
+        <p>
+
+            Clique no botão abaixo para registrar
+            que você concluiu esta aula.
+
+        </p>
+
+
+        <button
+            class="complete-button"
+            onclick="concluirAula()"
+        >
+
+            CONCLUIR AULA
+
+        </button>
+
+
+        <div
+            id="successMessage"
+            class="success"
+        >
+
+            🎉 Parabéns!
+
+            <br>
+
+            Aula 05 concluída com sucesso!
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <strong>
+        ALDEMAR STUDIOS
+    </strong>
+
+    Curso de Inglês Gratuito
+
+    <br>
+
+    Módulo 01 • Aula 05
+
+</footer>
+
+
+<script>
+
+    function concluirAula() {
+
+        const success =
+            document.getElementById(
+                "successMessage"
+            );
+
+
+        if (success) {
+
+            success.style.display =
+                "block";
+
+
+            localStorage.setItem(
+                "ingles_modulo01_aula05_concluida",
+                "true"
+            );
+
+
+            success.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "center"
+
+            });
+
+        }
+
+    }
+
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            const concluida =
+                localStorage.getItem(
+                    "ingles_modulo01_aula05_concluida"
+                );
+
+
+            if (
+                concluida === "true"
+            ) {
+
+                const success =
+                    document.getElementById(
+                        "successMessage"
+                    );
+
+
+                if (success) {
+
+                    success.style.display =
+                        "block";
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+
+</html>

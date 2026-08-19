@@ -3,11 +3,14 @@
    DASHBOARD.JS
    VERSÃO ATUALIZADA
    =========================================================
-   PRINCIPAIS MELHORIAS:
+   PRINCIPAIS FUNÇÕES:
    - Navegação completa das áreas disponíveis
+   - Cursos permanece INALTERADO
+   - Área de Inglês abre o MINI CURSO
+   - Mini Curso → mini-curso/index.html
    - Materiais, Simulados e Premium continuam bloqueados
    - Perfil com salvamento completo
-   - Foto de perfil salva SOMENTE ao clicar em SALVAR
+   - Foto de perfil salva somente ao clicar em SALVAR
    - Foto permanece após recarregar a página
    - Foto sincronizada com API + armazenamento local
    - Compatibilidade com celular, tablet e PC
@@ -111,23 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let user = null;
 
     /*
-     * A foto escolhida fica temporariamente aqui.
-     *
-     * IMPORTANTE:
-     * A foto NÃO é enviada imediatamente.
-     *
-     * O usuário escolhe a foto → visualiza a prévia →
-     * clica em SALVAR ALTERAÇÕES → somente então a foto
-     * é enviada para o servidor.
+     * undefined = nenhuma alteração feita
+     * string    = nova foto
+     * null      = remover foto
      */
 
     let pendingProfilePhoto = undefined;
-
-    /*
-     * undefined = nenhuma alteração feita
-     * string      = nova foto
-     * null        = remover foto
-     */
 
     let originalProfileData = null;
 
@@ -192,11 +184,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!user) {
 
         user = {
-            nome_completo: "Usuário",
-            nick: "",
-            email: "",
-            plano: "gratuito",
-            foto: ""
+
+            nome_completo:
+                "Usuário",
+
+            nick:
+                "",
+
+            email:
+                "",
+
+            plano:
+                "gratuito",
+
+            foto:
+                ""
         };
     }
 
@@ -383,7 +385,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             element.style.backgroundRepeat = "";
 
-            element.textContent = initials;
+            element.textContent =
+                initials;
         }
     }
 
@@ -579,11 +582,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     item.dataset.locked === "true";
 
 
-                /*
-                 * SOMENTE as áreas marcadas como locked
-                 * permanecem bloqueadas.
-                 */
-
                 if (locked) {
 
                     showNotification(
@@ -603,9 +601,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+                /*
+                 * IMPORTANTE:
+                 *
+                 * CURSOS NÃO É ALTERADO.
+                 *
+                 * Continua usando:
+                 *
+                 * cursos/index.html
+                 */
+
                 if (sectionName === "cursos") {
 
                     openCourses();
+
+                    return;
+                }
+
+
+                /*
+                 * INGLÊS
+                 *
+                 * A área de Inglês agora abre
+                 * diretamente o Mini Curso.
+                 */
+
+                if (sectionName === "ingles") {
+
+                    openMiniCursoIngles();
 
                     return;
                 }
@@ -649,9 +672,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+                /*
+                 * CURSOS — NÃO ALTERAR
+                 */
+
                 if (section === "cursos") {
 
                     openCourses();
+
+                    return;
+                }
+
+
+                /*
+                 * INGLÊS → MINI CURSO
+                 */
+
+                if (section === "ingles") {
+
+                    openMiniCursoIngles();
 
                     return;
                 }
@@ -682,9 +721,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     const section =
                         button.dataset.sectionLink;
 
+
                     if (!section) {
                         return;
                     }
+
+
+                    /*
+                     * CURSOS — NÃO ALTERAR
+                     */
 
                     if (section === "cursos") {
 
@@ -692,6 +737,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         return;
                     }
+
+
+                    /*
+                     * INGLÊS → MINI CURSO
+                     */
+
+                    if (section === "ingles") {
+
+                        openMiniCursoIngles();
+
+                        return;
+                    }
+
 
                     showSection(section);
                 }
@@ -701,6 +759,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        ABRIR CURSOS
+       NÃO ALTERADO
     ====================================================== */
 
     function openCourses() {
@@ -711,6 +770,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.openCourses =
         openCourses;
+
+
+    /* =====================================================
+       ABRIR MINI CURSO DE INGLÊS
+    ====================================================== */
+
+    function openMiniCursoIngles() {
+
+        window.location.href =
+            "mini-curso/index.html";
+    }
+
+    window.openMiniCursoIngles =
+        openMiniCursoIngles;
+
+
+    /* =====================================================
+       ELEMENTOS ESPECÍFICOS DO MINI CURSO
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            '[data-content-category="mini-curso-ingles"]'
+        )
+        .forEach(element => {
+
+            element.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    openMiniCursoIngles();
+                }
+            );
+        });
 
 
     /* =====================================================
@@ -845,24 +941,34 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+
         const titles = {
 
-            inicio: "Início",
+            inicio:
+                "Início",
 
-            jogos: "Jogos",
+            jogos:
+                "Jogos",
 
-            ingles: "Inglês",
+            ingles:
+                "Mini Curso de Inglês",
 
-            musica: "Música",
+            musica:
+                "Música",
 
-            inclusivos: "Inclusivos",
+            inclusivos:
+                "Inclusivos",
 
-            cursos: "Cursos",
+            cursos:
+                "Cursos",
 
-            feedback: "Feedback",
+            feedback:
+                "Feedback",
 
-            perfil: "Meu Perfil"
+            perfil:
+                "Meu Perfil"
         };
+
 
         pageTitle.textContent =
             titles[sectionName] ||
@@ -1061,7 +1167,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        PERFIL — SELECIONAR FOTO
-       NÃO ENVIA PARA A API AQUI
     ====================================================== */
 
     if (profilePhotoInput) {
@@ -1080,8 +1185,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 const allowedTypes = [
+
                     "image/jpeg",
+
                     "image/png",
+
                     "image/webp"
                 ];
 
@@ -1135,18 +1243,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                 .result;
 
 
-                        /*
-                         * Guarda a foto somente como
-                         * alteração pendente.
-                         */
-
                         pendingProfilePhoto =
                             photo;
 
-
-                        /*
-                         * Mostra a prévia imediatamente.
-                         */
 
                         const initials =
                             getInitials(
@@ -1182,7 +1281,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        PERFIL — REMOVER FOTO
-       TAMBÉM FICA PENDENTE ATÉ SALVAR
     ====================================================== */
 
     if (removePhotoButton) {
@@ -1390,16 +1488,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 try {
 
-                    /*
-                     * Envia TODOS os dados de uma vez.
-                     *
-                     * Se pendingProfilePhoto for:
-                     *
-                     * undefined → foto não foi alterada
-                     * string    → nova foto
-                     * null      → remover foto
-                     */
-
                     const data =
                         await updateProfileOnServer(
                             newName,
@@ -1412,7 +1500,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (data.usuario) {
 
                         user = {
+
                             ...user,
+
                             ...data.usuario
                         };
 
@@ -1439,27 +1529,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    /*
-                     * SALVA A INFORMAÇÃO LOCALMENTE.
-                     *
-                     * Isso permite que a foto continue
-                     * aparecendo depois de recarregar.
-                     */
-
                     saveUser();
 
-
-                    /*
-                     * Limpa a alteração pendente.
-                     */
 
                     pendingProfilePhoto =
                         undefined;
 
-
-                    /*
-                     * Atualiza toda a interface.
-                     */
 
                     updateUserInterface();
 
@@ -1479,12 +1554,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
-
-                    /*
-                     * IMPORTANTE:
-                     * Se a API estiver indisponível,
-                     * não apagamos a foto escolhida.
-                     */
 
                     showNotification(
                         error.message ||
@@ -1543,11 +1612,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 email
         };
 
-
-        /*
-         * SOMENTE adiciona foto quando ela
-         * realmente foi alterada.
-         */
 
         if (foto !== undefined) {
 
@@ -2175,11 +2239,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-         * Força uma pequena atualização para
-         * permitir que a animação seja repetida.
-         */
-
         void notification.offsetWidth;
 
 
@@ -2244,11 +2303,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-    /*
-     * Cria automaticamente um botão de menu
-     * caso o CSS utilize a classe mobile-menu-button.
-     */
-
     if (
         sidebar &&
         !document.getElementById(
@@ -2300,11 +2354,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-         * Fecha o menu ao selecionar uma seção
-         * em dispositivos menores.
-         */
-
         menuItems.forEach(item => {
 
             item.addEventListener(
@@ -2348,17 +2397,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       AJUSTE DE ORIENTAÇÃO / REDIMENSIONAMENTO
+       AJUSTE DE REDIMENSIONAMENTO
     ====================================================== */
 
     window.addEventListener(
         "resize",
         () => {
-
-            /*
-             * Em telas grandes, garante que o menu
-             * mobile não permaneça aberto.
-             */
 
             if (
                 window.innerWidth > 900 &&
@@ -2374,8 +2418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       GARANTIR QUE BOTÕES DE DESENVOLVIMENTO
-       CONTINUEM BLOQUEADOS
+       GARANTIR BOTÕES BLOQUEADOS
     ====================================================== */
 
     document
@@ -2397,82 +2440,146 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
         });
-/* =====================================================
-   NAVEGAÇÃO — CENTRAL DE JOGOS
-====================================================== */
-
-/*
- * =====================================================
- * JOGOS DE PASSATEMPO
- * =====================================================
- *
- * O botão/card de Passatempo leva diretamente para:
- *
- * jogos/passatempo/index.html
- *
- * Essa página será responsável por apresentar
- * os 10 jogos de passatempo.
- */
-
-document
-    .querySelectorAll(
-        '[data-game-category="passatempo"]'
-    )
-    .forEach(
-        element => {
-
-            element.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    window.location.href =
-                        "jogos/passatempo/index.html";
-
-                }
-            );
-
-        }
-    );
 
 
-/*
- * =====================================================
- * JOGOS EDUCATIVOS
- * =====================================================
- *
- * O destino já fica preparado mesmo que a página
- * ainda não exista.
- *
- * Futuramente:
- *
- * jogos/educativos/index.html
- */
+    /* =====================================================
+       CENTRAL DE JOGOS
+    ====================================================== */
 
-document
-    .querySelectorAll(
-        '[data-game-category="educativos"]'
-    )
-    .forEach(
-        element => {
 
-            element.addEventListener(
-                "click",
-                event => {
+    /* =====================================================
+       JOGOS DE PASSATEMPO
+    ====================================================== */
 
-                    event.preventDefault();
-                    event.stopPropagation();
+    document
+        .querySelectorAll(
+            '[data-game-category="passatempo"]'
+        )
+        .forEach(
+            element => {
 
-                    window.location.href =
-                        "jogos/educativos/index.html";
+                element.addEventListener(
+                    "click",
+                    event => {
 
-                }
-            );
+                        event.preventDefault();
+                        event.stopPropagation();
 
-        }
-    );
+                        window.location.href =
+                            "jogos/passatempo/index.html";
+                    }
+                );
+            }
+        );
+
+
+    /* =====================================================
+       JOGOS EDUCATIVOS
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            '[data-game-category="educativos"]'
+        )
+        .forEach(
+            element => {
+
+                element.addEventListener(
+                    "click",
+                    event => {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        window.location.href =
+                            "jogos/educativos/index.html";
+                    }
+                );
+            }
+        );
+
+
+    /* =====================================================
+       MINI CURSO DE INGLÊS
+       ======================================================
+
+       ATENÇÃO:
+
+       Esta NÃO é a seção Cursos.
+
+       Cursos continua em:
+
+       cursos/index.html
+
+       O conteúdo de Inglês agora abre:
+
+       mini-curso/index.html
+
+       Esse index será a CENTRAL DOS MÓDULOS.
+    ====================================================== */
+
+    function openMiniCursoIngles() {
+
+        window.location.href =
+            "mini-curso/index.html";
+    }
+
+
+    window.openMiniCursoIngles =
+        openMiniCursoIngles;
+
+
+    /*
+     * Elementos que representam diretamente
+     * o Mini Curso de Inglês.
+     */
+
+    document
+        .querySelectorAll(
+            '[data-content-category="mini-curso-ingles"]'
+        )
+        .forEach(
+            element => {
+
+                element.addEventListener(
+                    "click",
+                    event => {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        openMiniCursoIngles();
+                    }
+                );
+            }
+        );
+
+
+    /*
+     * Caso o HTML esteja usando
+     * data-section-link="ingles".
+     */
+
+    document
+        .querySelectorAll(
+            '[data-section-link="ingles"]'
+        )
+        .forEach(
+            element => {
+
+                element.addEventListener(
+                    "click",
+                    event => {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        openMiniCursoIngles();
+                    }
+                );
+            }
+        );
+
 
     /* =====================================================
        INICIALIZAÇÃO FINAL

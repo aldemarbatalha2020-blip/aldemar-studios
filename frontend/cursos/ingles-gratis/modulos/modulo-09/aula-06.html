@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Módulo 09 - Aula 06</title></head>
+<body>
+<h1>Módulo 09 — Aula 06: What are you doing?</h1>
+<p>Aprenda a conversar sobre o que as pessoas estão fazendo neste momento.</p>
+<h2>Diálogo</h2>
+<p><strong>Anna:</strong> What are you doing?</p>
+<p><strong>John:</strong> I am studying English.</p>
+<p><strong>Anna:</strong> Are you studying now?</p>
+<p><strong>John:</strong> Yes, I am.</p>
+<h2>Tradução</h2>
+<p>Anna: O que você está fazendo?</p>
+<p>John: Estou estudando inglês.</p>
+<p>Anna: Você está estudando agora?</p>
+<p>John: Sim.</p>
+<h2>Prática</h2>
+<p>Escreva cinco frases dizendo o que você está fazendo agora.</p>
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+</html>
+

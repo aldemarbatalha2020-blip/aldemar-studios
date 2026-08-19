@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aldemar Studios | Módulo 04 — Aula 06</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#101827,#1b2a3d);color:#eaf2f5;line-height:1.7}
+header{background:rgba(13,24,39,.94);border-bottom:1px solid rgba(255,255,255,.08);padding:35px 20px;text-align:center}
+header .brand{font-size:13px;letter-spacing:2px;color:#8fc0d7;font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(28px,5vw,46px);margin-bottom:8px}
+header p{color:#aebfca}
+.container{width:min(1050px,92%);margin:30px auto 60px}
+.back{display:inline-block;margin-bottom:20px;padding:10px 18px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#dce8ef;text-decoration:none;font-weight:bold}
+.card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:30px;margin-bottom:22px;box-shadow:0 15px 35px rgba(0,0,0,.15)}
+.card h2{color:#8fc0d7;margin-bottom:15px;font-size:25px}
+.card h3{color:#a9cfdf;margin:20px 0 8px}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{padding:13px;border:1px solid rgba(255,255,255,.1);text-align:left}
+th{background:rgba(120,169,194,.15);color:#bfe0ed}
+tr:nth-child(even){background:rgba(255,255,255,.025)}
+.box{background:rgba(120,169,194,.09);border-left:5px solid #78a9c2;padding:18px;border-radius:10px;margin:18px 0}
+li{margin:8px 0 8px 24px}
+footer{text-align:center;padding:25px;background:rgba(13,24,39,.95);color:#8196a3}
+@media(max-width:700px){.card{padding:20px}.container{width:94%}table{font-size:14px}}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">ALDEMAR STUDIOS</div>
+    <h1>📘 Time Expressions — Expressões de Tempo</h1>
+    <p>Curso de Inglês Gratuito • Módulo 04 • Aula 06</p>
+</header>
+
+<main class="container">
+
+<a href="../../index.html" class="back">← Voltar aos módulos</a>
+
+<section class="card">
+
+<h2>📚 Expressões importantes</h2>
+<table>
+<tr><th>English</th><th>Português</th></tr>
+<tr><td>every day</td><td>todos os dias</td></tr>
+<tr><td>every morning</td><td>todas as manhãs</td></tr>
+<tr><td>every afternoon</td><td>todas as tardes</td></tr>
+<tr><td>every evening</td><td>todas as noites</td></tr>
+<tr><td>in the morning</td><td>pela manhã</td></tr>
+<tr><td>in the afternoon</td><td>à tarde</td></tr>
+<tr><td>at night</td><td>à noite</td></tr>
+<tr><td>on Monday</td><td>na segunda-feira</td></tr>
+</table>
+
+<h2>💬 Exemplos</h2>
+<p>I study every morning.</p>
+<p>She works in the afternoon.</p>
+<p>He watches TV at night.</p>
+<p>We study English on Monday.</p>
+
+<h2>✏️ Pratique</h2>
+<p>Traduza:</p>
+<ol>
+<li>Eu estudo todas as manhãs.</li>
+<li>Ela trabalha à tarde.</li>
+<li>Ele assiste televisão à noite.</li>
+<li>Nós estudamos inglês na segunda-feira.</li>
+</ol>
+
+</section>
+
+<section class="card">
+<h2>🎯 Conclusão da aula</h2>
+<p>Revise o conteúdo antes de avançar para a próxima aula. A sequência foi organizada para que cada etapa prepare você para a seguinte.</p>
+</section>
+
+</main>
+
+<footer>
+<strong>ALDEMAR STUDIOS</strong>
+Curso de Inglês Gratuito
+</footer>
+
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+</html>
+

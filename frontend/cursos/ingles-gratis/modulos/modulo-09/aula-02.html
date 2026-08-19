@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Módulo 09 - Aula 02</title></head>
+<body>
+<h1>Módulo 09 — Aula 02: Present Continuous — Affirmative</h1>
+<p>Vamos aprofundar as frases afirmativas no Present Continuous.</p>
+<h2>Estrutura</h2>
+<p><strong>Subject + am/is/are + verb-ing</strong></p>
+<p>I am studying.</p>
+<p>You are learning.</p>
+<p>He is working.</p>
+<p>We are speaking English.</p>
+<h2>Prática</h2>
+<p>Transforme em inglês:</p>
+<p>1. Eu estou estudando.</p>
+<p>2. Ela está trabalhando.</p>
+<p>3. Nós estamos aprendendo inglês.</p>
+
+<script>
+
+/* =====================================================
+   SISTEMA GLOBAL DE NAVEGAÇÃO — VOLTAR
+===================================================== */
+
+function voltarPagina() {
+
+    /*
+       Se existe uma página anterior dentro do histórico,
+       retorna exatamente para ela.
+    */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer &&
+        document.referrer.startsWith(window.location.origin)
+    ) {
+
+        window.history.back();
+
+        return;
+    }
+
+
+    /*
+       Caso o aluno tenha aberto a página diretamente,
+       retorna para a página principal do curso.
+    */
+
+    window.location.href =
+        "../../index.html";
+
+}
+
+</script>
+</body>
+</html>
+
