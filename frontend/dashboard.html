@@ -27,1168 +27,605 @@
 
 <body>
 
-    <div class="dashboard">
+<div class="dashboard">
 
 
-        <!-- =====================================================
-             SIDEBAR
-        ====================================================== -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-        <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar">
 
-            <!-- MARCA -->
+        <div class="sidebar-brand">
 
-            <div class="sidebar-brand">
+            <div class="brand-icon">
+                AS
+            </div>
 
-                <div class="brand-icon">
+            <div class="brand-text">
+
+                <strong>
+                    Aldemar
+                </strong>
+
+                <span>
+                    Studios
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu" aria-label="Menu principal">
+
+
+            <button
+                type="button"
+                class="menu-item active"
+                data-section="inicio"
+            >
+
+                <span class="menu-icon">🏠</span>
+
+                <span class="menu-label">
+                    Início
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="jogos"
+            >
+
+                <span class="menu-icon">🎮</span>
+
+                <span class="menu-label">
+                    Jogos
+                </span>
+
+            </button>
+
+
+            <!-- =================================================
+                 MINI CURSO
+            ================================================== -->
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="ingles"
+            >
+
+                <span class="menu-icon">🇺🇸</span>
+
+                <span class="menu-label">
+                    Mini Curso
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="musica"
+            >
+
+                <span class="menu-icon">🎵</span>
+
+                <span class="menu-label">
+                    Música
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="inclusivos"
+            >
+
+                <span class="menu-icon">♿</span>
+
+                <span class="menu-label">
+                    Inclusivos
+                </span>
+
+            </button>
+
+
+            <div class="menu-title">
+                EDUCAÇÃO
+            </div>
+
+
+            <!-- =================================================
+                 CURSOS — NÃO ALTERADO
+            ================================================== -->
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="cursos"
+            >
+
+                <span class="menu-icon">📚</span>
+
+                <span class="menu-label">
+                    Cursos
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="materiais"
+            >
+
+                <span class="menu-icon">📂</span>
+
+                <span class="menu-label">
+                    Materiais
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="simulados"
+            >
+
+                <span class="menu-icon">📝</span>
+
+                <span class="menu-label">
+                    Simulados
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item locked"
+                data-locked="true"
+                aria-disabled="true"
+            >
+
+                <span class="menu-icon">⭐</span>
+
+                <span class="menu-label">
+                    Planos
+                </span>
+
+                <span class="lock">
+                    🔒
+                </span>
+
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="feedback"
+            >
+
+                <span class="menu-icon">💬</span>
+
+                <span class="menu-label">
+                    Feedback
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="perfil"
+            >
+
+                <span class="menu-icon">👤</span>
+
+                <span class="menu-label">
+                    Meu Perfil
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">🚪</span>
+
+                <span class="menu-label">
+                    Sair
+                </span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+
+            <button
+                type="button"
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                aria-label="Abrir menu"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <span class="topbar-small">
+                    ALDEMAR STUDIOS
+                </span>
+
+                <h1 id="pageTitle">
+                    Início
+                </h1>
+
+            </div>
+
+
+            <div class="user-area">
+
+                <div class="user-info">
+
+                    <strong id="userName">
+                        Usuário
+                    </strong>
+
+                    <span id="userPlan">
+                        GRATUITO
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                    aria-label="Foto do usuário"
+                >
                     AS
                 </div>
 
-                <div class="brand-text">
-
-                    <strong>
-                        Aldemar
-                    </strong>
-
-                    <span>
-                        Studios
-                    </span>
-
-                </div>
-
             </div>
 
-
-            <!-- MENU -->
-
-            <nav class="menu" aria-label="Menu principal">
-
-
-                <!-- INÍCIO -->
-
-                <button
-                    type="button"
-                    class="menu-item active"
-                    data-section="inicio"
-                >
-
-                    <span class="menu-icon">🏠</span>
-
-                    <span class="menu-label">
-                        Início
-                    </span>
-
-                </button>
-
-
-                <!-- JOGOS -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="jogos"
-                >
-
-                    <span class="menu-icon">🎮</span>
-
-                    <span class="menu-label">
-                        Jogos
-                    </span>
-
-                </button>
-
-
-                <!-- INGLÊS -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="ingles"
-                >
-
-                    <span class="menu-icon">🇺🇸</span>
-
-                    <span class="menu-label">
-                        Inglês
-                    </span>
-
-                </button>
-
-
-                <!-- MÚSICA -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="musica"
-                >
-
-                    <span class="menu-icon">🎵</span>
-
-                    <span class="menu-label">
-                        Música
-                    </span>
-
-                </button>
-
-
-                <!-- INCLUSIVOS -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="inclusivos"
-                >
-
-                    <span class="menu-icon">♿</span>
-
-                    <span class="menu-label">
-                        Inclusivos
-                    </span>
-
-                </button>
-
-
-                <!-- TÍTULO -->
-
-                <div class="menu-title">
-                    EDUCAÇÃO
-                </div>
-
-
-                <!-- CURSOS -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="cursos"
-                >
-
-                    <span class="menu-icon">📚</span>
-
-                    <span class="menu-label">
-                        Cursos
-                    </span>
-
-                </button>
-
-
-                <!-- MATERIAIS — ATIVADO -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="materiais"
-                >
-
-                    <span class="menu-icon">📂</span>
-
-                    <span class="menu-label">
-                        Materiais
-                    </span>
-
-                </button>
-
-
-                <!-- SIMULADOS — ATIVADO -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="simulados"
-                >
-
-                    <span class="menu-icon">📝</span>
-
-                    <span class="menu-label">
-                        Simulados
-                    </span>
-
-                </button>
-
-
-                <!-- PLANOS — ÚNICA ÁREA BLOQUEADA -->
-
-                <button
-                    type="button"
-                    class="menu-item locked"
-                    data-locked="true"
-                    aria-disabled="true"
-                >
-
-                    <span class="menu-icon">⭐</span>
-
-                    <span class="menu-label">
-                        Planos
-                    </span>
-
-                    <span class="lock">
-                        🔒
-                    </span>
-
-                </button>
-
-            </nav>
-
-
-            <!-- =================================================
-                 PARTE INFERIOR
-            ================================================== -->
-
-            <div class="sidebar-bottom">
-
-
-                <!-- FEEDBACK -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="feedback"
-                >
-
-                    <span class="menu-icon">💬</span>
-
-                    <span class="menu-label">
-                        Feedback
-                    </span>
-
-                </button>
-
-
-                <!-- PERFIL -->
-
-                <button
-                    type="button"
-                    class="menu-item"
-                    data-section="perfil"
-                >
-
-                    <span class="menu-icon">👤</span>
-
-                    <span class="menu-label">
-                        Meu Perfil
-                    </span>
-
-                </button>
-
-
-                <!-- SAIR -->
-
-                <button
-                    type="button"
-                    id="logoutButton"
-                    class="menu-item logout"
-                >
-
-                    <span class="menu-icon">🚪</span>
-
-                    <span class="menu-label">
-                        Sair
-                    </span>
-
-                </button>
-
-            </div>
-
-        </aside>
+        </header>
 
 
         <!-- =====================================================
-             CONTEÚDO PRINCIPAL
+             INÍCIO
         ====================================================== -->
 
-        <main class="main-content">
+        <section
+            id="inicio"
+            class="content-section active"
+        >
 
 
-            <!-- =================================================
-                 HEADER
-            ================================================== -->
+            <div class="welcome-card">
 
-            <header class="topbar">
+                <div>
 
-
-                <!-- BOTÃO MOBILE -->
-
-                <button
-                    type="button"
-                    class="mobile-menu-button"
-                    id="mobileMenuButton"
-                    aria-label="Abrir menu"
-                    aria-controls="sidebar"
-                    aria-expanded="false"
-                >
-                    ☰
-                </button>
-
-
-                <div class="topbar-title">
-
-                    <span class="topbar-small">
-                        ALDEMAR STUDIOS
+                    <span class="welcome-label">
+                        BEM-VINDO AO ALDEMAR STUDIOS
                     </span>
 
-                    <h1 id="pageTitle">
-                        Início
-                    </h1>
+                    <h2>
+
+                        Olá,
+
+                        <span id="welcomeName">
+                            usuário
+                        </span>!
+
+                        👋
+
+                    </h2>
+
+                    <p>
+                        Explore jogos, cursos, conteúdos
+                        educativos e muito mais.
+                    </p>
 
                 </div>
 
 
-                <div class="user-area">
-
-                    <div class="user-info">
-
-                        <strong id="userName">
-                            Usuário
-                        </strong>
-
-                        <span id="userPlan">
-                            GRATUITO
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        class="user-avatar"
-                        id="userAvatar"
-                        aria-label="Foto do usuário"
-                    >
-                        AS
-                    </div>
-
+                <div class="welcome-icon">
+                    🎓
                 </div>
 
-            </header>
+            </div>
 
 
-            <!-- =====================================================
-                 INÍCIO
-            ====================================================== -->
+            <div class="section-title">
 
-            <section
-                id="inicio"
-                class="content-section active"
-            >
+                <h2>
+                    Acesso rápido
+                </h2>
+
+                <p>
+                    Comece por onde quiser.
+                </p>
+
+            </div>
 
 
-                <!-- BOAS-VINDAS -->
+            <div class="cards-grid">
 
-                <div class="welcome-card">
+
+                <article
+                    class="access-card"
+                    data-section-link="cursos"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        Cursos
+                    </h3>
+
+                    <p>
+                        Cursos gratuitos para
+                        aprender no seu ritmo.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </article>
+
+
+                <!-- =================================================
+                     MINI CURSO NO ACESSO RÁPIDO
+                ================================================== -->
+
+                <article
+                    class="access-card"
+                    data-section-link="ingles"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        🇺🇸
+                    </div>
+
+                    <h3>
+                        Mini Curso
+                    </h3>
+
+                    <p>
+                        Mini curso de inglês para
+                        iniciantes.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="musica"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        🎵
+                    </div>
+
+                    <h3>
+                        Música
+                    </h3>
+
+                    <p>
+                        Teoria, prática e conteúdos
+                        musicais.
+                    </p>
+
+                    <span class="card-link">
+                        Explorar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="inclusivos"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        ♿
+                    </div>
+
+                    <h3>
+                        Inclusivos
+                    </h3>
+
+                    <p>
+                        Conteúdos pensados para
+                        diferentes necessidades.
+                    </p>
+
+                    <span class="card-link">
+                        Explorar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="materiais"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        📂
+                    </div>
+
+                    <h3>
+                        Materiais
+                    </h3>
+
+                    <p>
+                        Acesse materiais e recursos
+                        educacionais.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="simulados"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Simulados
+                    </h3>
+
+                    <p>
+                        Pratique seus conhecimentos
+                        com avaliações.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </article>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    ⭐ Planos
+                </h2>
+
+                <p>
+                    Novos recursos e planos estão
+                    sendo preparados.
+                </p>
+
+            </div>
+
+
+            <div class="coming-grid">
+
+                <div
+                    class="coming-card"
+                    data-locked-card="true"
+                >
+
+                    <span>
+                        ⭐
+                    </span>
 
                     <div>
 
-                        <span class="welcome-label">
-                            BEM-VINDO AO ALDEMAR STUDIOS
-                        </span>
-
-                        <h2>
-
-                            Olá,
-
-                            <span id="welcomeName">
-                                usuário
-                            </span>!
-
-                            👋
-
-                        </h2>
+                        <strong>
+                            Planos Premium
+                        </strong>
 
                         <p>
-                            Explore jogos, cursos, conteúdos
-                            educativos e muito mais.
+                            Recursos exclusivos em desenvolvimento.
                         </p>
 
                     </div>
 
-
-                    <div class="welcome-icon">
-                        🎓
-                    </div>
+                    <b>
+                        🔒
+                    </b>
 
                 </div>
 
+            </div>
 
-                <!-- ACESSO RÁPIDO -->
+        </section>
 
-                <div class="section-title">
 
-                    <h2>
-                        Acesso rápido
-                    </h2>
+        <!-- =====================================================
+             JOGOS
+        ====================================================== -->
 
-                    <p>
-                        Comece por onde quiser.
-                    </p>
+        <section
+            id="jogos"
+            class="content-section"
+        >
 
-                </div>
 
-
-                <div class="cards-grid">
-
-                    <!-- CURSOS -->
-
-                    <article
-                        class="access-card"
-                        data-section-link="cursos"
-                        tabindex="0"
-                    >
-
-                        <div class="card-icon">
-                            📚
-                        </div>
-
-                        <h3>
-                            Cursos
-                        </h3>
-
-                        <p>
-                            Cursos gratuitos para
-                            aprender no seu ritmo.
-                        </p>
-
-                        <span class="card-link">
-                            Acessar →
-                        </span>
-
-                    </article>
-
-
-                    <!-- INGLÊS -->
-
-                    <article
-                        class="access-card"
-                        data-section-link="ingles"
-                        tabindex="0"
-                    >
-
-                        <div class="card-icon">
-                            🇺🇸
-                        </div>
-
-                        <h3>
-                            Inglês
-                        </h3>
-
-                        <p>
-                            Conteúdos e atividades
-                            para aprender inglês.
-                        </p>
-
-                        <span class="card-link">
-                            Acessar →
-                        </span>
-
-                    </article>
-
-
-                    <!-- MÚSICA -->
-
-                    <article
-                        class="access-card"
-                        data-section-link="musica"
-                        tabindex="0"
-                    >
-
-                        <div class="card-icon">
-                            🎵
-                        </div>
-
-                        <h3>
-                            Música
-                        </h3>
-
-                        <p>
-                            Teoria, prática e conteúdos
-                            musicais.
-                        </p>
-
-                        <span class="card-link">
-                            Explorar →
-                        </span>
-
-                    </article>
-
-
-                    <!-- INCLUSIVOS -->
-
-                    <article
-                        class="access-card"
-                        data-section-link="inclusivos"
-                        tabindex="0"
-                    >
-
-                        <div class="card-icon">
-                            ♿
-                        </div>
-
-                        <h3>
-                            Inclusivos
-                        </h3>
-
-                        <p>
-                            Conteúdos pensados para
-                            diferentes necessidades.
-                        </p>
-
-                        <span class="card-link">
-                            Explorar →
-                        </span>
-
-                    </article>
-
-
-                    <!-- MATERIAIS -->
-
-                    <article
-                        class="access-card"
-                        data-section-link="materiais"
-                        tabindex="0"
-                    >
-
-                        <div class="card-icon">
-                            📂
-                        </div>
-
-                        <h3>
-                            Materiais
-                        </h3>
-
-                        <p>
-                            Acesse materiais e recursos
-                            educacionais.
-                        </p>
-
-                        <span class="card-link">
-                            Acessar →
-                        </span>
-
-                    </article>
-
-
-                    <!-- SIMULADOS -->
-
-                    <article
-                        class="access-card"
-                        data-section-link="simulados"
-                        tabindex="0"
-                    >
-
-                        <div class="card-icon">
-                            📝
-                        </div>
-
-                        <h3>
-                            Simulados
-                        </h3>
-
-                        <p>
-                            Pratique seus conhecimentos
-                            com avaliações.
-                        </p>
-
-                        <span class="card-link">
-                            Acessar →
-                        </span>
-
-                    </article>
-
-                </div>
-
-
-                <!-- PLANOS -->
-
-                <div class="section-title">
-
-                    <h2>
-                        ⭐ Planos
-                    </h2>
-
-                    <p>
-                        Novos recursos e planos estão
-                        sendo preparados.
-                    </p>
-
-                </div>
-
-
-                <div class="coming-grid">
-
-
-                    <div
-                        class="coming-card"
-                        data-locked-card="true"
-                    >
-
-                        <span>
-                            ⭐
-                        </span>
-
-                        <div>
-
-                            <strong>
-                                Planos Premium
-                            </strong>
-
-                            <p>
-                                Recursos exclusivos em desenvolvimento.
-                            </p>
-
-                        </div>
-
-                        <b>
-                            🔒
-                        </b>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =====================================================
-                 JOGOS
-            ====================================================== -->
-
-            <section
-                id="jogos"
-                class="content-section"
-            >
-
-
-                <!-- CATEGORIAS -->
-
-                <div id="gamesCategories">
-
-                    <div class="section-title">
-
-                        <span class="welcome-label">
-                            ALDEMAR STUDIOS
-                        </span>
-
-                        <h2>
-                            🎮 Central de Jogos
-                        </h2>
-
-                        <p>
-                            Diversão, desafios e aprendizado
-                            em um só lugar.
-                        </p>
-
-                    </div>
-
-
-                    <div class="category-grid">
-
-
-                        <!-- PASSATEMPO -->
-
-                        <div
-                            class="category-card game-category-card"
-                            data-game-category="passatempo"
-                            tabindex="0"
-                            role="button"
-                        >
-
-                            <span class="category-big-icon">
-                                🎮
-                            </span>
-
-                            <h3>
-                                Jogos de Passatempo
-                            </h3>
-
-                            <p>
-                                Jogos para diversão,
-                                desafios e entretenimento.
-                            </p>
-
-                            <span class="card-link">
-                                Explorar →
-                            </span>
-
-                        </div>
-
-
-                        <!-- EDUCATIVOS -->
-
-                        <div
-                            class="category-card game-category-card"
-                            data-game-category="educativos"
-                            tabindex="0"
-                            role="button"
-                        >
-
-                            <span class="category-big-icon">
-                                📚
-                            </span>
-
-                            <h3>
-                                Jogos Educativos
-                            </h3>
-
-                            <p>
-                                Aprenda enquanto joga com
-                                conteúdos de diversas áreas.
-                            </p>
-
-                            <span class="card-link">
-                                Explorar →
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     PASSATEMPO
-                ================================================== -->
-
-                <div
-                    id="passatempoArea"
-                    class="games-area"
-                    hidden
-                >
-
-                    <button
-                        type="button"
-                        class="back-button"
-                        data-games-back
-                    >
-                        ← VOLTAR
-                    </button>
-
-
-                    <div class="section-title">
-
-                        <span class="welcome-label">
-                            ENTRETENIMENTO
-                        </span>
-
-                        <h2>
-                            🎮 Jogos de Passatempo
-                        </h2>
-
-                        <p>
-                            Escolha um jogo e divirta-se.
-                        </p>
-
-                    </div>
-
-
-                    <div class="games-grid">
-
-
-                        <article class="game-card">
-
-                            <div class="game-cover">
-                                🎮
-                            </div>
-
-                            <div class="game-card-content">
-
-                                <span class="game-tag">
-                                    PASSATEMPO
-                                </span>
-
-                                <h3>
-                                    Jogo em breve
-                                </h3>
-
-                                <p>
-                                    Nosso primeiro jogo será
-                                    disponibilizado aqui.
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="primary-small"
-                                    disabled
-                                >
-                                    EM BREVE
-                                </button>
-
-                            </div>
-
-                        </article>
-
-
-                        <article class="game-card">
-
-                            <div class="game-cover">
-                                🧩
-                            </div>
-
-                            <div class="game-card-content">
-
-                                <span class="game-tag">
-                                    PASSATEMPO
-                                </span>
-
-                                <h3>
-                                    Mais jogos chegando
-                                </h3>
-
-                                <p>
-                                    Novos jogos serão adicionados
-                                    ao Aldemar Studios.
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="primary-small"
-                                    disabled
-                                >
-                                    EM BREVE
-                                </button>
-
-                            </div>
-
-                        </article>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     EDUCATIVOS
-                ================================================== -->
-
-                <div
-                    id="educativosArea"
-                    class="games-area"
-                    hidden
-                >
-
-                    <button
-                        type="button"
-                        class="back-button"
-                        data-games-back
-                    >
-                        ← VOLTAR
-                    </button>
-
-
-                    <div class="section-title">
-
-                        <span class="welcome-label">
-                            APRENDIZAGEM
-                        </span>
-
-                        <h2>
-                            📚 Jogos Educativos
-                        </h2>
-
-                        <p>
-                            Aprenda através de jogos interativos.
-                        </p>
-
-                    </div>
-
-
-                    <!-- FILTROS -->
-
-                    <div class="game-filters">
-
-
-                        <button
-                            type="button"
-                            class="game-filter active"
-                            data-game-filter="todos"
-                        >
-                            TODOS
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="game-filter"
-                            data-game-filter="ingles"
-                        >
-                            🇺🇸 INGLÊS
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="game-filter"
-                            data-game-filter="portugues"
-                        >
-                            📖 PORTUGUÊS
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="game-filter"
-                            data-game-filter="matematica"
-                        >
-                            🔢 MATEMÁTICA
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="game-filter"
-                            data-game-filter="historia"
-                        >
-                            🏛️ HISTÓRIA
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="game-filter"
-                            data-game-filter="geografia"
-                        >
-                            🌎 GEOGRAFIA
-                        </button>
-
-                    </div>
-
-
-                    <!-- JOGOS -->
-
-                    <div class="games-grid">
-
-
-                        <!-- INGLÊS -->
-
-                        <article
-                            class="game-card educational-game"
-                            data-subject="ingles"
-                        >
-
-                            <div class="game-cover">
-                                🇺🇸
-                            </div>
-
-                            <div class="game-card-content">
-
-                                <span class="game-tag">
-                                    INGLÊS
-                                </span>
-
-                                <h3>
-                                    Jogos de Inglês
-                                </h3>
-
-                                <p>
-                                    Aprenda inglês através
-                                    de desafios interativos.
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="primary-small"
-                                    data-section-link="ingles"
-                                >
-                                    ACESSAR →
-                                </button>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- PORTUGUÊS -->
-
-                        <article
-                            class="game-card educational-game"
-                            data-subject="portugues"
-                        >
-
-                            <div class="game-cover">
-                                📖
-                            </div>
-
-                            <div class="game-card-content">
-
-                                <span class="game-tag">
-                                    PORTUGUÊS
-                                </span>
-
-                                <h3>
-                                    Jogos de Português
-                                </h3>
-
-                                <p>
-                                    Leitura, escrita e
-                                    interpretação.
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="primary-small"
-                                    disabled
-                                >
-                                    EM BREVE
-                                </button>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- MATEMÁTICA -->
-
-                        <article
-                            class="game-card educational-game"
-                            data-subject="matematica"
-                        >
-
-                            <div class="game-cover">
-                                🔢
-                            </div>
-
-                            <div class="game-card-content">
-
-                                <span class="game-tag">
-                                    MATEMÁTICA
-                                </span>
-
-                                <h3>
-                                    Jogos de Matemática
-                                </h3>
-
-                                <p>
-                                    Resolva desafios matemáticos
-                                    enquanto joga.
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="primary-small"
-                                    disabled
-                                >
-                                    EM BREVE
-                                </button>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- HISTÓRIA -->
-
-                        <article
-                            class="game-card educational-game"
-                            data-subject="historia"
-                        >
-
-                            <div class="game-cover">
-                                🏛️
-                            </div>
-
-                            <div class="game-card-content">
-
-                                <span class="game-tag">
-                                    HISTÓRIA
-                                </span>
-
-                                <h3>
-                                    Jogos de História
-                                </h3>
-
-                                <p>
-                                    Explore acontecimentos
-                                    históricos.
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="primary-small"
-                                    disabled
-                                >
-                                    EM BREVE
-                                </button>
-
-                            </div>
-
-                        </article>
-
-
-                        <!-- GEOGRAFIA -->
-
-                        <article
-                            class="game-card educational-game"
-                            data-subject="geografia"
-                        >
-
-                            <div class="game-cover">
-                                🌎
-                            </div>
-
-                            <div class="game-card-content">
-
-                                <span class="game-tag">
-                                    GEOGRAFIA
-                                </span>
-
-                                <h3>
-                                    Jogos de Geografia
-                                </h3>
-
-                                <p>
-                                    Países, mapas, lugares
-                                    e muito mais.
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="primary-small"
-                                    disabled
-                                >
-                                    EM BREVE
-                                </button>
-
-                            </div>
-
-                        </article>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =====================================================
-                 INGLÊS
-            ====================================================== -->
-
-            <section
-                id="ingles"
-                class="content-section"
-            >
-
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-section="inicio"
-                >
-                    ← VOLTAR
-                </button>
-
+            <div id="gamesCategories">
 
                 <div class="section-title">
 
                     <span class="welcome-label">
-                        CONTEÚDOS
+                        ALDEMAR STUDIOS
                     </span>
 
                     <h2>
-                        🇺🇸 Inglês
+                        🎮 Central de Jogos
                     </h2>
 
                     <p>
-                        Explore conteúdos, atividades e
-                        recursos para aprender inglês.
+                        Diversão, desafios e aprendizado
+                        em um só lugar.
                     </p>
 
                 </div>
@@ -1197,32 +634,11 @@
                 <div class="category-grid">
 
 
-                    <div class="category-card">
-
-                        <span class="category-big-icon">
-                            📚
-                        </span>
-
-                        <h3>
-                            Conteúdos de Inglês
-                        </h3>
-
-                        <p>
-                            Materiais e atividades de inglês
-                            serão adicionados nesta área.
-                        </p>
-
-                        <span class="card-link">
-                            Em desenvolvimento
-                        </span>
-
-                    </div>
-
-
                     <div
-                        class="category-card"
-                        data-section-link="jogos"
+                        class="category-card game-category-card"
+                        data-game-category="passatempo"
                         tabindex="0"
+                        role="button"
                     >
 
                         <span class="category-big-icon">
@@ -1230,440 +646,39 @@
                         </span>
 
                         <h3>
-                            Jogos de Inglês
+                            Jogos de Passatempo
                         </h3>
 
                         <p>
-                            Aprenda inglês de maneira
-                            divertida através dos jogos.
+                            Jogos para diversão,
+                            desafios e entretenimento.
                         </p>
 
                         <span class="card-link">
-                            Acessar jogos →
+                            Explorar →
                         </span>
 
                     </div>
 
-                </div>
 
-            </section>
-
-
-            <!-- =====================================================
-                 CURSOS
-            ====================================================== -->
-
-            <section
-                id="cursos"
-                class="content-section"
-            >
-
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-section="inicio"
-                >
-                    ← VOLTAR
-                </button>
-
-
-                <div class="section-title">
-
-                    <span class="welcome-label">
-                        FORMAÇÃO
-                    </span>
-
-                    <h2>
-                        📚 Cursos
-                    </h2>
-
-                    <p>
-                        Aprenda no seu ritmo através dos
-                        cursos do Aldemar Studios.
-                    </p>
-
-                </div>
-
-
-                <div class="section-title">
-
-                    <h2>
-                        🎓 Cursos Gratuitos
-                    </h2>
-
-                    <p>
-                        Cursos gratuitos, completos e
-                        acessíveis para todos.
-                    </p>
-
-                </div>
-
-
-                <div class="course-grid">
-
-
-                    <article class="course-card">
-
-                        <div class="course-icon">
-                            🇺🇸
-                        </div>
-
-
-                        <div class="course-info">
-
-                            <span class="game-tag">
-                                CURSO GRATUITO
-                            </span>
-
-                            <h3>
-                                Inglês para Iniciantes
-                            </h3>
-
-                            <p>
-                                Aprenda os fundamentos da língua
-                                inglesa desde o início.
-                            </p>
-
-
-                            <div class="course-details">
-
-                                <span>
-                                    📚 10 módulos
-                                </span>
-
-                                <span>
-                                    📝 10 aulas por módulo
-                                </span>
-
-                                <span>
-                                    🎓 100 aulas no total
-                                </span>
-
-                                <span>
-                                    🆓 Gratuito
-                                </span>
-
-                                <span>
-                                    🚫 Sem certificado
-                                </span>
-
-                            </div>
-
-
-                            <div class="progress">
-
-                                <div
-                                    class="progress-bar"
-                                    style="width:0%"
-                                ></div>
-
-                            </div>
-
-
-                            <small>
-                                0% concluído
-                            </small>
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="primary-small"
-                            data-open-courses
-                        >
-                            COMEÇAR
-                        </button>
-
-                    </article>
-
-                </div>
-
-
-                <div class="course-intro-card">
-
-                    <div class="course-intro-icon">
-                        🎯
-                    </div>
-
-
-                    <div>
-
-                        <h3>
-                            Nossa proposta
-                        </h3>
-
-                        <p>
-                            O Aldemar Studios está desenvolvendo
-                            uma plataforma de cursos gratuitos
-                            para ampliar o acesso à educação.
-                        </p>
-
-                        <p>
-                            O primeiro projeto será o curso
-                            <strong>
-                                Inglês para Iniciantes
-                            </strong>,
-                            organizado em 10 módulos com 10 aulas
-                            cada.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =====================================================
-                 MÚSICA
-            ====================================================== -->
-
-            <section
-                id="musica"
-                class="content-section"
-            >
-
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-section="inicio"
-                >
-                    ← VOLTAR
-                </button>
-
-
-                <div class="section-title">
-
-                    <span class="welcome-label">
-                        CONTEÚDOS
-                    </span>
-
-                    <h2>
-                        🎵 Música
-                    </h2>
-
-                    <p>
-                        Conhecimento musical para todas as idades.
-                    </p>
-
-                </div>
-
-
-                <div class="category-grid">
-
-
-                    <div class="category-card">
+                    <div
+                        class="category-card game-category-card"
+                        data-game-category="educativos"
+                        tabindex="0"
+                        role="button"
+                    >
 
                         <span class="category-big-icon">
-                            🧒
+                            📚
                         </span>
 
                         <h3>
-                            Música Infantil
+                            Jogos Educativos
                         </h3>
 
                         <p>
-                            Conteúdos musicais para crianças.
-                        </p>
-
-                    </div>
-
-
-                    <div class="category-card">
-
-                        <span class="category-big-icon">
-                            🎸
-                        </span>
-
-                        <h3>
-                            Teoria e Prática
-                        </h3>
-
-                        <p>
-                            Aprenda música na prática.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =====================================================
-                 INCLUSIVOS
-            ====================================================== -->
-
-            <section
-                id="inclusivos"
-                class="content-section"
-            >
-
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-section="inicio"
-                >
-                    ← VOLTAR
-                </button>
-
-
-                <div class="section-title">
-
-                    <span class="welcome-label">
-                        ACESSIBILIDADE
-                    </span>
-
-                    <h2>
-                        ♿ Conteúdos Inclusivos
-                    </h2>
-
-                    <p>
-                        Materiais pensados para diferentes perfis.
-                    </p>
-
-                </div>
-
-
-                <div class="category-grid">
-
-
-                    <div class="category-card">
-
-                        <span class="category-big-icon">
-                            🧩
-                        </span>
-
-                        <h3>
-                            Atividades Adaptadas
-                        </h3>
-
-                        <p>
-                            Conteúdos visuais e adaptados.
-                        </p>
-
-                    </div>
-
-
-                    <div class="category-card">
-
-                        <span class="category-big-icon">
-                            🧠
-                        </span>
-
-                        <h3>
-                            Aprendizagem
-                        </h3>
-
-                        <p>
-                            Estratégias para diferentes formas
-                            de aprender.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =====================================================
-                 CURSOS / ÁREA DE MATERIAIS
-            ====================================================== -->
-
-            <section
-                id="materiais"
-                class="content-section"
-            >
-
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-section="inicio"
-                >
-                    ← VOLTAR
-                </button>
-
-
-                <div class="section-title">
-
-                    <span class="welcome-label">
-                        BIBLIOTECA
-                    </span>
-
-                    <h2>
-                        📂 Materiais
-                    </h2>
-
-                    <p>
-                        Acesse materiais e recursos
-                        educacionais do Aldemar Studios.
-                    </p>
-
-                </div>
-
-
-                <div class="category-grid">
-
-
-                    <div class="category-card">
-
-                        <span class="category-big-icon">
-                            📘
-                        </span>
-
-                        <h3>
-                            Materiais de Inglês
-                        </h3>
-
-                        <p>
-                            Atividades, textos e recursos
-                            para o aprendizado de inglês.
-                        </p>
-
-                        <span class="card-link">
-                            Acessar →
-                        </span>
-
-                    </div>
-
-
-                    <div class="category-card">
-
-                        <span class="category-big-icon">
-                            📖
-                        </span>
-
-                        <h3>
-                            Materiais de Português
-                        </h3>
-
-                        <p>
-                            Conteúdos de leitura, escrita
-                            e interpretação.
-                        </p>
-
-                        <span class="card-link">
-                            Acessar →
-                        </span>
-
-                    </div>
-
-
-                    <div class="category-card">
-
-                        <span class="category-big-icon">
-                            🎓
-                        </span>
-
-                        <h3>
-                            Materiais Educacionais
-                        </h3>
-
-                        <p>
-                            Recursos complementares para
-                            estudos e aprendizagem.
+                            Aprenda enquanto joga com
+                            conteúdos de diversas áreas.
                         </p>
 
                         <span class="card-link">
@@ -1674,22 +689,19 @@
 
                 </div>
 
-            </section>
+            </div>
 
 
-            <!-- =====================================================
-                 SIMULADOS
-            ====================================================== -->
-
-            <section
-                id="simulados"
-                class="content-section"
+            <div
+                id="passatempoArea"
+                class="games-area"
+                hidden
             >
 
                 <button
                     type="button"
                     class="back-button"
-                    data-back-section="inicio"
+                    data-games-back
                 >
                     ← VOLTAR
                 </button>
@@ -1698,85 +710,105 @@
                 <div class="section-title">
 
                     <span class="welcome-label">
-                        AVALIAÇÃO
+                        ENTRETENIMENTO
                     </span>
 
                     <h2>
-                        📝 Simulados
+                        🎮 Jogos de Passatempo
                     </h2>
 
                     <p>
-                        Pratique seus conhecimentos através
-                        de avaliações e exercícios.
+                        Escolha um jogo e divirta-se.
                     </p>
 
                 </div>
 
 
-                <div class="category-grid">
+                <div class="games-grid">
 
 
-                    <div class="category-card">
+                    <article class="game-card">
 
-                        <span class="category-big-icon">
-                            🇺🇸
-                        </span>
+                        <div class="game-cover">
+                            🎮
+                        </div>
 
-                        <h3>
-                            Simulados de Inglês
-                        </h3>
+                        <div class="game-card-content">
 
-                        <p>
-                            Exercite seus conhecimentos
-                            da língua inglesa.
-                        </p>
+                            <span class="game-tag">
+                                PASSATEMPO
+                            </span>
 
-                        <span class="card-link">
-                            Acessar →
-                        </span>
+                            <h3>
+                                Jogo em breve
+                            </h3>
 
-                    </div>
+                            <p>
+                                Nosso primeiro jogo será
+                                disponibilizado aqui.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
 
 
-                    <div class="category-card">
+                    <article class="game-card">
 
-                        <span class="category-big-icon">
-                            📚
-                        </span>
+                        <div class="game-cover">
+                            🧩
+                        </div>
 
-                        <h3>
-                            Simulados Gerais
-                        </h3>
+                        <div class="game-card-content">
 
-                        <p>
-                            Avaliações de diferentes
-                            áreas do conhecimento.
-                        </p>
+                            <span class="game-tag">
+                                PASSATEMPO
+                            </span>
 
-                        <span class="card-link">
-                            Acessar →
-                        </span>
+                            <h3>
+                                Mais jogos chegando
+                            </h3>
 
-                    </div>
+                            <p>
+                                Novos jogos serão adicionados
+                                ao Aldemar Studios.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
 
                 </div>
 
-            </section>
+            </div>
 
 
-            <!-- =====================================================
-                 PLANOS — BLOQUEADO
-            ====================================================== -->
-
-            <section
-                id="planos"
-                class="content-section"
+            <div
+                id="educativosArea"
+                class="games-area"
+                hidden
             >
 
                 <button
                     type="button"
                     class="back-button"
-                    data-back-section="inicio"
+                    data-games-back
                 >
                     ← VOLTAR
                 </button>
@@ -1785,566 +817,1470 @@
                 <div class="section-title">
 
                     <span class="welcome-label">
-                        PREMIUM
+                        APRENDIZAGEM
                     </span>
 
                     <h2>
-                        ⭐ Planos
+                        📚 Jogos Educativos
                     </h2>
 
                     <p>
-                        Esta área ainda está em desenvolvimento.
+                        Aprenda através de jogos interativos.
                     </p>
 
                 </div>
 
 
-                <div class="locked-section-card">
-
-                    <div class="locked-icon">
-                        🔒
-                    </div>
-
-                    <h3>
-                        Área em desenvolvimento
-                    </h3>
-
-                    <p>
-                        Os planos do Aldemar Studios estarão
-                        disponíveis em breve.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- =====================================================
-                 FEEDBACK
-            ====================================================== -->
-
-            <section
-                id="feedback"
-                class="content-section"
-            >
-
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-section="inicio"
-                >
-                    ← VOLTAR
-                </button>
-
-
-                <div class="section-title">
-
-                    <span class="welcome-label">
-                        SUA OPINIÃO
-                    </span>
-
-                    <h2>
-                        💬 Feedback
-                    </h2>
-
-                    <p>
-                        Ajude a melhorar o Aldemar Studios.
-                    </p>
-
-                </div>
-
-
-                <div class="feedback-card">
-
-                    <h3>
-                        O que podemos melhorar?
-                    </h3>
-
-                    <p>
-                        Sua opinião é muito importante para
-                        continuarmos desenvolvendo a plataforma.
-                    </p>
-
-
-                    <div
-                        class="stars"
-                        aria-label="Avaliação de 1 a 5 estrelas"
-                    >
-
-                        <button
-                            type="button"
-                            data-rating="1"
-                            aria-label="1 estrela"
-                        >
-                            ★
-                        </button>
-
-                        <button
-                            type="button"
-                            data-rating="2"
-                            aria-label="2 estrelas"
-                        >
-                            ★
-                        </button>
-
-                        <button
-                            type="button"
-                            data-rating="3"
-                            aria-label="3 estrelas"
-                        >
-                            ★
-                        </button>
-
-                        <button
-                            type="button"
-                            data-rating="4"
-                            aria-label="4 estrelas"
-                        >
-                            ★
-                        </button>
-
-                        <button
-                            type="button"
-                            data-rating="5"
-                            aria-label="5 estrelas"
-                        >
-                            ★
-                        </button>
-
-                    </div>
-
-
-                    <textarea
-                        id="feedbackText"
-                        placeholder="Escreva sua sugestão..."
-                        maxlength="2000"
-                    ></textarea>
-
+                <div class="game-filters">
 
                     <button
                         type="button"
-                        class="primary-small"
-                        id="sendFeedbackButton"
+                        class="game-filter active"
+                        data-game-filter="todos"
                     >
-                        ENVIAR FEEDBACK
+                        TODOS
+                    </button>
+
+                    <button
+                        type="button"
+                        class="game-filter"
+                        data-game-filter="ingles"
+                    >
+                        🇺🇸 INGLÊS
+                    </button>
+
+                    <button
+                        type="button"
+                        class="game-filter"
+                        data-game-filter="portugues"
+                    >
+                        📖 PORTUGUÊS
+                    </button>
+
+                    <button
+                        type="button"
+                        class="game-filter"
+                        data-game-filter="matematica"
+                    >
+                        🔢 MATEMÁTICA
+                    </button>
+
+                    <button
+                        type="button"
+                        class="game-filter"
+                        data-game-filter="historia"
+                    >
+                        🏛️ HISTÓRIA
+                    </button>
+
+                    <button
+                        type="button"
+                        class="game-filter"
+                        data-game-filter="geografia"
+                    >
+                        🌎 GEOGRAFIA
                     </button>
 
                 </div>
 
-            </section>
+
+                <div class="games-grid">
 
 
-            <!-- =====================================================
-                 PERFIL
-            ====================================================== -->
+                    <article
+                        class="game-card educational-game"
+                        data-subject="ingles"
+                    >
 
-            <section
-                id="perfil"
-                class="content-section"
+                        <div class="game-cover">
+                            🇺🇸
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <span class="game-tag">
+                                INGLÊS
+                            </span>
+
+                            <h3>
+                                Jogos de Inglês
+                            </h3>
+
+                            <p>
+                                Aprenda inglês através
+                                de desafios interativos.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                data-section-link="ingles"
+                            >
+                                ACESSAR →
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <article
+                        class="game-card educational-game"
+                        data-subject="portugues"
+                    >
+
+                        <div class="game-cover">
+                            📖
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <span class="game-tag">
+                                PORTUGUÊS
+                            </span>
+
+                            <h3>
+                                Jogos de Português
+                            </h3>
+
+                            <p>
+                                Leitura, escrita e
+                                interpretação.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <article
+                        class="game-card educational-game"
+                        data-subject="matematica"
+                    >
+
+                        <div class="game-cover">
+                            🔢
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <span class="game-tag">
+                                MATEMÁTICA
+                            </span>
+
+                            <h3>
+                                Jogos de Matemática
+                            </h3>
+
+                            <p>
+                                Resolva desafios matemáticos
+                                enquanto joga.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <article
+                        class="game-card educational-game"
+                        data-subject="historia"
+                    >
+
+                        <div class="game-cover">
+                            🏛️
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <span class="game-tag">
+                                HISTÓRIA
+                            </span>
+
+                            <h3>
+                                Jogos de História
+                            </h3>
+
+                            <p>
+                                Explore acontecimentos
+                                históricos.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <article
+                        class="game-card educational-game"
+                        data-subject="geografia"
+                    >
+
+                        <div class="game-cover">
+                            🌎
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <span class="game-tag">
+                                GEOGRAFIA
+                            </span>
+
+                            <h3>
+                                Jogos de Geografia
+                            </h3>
+
+                            <p>
+                                Países, mapas, lugares
+                                e muito mais.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             MINI CURSO DE INGLÊS
+        ====================================================== -->
+
+        <section
+            id="ingles"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
             >
+                ← VOLTAR
+            </button>
 
 
-                <!-- VOLTAR -->
+            <div class="section-title">
 
-                <button
-                    type="button"
-                    class="back-button"
-                    data-back-section="inicio"
+                <span class="welcome-label">
+                    MINI CURSO
+                </span>
+
+                <h2>
+                    🇺🇸 Mini Curso de Inglês
+                </h2>
+
+                <p>
+                    Aprenda inglês desde o início através
+                    de uma sequência organizada de módulos.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 ÍNDICE DOS MÓDULOS
+            ================================================== -->
+
+            <div class="category-grid">
+
+
+                <div
+                    class="category-card"
+                    data-section-link="ingles"
+                    tabindex="0"
                 >
-                    ← VOLTAR
-                </button>
 
-
-                <!-- CABEÇALHO -->
-
-                <div class="section-title">
-
-                    <span class="welcome-label">
-                        CONTA
+                    <span class="category-big-icon">
+                        📚
                     </span>
 
-                    <h2>
-                        👤 Meu Perfil
-                    </h2>
+                    <h3>
+                        Mini Curso de Inglês
+                    </h3>
 
                     <p>
-                        Gerencie suas informações pessoais
-                        e configurações da sua conta.
+                        Acesse o índice do mini curso e
+                        acompanhe todos os módulos disponíveis.
+                    </p>
+
+                    <a
+                        href="cursos/ingles-gratis/index.html"
+                        class="primary-small"
+                    >
+                        ABRIR MINI CURSO →
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="category-card"
+                    data-section-link="jogos"
+                    tabindex="0"
+                >
+
+                    <span class="category-big-icon">
+                        🎮
+                    </span>
+
+                    <h3>
+                        Jogos de Inglês
+                    </h3>
+
+                    <p>
+                        Aprenda inglês de maneira
+                        divertida através dos jogos.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar jogos →
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 INFORMAÇÕES DO MINI CURSO
+            ================================================== -->
+
+            <div class="course-intro-card">
+
+                <div class="course-intro-icon">
+                    🎯
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Sobre o Mini Curso
+                    </h3>
+
+                    <p>
+                        O Mini Curso de Inglês foi desenvolvido
+                        para quem deseja começar a aprender inglês
+                        de forma simples, gradual e organizada.
+                    </p>
+
+                    <p>
+                        Todo o conteúdo está organizado em módulos,
+                        permitindo que o aluno avance progressivamente
+                        pelos assuntos do curso.
+                    </p>
+
+                    <a
+                        href="cursos/ingles-gratis/index.html"
+                        class="primary-small"
+                    >
+                        VER ÍNDICE DOS MÓDULOS →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CURSOS
+             NÃO ALTERADO
+        ====================================================== -->
+
+        <section
+            id="cursos"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    FORMAÇÃO
+                </span>
+
+                <h2>
+                    📚 Cursos
+                </h2>
+
+                <p>
+                    Aprenda no seu ritmo através dos
+                    cursos do Aldemar Studios.
+                </p>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    🎓 Cursos Gratuitos
+                </h2>
+
+                <p>
+                    Cursos gratuitos, completos e
+                    acessíveis para todos.
+                </p>
+
+            </div>
+
+
+            <div class="course-grid">
+
+
+                <article class="course-card">
+
+                    <div class="course-icon">
+                        🇺🇸
+                    </div>
+
+
+                    <div class="course-info">
+
+                        <span class="game-tag">
+                            CURSO GRATUITO
+                        </span>
+
+                        <h3>
+                            Inglês para Iniciantes
+                        </h3>
+
+                        <p>
+                            Aprenda os fundamentos da língua
+                            inglesa desde o início.
+                        </p>
+
+
+                        <div class="course-details">
+
+                            <span>
+                                📚 10 módulos
+                            </span>
+
+                            <span>
+                                📝 10 aulas por módulo
+                            </span>
+
+                            <span>
+                                🎓 100 aulas no total
+                            </span>
+
+                            <span>
+                                🆓 Gratuito
+                            </span>
+
+                            <span>
+                                🚫 Sem certificado
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:0%"
+                            ></div>
+
+                        </div>
+
+
+                        <small>
+                            0% concluído
+                        </small>
+
+                    </div>
+
+
+                    <a
+                        href="cursos/ingles-gratis/index.html"
+                        class="primary-small"
+                    >
+                        COMEÇAR →
+                    </a>
+
+                </article>
+
+            </div>
+
+
+            <div class="course-intro-card">
+
+                <div class="course-intro-icon">
+                    🎯
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Nossa proposta
+                    </h3>
+
+                    <p>
+                        O Aldemar Studios está desenvolvendo
+                        uma plataforma de cursos gratuitos
+                        para ampliar o acesso à educação.
+                    </p>
+
+                    <p>
+                        O primeiro projeto será o curso
+                        <strong>
+                            Inglês para Iniciantes
+                        </strong>,
+                        organizado em 10 módulos com 10 aulas
+                        cada.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             MÚSICA
+        ====================================================== -->
+
+        <section
+            id="musica"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    CONTEÚDOS
+                </span>
+
+                <h2>
+                    🎵 Música
+                </h2>
+
+                <p>
+                    Conhecimento musical para todas as idades.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🧒
+                    </span>
+
+                    <h3>
+                        Música Infantil
+                    </h3>
+
+                    <p>
+                        Conteúdos musicais para crianças.
                     </p>
 
                 </div>
 
 
-                <!-- =================================================
-                     PERFIL PRINCIPAL
-                ================================================== -->
+                <div class="category-card">
 
-                <div class="profile-edit-card">
+                    <span class="category-big-icon">
+                        🎸
+                    </span>
 
+                    <h3>
+                        Teoria e Prática
+                    </h3>
 
-                    <!-- FOTO -->
+                    <p>
+                        Aprenda música na prática.
+                    </p>
 
-                    <div class="profile-photo-area">
+                </div>
 
-                        <div
-                            class="profile-avatar large"
-                            id="profileAvatar"
-                        >
-                            AS
-                        </div>
+            </div>
 
-
-                        <input
-                            type="file"
-                            id="profilePhotoInput"
-                            accept="image/jpeg,image/png,image/webp"
-                            hidden
-                        >
+        </section>
 
 
-                        <button
-                            type="button"
-                            class="secondary-small"
-                            id="changeProfilePhoto"
-                        >
-                            📷 ALTERAR FOTO
-                        </button>
+        <!-- =====================================================
+             INCLUSIVOS
+        ====================================================== -->
+
+        <section
+            id="inclusivos"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
 
 
-                        <button
-                            type="button"
-                            class="text-button"
-                            id="removeProfilePhoto"
-                        >
-                            Remover foto
-                        </button>
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    ACESSIBILIDADE
+                </span>
+
+                <h2>
+                    ♿ Conteúdos Inclusivos
+                </h2>
+
+                <p>
+                    Materiais pensados para diferentes perfis.
+                </p>
+
+            </div>
 
 
-                        <p class="profile-photo-info">
-                            JPG, PNG ou WEBP.
-                            Tamanho máximo: 5 MB.
-                            A foto somente será salva ao clicar
-                            em <strong>Salvar Alterações</strong>.
-                        </p>
-
-                    </div>
+            <div class="category-grid">
 
 
-                    <!-- =================================================
-                         FORMULÁRIO
-                    ================================================== -->
+                <div class="category-card">
 
-                    <form
-                        class="profile-edit-form"
-                        id="profileEditForm"
-                    >
+                    <span class="category-big-icon">
+                        🧩
+                    </span>
 
+                    <h3>
+                        Atividades Adaptadas
+                    </h3>
 
-                        <!-- NOME -->
-
-                        <div class="input-group">
-
-                            <label for="profileNameInput">
-                                Nome completo
-                            </label>
-
-                            <input
-                                type="text"
-                                id="profileNameInput"
-                                placeholder="Digite seu nome completo"
-                                autocomplete="name"
-                                maxlength="120"
-                            >
-
-                        </div>
-
-
-                        <!-- NICK -->
-
-                        <div class="input-group">
-
-                            <label for="profileNickInput">
-                                Nick / nome de usuário
-                            </label>
-
-                            <div class="input-with-prefix">
-
-                                <span>
-                                    @
-                                </span>
-
-                                <input
-                                    type="text"
-                                    id="profileNickInput"
-                                    placeholder="seu.nick"
-                                    autocomplete="username"
-                                    maxlength="30"
-                                >
-
-                            </div>
-
-                            <small>
-                                Seu nick poderá ser usado para
-                                identificar você dentro do Aldemar Studios.
-                            </small>
-
-                        </div>
-
-
-                        <!-- EMAIL -->
-
-                        <div class="input-group">
-
-                            <label for="profileEmailInput">
-                                E-mail
-                            </label>
-
-                            <input
-                                type="email"
-                                id="profileEmailInput"
-                                placeholder="Digite seu e-mail"
-                                autocomplete="email"
-                                maxlength="150"
-                            >
-
-                        </div>
-
-
-                        <!-- PLANO -->
-
-                        <div class="input-group">
-
-                            <label>
-                                Plano atual
-                            </label>
-
-                            <div class="profile-plan-display">
-
-                                <span>
-                                    🆓
-                                </span>
-
-                                <strong id="profilePlan">
-                                    GRATUITO
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- BOTÕES -->
-
-                        <div class="profile-actions">
-
-                            <button
-                                type="button"
-                                class="secondary-button"
-                                id="cancelProfileEdit"
-                            >
-                                CANCELAR
-                            </button>
-
-
-                            <button
-                                type="submit"
-                                id="saveProfileButton"
-                                class="primary-button"
-                            >
-                                💾 SALVAR ALTERAÇÕES
-                            </button>
-
-                        </div>
-
-                    </form>
+                    <p>
+                        Conteúdos visuais e adaptados.
+                    </p>
 
                 </div>
 
 
-                <!-- =================================================
-                     SEGURANÇA
-                ================================================== -->
+                <div class="category-card">
 
-                <div class="profile-security-card">
+                    <span class="category-big-icon">
+                        🧠
+                    </span>
+
+                    <h3>
+                        Aprendizagem
+                    </h3>
+
+                    <p>
+                        Estratégias para diferentes formas
+                        de aprender.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
-                    <div class="security-header">
+        <!-- =====================================================
+             MATERIAIS
+        ====================================================== -->
 
-                        <div class="security-icon">
-                            🔒
-                        </div>
+        <section
+            id="materiais"
+            class="content-section"
+        >
 
-                        <div>
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
 
-                            <span class="welcome-label">
-                                SEGURANÇA
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    BIBLIOTECA
+                </span>
+
+                <h2>
+                    📂 Materiais
+                </h2>
+
+                <p>
+                    Acesse materiais e recursos
+                    educacionais do Aldemar Studios.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        📘
+                    </span>
+
+                    <h3>
+                        Materiais de Inglês
+                    </h3>
+
+                    <p>
+                        Atividades, textos e recursos
+                        para o aprendizado de inglês.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </div>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        📖
+                    </span>
+
+                    <h3>
+                        Materiais de Português
+                    </h3>
+
+                    <p>
+                        Conteúdos de leitura, escrita
+                        e interpretação.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </div>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🎓
+                    </span>
+
+                    <h3>
+                        Materiais Educacionais
+                    </h3>
+
+                    <p>
+                        Recursos complementares para
+                        estudos e aprendizagem.
+                    </p>
+
+                    <span class="card-link">
+                        Explorar →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SIMULADOS
+        ====================================================== -->
+
+        <section
+            id="simulados"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    AVALIAÇÃO
+                </span>
+
+                <h2>
+                    📝 Simulados
+                </h2>
+
+                <p>
+                    Pratique seus conhecimentos através
+                    de avaliações e exercícios.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🇺🇸
+                    </span>
+
+                    <h3>
+                        Simulados de Inglês
+                    </h3>
+
+                    <p>
+                        Exercite seus conhecimentos
+                        da língua inglesa.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </div>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        📚
+                    </span>
+
+                    <h3>
+                        Simulados Gerais
+                    </h3>
+
+                    <p>
+                        Avaliações de diferentes
+                        áreas do conhecimento.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PLANOS
+        ====================================================== -->
+
+        <section
+            id="planos"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    PREMIUM
+                </span>
+
+                <h2>
+                    ⭐ Planos
+                </h2>
+
+                <p>
+                    Esta área ainda está em desenvolvimento.
+                </p>
+
+            </div>
+
+
+            <div class="locked-section-card">
+
+                <div class="locked-icon">
+                    🔒
+                </div>
+
+                <h3>
+                    Área em desenvolvimento
+                </h3>
+
+                <p>
+                    Os planos do Aldemar Studios estarão
+                    disponíveis em breve.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FEEDBACK
+        ====================================================== -->
+
+        <section
+            id="feedback"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    SUA OPINIÃO
+                </span>
+
+                <h2>
+                    💬 Feedback
+                </h2>
+
+                <p>
+                    Ajude a melhorar o Aldemar Studios.
+                </p>
+
+            </div>
+
+
+            <div class="feedback-card">
+
+                <h3>
+                    O que podemos melhorar?
+                </h3>
+
+                <p>
+                    Sua opinião é muito importante para
+                    continuarmos desenvolvendo a plataforma.
+                </p>
+
+
+                <div
+                    class="stars"
+                    aria-label="Avaliação de 1 a 5 estrelas"
+                >
+
+                    <button
+                        type="button"
+                        data-rating="1"
+                        aria-label="1 estrela"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="2"
+                        aria-label="2 estrelas"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="3"
+                        aria-label="3 estrelas"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="4"
+                        aria-label="4 estrelas"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="5"
+                        aria-label="5 estrelas"
+                    >
+                        ★
+                    </button>
+
+                </div>
+
+
+                <textarea
+                    id="feedbackText"
+                    placeholder="Escreva sua sugestão..."
+                    maxlength="2000"
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    class="primary-small"
+                    id="sendFeedbackButton"
+                >
+                    ENVIAR FEEDBACK
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PERFIL
+        ====================================================== -->
+
+        <section
+            id="perfil"
+            class="content-section"
+        >
+
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    CONTA
+                </span>
+
+                <h2>
+                    👤 Meu Perfil
+                </h2>
+
+                <p>
+                    Gerencie suas informações pessoais
+                    e configurações da sua conta.
+                </p>
+
+            </div>
+
+
+            <div class="profile-edit-card">
+
+
+                <div class="profile-photo-area">
+
+                    <div
+                        class="profile-avatar large"
+                        id="profileAvatar"
+                    >
+                        AS
+                    </div>
+
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/jpeg,image/png,image/webp"
+                        hidden
+                    >
+
+
+                    <button
+                        type="button"
+                        class="secondary-small"
+                        id="changeProfilePhoto"
+                    >
+                        📷 ALTERAR FOTO
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="text-button"
+                        id="removeProfilePhoto"
+                    >
+                        Remover foto
+                    </button>
+
+
+                    <p class="profile-photo-info">
+                        JPG, PNG ou WEBP.
+                        Tamanho máximo: 5 MB.
+                        A foto somente será salva ao clicar
+                        em <strong>Salvar Alterações</strong>.
+                    </p>
+
+                </div>
+
+
+                <form
+                    class="profile-edit-form"
+                    id="profileEditForm"
+                >
+
+
+                    <div class="input-group">
+
+                        <label for="profileNameInput">
+                            Nome completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileNameInput"
+                            placeholder="Digite seu nome completo"
+                            autocomplete="name"
+                            maxlength="120"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="profileNickInput">
+                            Nick / nome de usuário
+                        </label>
+
+                        <div class="input-with-prefix">
+
+                            <span>
+                                @
                             </span>
 
-                            <h3>
-                                Alterar senha
-                            </h3>
+                            <input
+                                type="text"
+                                id="profileNickInput"
+                                placeholder="seu.nick"
+                                autocomplete="username"
+                                maxlength="30"
+                            >
 
-                            <p>
-                                Mantenha sua conta protegida
-                                utilizando uma senha forte.
-                            </p>
+                        </div>
+
+                        <small>
+                            Seu nick poderá ser usado para
+                            identificar você dentro do Aldemar Studios.
+                        </small>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="profileEmailInput">
+                            E-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="profileEmailInput"
+                            placeholder="Digite seu e-mail"
+                            autocomplete="email"
+                            maxlength="150"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Plano atual
+                        </label>
+
+                        <div class="profile-plan-display">
+
+                            <span>
+                                🆓
+                            </span>
+
+                            <strong id="profilePlan">
+                                GRATUITO
+                            </strong>
 
                         </div>
 
                     </div>
 
 
-                    <form
-                        class="password-form"
-                        id="changePasswordForm"
-                    >
+                    <div class="profile-actions">
 
-
-                        <!-- SENHA ATUAL -->
-
-                        <div class="input-group">
-
-                            <label for="currentPassword">
-                                Senha atual
-                            </label>
-
-                            <input
-                                type="password"
-                                id="currentPassword"
-                                placeholder="Digite sua senha atual"
-                                autocomplete="current-password"
-                            >
-
-                        </div>
-
-
-                        <!-- NOVA SENHA -->
-
-                        <div class="input-group">
-
-                            <label for="newPassword">
-                                Nova senha
-                            </label>
-
-                            <input
-                                type="password"
-                                id="newPassword"
-                                placeholder="Digite sua nova senha"
-                                autocomplete="new-password"
-                                minlength="8"
-                            >
-
-                        </div>
-
-
-                        <!-- CONFIRMAR -->
-
-                        <div class="input-group">
-
-                            <label for="confirmPassword">
-                                Confirmar nova senha
-                            </label>
-
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                placeholder="Digite novamente sua nova senha"
-                                autocomplete="new-password"
-                                minlength="8"
-                            >
-
-                        </div>
-
-
-                        <div class="password-info">
-                            A nova senha deve possuir pelo menos
-                            8 caracteres.
-                        </div>
+                        <button
+                            type="button"
+                            class="secondary-button"
+                            id="cancelProfileEdit"
+                        >
+                            CANCELAR
+                        </button>
 
 
                         <button
                             type="submit"
-                            class="primary-small"
+                            id="saveProfileButton"
+                            class="primary-button"
                         >
-                            🔐 ALTERAR SENHA
+                            💾 SALVAR ALTERAÇÕES
                         </button>
 
-                    </form>
-
-                </div>
-
-
-                <!-- =================================================
-                     INFORMAÇÕES DA CONTA
-                ================================================== -->
-
-                <div class="account-info-card">
-
-
-                    <div>
-
-                        <span>
-                            Status da conta
-                        </span>
-
-                        <strong>
-                            🟢 ATIVA
-                        </strong>
-
                     </div>
 
+                </form>
 
-                    <div>
+            </div>
 
-                        <span>
-                            Plano
-                        </span>
 
-                        <strong id="profilePlanBottom">
-                            GRATUITO
-                        </strong>
+            <div class="profile-security-card">
 
+
+                <div class="security-header">
+
+                    <div class="security-icon">
+                        🔒
                     </div>
 
-
                     <div>
 
-                        <span>
-                            Recursos
+                        <span class="welcome-label">
+                            SEGURANÇA
                         </span>
 
-                        <strong>
-                            Acesso gratuito
-                        </strong>
+                        <h3>
+                            Alterar senha
+                        </h3>
+
+                        <p>
+                            Mantenha sua conta protegida
+                            utilizando uma senha forte.
+                        </p>
 
                     </div>
 
                 </div>
 
-            </section>
 
-        </main>
-
-    </div>
-
-
-    <!-- =========================================================
-         OVERLAY MOBILE
-    ========================================================== -->
-
-    <div
-        class="sidebar-overlay"
-        id="sidebarOverlay"
-        hidden
-    ></div>
+                <form
+                    class="password-form"
+                    id="changePasswordForm"
+                >
 
 
-    <!-- =========================================================
-         JAVASCRIPT
-    ========================================================== -->
+                    <div class="input-group">
 
-    <script src="js/dashboard.js"></script>
+                        <label for="currentPassword">
+                            Senha atual
+                        </label>
+
+                        <input
+                            type="password"
+                            id="currentPassword"
+                            placeholder="Digite sua senha atual"
+                            autocomplete="current-password"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="newPassword">
+                            Nova senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Digite sua nova senha"
+                            autocomplete="new-password"
+                            minlength="8"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="confirmPassword">
+                            Confirmar nova senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Digite novamente sua nova senha"
+                            autocomplete="new-password"
+                            minlength="8"
+                        >
+
+                    </div>
+
+
+                    <div class="password-info">
+                        A nova senha deve possuir pelo menos
+                        8 caracteres.
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-small"
+                    >
+                        🔐 ALTERAR SENHA
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="account-info-card">
+
+
+                <div>
+
+                    <span>
+                        Status da conta
+                    </span>
+
+                    <strong>
+                        🟢 ATIVA
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Plano
+                    </span>
+
+                    <strong id="profilePlanBottom">
+                        GRATUITO
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Recursos
+                    </span>
+
+                    <strong>
+                        Acesso gratuito
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     OVERLAY MOBILE
+========================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    hidden
+></div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script src="js/dashboard.js"></script>
 
 </body>
 
 </html>
+
+
