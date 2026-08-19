@@ -1,30 +1,30 @@
-Ôªø/* =========================================================
+/* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
-   VERS√ÉO ATUALIZADA
+   VERS√O ATUALIZADA
    =========================================================
-   PRINCIPAIS FUN√á√ïES:
-   - Navega√ß√£o completa das √°reas dispon√≠veis
+   PRINCIPAIS FUN«’ES:
+   - NavegaÁ„o completa das ·reas disponÌveis
    - Cursos permanece INALTERADO
-   - √Årea de Ingl√™s abre o MINI CURSO
-   - Mini Curso ‚Üí mini-curso/index.html
+   - ¡rea de InglÍs abre o MINI CURSO
+   - Mini Curso ? mini-curso/index.html
    - Materiais, Simulados e Premium continuam bloqueados
    - Perfil com salvamento completo
    - Foto de perfil salva somente ao clicar em SALVAR
-   - Foto permanece ap√≥s recarregar a p√°gina
+   - Foto permanece apÛs recarregar a p·gina
    - Foto sincronizada com API + armazenamento local
    - Compatibilidade com celular, tablet e PC
-   - Navega√ß√£o interna com bot√£o VOLTAR
+   - NavegaÁ„o interna com bot„o VOLTAR
    - Filtros de jogos
    - Feedback
-   - Altera√ß√£o de senha
+   - AlteraÁ„o de senha
    - Logout
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
-       CONFIGURA√á√ÉO DA API
+       CONFIGURA«√O DA API
     ====================================================== */
 
     const IS_LOCAL =
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ELEMENTOS DO USU√ÅRIO
+       ELEMENTOS DO USU¡RIO
     ====================================================== */
 
     const userNameElement =
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let user = null;
 
     /*
-     * undefined = nenhuma altera√ß√£o feita
+     * undefined = nenhuma alteraÁ„o feita
      * string    = nova foto
      * null      = remover foto
      */
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       RECUPERAR USU√ÅRIO
+       RECUPERAR USU¡RIO
     ====================================================== */
 
     try {
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
 
         console.error(
-            "Erro ao recuperar usu√°rio da sess√£o:",
+            "Erro ao recuperar usu·rio da sess„o:",
             error
         );
 
@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
 
             console.warn(
-                "Dados antigos de usu√°rio inv√°lidos:",
+                "Dados antigos de usu·rio inv·lidos:",
                 error
             );
 
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       GARANTIR OBJETO DE USU√ÅRIO
+       GARANTIR OBJETO DE USU¡RIO
     ====================================================== */
 
     if (!user) {
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         user = {
 
             nome_completo:
-                "Usu√°rio",
+                "Usu·rio",
 
             nick:
                 "",
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FUN√á√ïES DO USU√ÅRIO
+       FUN«’ES DO USU¡RIO
     ====================================================== */
 
     function getUserId() {
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function getUserName() {
 
         if (!user) {
-            return "Usu√°rio";
+            return "Usu·rio";
         }
 
         return (
@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
             user.nome ||
             user.name ||
             user.fullName ||
-            "Usu√°rio"
+            "Usu·rio"
         );
     }
 
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function firstName(name) {
 
         if (!name) {
-            return "usu√°rio";
+            return "usu·rio";
         }
 
         return name
@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ATUALIZAR INTERFACE DO USU√ÅRIO
+       ATUALIZAR INTERFACE DO USU¡RIO
     ====================================================== */
 
     function updateUserInterface() {
@@ -498,7 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       SALVAR USU√ÅRIO LOCALMENTE
+       SALVAR USU¡RIO LOCALMENTE
     ====================================================== */
 
     function saveUser() {
@@ -522,19 +522,19 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
 
             console.error(
-                "Erro ao salvar usu√°rio:",
+                "Erro ao salvar usu·rio:",
                 error
             );
 
             showNotification(
-                "N√£o foi poss√≠vel salvar os dados localmente."
+                "N„o foi possÌvel salvar os dados localmente."
             );
         }
     }
 
 
     /* =====================================================
-       CRIAR C√ìPIA DOS DADOS ORIGINAIS
+       CRIAR C”PIA DOS DADOS ORIGINAIS
     ====================================================== */
 
     function saveOriginalProfileData() {
@@ -560,7 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       INICIALIZA√á√ÉO
+       INICIALIZA«√O
     ====================================================== */
 
     updateUserInterface();
@@ -569,7 +569,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       NAVEGA√á√ÉO DO MENU
+       NAVEGA«√O DO MENU
     ====================================================== */
 
     menuItems.forEach(item => {
@@ -585,7 +585,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (locked) {
 
                     showNotification(
-                        "Esta √°rea ainda est√° em desenvolvimento."
+                        "Esta ·rea ainda est· em desenvolvimento."
                     );
 
                     return;
@@ -604,7 +604,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 /*
                  * IMPORTANTE:
                  *
-                 * CURSOS N√ÉO √â ALTERADO.
+                 * CURSOS N√O … ALTERADO.
                  *
                  * Continua usando:
                  *
@@ -620,9 +620,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /*
-                 * INGL√äS
+                 * INGL S
                  *
-                 * A √°rea de Ingl√™s agora abre
+                 * A ·rea de InglÍs agora abre
                  * diretamente o Mini Curso.
                  */
 
@@ -673,7 +673,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /*
-                 * CURSOS ‚Äî N√ÉO ALTERAR
+                 * CURSOS ó N√O ALTERAR
                  */
 
                 if (section === "cursos") {
@@ -685,7 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /*
-                 * INGL√äS ‚Üí MINI CURSO
+                 * INGL S ? MINI CURSO
                  */
 
                 if (section === "ingles") {
@@ -703,7 +703,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       BOT√ïES INTERNOS DATA-SECTION-LINK
+       BOT’ES INTERNOS DATA-SECTION-LINK
     ====================================================== */
 
     document
@@ -728,7 +728,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     /*
-                     * CURSOS ‚Äî N√ÉO ALTERAR
+                     * CURSOS ó N√O ALTERAR
                      */
 
                     if (section === "cursos") {
@@ -740,7 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     /*
-                     * INGL√äS ‚Üí MINI CURSO
+                     * INGL S ? MINI CURSO
                      */
 
                     if (section === "ingles") {
@@ -759,7 +759,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        ABRIR CURSOS
-       N√ÉO ALTERADO
+       N√O ALTERADO
     ====================================================== */
 
     function openCourses() {
@@ -773,13 +773,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ABRIR MINI CURSO DE INGL√äS
+       ABRIR MINI CURSO DE INGL S
     ====================================================== */
 
     function openMiniCursoIngles() {
 
         window.location.href =
-            "mini-curso/index.html";
+            "/cursos/ingles-gratis/";
     }
 
     window.openMiniCursoIngles =
@@ -787,7 +787,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ELEMENTOS ESPEC√çFICOS DO MINI CURSO
+       ELEMENTOS ESPECÕFICOS DO MINI CURSO
     ====================================================== */
 
     document
@@ -810,7 +810,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ABRIR JOGOS DE INGL√äS
+       ABRIR JOGOS DE INGL S
     ====================================================== */
 
     window.openEnglishGames =
@@ -843,7 +843,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       MOSTRAR SE√á√ÉO
+       MOSTRAR SE«√O
     ====================================================== */
 
     window.showSection =
@@ -863,7 +863,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!target) {
 
                 console.warn(
-                    `Se√ß√£o "${sectionName}" n√£o encontrada.`
+                    `SeÁ„o "${sectionName}" n„o encontrada.`
                 );
 
                 return;
@@ -932,7 +932,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       T√çTULOS
+       TÕTULOS
     ====================================================== */
 
     function updatePageTitle(sectionName) {
@@ -945,16 +945,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const titles = {
 
             inicio:
-                "In√≠cio",
+                "InÌcio",
 
             jogos:
                 "Jogos",
 
             ingles:
-                "Mini Curso de Ingl√™s",
+                "Mini Curso de InglÍs",
 
             musica:
-                "M√∫sica",
+                "M˙sica",
 
             inclusivos:
                 "Inclusivos",
@@ -1147,7 +1147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PERFIL ‚Äî ALTERAR FOTO
+       PERFIL ó ALTERAR FOTO
     ====================================================== */
 
     if (
@@ -1166,7 +1166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PERFIL ‚Äî SELECIONAR FOTO
+       PERFIL ó SELECIONAR FOTO
     ====================================================== */
 
     if (profilePhotoInput) {
@@ -1220,7 +1220,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) {
 
                     showNotification(
-                        "A imagem deve ter no m√°ximo 5 MB."
+                        "A imagem deve ter no m·ximo 5 MB."
                     );
 
                     profilePhotoInput.value =
@@ -1268,7 +1268,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                         showNotification(
-                            "Foto selecionada. Clique em SALVAR ALTERA√á√ïES para confirmar."
+                            "Foto selecionada. Clique em SALVAR ALTERA«’ES para confirmar."
                         );
                     };
 
@@ -1280,7 +1280,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PERFIL ‚Äî REMOVER FOTO
+       PERFIL ó REMOVER FOTO
     ====================================================== */
 
     if (removePhotoButton) {
@@ -1299,7 +1299,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) {
 
                     showNotification(
-                        "Voc√™ n√£o possui uma foto de perfil."
+                        "VocÍ n„o possui uma foto de perfil."
                     );
 
                     return;
@@ -1338,7 +1338,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 showNotification(
-                    "Remo√ß√£o marcada. Clique em SALVAR ALTERA√á√ïES para confirmar."
+                    "RemoÁ„o marcada. Clique em SALVAR ALTERA«’ES para confirmar."
                 );
             }
         );
@@ -1346,7 +1346,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PERFIL ‚Äî SALVAR ALTERA√á√ïES
+       PERFIL ó SALVAR ALTERA«’ES
     ====================================================== */
 
     if (saveProfileButton) {
@@ -1358,7 +1358,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!user) {
 
                     showNotification(
-                        "Usu√°rio n√£o encontrado."
+                        "Usu·rio n„o encontrado."
                     );
 
                     return;
@@ -1416,7 +1416,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (newNick.length > 30) {
 
                     showNotification(
-                        "O nick deve possuir no m√°ximo 30 caracteres."
+                        "O nick deve possuir no m·ximo 30 caracteres."
                     );
 
                     profileNickInput?.focus();
@@ -1436,7 +1436,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) {
 
                     showNotification(
-                        "O nick deve possuir entre 3 e 30 caracteres e pode conter apenas letras, n√∫meros, ponto, h√≠fen e underline."
+                        "O nick deve possuir entre 3 e 30 caracteres e pode conter apenas letras, n˙meros, ponto, hÌfen e underline."
                     );
 
                     profileNickInput?.focus();
@@ -1466,7 +1466,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) {
 
                     showNotification(
-                        "Digite um e-mail v√°lido."
+                        "Digite um e-mail v·lido."
                     );
 
                     profileEmailInput?.focus();
@@ -1592,7 +1592,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!userId) {
 
             throw new Error(
-                "ID do usu√°rio n√£o encontrado."
+                "ID do usu·rio n„o encontrado."
             );
         }
 
@@ -1653,7 +1653,7 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(
                 data.mensagem ||
                 data.message ||
-                "N√£o foi poss√≠vel atualizar o perfil."
+                "N„o foi possÌvel atualizar o perfil."
             );
         }
 
@@ -1663,7 +1663,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CANCELAR ALTERA√á√ïES
+       CANCELAR ALTERA«’ES
     ====================================================== */
 
     if (cancelProfileButton) {
@@ -1730,7 +1730,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 showNotification(
-                    "Altera√ß√µes canceladas."
+                    "AlteraÁıes canceladas."
                 );
             }
         );
@@ -1757,7 +1757,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!userId) {
 
                     showNotification(
-                        "Usu√°rio n√£o encontrado."
+                        "Usu·rio n„o encontrado."
                     );
 
                     return;
@@ -1830,7 +1830,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) {
 
                     showNotification(
-                        "As senhas n√£o coincidem."
+                        "As senhas n„o coincidem."
                     );
 
                     confirmPassword?.focus();
@@ -1906,7 +1906,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         throw new Error(
                             data.mensagem ||
                             data.message ||
-                            "N√£o foi poss√≠vel alterar a senha."
+                            "N„o foi possÌvel alterar a senha."
                         );
                     }
 
@@ -1980,7 +1980,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FEEDBACK ‚Äî ESTRELAS
+       FEEDBACK ó ESTRELAS
     ====================================================== */
 
     const stars =
@@ -2026,7 +2026,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FEEDBACK ‚Äî ENVIAR
+       FEEDBACK ó ENVIAR
     ====================================================== */
 
     const feedbackButton =
@@ -2064,7 +2064,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) {
 
                     showNotification(
-                        "Escolha uma avalia√ß√£o de 1 a 5 estrelas."
+                        "Escolha uma avaliaÁ„o de 1 a 5 estrelas."
                     );
 
                     return;
@@ -2074,7 +2074,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!text) {
 
                     showNotification(
-                        "Escreva sua sugest√£o antes de enviar."
+                        "Escreva sua sugest„o antes de enviar."
                     );
 
                     feedbackText?.focus();
@@ -2185,19 +2185,19 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
 
             console.error(
-                "Resposta inv√°lida da API:",
+                "Resposta inv·lida da API:",
                 text
             );
 
             throw new Error(
-                "O servidor retornou uma resposta inv√°lida."
+                "O servidor retornou uma resposta inv·lida."
             );
         }
     }
 
 
     /* =====================================================
-       NOTIFICA√á√ÉO
+       NOTIFICA«√O
     ====================================================== */
 
     function showNotification(message) {
@@ -2267,7 +2267,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PREVENIR ENVIO ACIDENTAL DOS FORMUL√ÅRIOS
+       PREVENIR ENVIO ACIDENTAL DOS FORMUL¡RIOS
     ====================================================== */
 
     const profileEditForm =
@@ -2294,7 +2294,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       RESPONSIVIDADE ‚Äî MENU MOBILE
+       RESPONSIVIDADE ó MENU MOBILE
     ====================================================== */
 
     const sidebar =
@@ -2335,7 +2335,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         mobileButton.innerHTML =
-            "‚ò∞";
+            "?";
 
 
         document.body.appendChild(
@@ -2418,7 +2418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       GARANTIR BOT√ïES BLOQUEADOS
+       GARANTIR BOT’ES BLOQUEADOS
     ====================================================== */
 
     document
@@ -2435,7 +2435,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     event.stopPropagation();
 
                     showNotification(
-                        "Esta √°rea ainda est√° em desenvolvimento."
+                        "Esta ·rea ainda est· em desenvolvimento."
                     );
                 }
             );
@@ -2500,28 +2500,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       MINI CURSO DE INGL√äS
+       MINI CURSO DE INGL S
        ======================================================
 
-       ATEN√á√ÉO:
+       ATEN«√O:
 
-       Esta N√ÉO √© a se√ß√£o Cursos.
+       Esta N√O È a seÁ„o Cursos.
 
        Cursos continua em:
 
        cursos/index.html
 
-       O conte√∫do de Ingl√™s agora abre:
+       O conte˙do de InglÍs agora abre:
 
        mini-curso/index.html
 
-       Esse index ser√° a CENTRAL DOS M√ìDULOS.
+       Esse index ser· a CENTRAL DOS M”DULOS.
     ====================================================== */
 
     function openMiniCursoIngles() {
 
         window.location.href =
-            "mini-curso/index.html";
+            "/cursos/ingles-gratis/";
     }
 
 
@@ -2531,7 +2531,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*
      * Elementos que representam diretamente
-     * o Mini Curso de Ingl√™s.
+     * o Mini Curso de InglÍs.
      */
 
     document
@@ -2582,7 +2582,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       INICIALIZA√á√ÉO FINAL
+       INICIALIZA«√O FINAL
     ====================================================== */
 
     showSection("inicio");
