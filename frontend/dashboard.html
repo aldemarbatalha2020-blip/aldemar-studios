@@ -277,7 +277,7 @@
                 </span>
 
                 <h1 id="pageTitle">
-                    Início
+                    Bem-vindo ao Aldemar Studios
                 </h1>
 
             </div>
@@ -2231,9 +2231,26 @@
 
 <script src="js/dashboard.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const avatar = document.getElementById("userAvatar");
+
+    if (avatar) {
+        avatar.addEventListener("click", function () {
+            const perfil = document.querySelector('[data-section="perfil"]');
+
+            if (perfil) {
+                perfil.click();
+            }
+        });
+    }
+});
+</script>
 </body>
 
 </html>
+
+
 
 
 

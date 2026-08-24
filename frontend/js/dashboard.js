@@ -2291,88 +2291,103 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
     }
-
-
     /* =====================================================
        RESPONSIVIDADE — MENU MOBILE
     ====================================================== */
 
     const sidebar =
-        document.querySelector(
-            ".sidebar"
-        );
+        document.querySelector(".sidebar");
+
+    const mobileButton =
+        document.getElementById("mobileMenuButton");
+
+    const sidebarOverlay =
+        document.getElementById("sidebarOverlay");
 
 
-    if (
-        sidebar &&
-        !document.getElementById(
-            "mobileMenuButton"
-        )
-    ) {
+    function openMobileMenu() {
 
-        const mobileButton =
-            document.createElement(
-                "button"
+        if (!sidebar) return;
+
+        sidebar.classList.add("mobile-open");
+
+        if (sidebarOverlay) {
+            sidebarOverlay.hidden = false;
+            sidebarOverlay.classList.add("show");
+        }
+
+        if (mobileButton) {
+            mobileButton.setAttribute(
+                "aria-expanded",
+                "true"
             );
+        }
+    }
 
 
-        mobileButton.type =
-            "button";
+    function closeMobileMenu() {
+
+        if (!sidebar) return;
+
+        sidebar.classList.remove("mobile-open");
+
+        if (sidebarOverlay) {
+            sidebarOverlay.classList.remove("show");
+            sidebarOverlay.hidden = true;
+        }
+
+        if (mobileButton) {
+            mobileButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+    }
 
 
-        mobileButton.id =
-            "mobileMenuButton";
-
-
-        mobileButton.className =
-            "mobile-menu-button";
-
-
-        mobileButton.setAttribute(
-            "aria-label",
-            "Abrir menu"
-        );
-
-
-        mobileButton.innerHTML =
-            "?";
-
-
-        document.body.appendChild(
-            mobileButton
-        );
-
+    if (mobileButton) {
 
         mobileButton.addEventListener(
             "click",
             () => {
 
-                sidebar.classList.toggle(
-                    "mobile-open"
-                );
+                if (
+                    sidebar &&
+                    sidebar.classList.contains("mobile-open")
+                ) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+
+            }
+        );
+    }
+
+
+    if (sidebarOverlay) {
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeMobileMenu
+        );
+    }
+
+
+    menuItems.forEach(item => {
+
+        item.addEventListener(
+            "click",
+            () => {
+
+                if (window.innerWidth <= 900) {
+                    closeMobileMenu();
+                }
+
             }
         );
 
-
-        menuItems.forEach(item => {
-
-            item.addEventListener(
-                "click",
-                () => {
-
-                    if (
-                        window.innerWidth <=
-                        900
-                    ) {
-
-                        sidebar.classList.remove(
-                            "mobile-open"
-                        );
-                    }
-                }
-            );
-        });
-    }
+    });
 
 
     /* =====================================================
@@ -2385,13 +2400,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (
                 event.key === "Escape" &&
-                sidebar
+                sidebar &&
+                sidebar.classList.contains("mobile-open")
             ) {
-
-                sidebar.classList.remove(
-                    "mobile-open"
-                );
+                closeMobileMenu();
             }
+
         }
     );
 
@@ -2408,13 +2422,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.innerWidth > 900 &&
                 sidebar
             ) {
-
-                sidebar.classList.remove(
-                    "mobile-open"
-                );
+                closeMobileMenu();
             }
+
         }
     );
+
+    /* =====================================================
+       GARANTIR BOTÕES BLOQUEADOS
 
 
     /* =====================================================
@@ -2579,9 +2594,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
             }
         );
-
-
-    /* =====================================================
+/* =====================================================
        INICIALIZAÇÃO FINAL
     ====================================================== */
 
@@ -2603,4 +2616,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+
+
+
+
 
