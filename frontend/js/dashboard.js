@@ -1,24 +1,27 @@
 ﻿/* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.JS
-   VERSÃO ATUALIZADA
+   VERSÃO COMPLETA ATUALIZADA
    =========================================================
+
    PRINCIPAIS FUNÇÕES:
-   - Navegação completa das áreas disponíveis
-   - Cursos permanece INALTERADO
-   - Área de Inglês abre o MINI CURSO
-   - Mini Curso ? mini-curso/index.html
-   - Materiais, Simulados e Premium continuam bloqueados
-   - Perfil com salvamento completo
-   - Foto de perfil salva somente ao clicar em SALVAR
-   - Foto permanece após recarregar a página
-   - Foto sincronizada com API + armazenamento local
-   - Compatibilidade com celular, tablet e PC
-   - Navegação interna com botão VOLTAR
-   - Filtros de jogos
-   - Feedback
+
+   - Navegação do Dashboard
+   - Cursos preservado
+   - Inglês abre o Mini Curso
+   - Central de Jogos
+   - Jogos de Passatempo
+   - Jogos Educativos
+   - Filtro dos jogos educativos
+   - Abertura dos jogos existentes
+   - Perfil completo
+   - Foto de perfil
    - Alteração de senha
+   - Feedback
    - Logout
+   - Menu mobile
+   - Compatibilidade PC / tablet / celular
+
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,13 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
        CONFIGURAÇÃO DA API
     ====================================================== */
 
-    const IS_LOCAL =
-        window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1";
-
-    const API_URL = IS_LOCAL
-        ? "http://localhost:3000"
-        : "https://aldemar-studios-api.onrender.com/api";
+    const API_URL =
+        `${window.location.origin}/api`;
 
 
     /* =====================================================
@@ -108,20 +106,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ESTADO DO PERFIL
+       ESTADO DO USUÁRIO
     ====================================================== */
 
     let user = null;
 
-    /*
-     * undefined = nenhuma alteração feita
-     * string    = nova foto
-     * null      = remover foto
-     */
+    let pendingProfilePhoto =
+        undefined;
 
-    let pendingProfilePhoto = undefined;
-
-    let originalProfileData = null;
+    let originalProfileData =
+        null;
 
 
     /* =====================================================
@@ -134,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionStorage.getItem("usuario");
 
         if (savedUser) {
-
             user = JSON.parse(savedUser);
         }
 
@@ -161,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.getItem("user");
 
             if (localUser) {
-
                 user = JSON.parse(localUser);
             }
 
@@ -178,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       GARANTIR OBJETO DE USUÁRIO
+       USUÁRIO PADRÃO
     ====================================================== */
 
     if (!user) {
@@ -224,15 +216,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getUserName() {
 
-        if (!user) {
-            return "Usuário";
-        }
-
         return (
-            user.nome_completo ||
-            user.nome ||
-            user.name ||
-            user.fullName ||
+            user?.nome_completo ||
+            user?.nome ||
+            user?.name ||
+            user?.fullName ||
             "Usuário"
         );
     }
@@ -240,13 +228,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getUserEmail() {
 
-        if (!user) {
-            return "";
-        }
-
         return (
-            user.email ||
-            user.emailAddress ||
+            user?.email ||
+            user?.emailAddress ||
             ""
         );
     }
@@ -254,13 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getUserNick() {
 
-        if (!user) {
-            return "";
-        }
-
         return (
-            user.nick ||
-            user.nickname ||
+            user?.nick ||
+            user?.nickname ||
             ""
         );
     }
@@ -268,14 +248,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getUserPlan() {
 
-        if (!user) {
-            return "gratuito";
-        }
+        return (
+            user?.plano ||
+            user?.plan ||
+            "gratuito"
+        );
+    }
+
+
+    function getCurrentPhoto() {
 
         return (
-            user.plano ||
-            user.plan ||
-            "gratuito"
+            user?.foto ||
+            user?.photo ||
+            user?.foto_perfil ||
+            ""
         );
     }
 
@@ -327,26 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       OBTER FOTO ATUAL
-    ====================================================== */
-
-    function getCurrentPhoto() {
-
-        if (!user) {
-            return "";
-        }
-
-        return (
-            user.foto ||
-            user.photo ||
-            user.foto_perfil ||
-            ""
-        );
-    }
-
-
-    /* =====================================================
-       ATUALIZAR UM AVATAR
+       ATUALIZAR AVATAR
     ====================================================== */
 
     function updateAvatarElement(
@@ -377,13 +345,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
 
-            element.style.backgroundImage = "";
+            element.style.backgroundImage =
+                "";
 
-            element.style.backgroundSize = "";
+            element.style.backgroundSize =
+                "";
 
-            element.style.backgroundPosition = "";
+            element.style.backgroundPosition =
+                "";
 
-            element.style.backgroundRepeat = "";
+            element.style.backgroundRepeat =
+                "";
 
             element.textContent =
                 initials;
@@ -392,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ATUALIZAR INTERFACE DO USUÁRIO
+       ATUALIZAR INTERFACE
     ====================================================== */
 
     function updateUserInterface() {
@@ -498,7 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       SALVAR USUÁRIO LOCALMENTE
+       SALVAR USUÁRIO
     ====================================================== */
 
     function saveUser() {
@@ -534,7 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CRIAR CÓPIA DOS DADOS ORIGINAIS
+       DADOS ORIGINAIS DO PERFIL
     ====================================================== */
 
     function saveOriginalProfileData() {
@@ -560,7 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       INICIALIZAÇÃO
+       INICIALIZAÇÃO DO USUÁRIO
     ====================================================== */
 
     updateUserInterface();
@@ -569,7 +541,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       NAVEGAÇÃO DO MENU
+       NAVEGAÇÃO PRINCIPAL
     ====================================================== */
 
     menuItems.forEach(item => {
@@ -581,7 +553,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const locked =
                     item.dataset.locked === "true";
 
-
                 if (locked) {
 
                     showNotification(
@@ -591,92 +562,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-
                 const sectionName =
                     item.dataset.section;
-
 
                 if (!sectionName) {
                     return;
                 }
 
 
-                /*
-                 * IMPORTANTE:
-                 *
-                 * CURSOS NÃO É ALTERADO.
-                 *
-                 * Continua usando:
-                 *
-                 * cursos/index.html
-                 */
-
-                if (sectionName === "cursos") {
-
-                    openCourses();
-
-                    return;
-                }
-
-
-                /*
-                 * INGLÊS
-                 *
-                 * A área de Inglês agora abre
-                 * diretamente o Mini Curso.
-                 */
-
-                if (sectionName === "ingles") {
-
-                    openMiniCursoIngles();
-
-                    return;
-                }
-
-
-                showSection(sectionName);
-            }
-        );
-    });
-
-
-    /* =====================================================
-       CARDS COM DATA-SECTION-LINK
-    ====================================================== */
-
-    const accessCards =
-        document.querySelectorAll(
-            "[data-section-link]"
-        );
-
-
-    accessCards.forEach(card => {
-
-        card.addEventListener(
-            "click",
-            event => {
+                /* CURSOS */
 
                 if (
-                    event.target.closest("button")
+                    sectionName ===
+                    "cursos"
                 ) {
-                    return;
-                }
-
-
-                const section =
-                    card.dataset.sectionLink;
-
-
-                if (!section) {
-                    return;
-                }
-
-
-                /*
-                 * CURSOS — NÃO ALTERAR
-                 */
-
-                if (section === "cursos") {
 
                     openCourses();
 
@@ -684,11 +583,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /*
-                 * INGLÊS ? MINI CURSO
-                 */
+                /* INGLÊS */
 
-                if (section === "ingles") {
+                if (
+                    sectionName ===
+                    "ingles"
+                ) {
 
                     openMiniCursoIngles();
 
@@ -696,42 +596,46 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                showSection(section);
+                showSection(
+                    sectionName
+                );
             }
         );
     });
 
 
     /* =====================================================
-       BOTÕES INTERNOS DATA-SECTION-LINK
+       CARDS DATA-SECTION-LINK
     ====================================================== */
 
     document
         .querySelectorAll(
-            "button[data-section-link]"
+            "[data-section-link]"
         )
-        .forEach(button => {
+        .forEach(element => {
 
-            button.addEventListener(
+            element.addEventListener(
                 "click",
                 event => {
 
-                    event.stopPropagation();
+                    if (
+                        event.target.closest("button")
+                    ) {
+                        return;
+                    }
 
                     const section =
-                        button.dataset.sectionLink;
-
+                        element.dataset.sectionLink;
 
                     if (!section) {
                         return;
                     }
 
 
-                    /*
-                     * CURSOS — NÃO ALTERAR
-                     */
-
-                    if (section === "cursos") {
+                    if (
+                        section ===
+                        "cursos"
+                    ) {
 
                         openCourses();
 
@@ -739,11 +643,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    /*
-                     * INGLÊS ? MINI CURSO
-                     */
-
-                    if (section === "ingles") {
+                    if (
+                        section ===
+                        "ingles"
+                    ) {
 
                         openMiniCursoIngles();
 
@@ -758,8 +661,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ABRIR CURSOS
-       NÃO ALTERADO
+       BOTÕES DATA-SECTION-LINK
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            "button[data-section-link]"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const section =
+                        button.dataset.sectionLink;
+
+                    if (!section) {
+                        return;
+                    }
+
+
+                    if (
+                        section ===
+                        "cursos"
+                    ) {
+
+                        openCourses();
+
+                        return;
+                    }
+
+
+                    if (
+                        section ===
+                        "ingles"
+                    ) {
+
+                        openMiniCursoIngles();
+
+                        return;
+                    }
+
+
+                    showSection(section);
+                }
+            );
+        });
+
+
+    /* =====================================================
+       CURSOS
+       NÃO ALTERAR
     ====================================================== */
 
     function openCourses() {
@@ -773,7 +729,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ABRIR MINI CURSO DE INGLÊS
+       MINI CURSO DE INGLÊS
     ====================================================== */
 
     function openMiniCursoIngles() {
@@ -787,7 +743,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ELEMENTOS ESPECÍFICOS DO MINI CURSO
+       ELEMENTOS DO MINI CURSO
     ====================================================== */
 
     document
@@ -810,55 +766,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ABRIR JOGOS DE INGLÊS
-    ====================================================== */
-
-    window.openEnglishGames =
-        function () {
-
-            showSection("jogos");
-
-            setTimeout(() => {
-
-                openGameCategory(
-                    "educativos"
-                );
-
-                setTimeout(() => {
-
-                    const englishFilter =
-                        document.querySelector(
-                            '.game-filter[onclick*="ingles"]'
-                        );
-
-                    filterGames(
-                        "ingles",
-                        englishFilter
-                    );
-
-                }, 50);
-
-            }, 50);
-        };
-
-
-    /* =====================================================
        MOSTRAR SEÇÃO
     ====================================================== */
 
     window.showSection =
-        function (sectionName) {
+        function(sectionName) {
 
             if (!sectionName) {
                 return;
             }
 
-
             const target =
                 document.getElementById(
                     sectionName
                 );
-
 
             if (!target) {
 
@@ -896,7 +817,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     `.menu-item[data-section="${sectionName}"]`
                 );
 
-
             if (activeMenu) {
 
                 activeMenu.classList.add(
@@ -910,7 +830,10 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            if (sectionName === "perfil") {
+            if (
+                sectionName ===
+                "perfil"
+            ) {
 
                 updateUserInterface();
 
@@ -918,7 +841,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            if (sectionName === "jogos") {
+            if (
+                sectionName ===
+                "jogos"
+            ) {
 
                 backToGameCategories();
             }
@@ -935,12 +861,13 @@ document.addEventListener("DOMContentLoaded", () => {
        TÍTULOS
     ====================================================== */
 
-    function updatePageTitle(sectionName) {
+    function updatePageTitle(
+        sectionName
+    ) {
 
         if (!pageTitle) {
             return;
         }
-
 
         const titles = {
 
@@ -969,7 +896,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Meu Perfil"
         };
 
-
         pageTitle.textContent =
             titles[sectionName] ||
             "Aldemar Studios";
@@ -977,11 +903,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CATEGORIAS DE JOGOS
+       CENTRAL DE JOGOS
     ====================================================== */
 
     window.openGameCategory =
-        function (category) {
+        function(category) {
 
             const categories =
                 document.getElementById(
@@ -1025,12 +951,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
-                category === "educativos"
+                category ===
+                "educativos"
             ) {
 
                 const allFilter =
                     document.querySelector(
-                        '.game-filter[onclick*="todos"]'
+                        '#educativosArea .game-filter[data-game-filter="todos"], #educativosArea .game-filter[onclick*="todos"]'
                     );
 
                 filterGames(
@@ -1046,7 +973,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ====================================================== */
 
     window.backToGameCategories =
-        function () {
+        function() {
 
             const categories =
                 document.getElementById(
@@ -1087,11 +1014,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FILTRO DOS JOGOS
+       FILTRO DOS JOGOS EDUCATIVOS
     ====================================================== */
 
     window.filterGames =
-        function (
+        function(
             filter,
             button
         ) {
@@ -1147,6 +1074,172 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       ABRIR JOGOS DE INGLÊS
+       APENAS CAMINHOS QUE EXISTEM
+    ====================================================== */
+
+    const englishGamePaths = {
+
+        writer:
+            "/jogos/educativos/ingles/english-writer/index.html",
+
+        detective:
+            "/jogos/educativos/ingles/ENGLISH%20DETECTIVE/index.html",
+
+        runner:
+            "/jogos/educativos/ingles/ENGLISH%20RUNNER/index.html",
+
+        infantil:
+            "/jogos/educativos/ingles/EDUCATIVO%20INFANTIL/index.html",
+
+        interpretacao:
+            "/jogos/educativos/ingles/INTERPRETA%C3%87%C3%83O%20TEXTUAL%20ENGLISH/index.html",
+
+        dama:
+            "/jogos/educativos/ingles/JOGO%20DA%20DAMA%20INGL%C3%8AS/index.html",
+
+        forca:
+            "/jogos/educativos/ingles/JOGO%20DA%20FORCA%20INGL%C3%8AS/index.html",
+
+        interpretacaoEnglish:
+            "/jogos/educativos/ingles/JOGO%20DA%20INTERPRETA%C3%87%C3%83O%20ENGLISH/index.html",
+
+        memoria:
+            "/jogos/educativos/ingles/JOGO%20DA%20MEM%C3%93RIA%20EM%20INGL%C3%8AS/index.html",
+
+        perguntas:
+            "/jogos/educativos/ingles/JOGO%20DAS%20PERGUNTAS%20EM%20INGL%C3%8AS/index.html",
+
+        acao:
+            "/jogos/educativos/ingles/JOGO%20DE%20A%C3%87%C3%83O%20ENGLISH/index.html",
+
+        corrida:
+            "/jogos/educativos/ingles/JOGO%20DE%20CORRIDA%20INGL%C3%8AS/index.html",
+
+        puzzle:
+            "/jogos/educativos/ingles/JOGO%20DE%20PUZZLE/index.html",
+
+        quatroPessoas:
+            "/jogos/educativos/ingles/JOGO%20DE%20QUATRO%20PESSOAS%20A%C3%87%C3%83O/index.html",
+
+        alien:
+            "/jogos/educativos/ingles/JOGO%20DO%20ALIEN/index.html",
+
+        restaurante:
+            "/jogos/educativos/ingles/JOGO%20DO%20RESTAURANTE%20EM%20INGL%C3%8AS/index.html",
+
+        nonoAno:
+            "/jogos/educativos/ingles/JOGOS%209%20ANO%20ATUALIZADOS/index.html",
+
+        portugues:
+            "/jogos/educativos/ingles/JOGOS%20L%C3%8DNGUA%20PORTUGUESA/index.html",
+
+        quizA1:
+            "/jogos/educativos/ingles/QUIZ%20N%C3%8DVEL%20B%C3%81SICO%20A1%20EM%20GRUPO/index.html",
+
+        sons:
+            "/jogos/educativos/ingles/SONS%20DAS%20PALAVRAS%20EM%20INGL%C3%8AS/index.html"
+    };
+
+
+    /* =====================================================
+       CLIQUE NOS JOGOS
+    ====================================================== */
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    "[data-english-game]"
+                );
+
+            if (!button) {
+                return;
+            }
+
+
+            const game =
+                button.getAttribute(
+                    "data-english-game"
+                );
+
+
+            const path =
+                englishGamePaths[game];
+
+
+            if (!path) {
+
+                console.warn(
+                    "Jogo de inglês não encontrado:",
+                    game
+                );
+
+                showNotification(
+                    "Este jogo ainda não está configurado."
+                );
+
+                return;
+            }
+
+
+            window.location.href =
+                path;
+        }
+    );
+
+
+    /* =====================================================
+       JOGOS DE PASSATEMPO
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            '[data-game-category="passatempo"]'
+        )
+        .forEach(element => {
+
+            element.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    window.location.href =
+                        "jogos/passatempo/index.html";
+                }
+            );
+        });
+
+
+    /* =====================================================
+       JOGOS EDUCATIVOS
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            '[data-game-category="educativos"]'
+        )
+        .forEach(element => {
+
+            element.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    window.location.href =
+                        "jogos/educativos/ingles/index.html";
+                }
+            );
+        });
+
+
+    /* =====================================================
        PERFIL — ALTERAR FOTO
     ====================================================== */
 
@@ -1178,7 +1271,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const file =
                     event.target.files[0];
 
-
                 if (!file) {
                     return;
                 }
@@ -1187,9 +1279,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const allowedTypes = [
 
                     "image/jpeg",
-
                     "image/png",
-
                     "image/webp"
                 ];
 
@@ -1216,7 +1306,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (
-                    file.size > maxSize
+                    file.size >
+                    maxSize
                 ) {
 
                     showNotification(
@@ -1295,7 +1386,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (
                     !currentPhoto &&
-                    pendingProfilePhoto === undefined
+                    pendingProfilePhoto ===
+                    undefined
                 ) {
 
                     showNotification(
@@ -1346,7 +1438,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PERFIL — SALVAR ALTERAÇÕES
+       PERFIL — SALVAR
     ====================================================== */
 
     if (saveProfileButton) {
@@ -1385,8 +1477,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "";
 
 
-                /* VALIDAR NOME */
-
                 if (!newName) {
 
                     showNotification(
@@ -1399,7 +1489,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                if (newName.length < 3) {
+                if (
+                    newName.length <
+                    3
+                ) {
 
                     showNotification(
                         "O nome deve possuir pelo menos 3 caracteres."
@@ -1411,9 +1504,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* VALIDAR NICK */
-
-                if (newNick.length > 30) {
+                if (
+                    newNick.length >
+                    30
+                ) {
 
                     showNotification(
                         "O nick deve possuir no máximo 30 caracteres."
@@ -1444,8 +1538,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-
-                /* VALIDAR E-MAIL */
 
                 if (!newEmail) {
 
@@ -1502,7 +1594,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         user = {
 
                             ...user,
-
                             ...data.usuario
                         };
 
@@ -1546,7 +1637,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Perfil atualizado com sucesso!"
                     );
 
-
                 } catch (error) {
 
                     console.error(
@@ -1554,12 +1644,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
-
                     showNotification(
                         error.message ||
                         "Erro ao atualizar perfil."
                     );
-
 
                 } finally {
 
@@ -1613,7 +1701,9 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
 
-        if (foto !== undefined) {
+        if (
+            foto !== undefined
+        ) {
 
             body.foto =
                 foto;
@@ -1625,7 +1715,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 `${API_URL}/auth/profile`,
                 {
 
-                    method: "PUT",
+                    method:
+                        "PUT",
 
                     headers: {
 
@@ -1811,7 +1902,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (
-                    newValue.length < 8
+                    newValue.length <
+                    8
                 ) {
 
                     showNotification(
@@ -1868,7 +1960,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             `${API_URL}/auth/password`,
                             {
 
-                                method: "PUT",
+                                method:
+                                    "PUT",
 
                                 headers: {
 
@@ -1912,21 +2005,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     if (currentPassword) {
-
                         currentPassword.value =
                             "";
                     }
 
 
                     if (newPassword) {
-
                         newPassword.value =
                             "";
                     }
 
 
                     if (confirmPassword) {
-
                         confirmPassword.value =
                             "";
                     }
@@ -1937,7 +2027,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Senha alterada com sucesso!"
                     );
 
-
                 } catch (error) {
 
                     console.error(
@@ -1945,12 +2034,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
-
                     showNotification(
                         error.message ||
                         "Erro ao alterar senha."
                     );
-
 
                 } finally {
 
@@ -1980,7 +2067,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       FEEDBACK — ESTRELAS
+       FEEDBACK
     ====================================================== */
 
     const stars =
@@ -2002,21 +2089,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             starIndex
                         ) => {
 
-                            if (
-                                starIndex <=
-                                index
-                            ) {
-
-                                item.classList.add(
-                                    "selected"
-                                );
-
-                            } else {
-
-                                item.classList.remove(
-                                    "selected"
-                                );
-                            }
+                            item.classList.toggle(
+                                "selected",
+                                starIndex <= index
+                            );
                         }
                     );
                 }
@@ -2024,10 +2100,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-
-    /* =====================================================
-       FEEDBACK — ENVIAR
-    ====================================================== */
 
     const feedbackButton =
         document.querySelector(
@@ -2164,10 +2236,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PARSE DA RESPOSTA DA API
+       PARSE DA API
     ====================================================== */
 
-    async function parseResponse(response) {
+    async function parseResponse(
+        response
+    ) {
 
         const text =
             await response.text();
@@ -2200,7 +2274,9 @@ document.addEventListener("DOMContentLoaded", () => {
        NOTIFICAÇÃO
     ====================================================== */
 
-    function showNotification(message) {
+    function showNotification(
+        message
+    ) {
 
         let notification =
             document.getElementById(
@@ -2215,14 +2291,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     "div"
                 );
 
-
             notification.id =
                 "dashboardNotification";
 
-
             notification.className =
                 "dashboard-notification";
-
 
             document.body.appendChild(
                 notification
@@ -2267,7 +2340,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PREVENIR ENVIO ACIDENTAL DOS FORMULÁRIOS
+       FORMULÁRIO DO PERFIL
     ====================================================== */
 
     const profileEditForm =
@@ -2291,32 +2364,53 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
     }
+
+
     /* =====================================================
-       RESPONSIVIDADE — MENU MOBILE
+       MENU MOBILE
     ====================================================== */
 
     const sidebar =
-        document.querySelector(".sidebar");
+        document.querySelector(
+            ".sidebar"
+        );
 
     const mobileButton =
-        document.getElementById("mobileMenuButton");
+        document.getElementById(
+            "mobileMenuButton"
+        );
 
     const sidebarOverlay =
-        document.getElementById("sidebarOverlay");
+        document.getElementById(
+            "sidebarOverlay"
+        );
 
 
     function openMobileMenu() {
 
-        if (!sidebar) return;
-
-        sidebar.classList.add("mobile-open");
-
-        if (sidebarOverlay) {
-            sidebarOverlay.hidden = false;
-            sidebarOverlay.classList.add("show");
+        if (!sidebar) {
+            return;
         }
 
+
+        sidebar.classList.add(
+            "mobile-open"
+        );
+
+
+        if (sidebarOverlay) {
+
+            sidebarOverlay.hidden =
+                false;
+
+            sidebarOverlay.classList.add(
+                "show"
+            );
+        }
+
+
         if (mobileButton) {
+
             mobileButton.setAttribute(
                 "aria-expanded",
                 "true"
@@ -2327,16 +2421,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function closeMobileMenu() {
 
-        if (!sidebar) return;
-
-        sidebar.classList.remove("mobile-open");
-
-        if (sidebarOverlay) {
-            sidebarOverlay.classList.remove("show");
-            sidebarOverlay.hidden = true;
+        if (!sidebar) {
+            return;
         }
 
+
+        sidebar.classList.remove(
+            "mobile-open"
+        );
+
+
+        if (sidebarOverlay) {
+
+            sidebarOverlay.classList.remove(
+                "show"
+            );
+
+            sidebarOverlay.hidden =
+                true;
+        }
+
+
         if (mobileButton) {
+
             mobileButton.setAttribute(
                 "aria-expanded",
                 "false"
@@ -2353,13 +2460,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (
                     sidebar &&
-                    sidebar.classList.contains("mobile-open")
+                    sidebar.classList.contains(
+                        "mobile-open"
+                    )
                 ) {
+
                     closeMobileMenu();
+
                 } else {
+
                     openMobileMenu();
                 }
-
             }
         );
     }
@@ -2380,18 +2491,20 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
-                if (window.innerWidth <= 900) {
+                if (
+                    window.innerWidth <=
+                    900
+                ) {
+
                     closeMobileMenu();
                 }
-
             }
         );
-
     });
 
 
     /* =====================================================
-       FECHAR MENU COM ESC
+       ESC FECHA MENU
     ====================================================== */
 
     document.addEventListener(
@@ -2401,17 +2514,19 @@ document.addEventListener("DOMContentLoaded", () => {
             if (
                 event.key === "Escape" &&
                 sidebar &&
-                sidebar.classList.contains("mobile-open")
+                sidebar.classList.contains(
+                    "mobile-open"
+                )
             ) {
+
                 closeMobileMenu();
             }
-
         }
     );
 
 
     /* =====================================================
-       AJUSTE DE REDIMENSIONAMENTO
+       REDIMENSIONAMENTO
     ====================================================== */
 
     window.addEventListener(
@@ -2422,18 +2537,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.innerWidth > 900 &&
                 sidebar
             ) {
+
                 closeMobileMenu();
             }
-
         }
     );
 
-    /* =====================================================
-       GARANTIR BOTÕES BLOQUEADOS
-
 
     /* =====================================================
-       GARANTIR BOTÕES BLOQUEADOS
+       ÁREAS BLOQUEADAS
     ====================================================== */
 
     document
@@ -2458,167 +2570,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CENTRAL DE JOGOS
+       CLICAR NO AVATAR → PERFIL
     ====================================================== */
 
+    if (userAvatarElement) {
 
-    /* =====================================================
-       JOGOS DE PASSATEMPO
-    ====================================================== */
+        userAvatarElement.addEventListener(
+            "click",
+            () => {
 
-    document
-        .querySelectorAll(
-            '[data-game-category="passatempo"]'
-        )
-        .forEach(
-            element => {
+                const profileButton =
+                    document.querySelector(
+                        '[data-section="perfil"]'
+                    );
 
-                element.addEventListener(
-                    "click",
-                    event => {
 
-                        event.preventDefault();
-                        event.stopPropagation();
+                if (profileButton) {
 
-                        window.location.href =
-                            "jogos/passatempo/index.html";
-                    }
-                );
+                    profileButton.click();
+                }
             }
         );
-
-
-    /* =====================================================
-       JOGOS EDUCATIVOS
-    ====================================================== */
-
-    document
-        .querySelectorAll(
-            '[data-game-category="educativos"]'
-        )
-        .forEach(
-            element => {
-
-                element.addEventListener(
-                    "click",
-                    event => {
-
-                        event.preventDefault();
-                        event.stopPropagation();
-
-                        window.location.href =
-                            "jogos/educativos/index.html";
-                    }
-                );
-            }
-        );
-
-
-    /* =====================================================
-       MINI CURSO DE INGLÊS
-       ======================================================
-
-       ATENÇÃO:
-
-       Esta NÃO é a seção Cursos.
-
-       Cursos continua em:
-
-       cursos/index.html
-
-       O conteúdo de Inglês agora abre:
-
-       mini-curso/index.html
-
-       Esse index será a CENTRAL DOS MÓDULOS.
-    ====================================================== */
-
-    function openMiniCursoIngles() {
-
-        window.location.href =
-            "/cursos/ingles-gratis/";
     }
 
 
-    window.openMiniCursoIngles =
-        openMiniCursoIngles;
-
-
-    /*
-     * Elementos que representam diretamente
-     * o Mini Curso de Inglês.
-     */
-
-    document
-        .querySelectorAll(
-            '[data-content-category="mini-curso-ingles"]'
-        )
-        .forEach(
-            element => {
-
-                element.addEventListener(
-                    "click",
-                    event => {
-
-                        event.preventDefault();
-                        event.stopPropagation();
-
-                        openMiniCursoIngles();
-                    }
-                );
-            }
-        );
-
-
-    /*
-     * Caso o HTML esteja usando
-     * data-section-link="ingles".
-     */
-
-    document
-        .querySelectorAll(
-            '[data-section-link="ingles"]'
-        )
-        .forEach(
-            element => {
-
-                element.addEventListener(
-                    "click",
-                    event => {
-
-                        event.preventDefault();
-                        event.stopPropagation();
-
-                        openMiniCursoIngles();
-                    }
-                );
-            }
-        );
-/* =====================================================
+    /* =====================================================
        INICIALIZAÇÃO FINAL
     ====================================================== */
 
     showSection("inicio");
 
 });
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const userAvatar = document.getElementById("userAvatar");
-
-    if (userAvatar) {
-        userAvatar.addEventListener("click", () => {
-            const profileButton = document.querySelector('[data-section="perfil"]');
-
-            if (profileButton) {
-                profileButton.click();
-            }
-        });
-    }
-});
-
-
-
-
-
-
