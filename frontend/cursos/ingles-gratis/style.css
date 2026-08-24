@@ -117,3 +117,57 @@ footer{
     padding:30px;
     color:#737d8f;
 }
+
+/* =========================================================
+   BOTÃO TELA INICIAL
+   ========================================================= */
+
+.btn-voltar-dashboard {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 12px 20px;
+    margin: 0 auto 25px;
+
+    background: linear-gradient(135deg, #172033, #1769e0);
+    color: #fff !important;
+
+    text-decoration: none !important;
+
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    box-shadow: 0 6px 18px rgba(23,105,224,.20);
+
+    transition: .2s ease;
+}
+
+.btn-voltar-dashboard::before {
+    content: "←";
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 8px;
+
+    background: rgba(255,255,255,.12);
+
+    font-size: 17px;
+}
+
+.btn-voltar-dashboard:hover {
+    transform: translateY(-2px);
+
+    background: linear-gradient(135deg, #1e293b, #0e55bd);
+
+    box-shadow: 0 9px 22px rgba(23,105,224,.30);
+}
