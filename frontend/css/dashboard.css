@@ -1,7 +1,7 @@
-/* =========================================================
+﻿/* =========================================================
    ALDEMAR STUDIOS
    DASHBOARD.CSS
-   RESPONSIVO — CELULAR • TABLET • NOTEBOOK • DESKTOP
+   RESPONSIVO â€” CELULAR â€¢ TABLET â€¢ NOTEBOOK â€¢ DESKTOP
    ========================================================= */
 
 
@@ -45,7 +45,7 @@ body {
 
 
 /* =========================================================
-   VARIÁVEIS
+   VARIÃVEIS
 ========================================================= */
 
 :root {
@@ -354,7 +354,7 @@ img {
 
 
 /* =========================================================
-   CONTEÚDO PRINCIPAL
+   CONTEÃšDO PRINCIPAL
 ========================================================= */
 
 .main-content {
@@ -465,7 +465,7 @@ img {
 
 
 /* =========================================================
-   SEÇÕES
+   SEÃ‡Ã•ES
 ========================================================= */
 
 .content-section {
@@ -500,7 +500,7 @@ img {
 
 
 /* =========================================================
-   TÍTULOS
+   TÃTULOS
 ========================================================= */
 
 .section-title {
@@ -896,7 +896,7 @@ img {
 
 
 /* =========================================================
-   BOTÕES
+   BOTÃ•ES
 ========================================================= */
 
 .primary-small,
@@ -1098,7 +1098,7 @@ img {
 
 
 /* =========================================================
-   JOGOS — FILTROS
+   JOGOS â€” FILTROS
 ========================================================= */
 
 .game-filters {
@@ -1493,7 +1493,7 @@ img {
 
 
 /* =========================================================
-   FORMULÁRIOS
+   FORMULÃRIOS
 ========================================================= */
 
 .profile-edit-form,
@@ -1629,7 +1629,7 @@ img {
 
 
 /* =========================================================
-   AÇÕES DO PERFIL
+   AÃ‡Ã•ES DO PERFIL
 ========================================================= */
 
 .profile-actions {
@@ -1643,7 +1643,7 @@ img {
 
 
 /* =========================================================
-   SEGURANÇA
+   SEGURANÃ‡A
 ========================================================= */
 
 .profile-security-card {
@@ -1710,7 +1710,7 @@ img {
 
 
 /* =========================================================
-   INFORMAÇÕES DA CONTA
+   INFORMAÃ‡Ã•ES DA CONTA
 ========================================================= */
 
 .account-info-card {
@@ -1765,7 +1765,7 @@ img {
 
 
 /* =========================================================
-   ÁREAS DOS JOGOS
+   ÃREAS DOS JOGOS
 ========================================================= */
 
 .games-area {
@@ -1774,7 +1774,7 @@ img {
 
 
 /* =========================================================
-   NOTIFICAÇÃO
+   NOTIFICAÃ‡ÃƒO
 ========================================================= */
 
 .dashboard-notification {
@@ -1836,7 +1836,7 @@ img {
 
 
 /* =========================================================
-   TABLETS — ATÉ 1100PX
+   TABLETS â€” ATÃ‰ 1100PX
 ========================================================= */
 
 @media (max-width: 1100px) {
@@ -1869,7 +1869,7 @@ img {
 
 
 /* =========================================================
-   TABLETS PEQUENOS — ATÉ 850PX
+   TABLETS PEQUENOS â€” ATÃ‰ 850PX
 ========================================================= */
 
 @media (max-width: 850px) {
@@ -1942,7 +1942,7 @@ img {
 
 
 /* =========================================================
-   CELULAR GRANDE — ATÉ 650PX
+   CELULAR GRANDE â€” ATÃ‰ 650PX
 ========================================================= */
 
 @media (max-width: 650px) {
@@ -2193,7 +2193,7 @@ img {
 
 
 /* =========================================================
-   CELULARES PEQUENOS — ATÉ 420PX
+   CELULARES PEQUENOS â€” ATÃ‰ 420PX
 ========================================================= */
 
 @media (max-width: 420px) {
@@ -2269,7 +2269,7 @@ img {
 
 
 /* =========================================================
-   CELULAR MUITO PEQUENO — ATÉ 350PX
+   CELULAR MUITO PEQUENO â€” ATÃ‰ 350PX
 ========================================================= */
 
 @media (max-width: 350px) {
@@ -2310,7 +2310,7 @@ img {
 
 
 /* =========================================================
-   ACESSIBILIDADE — REDUZIR ANIMAÇÕES
+   ACESSIBILIDADE â€” REDUZIR ANIMAÃ‡Ã•ES
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2354,3 +2354,2066 @@ img {
             );
     }
 }
+
+/* =========================================================
+   CENTRAL DE JOGOS â€” INSTITUTO ACUTIS
+   NOVO SISTEMA VISUAL
+========================================================= */
+
+#jogos .games-area {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+/* ---------------------------------------------------------
+   CABEÃ‡ALHO
+--------------------------------------------------------- */
+
+#jogos .games-area .section-title {
+    position: relative;
+    margin-bottom: 28px;
+    padding: 28px;
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(82, 168, 255, .18),
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(15, 28, 48, .98),
+            rgba(8, 16, 30, .98)
+        );
+
+    border: 1px solid rgba(100, 180, 255, .14);
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, .22),
+        inset 0 1px 0 rgba(255, 255, 255, .04);
+
+    overflow: hidden;
+}
+
+#jogos .games-area .section-title::after {
+    content: "ðŸŽ®";
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    font-size: 82px;
+    opacity: .08;
+    pointer-events: none;
+}
+
+#jogos .games-area .welcome-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 8px;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: #70b7ff;
+}
+
+#jogos .games-area .section-title h2 {
+    margin: 0 0 10px;
+
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 800;
+    letter-spacing: -.8px;
+
+    color: #ffffff;
+}
+
+#jogos .games-area .section-title p {
+    max-width: 700px;
+    margin: 0;
+
+    color: rgba(220, 230, 242, .72);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ---------------------------------------------------------
+   FILTROS
+--------------------------------------------------------- */
+
+#jogos .game-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0 0 28px;
+
+    padding: 5px;
+
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+#jogos .game-filters::-webkit-scrollbar {
+    display: none;
+}
+
+#jogos .game-filter {
+    flex: 0 0 auto;
+
+    min-height: 42px;
+    padding: 9px 17px;
+
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, .035);
+
+    color: rgba(230, 238, 248, .68);
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .4px;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        box-shadow .2s ease;
+}
+
+#jogos .game-filter:hover {
+    transform: translateY(-2px);
+
+    color: #ffffff;
+
+    border-color: rgba(100, 180, 255, .28);
+
+    background: rgba(70, 150, 230, .08);
+}
+
+#jogos .game-filter.active {
+    color: #ffffff;
+
+    border-color: rgba(90, 170, 255, .45);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(52, 137, 230, .24),
+            rgba(70, 100, 220, .14)
+        );
+
+    box-shadow:
+        0 8px 24px rgba(40, 120, 220, .12);
+}
+
+/* ---------------------------------------------------------
+   GRID
+--------------------------------------------------------- */
+
+#jogos .games-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(240px, 1fr)
+        );
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+/* ---------------------------------------------------------
+   CARD
+--------------------------------------------------------- */
+
+#jogos .game-card.educational-game {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 360px;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255, 255, 255, .08);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 30, 49, .98),
+            rgba(8, 16, 29, .98)
+        );
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, .20);
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+#jogos .game-card.educational-game::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(90, 170, 255, .10),
+            transparent 42%
+        );
+
+    pointer-events: none;
+}
+
+#jogos .game-card.educational-game:hover {
+    transform: translateY(-7px);
+
+    border-color: rgba(90, 170, 255, .32);
+
+    box-shadow:
+        0 22px 50px rgba(0, 0, 0, .32),
+        0 0 28px rgba(50, 130, 230, .07);
+}
+
+/* ---------------------------------------------------------
+   CAPA
+--------------------------------------------------------- */
+
+#jogos .game-card .game-cover {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 155px;
+
+    font-size: 58px;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(90, 180, 255, .16),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(25, 54, 88, .85),
+            rgba(10, 20, 36, .98)
+        );
+
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+
+    transition:
+        font-size .25s ease,
+        transform .25s ease;
+}
+
+#jogos .game-card:hover .game-cover {
+    font-size: 66px;
+}
+
+/* brilho superior */
+
+#jogos .game-card .game-cover::after {
+    content: "";
+
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    top: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(100, 190, 255, .55),
+            transparent
+        );
+}
+
+/* ---------------------------------------------------------
+   CONTEÃšDO
+--------------------------------------------------------- */
+
+#jogos .game-card-content {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    padding: 20px;
+}
+
+#jogos .game-card .game-tag {
+    display: inline-flex;
+    align-self: flex-start;
+
+    margin-bottom: 10px;
+    padding: 5px 9px;
+
+    border-radius: 8px;
+
+    background: rgba(80, 160, 240, .08);
+
+    border: 1px solid rgba(90, 170, 255, .13);
+
+    color: #78baff;
+
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+#jogos .game-card h3 {
+    margin: 0 0 9px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+}
+
+#jogos .game-card p {
+    margin: 0 0 20px;
+
+    color: rgba(220, 230, 242, .64);
+
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+/* ---------------------------------------------------------
+   BOTÃƒO
+--------------------------------------------------------- */
+
+#jogos .game-card .primary-small {
+    width: 100%;
+    min-height: 44px;
+
+    margin-top: auto;
+
+    border: 1px solid rgba(100, 180, 255, .24);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(55, 145, 235, .18),
+            rgba(75, 90, 210, .12)
+        );
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .8px;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+#jogos .game-card .primary-small:hover {
+    transform: translateY(-2px);
+
+    border-color: rgba(100, 190, 255, .55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(55, 145, 235, .34),
+            rgba(75, 90, 220, .24)
+        );
+
+    box-shadow:
+        0 10px 25px rgba(40, 130, 230, .14);
+}
+
+#jogos .game-card .primary-small:active {
+    transform: scale(.98);
+}
+
+/* ---------------------------------------------------------
+   DESTAQUES INDIVIDUAIS
+--------------------------------------------------------- */
+
+#jogos .game-card[data-subject="escrita"] .game-cover {
+    background:
+        radial-gradient(
+            circle,
+            rgba(80, 170, 255, .18),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #142d4d,
+            #0a1728
+        );
+}
+
+#jogos .game-card[data-subject="leitura"] .game-cover {
+    background:
+        radial-gradient(
+            circle,
+            rgba(130, 110, 255, .18),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #211b48,
+            #0d1328
+        );
+}
+
+#jogos .game-card[data-subject="pronuncia"] .game-cover {
+    background:
+        radial-gradient(
+            circle,
+            rgba(50, 210, 190, .15),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #123a3b,
+            #0b1c29
+        );
+}
+
+#jogos .game-card[data-subject="escuta"] .game-cover {
+    background:
+        radial-gradient(
+            circle,
+            rgba(100, 180, 255, .18),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #143b55,
+            #0b1828
+        );
+}
+
+#jogos .game-card[data-subject="vocabulario"] .game-cover {
+    background:
+        radial-gradient(
+            circle,
+            rgba(210, 150, 255, .16),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #392044,
+            #151328
+        );
+}
+
+#jogos .game-card[data-subject="gramatica"] .game-cover {
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 120, 130, .13),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #42202a,
+            #19121e
+        );
+}
+
+/* ---------------------------------------------------------
+   TABLET
+--------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+    #jogos .games-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 16px;
+    }
+
+    #jogos .game-card.educational-game {
+        min-height: 340px;
+    }
+
+    #jogos .game-card .game-cover {
+        height: 135px;
+    }
+
+}
+
+/* ---------------------------------------------------------
+   CELULAR
+--------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    #jogos .games-area .section-title {
+        padding: 22px 18px;
+        border-radius: 19px;
+    }
+
+    #jogos .games-area .section-title::after {
+        right: 15px;
+        font-size: 60px;
+    }
+
+    #jogos .games-area .section-title h2 {
+        font-size: 25px;
+    }
+
+    #jogos .games-area .section-title p {
+        font-size: 13px;
+    }
+
+    #jogos .game-filters {
+        gap: 7px;
+
+        margin-bottom: 20px;
+
+        padding-bottom: 7px;
+    }
+
+    #jogos .game-filter {
+        min-height: 40px;
+        padding: 8px 13px;
+
+        font-size: 10px;
+    }
+
+    #jogos .games-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    #jogos .game-card.educational-game {
+        min-height: 0;
+    }
+
+    #jogos .game-card .game-cover {
+        height: 130px;
+    }
+
+    #jogos .game-card-content {
+        padding: 18px;
+    }
+
+    #jogos .game-card h3 {
+        font-size: 19px;
+    }
+
+    #jogos .game-card p {
+        font-size: 13px;
+    }
+
+    #jogos .game-card .primary-small {
+        min-height: 48px;
+
+        font-size: 11px;
+    }
+
+}
+
+/* ---------------------------------------------------------
+   TELAS MUITO PEQUENAS
+--------------------------------------------------------- */
+
+@media (max-width: 380px) {
+
+    #jogos .games-area .section-title h2 {
+        font-size: 22px;
+    }
+
+    #jogos .game-card .game-cover {
+        height: 115px;
+        font-size: 48px;
+    }
+
+    #jogos .game-card-content {
+        padding: 16px;
+    }
+
+}
+/* =========================================================
+   CENTRAL DE JOGOS    REA DE DESTAQUE
+========================================================= */
+
+#educativosArea::before {
+    content: "";
+    display: block;
+    height: 1px;
+    margin-bottom: 24px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(77,163,255,.35),
+        transparent
+    );
+}
+
+/* =========================================================
+   PAINEL DE DESTAQUE
+========================================================= */
+
+.games-hero {
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    margin-bottom: 28px;
+    padding: 30px;
+
+    min-height: 190px;
+
+    border-radius: 26px;
+
+    border: 1px solid rgba(77,163,255,.18);
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(120,80,255,.20),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(77,163,255,.16),
+            transparent 35%
+        ),
+        rgba(255,255,255,.035);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.18);
+}
+
+.games-hero::after {
+    content: "??";
+
+    position: absolute;
+
+    right: 40px;
+    bottom: -25px;
+
+    font-size: 9rem;
+
+    opacity: .08;
+
+    transform: rotate(-10deg);
+
+    pointer-events: none;
+}
+
+.games-hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 700px;
+}
+
+.games-hero-label {
+    display: inline-flex;
+
+    padding: 6px 11px;
+
+    margin-bottom: 12px;
+
+    border-radius: 999px;
+
+    background: rgba(77,163,255,.12);
+
+    border: 1px solid rgba(77,163,255,.22);
+
+    color: #8fc7ff;
+
+    font-size: .72rem;
+    font-weight: 800;
+
+    letter-spacing: .8px;
+}
+
+.games-hero h3 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: clamp(
+        1.5rem,
+        4vw,
+        2.2rem
+    );
+
+    font-weight: 900;
+}
+
+.games-hero p {
+    margin: 0;
+
+    color: #aeb9c8;
+
+    line-height: 1.7;
+
+    max-width: 620px;
+}
+
+.games-hero-stats {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+}
+
+.games-stat {
+    min-width: 90px;
+
+    padding: 15px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    background: rgba(0,0,0,.18);
+
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.games-stat strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 1.45rem;
+}
+
+.games-stat span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: .72rem;
+}
+
+/* =========================================================
+   BARRA DE CONTROLE
+========================================================= */
+
+.games-toolbar {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.games-search {
+    position: relative;
+
+    flex: 1;
+
+    max-width: 420px;
+}
+
+.games-search input {
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 0 16px 0 43px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    background: rgba(255,255,255,.045);
+
+    color: #fff;
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.games-search input::placeholder {
+    color: #718096;
+}
+
+.games-search input:focus {
+    border-color: rgba(77,163,255,.45);
+
+    background: rgba(255,255,255,.065);
+}
+
+.games-search::before {
+    content: "??";
+
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: .95rem;
+
+    pointer-events: none;
+}
+
+.games-counter {
+    color: #94a3b8;
+
+    font-size: .85rem;
+
+    white-space: nowrap;
+}
+
+.games-counter strong {
+    color: #fff;
+}
+
+/* =========================================================
+   CARD PREMIUM
+========================================================= */
+
+#educativosArea .game-card {
+    isolation: isolate;
+}
+
+#educativosArea .game-card::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: inherit;
+
+    border: 1px solid transparent;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.10),
+            transparent 35%
+        )
+        border-box;
+
+    mask:
+        linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+
+    mask-composite: exclude;
+
+    opacity: .45;
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   ESTADO VAZIO
+========================================================= */
+
+.games-empty {
+    display: none;
+
+    text-align: center;
+
+    padding: 55px 20px;
+
+    border-radius: 22px;
+
+    border: 1px dashed rgba(255,255,255,.12);
+
+    color: #94a3b8;
+}
+
+.games-empty.show {
+    display: block;
+}
+
+.games-empty-icon {
+    font-size: 3rem;
+
+    margin-bottom: 12px;
+}
+
+.games-empty h3 {
+    margin-bottom: 7px;
+
+    color: #fff;
+}
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .games-hero {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 24px;
+    }
+
+    .games-hero-stats {
+        width: 100%;
+    }
+
+    .games-stat {
+        flex: 1;
+    }
+
+    .games-toolbar {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .games-search {
+        max-width: none;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .games-hero {
+        min-height: auto;
+
+        border-radius: 20px;
+
+        padding: 20px;
+    }
+
+    .games-hero::after {
+        right: -10px;
+        bottom: -20px;
+
+        font-size: 7rem;
+    }
+
+    .games-hero-stats {
+        gap: 8px;
+    }
+
+    .games-stat {
+        min-width: 0;
+
+        padding: 12px 8px;
+    }
+
+    .games-stat strong {
+        font-size: 1.2rem;
+    }
+
+}
+
+
+/* =========================================================
+   CENTRAL DE JOGOS    REA DE DESTAQUE
+========================================================= */
+
+#educativosArea::before {
+    content: "";
+    display: block;
+    height: 1px;
+    margin-bottom: 24px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(77,163,255,.35),
+        transparent
+    );
+}
+
+/* =========================================================
+   PAINEL DE DESTAQUE
+========================================================= */
+
+.games-hero {
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    margin-bottom: 28px;
+    padding: 30px;
+
+    min-height: 190px;
+
+    border-radius: 26px;
+
+    border: 1px solid rgba(77,163,255,.18);
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(120,80,255,.20),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(77,163,255,.16),
+            transparent 35%
+        ),
+        rgba(255,255,255,.035);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.18);
+}
+
+.games-hero::after {
+    content: "??";
+
+    position: absolute;
+
+    right: 40px;
+    bottom: -25px;
+
+    font-size: 9rem;
+
+    opacity: .08;
+
+    transform: rotate(-10deg);
+
+    pointer-events: none;
+}
+
+.games-hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 700px;
+}
+
+.games-hero-label {
+    display: inline-flex;
+
+    padding: 6px 11px;
+
+    margin-bottom: 12px;
+
+    border-radius: 999px;
+
+    background: rgba(77,163,255,.12);
+
+    border: 1px solid rgba(77,163,255,.22);
+
+    color: #8fc7ff;
+
+    font-size: .72rem;
+    font-weight: 800;
+
+    letter-spacing: .8px;
+}
+
+.games-hero h3 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: clamp(
+        1.5rem,
+        4vw,
+        2.2rem
+    );
+
+    font-weight: 900;
+}
+
+.games-hero p {
+    margin: 0;
+
+    color: #aeb9c8;
+
+    line-height: 1.7;
+
+    max-width: 620px;
+}
+
+.games-hero-stats {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+}
+
+.games-stat {
+    min-width: 90px;
+
+    padding: 15px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    background: rgba(0,0,0,.18);
+
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.games-stat strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 1.45rem;
+}
+
+.games-stat span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: .72rem;
+}
+
+/* =========================================================
+   BARRA DE CONTROLE
+========================================================= */
+
+.games-toolbar {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.games-search {
+    position: relative;
+
+    flex: 1;
+
+    max-width: 420px;
+}
+
+.games-search input {
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 0 16px 0 43px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    background: rgba(255,255,255,.045);
+
+    color: #fff;
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.games-search input::placeholder {
+    color: #718096;
+}
+
+.games-search input:focus {
+    border-color: rgba(77,163,255,.45);
+
+    background: rgba(255,255,255,.065);
+}
+
+.games-search::before {
+    content: "??";
+
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: .95rem;
+
+    pointer-events: none;
+}
+
+.games-counter {
+    color: #94a3b8;
+
+    font-size: .85rem;
+
+    white-space: nowrap;
+}
+
+.games-counter strong {
+    color: #fff;
+}
+
+/* =========================================================
+   CARD PREMIUM
+========================================================= */
+
+#educativosArea .game-card {
+    isolation: isolate;
+}
+
+#educativosArea .game-card::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: inherit;
+
+    border: 1px solid transparent;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.10),
+            transparent 35%
+        )
+        border-box;
+
+    mask:
+        linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+
+    mask-composite: exclude;
+
+    opacity: .45;
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   ESTADO VAZIO
+========================================================= */
+
+.games-empty {
+    display: none;
+
+    text-align: center;
+
+    padding: 55px 20px;
+
+    border-radius: 22px;
+
+    border: 1px dashed rgba(255,255,255,.12);
+
+    color: #94a3b8;
+}
+
+.games-empty.show {
+    display: block;
+}
+
+.games-empty-icon {
+    font-size: 3rem;
+
+    margin-bottom: 12px;
+}
+
+.games-empty h3 {
+    margin-bottom: 7px;
+
+    color: #fff;
+}
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .games-hero {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 24px;
+    }
+
+    .games-hero-stats {
+        width: 100%;
+    }
+
+    .games-stat {
+        flex: 1;
+    }
+
+    .games-toolbar {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .games-search {
+        max-width: none;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .games-hero {
+        min-height: auto;
+
+        border-radius: 20px;
+
+        padding: 20px;
+    }
+
+    .games-hero::after {
+        right: -10px;
+        bottom: -20px;
+
+        font-size: 7rem;
+    }
+
+    .games-hero-stats {
+        gap: 8px;
+    }
+
+    .games-stat {
+        min-width: 0;
+
+        padding: 12px 8px;
+    }
+
+    .games-stat strong {
+        font-size: 1.2rem;
+    }
+
+}
+
+/* =========================================================
+   CENTRAL DE JOGOS â€” INSTITUTO ACUTIS
+========================================================= */
+
+#educativosArea {
+    position: relative;
+}
+
+/* CabeÃ§alho da central */
+
+#educativosArea .section-title {
+    margin-bottom: 24px;
+}
+
+#educativosArea .section-title h2 {
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+    margin: 8px 0;
+    letter-spacing: -0.5px;
+}
+
+#educativosArea .section-title p {
+    max-width: 700px;
+    line-height: 1.6;
+    opacity: .75;
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+#educativosArea .game-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding: 4px;
+}
+
+#educativosArea .game-filter {
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.045);
+    color: rgba(255,255,255,.75);
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease;
+    white-space: nowrap;
+}
+
+#educativosArea .game-filter:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.20);
+    color: #fff;
+}
+
+#educativosArea .game-filter.active {
+    background: linear-gradient(
+        135deg,
+        rgba(70,130,255,.25),
+        rgba(120,70,255,.20)
+    );
+
+    border-color: rgba(100,150,255,.45);
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(0,0,0,.18);
+}
+
+
+/* =========================================================
+   GRADE DE JOGOS
+========================================================= */
+
+#educativosArea .games-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(245px, 1fr)
+        );
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+#educativosArea .game-card {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 330px;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.025)
+        );
+
+    border: 1px solid rgba(255,255,255,.09);
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.20);
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+#educativosArea .game-card:hover {
+    transform: translateY(-8px);
+
+    border-color:
+        rgba(100,160,255,.35);
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.30);
+}
+
+
+/* =========================================================
+   CAPA DO JOGO
+========================================================= */
+
+#educativosArea .game-cover {
+    min-height: 145px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 4rem;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(80,130,255,.20),
+            transparent 65%
+        );
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+
+    position: relative;
+}
+
+#educativosArea .game-cover::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            transparent,
+            rgba(255,255,255,.04)
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CONTEÃšDO
+========================================================= */
+
+#educativosArea .game-card-content {
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+}
+
+#educativosArea .game-tag {
+    display: inline-flex;
+    align-self: flex-start;
+
+    padding: 5px 9px;
+
+    border-radius: 8px;
+
+    font-size: .68rem;
+    font-weight: 800;
+
+    letter-spacing: .6px;
+
+    background: rgba(100,150,255,.12);
+    color: rgba(150,190,255,.95);
+}
+
+#educativosArea .game-card h3 {
+    margin: 12px 0 8px;
+
+    font-size: 1.25rem;
+
+    color: #fff;
+}
+
+#educativosArea .game-card p {
+    margin: 0;
+
+    font-size: .9rem;
+
+    line-height: 1.55;
+
+    color: rgba(255,255,255,.65);
+
+    flex: 1;
+}
+
+
+/* =========================================================
+   BOTÃƒO JOGAR
+========================================================= */
+
+#educativosArea .game-card .primary-small {
+    position: relative;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 12px 18px;
+
+    border-radius: 14px;
+    border: 1px solid rgba(120,170,255,.28);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(60,120,255,.28),
+            rgba(115,70,255,.28)
+        );
+
+    color: #fff;
+    font-size: .92rem;
+    font-weight: 800;
+    letter-spacing: .25px;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 25px rgba(50,90,220,.12),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+    transition:
+        transform .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease,
+        background .22s ease,
+        filter .22s ease;
+}
+
+#educativosArea .game-card .primary-small::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.16),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+    transition: left .55s ease;
+    pointer-events: none;
+}
+
+#educativosArea .game-card .primary-small::after {
+    content: "▶";
+    font-size: .72rem;
+    opacity: .9;
+
+    transition:
+        transform .22s ease,
+        opacity .22s ease;
+
+    pointer-events: none;
+}
+
+#educativosArea .game-card .primary-small:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(120,180,255,.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(70,135,255,.40),
+            rgba(125,75,255,.38)
+        );
+
+    box-shadow:
+        0 12px 32px rgba(55,105,255,.25),
+        0 0 20px rgba(80,130,255,.10);
+
+    filter: brightness(1.08);
+}
+
+#educativosArea .game-card .primary-small:hover::before {
+    left: 140%;
+}
+
+#educativosArea .game-card .primary-small:hover::after {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+#educativosArea .game-card .primary-small:active {
+    transform: translateY(0) scale(.97);
+
+    box-shadow:
+        0 5px 15px rgba(50,90,220,.18);
+}
+
+#educativosArea .game-card .primary-small:focus-visible {
+    outline: none;
+
+    border-color: rgba(130,190,255,.75);
+
+    box-shadow:
+        0 0 0 3px rgba(80,140,255,.18),
+        0 10px 30px rgba(50,100,255,.20);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    #educativosArea .games-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #educativosArea .game-filters {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+
+        padding-bottom: 8px;
+
+        scrollbar-width: thin;
+    }
+
+    #educativosArea .game-filter {
+        flex: 0 0 auto;
+    }
+
+    #educativosArea .games-grid {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+    #educativosArea .game-card {
+        min-height: 300px;
+    }
+
+    #educativosArea .game-cover {
+        min-height: 125px;
+        font-size: 3.5rem;
+    }
+
+}
+
+
+/* =========================================================
+   CELULAR PEQUENO
+========================================================= */
+
+@media (max-width: 380px) {
+
+    #educativosArea .game-card-content {
+        padding: 16px;
+    }
+
+    #educativosArea .game-card h3 {
+        font-size: 1.1rem;
+    }
+
+    #educativosArea .game-card p {
+        font-size: .85rem;
+    }
+
+}
+
+
+
+/* =========================================================
+   ALDEMAR STUDIOS — CENTRAL DE JOGOS
+   CARDS DE SELEÇÃO
+========================================================= */
+
+#gamesCategories .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 28px;
+}
+
+#gamesCategories .game-category-card {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 245px;
+    padding: 28px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.025)
+        );
+
+    border: 1px solid rgba(255,255,255,.09);
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,.20);
+
+    transition:
+        transform .28s ease,
+        border-color .28s ease,
+        box-shadow .28s ease,
+        background .28s ease;
+}
+
+#gamesCategories .game-category-card::before {
+    content: "";
+
+    position: absolute;
+    inset: -50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(80,140,255,.13),
+            transparent 55%
+        );
+
+    opacity: .65;
+
+    pointer-events: none;
+
+    transition:
+        opacity .3s ease,
+        transform .3s ease;
+}
+
+#gamesCategories .game-category-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(100,160,255,.40);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.10),
+            rgba(255,255,255,.035)
+        );
+
+    box-shadow:
+        0 25px 65px rgba(0,0,0,.30),
+        0 0 30px rgba(70,130,255,.08);
+}
+
+#gamesCategories .game-category-card:hover::before {
+    opacity: 1;
+    transform: scale(1.08);
+}
+
+
+/* ÍCONE */
+
+#gamesCategories .category-big-icon {
+    position: relative;
+    z-index: 1;
+
+    width: 68px;
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 18px;
+
+    font-size: 34px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(70,130,255,.18),
+            rgba(120,70,255,.12)
+        );
+
+    border:
+        1px solid rgba(110,160,255,.20);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 10px 25px rgba(0,0,0,.12);
+
+    transition:
+        transform .28s ease,
+        box-shadow .28s ease;
+}
+
+#gamesCategories .game-category-card:hover
+.category-big-icon {
+    transform: translateY(-3px) scale(1.05);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        0 12px 30px rgba(60,110,255,.18);
+}
+
+
+/* TÍTULO */
+
+#gamesCategories .game-category-card h3 {
+    position: relative;
+    z-index: 1;
+
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-size: 1.25rem;
+    font-weight: 800;
+
+    letter-spacing: .1px;
+}
+
+
+/* DESCRIÇÃO */
+
+#gamesCategories .game-category-card p {
+    position: relative;
+    z-index: 1;
+
+    margin: 0;
+
+    max-width: 420px;
+
+    color:
+        rgba(255,255,255,.62);
+
+    font-size: .92rem;
+
+    line-height: 1.55;
+}
+
+
+/* EXPLORAR */
+
+#gamesCategories .game-category-card .card-link {
+    position: relative;
+    z-index: 1;
+
+    display: inline-flex;
+    align-items: center;
+
+    margin-top: auto;
+    padding-top: 22px;
+
+    color:
+        rgba(145,190,255,.95);
+
+    font-size: .88rem;
+    font-weight: 800;
+
+    transition:
+        transform .22s ease,
+        color .22s ease;
+}
+
+#gamesCategories .game-category-card:hover .card-link {
+    transform: translateX(5px);
+
+    color: #fff;
+}
+
+
+/* EFEITO DE FOCO */
+
+#gamesCategories .game-category-card:focus-visible {
+    outline: none;
+
+    border-color:
+        rgba(130,190,255,.75);
+
+    box-shadow:
+        0 0 0 3px rgba(80,140,255,.15),
+        0 20px 55px rgba(0,0,0,.25);
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 700px) {
+
+    #gamesCategories .category-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    #gamesCategories .game-category-card {
+        min-height: 220px;
+        padding: 22px;
+    }
+
+}
+

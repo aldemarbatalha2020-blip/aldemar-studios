@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
 
 <title>English Runner | Aldemar Studios</title>
 
@@ -12,20 +13,21 @@
     padding:0;
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
+    user-select:none;
 }
 
 :root{
-    --bg:#07111f;
-    --bg2:#0b1b2f;
-    --panel:rgba(13,31,52,.82);
+    --bg:#06101d;
+    --bg2:#0b1d31;
+    --panel:rgba(10,27,47,.92);
     --border:rgba(100,190,255,.20);
     --blue:#4db8ff;
-    --blue-soft:#8ed6ff;
     --cyan:#62e6ff;
     --text:#edf8ff;
     --muted:#8ea9bd;
     --success:#62e6a5;
     --danger:#ff6f91;
+    --gold:#ffd166;
 }
 
 html,
@@ -59,9 +61,15 @@ body{
         );
 }
 
+button{
+    font:inherit;
+}
+
 .game{
     width:100%;
     height:100dvh;
+
+    min-height:420px;
 
     display:flex;
     flex-direction:column;
@@ -70,6 +78,10 @@ body{
 
     overflow:hidden;
 }
+
+/* =====================================================
+   HEADER
+===================================================== */
 
 header{
     min-height:72px;
@@ -80,9 +92,13 @@ header{
 
     gap:15px;
 
-    padding:12px 20px;
+    padding:
+        max(10px, env(safe-area-inset-top))
+        max(14px, env(safe-area-inset-right))
+        10px
+        max(14px, env(safe-area-inset-left));
 
-    background:rgba(5,16,29,.82);
+    background:rgba(5,16,29,.88);
 
     border-bottom:1px solid var(--border);
 
@@ -95,11 +111,15 @@ header{
     display:flex;
     align-items:center;
     gap:10px;
+
+    min-width:0;
 }
 
 .logo-icon{
     width:42px;
     height:42px;
+
+    flex:none;
 
     display:grid;
     place-items:center;
@@ -145,13 +165,13 @@ header{
 .stats{
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:7px;
 }
 
 .stat{
-    min-width:70px;
+    min-width:68px;
 
-    padding:7px 10px;
+    padding:7px 9px;
 
     text-align:center;
 
@@ -179,79 +199,66 @@ header{
 
     margin-top:2px;
 
-    color:var(--blue-soft);
-
-    font-size:14px;
+    font-size:13px;
 }
 
+/* =====================================================
+   GAME AREA
+===================================================== */
+
 #gameArea{
+    position:relative;
+
     flex:1;
 
-    position:relative;
+    min-height:0;
 
     overflow:hidden;
 
     background:
         linear-gradient(
-            rgba(5,16,28,.12),
-            rgba(5,16,28,.35)
+            180deg,
+            rgba(9,34,55,.78),
+            rgba(3,12,22,.96)
         );
 }
+
+/* estrada */
 
 .grid{
     position:absolute;
 
     inset:0;
 
-    opacity:.25;
-
-    background-image:
-        linear-gradient(
-            rgba(77,184,255,.08) 1px,
-            transparent 1px
-        ),
+    background:
         linear-gradient(
             90deg,
-            rgba(77,184,255,.08) 1px,
-            transparent 1px
+            transparent 0 32.8%,
+            rgba(98,230,255,.08) 33%,
+            transparent 33.2% 66.5%,
+            rgba(98,230,255,.08) 66.7%,
+            transparent 66.9%
+        ),
+        repeating-linear-gradient(
+            180deg,
+            rgba(255,255,255,.025) 0,
+            rgba(255,255,255,.025) 2px,
+            transparent 2px,
+            transparent 48px
         );
 
-    background-size:50px 50px;
-
-    transform:
-        perspective(500px)
-        rotateX(55deg)
-        scale(1.8);
-
-    transform-origin:center bottom;
+    animation:
+        roadMove .65s linear infinite;
 }
 
-.player{
-    position:absolute;
+@keyframes roadMove{
+    from{
+        background-position:0 0,0 0;
+    }
 
-    left:50%;
-
-    bottom:42px;
-
-    width:58px;
-    height:72px;
-
-    transform:translateX(-50%);
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:40px;
-
-    filter:
-        drop-shadow(
-            0 0 12px rgba(77,184,255,.65)
-        );
-
-    transition:left .12s ease;
-
-    z-index:10;
+    to{
+        background-position:0 0,0 48px;
+    }
 }
 
 .lane{
@@ -260,114 +267,155 @@ header{
     top:0;
     bottom:0;
 
-    width:33.333%;
-
-    border-left:1px solid rgba(77,184,255,.07);
-}
-
-.lane:nth-child(1){
-    left:0;
-}
-
-.lane:nth-child(2){
-    left:33.333%;
-}
-
-.lane:nth-child(3){
-    left:66.666%;
-}
-
-.object{
-    position:absolute;
-
-    width:92px;
-    min-height:58px;
-
-    padding:9px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-
-    border-radius:13px;
+    width:2px;
 
     background:
         linear-gradient(
-            145deg,
-            rgba(19,53,82,.96),
-            rgba(8,25,43,.96)
+            180deg,
+            transparent,
+            rgba(98,230,255,.22),
+            transparent
         );
-
-    border:1px solid rgba(98,230,255,.28);
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.25),
-        0 0 18px rgba(77,184,255,.08);
-
-    color:var(--text);
-
-    font-size:11px;
-    font-weight:800;
-
-    z-index:8;
-
-    transition:transform .08s linear;
 }
 
-.object.correct{
-    border-color:rgba(98,230,165,.7);
+.lane:nth-child(2){
+    left:33.33%;
 }
 
-.object.wrong{
-    border-color:rgba(255,111,145,.75);
+.lane:nth-child(3){
+    left:66.66%;
 }
+
+.lane:nth-child(4){
+    display:none;
+}
+
+/* =====================================================
+   QUESTION
+===================================================== */
 
 .question{
     position:absolute;
 
-    top:20px;
+    top:15px;
     left:50%;
-
-    width:min(700px,calc(100% - 30px));
 
     transform:translateX(-50%);
 
-    padding:15px 20px;
+    width:min(680px,calc(100% - 24px));
+
+    padding:13px 18px;
 
     text-align:center;
 
-    background:rgba(5,17,30,.84);
+    background:rgba(4,15,27,.82);
 
     border:1px solid var(--border);
 
-    border-radius:15px;
+    border-radius:14px;
 
-    backdrop-filter:blur(15px);
+    backdrop-filter:blur(14px);
 
-    z-index:15;
+    z-index:10;
 }
 
 .question small{
-    color:var(--blue);
+    color:var(--cyan);
 
     font-size:9px;
 
     font-weight:800;
 
-    letter-spacing:1.5px;
-
     text-transform:uppercase;
+
+    letter-spacing:1.4px;
 }
 
 .question h2{
-    margin-top:6px;
+    margin-top:5px;
 
     font-size:17px;
 
-    line-height:1.4;
+    line-height:1.3;
 }
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+.player{
+    position:absolute;
+
+    left:50%;
+    bottom:26px;
+
+    transform:
+        translateX(-50%);
+
+    width:70px;
+    height:70px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:43px;
+
+    filter:
+        drop-shadow(
+            0 0 14px
+            rgba(77,184,255,.30)
+        );
+
+    z-index:8;
+
+    transition:left .14s ease;
+}
+
+/* =====================================================
+   ANSWERS
+===================================================== */
+
+.object{
+    position:absolute;
+
+    width:min(110px,24vw);
+
+    min-height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:7px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,55,82,.98),
+            rgba(7,27,45,.98)
+        );
+
+    border:1px solid rgba(98,230,255,.30);
+
+    border-radius:14px;
+
+    color:#fff;
+
+    font-size:12px;
+    font-weight:800;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,.28),
+        0 0 15px rgba(77,184,255,.06);
+
+    z-index:7;
+}
+
+/* =====================================================
+   CONTROLES
+===================================================== */
 
 .controls{
     min-height:82px;
@@ -378,9 +426,13 @@ header{
 
     gap:12px;
 
-    padding:12px 20px;
+    padding:
+        10px
+        max(14px, env(safe-area-inset-right))
+        max(10px, env(safe-area-inset-bottom))
+        max(14px, env(safe-area-inset-left));
 
-    background:rgba(5,16,29,.9);
+    background:rgba(5,16,29,.94);
 
     border-top:1px solid var(--border);
 
@@ -420,8 +472,68 @@ header{
 }
 
 .control:active{
-    transform:scale(.94);
+    transform:scale(.92);
+
+    background:rgba(77,184,255,.18);
 }
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+.feedback{
+    position:absolute;
+
+    left:50%;
+    bottom:25%;
+
+    transform:
+        translate(-50%,20px);
+
+    opacity:0;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    background:rgba(4,15,27,.94);
+
+    border:1px solid var(--border);
+
+    color:var(--text);
+
+    font-size:11px;
+    font-weight:800;
+
+    pointer-events:none;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+
+    z-index:50;
+}
+
+.feedback.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+.feedback.success{
+    border-color:rgba(98,230,165,.4);
+    color:var(--success);
+}
+
+.feedback.error{
+    border-color:rgba(255,111,145,.4);
+    color:var(--danger);
+}
+
+/* =====================================================
+   TELAS
+===================================================== */
 
 .start-screen,
 .end-screen{
@@ -439,7 +551,7 @@ header{
         radial-gradient(
             circle at center,
             rgba(39,125,190,.13),
-            rgba(3,12,22,.94)
+            rgba(3,12,22,.96)
         );
 
     z-index:100;
@@ -455,8 +567,8 @@ header{
     background:
         linear-gradient(
             145deg,
-            rgba(14,37,61,.96),
-            rgba(7,21,37,.96)
+            rgba(14,37,61,.97),
+            rgba(7,21,37,.97)
         );
 
     border:1px solid var(--border);
@@ -476,8 +588,6 @@ header{
 
 .modal h1{
     font-size:28px;
-
-    letter-spacing:-.5px;
 }
 
 .modal p{
@@ -510,8 +620,6 @@ header{
 
     color:var(--text);
 
-    font-family:inherit;
-
     font-size:12px;
     font-weight:850;
 
@@ -519,6 +627,10 @@ header{
 
     box-shadow:
         0 0 20px rgba(77,184,255,.07);
+
+    transition:
+        transform .15s ease,
+        background .15s ease;
 }
 
 .start-button:hover{
@@ -530,67 +642,24 @@ header{
         );
 }
 
+.start-button:active{
+    transform:scale(.96);
+}
+
 .hidden{
     display:none!important;
 }
 
-.feedback{
-    position:absolute;
-
-    left:50%;
-    bottom:115px;
-
-    transform:
-        translate(-50%,20px);
-
-    opacity:0;
-
-    padding:10px 18px;
-
-    border-radius:10px;
-
-    background:rgba(4,15,27,.92);
-
-    border:1px solid var(--border);
-
-    color:var(--text);
-
-    font-size:11px;
-    font-weight:800;
-
-    pointer-events:none;
-
-    transition:
-        opacity .2s ease,
-        transform .2s ease;
-
-    z-index:50;
-}
-
-.feedback.show{
-    opacity:1;
-
-    transform:translate(-50%,0);
-}
-
-.feedback.success{
-    border-color:rgba(98,230,165,.4);
-
-    color:var(--success);
-}
-
-.feedback.error{
-    border-color:rgba(255,111,145,.4);
-
-    color:var(--danger);
-}
+/* =====================================================
+   CELULAR
+===================================================== */
 
 @media(max-width:700px){
 
     header{
         min-height:64px;
 
-        padding:9px 12px;
+        padding:8px 10px;
     }
 
     .logo-icon{
@@ -601,17 +670,21 @@ header{
     }
 
     .logo strong{
-        font-size:12px;
+        font-size:11px;
     }
 
     .logo span{
         font-size:7px;
     }
 
-    .stat{
-        min-width:55px;
+    .stats{
+        gap:4px;
+    }
 
-        padding:5px 7px;
+    .stat{
+        min-width:50px;
+
+        padding:5px 6px;
     }
 
     .stat small{
@@ -619,13 +692,13 @@ header{
     }
 
     .stat strong{
-        font-size:12px;
+        font-size:11px;
     }
 
     .question{
-        top:12px;
+        top:10px;
 
-        padding:12px 13px;
+        padding:11px 12px;
     }
 
     .question h2{
@@ -635,11 +708,16 @@ header{
     .object{
         width:78px;
 
+        min-height:54px;
+
         font-size:10px;
     }
 
     .player{
-        bottom:30px;
+        width:58px;
+        height:58px;
+
+        bottom:20px;
 
         font-size:34px;
     }
@@ -647,12 +725,14 @@ header{
     .controls{
         min-height:72px;
 
-        padding:9px 12px;
+        gap:7px;
     }
 
     .control{
         width:55px;
         height:46px;
+
+        font-size:20px;
     }
 
     .modal{
@@ -668,6 +748,10 @@ header{
     }
 }
 
+/* =====================================================
+   CELULAR PEQUENO
+===================================================== */
+
 @media(max-width:400px){
 
     .logo span{
@@ -675,11 +759,11 @@ header{
     }
 
     .stat{
-        min-width:48px;
+        min-width:45px;
     }
 
     .question{
-        width:calc(100% - 20px);
+        width:calc(100% - 16px);
     }
 
     .object{
@@ -689,7 +773,122 @@ header{
 
         font-size:9px;
     }
+
+    .control{
+        width:50px;
+        height:44px;
+    }
 }
+
+/* =====================================================
+   MODO PAISAGEM
+===================================================== */
+
+@media(max-height:520px) and (orientation:landscape){
+
+    header{
+        min-height:55px;
+
+        padding:5px 10px;
+    }
+
+    .logo-icon{
+        width:32px;
+        height:32px;
+
+        font-size:16px;
+    }
+
+    .logo strong{
+        font-size:10px;
+    }
+
+    .logo span{
+        display:none;
+    }
+
+    .stat{
+        min-width:52px;
+
+        padding:4px 6px;
+    }
+
+    .question{
+        top:7px;
+
+        width:min(520px,60%);
+
+        padding:7px 10px;
+    }
+
+    .question small{
+        font-size:7px;
+    }
+
+    .question h2{
+        font-size:12px;
+    }
+
+    .player{
+        bottom:12px;
+
+        font-size:30px;
+    }
+
+    .controls{
+        min-height:58px;
+
+        padding:5px 10px;
+    }
+
+    .control{
+        width:46px;
+        height:40px;
+
+        font-size:17px;
+    }
+
+    .modal{
+        padding:16px 22px;
+
+        max-height:90vh;
+        overflow:auto;
+    }
+
+    .modal-icon{
+        font-size:36px;
+        margin-bottom:4px;
+    }
+
+    .modal h1{
+        font-size:20px;
+    }
+
+    .modal p{
+        margin:7px auto 13px;
+
+        font-size:10px;
+    }
+
+    .start-button{
+        padding:9px 20px;
+    }
+}
+
+/* =====================================================
+   ACESSIBILIDADE
+===================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important;
+    }
+}
+
 </style>
 </head>
 
@@ -759,13 +958,29 @@ header{
 
 <div class="controls">
 
-    <button class="control" id="left">←</button>
+    <button
+        class="control"
+        id="left"
+        aria-label="Mover para esquerda"
+    >←</button>
 
-    <button class="control" id="up">↑</button>
+    <button
+        class="control"
+        id="up"
+        aria-label="Ação para cima"
+    >↑</button>
 
-    <button class="control" id="down">↓</button>
+    <button
+        class="control"
+        id="down"
+        aria-label="Ação para baixo"
+    >↓</button>
 
-    <button class="control" id="right">→</button>
+    <button
+        class="control"
+        id="right"
+        aria-label="Mover para direita"
+    >→</button>
 
 </div>
 
@@ -781,9 +996,14 @@ header{
             Corra pelas três pistas e escolha a palavra
             que corresponde à tradução apresentada.
             Acerte para ganhar pontos e evite as respostas erradas.
+            Use o teclado no computador ou os controles de toque
+            no celular e tablet.
         </p>
 
-        <button class="start-button" id="startButton">
+        <button
+            class="start-button"
+            id="startButton"
+        >
             INICIAR JOGO
         </button>
 
@@ -803,7 +1023,10 @@ header{
             Você terminou a partida.
         </p>
 
-        <button class="start-button" id="restartButton">
+        <button
+            class="start-button"
+            id="restartButton"
+        >
             JOGAR NOVAMENTE
         </button>
 
@@ -814,6 +1037,10 @@ header{
 </div>
 
 <script>
+
+/* =====================================================
+   BANCO DE QUESTÕES
+===================================================== */
 
 const questions = [
 
@@ -875,9 +1102,73 @@ const questions = [
         question:"Família",
         answers:["Family","Friend","School"],
         correct:"Family"
+    },
+
+    {
+        question:"Professor",
+        answers:["Teacher","Driver","Farmer"],
+        correct:"Teacher"
+    },
+
+    {
+        question:"Janela",
+        answers:["Door","Window","Wall"],
+        correct:"Window"
+    },
+
+    {
+        question:"Mesa",
+        answers:["Chair","Table","Bed"],
+        correct:"Table"
+    },
+
+    {
+        question:"Livro",
+        answers:["Book","Notebook","Pencil"],
+        correct:"Book"
+    },
+
+    {
+        question:"Árvore",
+        answers:["Flower","Tree","Grass"],
+        correct:"Tree"
+    },
+
+    {
+        question:"Sol",
+        answers:["Moon","Sun","Star"],
+        correct:"Sun"
+    },
+
+    {
+        question:"Lua",
+        answers:["Moon","Cloud","Sky"],
+        correct:"Moon"
+    },
+
+    {
+        question:"Água",
+        answers:["Milk","Water","Coffee"],
+        correct:"Water"
+    },
+
+    {
+        question:"Gato",
+        answers:["Dog","Cat","Horse"],
+        correct:"Cat"
+    },
+
+    {
+        question:"Pássaro",
+        answers:["Bird","Fish","Mouse"],
+        correct:"Bird"
     }
 
 ];
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
 
 const gameArea =
     document.getElementById("gameArea");
@@ -915,6 +1206,22 @@ const startButton =
 const restartButton =
     document.getElementById("restartButton");
 
+const leftButton =
+    document.getElementById("left");
+
+const rightButton =
+    document.getElementById("right");
+
+const upButton =
+    document.getElementById("up");
+
+const downButton =
+    document.getElementById("down");
+
+/* =====================================================
+   ESTADO
+===================================================== */
+
 const lanes = [16.66,50,83.33];
 
 let lane = 1;
@@ -927,19 +1234,30 @@ let time = 60;
 
 let running = false;
 
-let timer;
+let timer = null;
 
-let spawnTimer;
+let spawnTimer = null;
 
-let currentQuestion;
+let animationFrame = null;
+
+let currentQuestion = null;
 
 let objects = [];
+
+/* =====================================================
+   PLAYER
+===================================================== */
 
 function updatePlayer(){
 
     player.style.left =
         lanes[lane] + "%";
+
 }
+
+/* =====================================================
+   STATUS
+===================================================== */
 
 function updateStats(){
 
@@ -953,6 +1271,10 @@ function updateStats(){
         time;
 
 }
+
+/* =====================================================
+   QUESTÃO
+===================================================== */
 
 function nextQuestion(){
 
@@ -970,12 +1292,21 @@ function nextQuestion(){
 
 }
 
-function showFeedback(text,type){
+/* =====================================================
+   FEEDBACK
+===================================================== */
 
-    feedback.textContent = text;
+function showFeedback(
+    text,
+    type
+){
+
+    feedback.textContent =
+        text;
 
     feedback.className =
-        "feedback show " + type;
+        "feedback show " +
+        type;
 
     setTimeout(() => {
 
@@ -986,9 +1317,16 @@ function showFeedback(text,type){
 
 }
 
+/* =====================================================
+   CRIAR RESPOSTA
+===================================================== */
+
 function createObject(){
 
     if(!running)
+        return;
+
+    if(!currentQuestion)
         return;
 
     const answer =
@@ -1020,42 +1358,58 @@ function createObject(){
         objectLane;
 
     object.style.left =
-        `calc(${lanes[objectLane]}% - 46px)`;
+        `calc(${lanes[objectLane]}% - 55px)`;
 
     object.style.top =
         "-70px";
 
-    gameArea.appendChild(object);
+    gameArea.appendChild(
+        object
+    );
 
     objects.push({
+
         element:object,
+
         y:-70,
+
         lane:objectLane,
+
         answer
+
     });
 
 }
 
+/* =====================================================
+   COLISÃO
+===================================================== */
+
 function checkCollision(obj){
 
-    const playerLane =
-        lane;
-
     if(
-        obj.lane !== playerLane
+        obj.lane !== lane
     ){
+
         return false;
+
     }
 
     const playerBottom =
         gameArea.clientHeight - 95;
 
     return (
-        obj.y > playerBottom - 70 &&
-        obj.y < playerBottom + 45
+        obj.y >
+        playerBottom - 70 &&
+        obj.y <
+        playerBottom + 45
     );
 
 }
+
+/* =====================================================
+   ATINGIR RESPOSTA
+===================================================== */
 
 function hitObject(obj){
 
@@ -1091,7 +1445,9 @@ function hitObject(obj){
 
     updateStats();
 
-    if(lives <= 0){
+    if(
+        lives <= 0
+    ){
 
         endGame();
 
@@ -1103,12 +1459,23 @@ function hitObject(obj){
 
 }
 
+/* =====================================================
+   LOOP
+===================================================== */
+
 function gameLoop(){
 
     if(!running)
         return;
 
-    objects.forEach(obj => {
+    for(
+        let i = objects.length - 1;
+        i >= 0;
+        i--
+    ){
+
+        const obj =
+            objects[i];
 
         obj.y += 4;
 
@@ -1121,7 +1488,7 @@ function gameLoop(){
 
             hitObject(obj);
 
-            return;
+            continue;
 
         }
 
@@ -1132,22 +1499,37 @@ function gameLoop(){
 
             obj.element.remove();
 
-            objects =
-                objects.filter(
-                    item => item !== obj
-                );
+            objects.splice(
+                i,
+                1
+            );
 
         }
 
-    });
+    }
 
-    requestAnimationFrame(
-        gameLoop
-    );
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
 
 }
 
+/* =====================================================
+   INICIAR
+===================================================== */
+
 function startGame(){
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+    objects.forEach(
+        obj => obj.element.remove()
+    );
+
+    objects = [];
 
     running = true;
 
@@ -1180,6 +1562,9 @@ function startGame(){
     timer =
         setInterval(() => {
 
+            if(!running)
+                return;
+
             time--;
 
             updateStats();
@@ -1195,14 +1580,19 @@ function startGame(){
     spawnTimer =
         setInterval(
             createObject,
-            1000
+            900
         );
 
-    requestAnimationFrame(
-        gameLoop
-    );
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
 
 }
+
+/* =====================================================
+   FINALIZAR
+===================================================== */
 
 function endGame(){
 
@@ -1215,11 +1605,13 @@ function endGame(){
 
     clearInterval(spawnTimer);
 
-    objects.forEach(obj => {
+    cancelAnimationFrame(
+        animationFrame
+    );
 
-        obj.element.remove();
-
-    });
+    objects.forEach(
+        obj => obj.element.remove()
+    );
 
     objects = [];
 
@@ -1231,6 +1623,10 @@ function endGame(){
     );
 
 }
+
+/* =====================================================
+   MOVIMENTO
+===================================================== */
 
 function moveLeft(){
 
@@ -1288,40 +1684,65 @@ function moveDown(){
 
 }
 
-document
-    .getElementById("left")
-    .addEventListener(
-        "click",
-        moveLeft
-    );
+/* =====================================================
+   BOTÕES TOUCH
+===================================================== */
 
-document
-    .getElementById("right")
-    .addEventListener(
-        "click",
-        moveRight
-    );
+leftButton.addEventListener(
+    "pointerdown",
+    event => {
 
-document
-    .getElementById("up")
-    .addEventListener(
-        "click",
-        moveUp
-    );
+        event.preventDefault();
 
-document
-    .getElementById("down")
-    .addEventListener(
-        "click",
-        moveDown
-    );
+        moveLeft();
+
+    }
+);
+
+rightButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        moveRight();
+
+    }
+);
+
+upButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        moveUp();
+
+    }
+);
+
+downButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        moveDown();
+
+    }
+);
+
+/* =====================================================
+   TECLADO
+===================================================== */
 
 document.addEventListener(
     "keydown",
     event => {
 
         if(
-            event.key === "ArrowLeft"
+            event.key === "ArrowLeft" ||
+            event.key.toLowerCase() === "a"
         ){
 
             event.preventDefault();
@@ -1331,7 +1752,8 @@ document.addEventListener(
         }
 
         if(
-            event.key === "ArrowRight"
+            event.key === "ArrowRight" ||
+            event.key.toLowerCase() === "d"
         ){
 
             event.preventDefault();
@@ -1341,7 +1763,8 @@ document.addEventListener(
         }
 
         if(
-            event.key === "ArrowUp"
+            event.key === "ArrowUp" ||
+            event.key.toLowerCase() === "w"
         ){
 
             event.preventDefault();
@@ -1351,7 +1774,8 @@ document.addEventListener(
         }
 
         if(
-            event.key === "ArrowDown"
+            event.key === "ArrowDown" ||
+            event.key.toLowerCase() === "s"
         ){
 
             event.preventDefault();
@@ -1363,6 +1787,92 @@ document.addEventListener(
     }
 );
 
+/* =====================================================
+   SWIPE NO CELULAR
+===================================================== */
+
+let touchStartX = 0;
+
+let touchStartY = 0;
+
+gameArea.addEventListener(
+    "touchstart",
+    event => {
+
+        const touch =
+            event.changedTouches[0];
+
+        touchStartX =
+            touch.clientX;
+
+        touchStartY =
+            touch.clientY;
+
+    },
+    {passive:true}
+);
+
+gameArea.addEventListener(
+    "touchend",
+    event => {
+
+        if(!running)
+            return;
+
+        const touch =
+            event.changedTouches[0];
+
+        const dx =
+            touch.clientX -
+            touchStartX;
+
+        const dy =
+            touch.clientY -
+            touchStartY;
+
+        const threshold = 35;
+
+        if(
+            Math.abs(dx) >
+            Math.abs(dy)
+        ){
+
+            if(
+                Math.abs(dx) >
+                threshold
+            ){
+
+                if(dx > 0)
+                    moveRight();
+                else
+                    moveLeft();
+
+            }
+
+        }else{
+
+            if(
+                Math.abs(dy) >
+                threshold
+            ){
+
+                if(dy < 0)
+                    moveUp();
+                else
+                    moveDown();
+
+            }
+
+        }
+
+    },
+    {passive:true}
+);
+
+/* =====================================================
+   BOTÕES DE JOGO
+===================================================== */
+
 startButton.addEventListener(
     "click",
     startGame
@@ -1373,9 +1883,43 @@ restartButton.addEventListener(
     startGame
 );
 
+/* =====================================================
+   ORIENTAÇÃO
+===================================================== */
+
+function updateOrientationHint(){
+
+    const landscape =
+        window.matchMedia(
+            "(orientation: landscape)"
+        ).matches;
+
+    document.body.dataset.orientation =
+        landscape
+            ? "landscape"
+            : "portrait";
+
+}
+
+window.addEventListener(
+    "resize",
+    updateOrientationHint
+);
+
+window.addEventListener(
+    "orientationchange",
+    updateOrientationHint
+);
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
 updatePlayer();
 
 updateStats();
+
+updateOrientationHint();
 
 </script>
 

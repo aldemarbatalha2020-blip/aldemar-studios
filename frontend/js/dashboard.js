@@ -1143,55 +1143,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CLIQUE NOS JOGOS
-    ====================================================== */
+   ABERTURA DOS JOGOS EDUCATIVOS
+====================================================== */
 
-    document.addEventListener(
-        "click",
-        event => {
+document.addEventListener("click", function (event) {
 
-            const button =
-                event.target.closest(
-                    "[data-english-game]"
-                );
+    const botao =
+        event.target.closest(".game-play-button");
 
-            if (!button) {
-                return;
-            }
+    if (!botao) {
+        return;
+    }
 
+    const url =
+        botao.dataset.gameUrl;
 
-            const game =
-                button.getAttribute(
-                    "data-english-game"
-                );
+    if (!url) {
+        console.warn(
+            "Jogo sem caminho definido."
+        );
+        return;
+    }
 
-
-            const path =
-                englishGamePaths[game];
-
-
-            if (!path) {
-
-                console.warn(
-                    "Jogo de inglês não encontrado:",
-                    game
-                );
-
-                showNotification(
-                    "Este jogo ainda não está configurado."
-                );
-
-                return;
-            }
+    window.location.href = url;
+});
 
 
-            window.location.href =
-                path;
-        }
-    );
+/* =====================================================
+   CLIQUE NO CARD
+====================================================== */
 
+document.addEventListener("click", function (event) {
 
-    /* =====================================================
+    const card =
+        event.target.closest(".educational-game");
+
+    if (!card) {
+        return;
+    }
+
+    if (
+        event.target.closest("button")
+    ) {
+        return;
+    }
+
+    const botao =
+        card.querySelector(
+            ".game-play-button"
+        );
+
+    if (botao) {
+        botao.click();
+    }
+
+});
+/* =====================================================
        JOGOS DE PASSATEMPO
     ====================================================== */
 
@@ -1214,31 +1221,30 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         });
 
+	/* =====================================================
+   JOGOS EDUCATIVOS — ABRIR CENTRAL DE SELEÇÃO
+====================================================== */
 
-    /* =====================================================
-       JOGOS EDUCATIVOS
-    ====================================================== */
+document
+    .querySelectorAll(
+        '[data-game-category="educativos"]'
+    )
+    .forEach(element => {
 
-    document
-        .querySelectorAll(
-            '[data-game-category="educativos"]'
-        )
-        .forEach(element => {
+        element.addEventListener(
+            "click",
+            event => {
 
-            element.addEventListener(
-                "click",
-                event => {
+                event.preventDefault();
+                event.stopPropagation();
 
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    window.location.href =
-                        "jogos/educativos/ingles/index.html";
-                }
-            );
-        });
+                window.openGameCategory("educativos");
+            }
+        );
+    });
 
 
+    
     /* =====================================================
        PERFIL — ALTERAR FOTO
     ====================================================== */
@@ -2601,3 +2607,49 @@ document.addEventListener("DOMContentLoaded", () => {
     showSection("inicio");
 
 });
+
+
+/* =====================================================
+   ALDEMAR STUDIOS — ABERTURA DOS JOGOS EDUCATIVOS
+====================================================== */
+
+document.addEventListener("click", function (event) {
+
+    const botao =
+        event.target.closest(".game-play-button");
+
+    if (!botao) {
+        return;
+    }
+
+    const url =
+        botao.dataset.gameUrl;
+
+    if (url) {
+        window.location.href = url;
+    }
+
+});
+
+document.addEventListener("click", function (event) {
+
+    const card =
+        event.target.closest(".educational-game");
+
+    if (!card) {
+        return;
+    }
+
+    if (event.target.closest("button")) {
+        return;
+    }
+
+    const botao =
+        card.querySelector(".game-play-button");
+
+    if (botao) {
+        botao.click();
+    }
+
+});
+

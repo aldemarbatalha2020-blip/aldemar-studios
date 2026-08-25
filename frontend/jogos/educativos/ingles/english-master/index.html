@@ -1,0 +1,486 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>English Master | Aldemar Studios</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+min-height:100vh;
+font-family:Arial,Helvetica,sans-serif;
+background:#07111f;
+color:#fff;
+padding:25px;
+}
+
+.game{
+max-width:1000px;
+margin:auto;
+}
+
+header{text-align:center;margin-bottom:22px}
+
+.badge{
+display:inline-block;
+padding:8px 15px;
+border-radius:20px;
+background:#122a43;
+color:#65c7ff;
+font-size:12px;
+font-weight:bold;
+}
+
+h1{
+font-size:42px;
+margin:12px 0 6px;
+}
+
+.panel{
+background:#0d1d30;
+border:1px solid #25445f;
+border-radius:20px;
+padding:25px;
+margin-bottom:18px;
+}
+
+.info{
+display:flex;
+justify-content:space-between;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.stat{
+background:#122a43;
+padding:10px 15px;
+border-radius:10px;
+}
+
+.question{
+font-size:22px;
+line-height:1.6;
+background:#081522;
+padding:22px;
+border-radius:15px;
+margin:20px 0;
+}
+
+.text{
+font-size:19px;
+line-height:1.8;
+background:#081522;
+padding:22px;
+border-radius:15px;
+margin-bottom:18px;
+}
+
+.options{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px;
+}
+
+button{
+border:0;
+border-radius:11px;
+padding:14px 18px;
+background:#1769aa;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{filter:brightness(1.15)}
+
+button:disabled{
+opacity:.75;
+cursor:default;
+}
+
+.correct{background:#167a4a!important}
+.wrong{background:#a93232!important}
+
+#feedback{
+min-height:30px;
+text-align:center;
+font-weight:bold;
+margin:18px;
+}
+
+input{
+width:100%;
+padding:16px;
+border-radius:12px;
+border:1px solid #31506d;
+background:#081522;
+color:#fff;
+font-size:20px;
+margin:15px 0;
+}
+
+.audio{
+font-size:20px;
+margin:20px 0;
+padding:20px;
+background:#12263c;
+border-radius:15px;
+text-align:center;
+}
+
+.back{text-align:center}
+
+@media(max-width:600px){
+h1{font-size:32px}
+.question{font-size:19px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<header>
+<div class="badge">ALDEMAR STUDIOS • ENGLISH GAMES</div>
+<h1>English Master</h1>
+<p>Desafio geral de inglês</p>
+</header>
+
+<div class="panel">
+
+<div class="info">
+<div class="stat">Desafio: <span id="number">1</span>/<span id="total">10</span></div>
+<div class="stat">Pontos: <span id="score">0</span></div>
+<div class="stat">⏱️ <span id="time">30</span>s</div>
+</div>
+
+<div id="content"></div>
+
+<div id="options" class="options"></div>
+
+<div id="feedback"></div>
+
+</div>
+
+<div class="panel back">
+<button onclick="history.back()">← Voltar</button>
+<button onclick="restart()">🔄 Reiniciar</button>
+</div>
+
+</div>
+
+<script>
+
+const GAME="english-master";
+
+const DATA=[
+{"q":"Choose the correct sentence.","o":["She go to school every day.","She goes to school every day.","She going to school every day.","She gone to school every day."],"a":1},
+{"q":"What is the opposite of 'expensive'?","o":["Cheap","Large","Difficult","Beautiful"],"a":0},
+{"q":"Complete: I _____ watching TV right now.","o":["am","is","are","be"],"a":0},
+{"q":"What does 'although' express?","o":["Contrast","Time","Place","Quantity"],"a":0},
+{"q":"Choose the correct past form of 'go'.","o":["Goed","Goes","Went","Gone"],"a":2},
+{"q":"Complete: If I have time, I _____ you.","o":["call","called","calling","would called"],"a":0},
+{"q":"What does 'improve' mean?","o":["To make better","To forget","To stop","To lose"],"a":0},
+{"q":"Choose the correct option: There _____ many students here.","o":["is","are","be","was"],"a":1},
+{"q":"Which word is a synonym of 'happy'?","o":["Sad","Angry","Glad","Tired"],"a":2},
+{"q":"Complete: I have lived here _____ 2020.","o":["for","since","during","from"],"a":1}
+];
+
+let index=0;
+let score=0;
+let time=30;
+let timer=null;
+let locked=false;
+
+document.getElementById("total").textContent=DATA.length;
+
+function normalize(text){
+return text
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\\u0300-\\u036f]/g,"")
+.trim();
+}
+
+function startTimer(){
+
+clearInterval(timer);
+
+time=30;
+
+document.getElementById("time").textContent=time;
+
+timer=setInterval(()=>{
+
+time--;
+
+document.getElementById("time").textContent=time;
+
+if(time<=0){
+
+clearInterval(timer);
+
+if(!locked){
+
+locked=true;
+
+showTimeout();
+
+}
+
+}
+
+},1000);
+
+}
+
+function load(){
+
+clearInterval(timer);
+
+locked=false;
+
+document.getElementById("number").textContent=index+1;
+
+document.getElementById("score").textContent=score;
+
+document.getElementById("feedback").textContent="";
+
+const item=DATA[index];
+
+const content=document.getElementById("content");
+
+const options=document.getElementById("options");
+
+if(GAME==="reading-challenge"){
+
+content.innerHTML=
+'<div class="text">'+item.text+'</div>'+
+'<div class="question">'+item.q+'</div>';
+
+options.innerHTML=item.o.map((o,i)=>
+'<button onclick="answer('+i+',this)">'+o+'</button>'
+).join("");
+
+}
+
+else if(GAME==="spell-it"){
+
+content.innerHTML=
+'<div class="audio">'+
+'<h2>🎧 Listen</h2>'+
+'<p>Ouça a palavra e escreva o que você ouviu.</p>'+
+'<button onclick="speakWord()">🔊 Ouvir palavra</button>'+
+'</div>'+
+'<input id="spellInput" placeholder="Digite a palavra em inglês...">'+
+'<button onclick="checkSpell()">✓ Confirmar</button>';
+
+options.innerHTML="";
+
+setTimeout(speakWord,300);
+
+}
+
+else if(GAME==="listening-mission"){
+
+content.innerHTML=
+'<div class="audio">'+
+'<h2>🎧 Listening Mission</h2>'+
+'<p>Clique para ouvir o áudio.</p>'+
+'<button onclick="speakAudio()">🔊 Ouvir</button>'+
+'</div>'+
+'<div class="question">'+item.q+'</div>';
+
+options.innerHTML=item.o.map((o,i)=>
+'<button onclick="answer('+i+',this)">'+o+'</button>'
+).join("");
+
+}
+
+else{
+
+content.innerHTML=
+'<div class="question">'+item.q+'</div>';
+
+options.innerHTML=item.o.map((o,i)=>
+'<button onclick="answer('+i+',this)">'+o+'</button>'
+).join("");
+
+}
+
+startTimer();
+
+}
+
+function speakWord(){
+
+const item=DATA[index];
+
+const u=new SpeechSynthesisUtterance(item.word);
+
+u.lang="en-US";
+
+u.rate=.75;
+
+speechSynthesis.cancel();
+
+speechSynthesis.speak(u);
+
+}
+
+function speakAudio(){
+
+const item=DATA[index];
+
+const u=new SpeechSynthesisUtterance(item.audio);
+
+u.lang="en-US";
+
+u.rate=.85;
+
+speechSynthesis.cancel();
+
+speechSynthesis.speak(u);
+
+}
+
+function checkSpell(){
+
+if(locked)return;
+
+const input=document.getElementById("spellInput");
+
+const answerText=normalize(input.value);
+
+const expected=normalize(DATA[index].word);
+
+locked=true;
+
+clearInterval(timer);
+
+if(answerText===expected){
+
+score+=10;
+
+document.getElementById("score").textContent=score;
+
+document.getElementById("feedback").textContent=
+"✅ Correct! Excellent spelling.";
+
+}else{
+
+document.getElementById("feedback").textContent=
+"❌ Incorrect. The correct spelling is: "+DATA[index].word;
+
+}
+
+next();
+
+}
+
+function answer(choice,button){
+
+if(locked)return;
+
+locked=true;
+
+clearInterval(timer);
+
+const item=DATA[index];
+
+const correct=choice===item.a;
+
+document.querySelectorAll("#options button")
+.forEach(b=>b.disabled=true);
+
+if(correct){
+
+score+=10;
+
+document.getElementById("score").textContent=score;
+
+if(button)button.classList.add("correct");
+
+document.getElementById("feedback").textContent=
+"✅ Correct! +10 points";
+
+}else{
+
+if(button)button.classList.add("wrong");
+
+document.getElementById("feedback").textContent=
+"❌ Incorrect. Correct answer: "+item.o[item.a];
+
+}
+
+setTimeout(next,1200);
+
+}
+
+function showTimeout(){
+
+document.getElementById("feedback").textContent=
+"⏰ Time is over!";
+
+document.querySelectorAll("#options button")
+.forEach(b=>b.disabled=true);
+
+setTimeout(next,1200);
+
+}
+
+function next(){
+
+index++;
+
+if(index<DATA.length){
+
+load();
+
+}else{
+
+finish();
+
+}
+
+}
+
+function finish(){
+
+clearInterval(timer);
+
+document.getElementById("content").innerHTML=
+'<div class="question">'+
+'<h2>🏆 Desafio concluído!</h2>'+
+'<p>Você terminou todos os desafios.</p>'+
+'<p><strong>Pontuação: '+score+' / '+(DATA.length*10)+'</strong></p>'+
+'</div>';
+
+document.getElementById("options").innerHTML=
+'<button onclick="restart()">🔄 Jogar novamente</button>';
+
+document.getElementById("feedback").textContent="";
+
+}
+
+function restart(){
+
+index=0;
+
+score=0;
+
+load();
+
+}
+
+load();
+
+</script>
+
+</body>
+</html>
