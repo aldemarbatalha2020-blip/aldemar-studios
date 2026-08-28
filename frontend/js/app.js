@@ -1,11 +1,11 @@
-// =====================================================
+﻿// =====================================================
 // ALDEMAR STUDIOS
-// APLICAÇÃO PRINCIPAL
+// APLICAÃ‡ÃƒO PRINCIPAL
 // =====================================================
 
 
 // =====================================================
-// CONFIGURAÇÃO DA API
+// CONFIGURAÃ‡ÃƒO DA API
 // =====================================================
 
 const API_URL =
@@ -24,7 +24,7 @@ const registerScreen =
 
 
 // =====================================================
-// BOTÕES
+// BOTÃ•ES
 // =====================================================
 
 const openRegister =
@@ -38,7 +38,7 @@ const forgotPassword =
 
 
 // =====================================================
-// FORMULÁRIOS
+// FORMULÃRIOS
 // =====================================================
 
 const loginForm =
@@ -49,7 +49,7 @@ const registerForm =
 
 
 // =====================================================
-// VERIFICAÇÃO DOS ELEMENTOS
+// VERIFICAÃ‡ÃƒO DOS ELEMENTOS
 // =====================================================
 
 console.log(
@@ -203,7 +203,7 @@ if (loginForm) {
 
 
                 // =====================================
-                // USUÁRIO AUTENTICADO
+                // USUÃRIO AUTENTICADO
                 // =====================================
 
                 if (
@@ -211,7 +211,7 @@ if (loginForm) {
                 ) {
 
                     alert(
-                        "Login realizado, mas os dados do usuário não foram recebidos."
+                        "Login realizado, mas os dados do usuÃ¡rio nÃ£o foram recebidos."
                     );
 
                     return;
@@ -220,7 +220,7 @@ if (loginForm) {
 
 
                 // =====================================
-                // SALVAR SESSÃO
+                // SALVAR SESSÃƒO
                 // =====================================
 
                 sessionStorage.setItem(
@@ -232,7 +232,7 @@ if (loginForm) {
 
 
                 console.log(
-                    "Usuário autenticado:",
+                    "UsuÃ¡rio autenticado:",
                     dados.usuario
                 );
 
@@ -263,7 +263,7 @@ if (loginForm) {
 
 
                 alert(
-                    "Não foi possível conectar ao servidor. Verifique sua conexão."
+                    "NÃ£o foi possÃ­vel conectar ao servidor. Verifique sua conexÃ£o."
                 );
 
             }
@@ -308,7 +308,7 @@ if (registerForm) {
 
 
             // =====================================
-            // VALIDAÇÕES
+            // VALIDAÃ‡Ã•ES
             // =====================================
 
             if (!nome_completo) {
@@ -394,7 +394,7 @@ if (registerForm) {
 
                     alert(
                         dados.mensagem ||
-                        "Não foi possível criar a conta."
+                        "NÃ£o foi possÃ­vel criar a conta."
                     );
 
                     return;
@@ -403,15 +403,15 @@ if (registerForm) {
 
 
                 // =====================================
-                // CADASTRO CONCLUÍDO
+                // CADASTRO CONCLUÃDO
                 // =====================================
 
                 alert(
-                    "Conta criada com sucesso! Agora você pode entrar."
+                    "Conta criada com sucesso! Agora vocÃª pode entrar."
                 );
 
 
-                // Limpar formulário
+                // Limpar formulÃ¡rio
 
                 registerForm.reset();
 
@@ -451,7 +451,7 @@ if (registerForm) {
 
 
                 alert(
-                    "Não foi possível conectar ao servidor."
+                    "NÃ£o foi possÃ­vel conectar ao servidor."
                 );
 
             }
@@ -472,18 +472,15 @@ if (forgotPassword) {
         "click",
         () => {
 
-            alert(
-                "A recuperação de senha será disponibilizada em breve."
-            );
+            window.location.href = "verificar-codigo.html";
 
         }
     );
 
 }
 
-
 // =====================================================
-// SESSÃO EXISTENTE
+// SESSÃƒO EXISTENTE
 // =====================================================
 
 const usuarioSalvo =
@@ -503,7 +500,7 @@ if (usuarioSalvo) {
 
 
         console.log(
-            "Sessão encontrada:",
+            "SessÃ£o encontrada:",
             usuario
         );
 
@@ -511,7 +508,7 @@ if (usuarioSalvo) {
     } catch (error) {
 
         console.error(
-            "Sessão inválida:",
+            "SessÃ£o invÃ¡lida:",
             error
         );
 
@@ -526,7 +523,7 @@ if (usuarioSalvo) {
 
 
 // =====================================================
-// NAVEGAÇÃO ENTRE SEÇÕES
+// NAVEGAÃ‡ÃƒO ENTRE SEÃ‡Ã•ES
 // =====================================================
 
 function showSection(sectionId) {
@@ -604,7 +601,7 @@ function filterGames(
     );
 
 
-    // Atualizar botão ativo
+    // Atualizar botÃ£o ativo
 
     const filters =
         document.querySelectorAll(
@@ -635,7 +632,7 @@ function filterGames(
 
 
 // =====================================================
-// EXPORTAR FUNÇÕES
+// EXPORTAR FUNÃ‡Ã•ES
 // =====================================================
 
 window.showSection =
