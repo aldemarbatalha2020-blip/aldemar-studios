@@ -1,5 +1,7 @@
-const express = require("express");
+﻿const express = require("express");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const { enviarEmail } = require("../services/email");
 
 const { pool } = require("../database/connection");
 
@@ -22,7 +24,7 @@ router.post("/register", async (req, res) => {
 
 
         // =====================================
-        // VALIDAÇÕES
+        // VALIDAÃ‡Ã•ES
         // =====================================
 
         if (!nome_completo || !email || !senha) {
@@ -81,7 +83,7 @@ router.post("/register", async (req, res) => {
             return res.status(409).json({
                 sucesso: false,
                 mensagem:
-                    "Este e-mail já está cadastrado."
+                    "Este e-mail jÃ¡ estÃ¡ cadastrado."
             });
 
         }
@@ -96,7 +98,7 @@ router.post("/register", async (req, res) => {
 
 
         // =====================================
-        // CRIAR USUÁRIO
+        // CRIAR USUÃRIO
         // =====================================
 
         const [resultado] =
@@ -166,7 +168,7 @@ router.post("/register", async (req, res) => {
     } catch (error) {
 
         console.error(
-            "Erro ao cadastrar usuário:",
+            "Erro ao cadastrar usuÃ¡rio:",
             error
         );
 
@@ -222,7 +224,7 @@ router.post("/login", async (req, res) => {
 
 
         // =====================================
-        // BUSCAR USUÁRIO
+        // BUSCAR USUÃRIO
         // =====================================
 
         const [usuarios] =
@@ -246,7 +248,7 @@ router.post("/login", async (req, res) => {
 
 
         // =====================================
-        // USUÁRIO NÃO ENCONTRADO
+        // USUÃRIO NÃƒO ENCONTRADO
         // =====================================
 
         if (usuarios.length === 0) {
@@ -278,7 +280,7 @@ router.post("/login", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Esta conta não está disponível."
+                    "Esta conta nÃ£o estÃ¡ disponÃ­vel."
 
             });
 
@@ -396,7 +398,7 @@ router.put("/profile", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não informado."
+                    "UsuÃ¡rio nÃ£o informado."
 
             });
 
@@ -483,7 +485,7 @@ router.put("/profile", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Este e-mail já está sendo utilizado."
+                    "Este e-mail jÃ¡ estÃ¡ sendo utilizado."
 
             });
 
@@ -517,7 +519,7 @@ router.put("/profile", async (req, res) => {
                     sucesso: false,
 
                     mensagem:
-                        "O nick deve possuir no máximo 30 caracteres."
+                        "O nick deve possuir no mÃ¡ximo 30 caracteres."
 
                 });
 
@@ -547,7 +549,7 @@ router.put("/profile", async (req, res) => {
                     sucesso: false,
 
                     mensagem:
-                        "Este nick já está sendo utilizado."
+                        "Este nick jÃ¡ estÃ¡ sendo utilizado."
 
                 });
 
@@ -557,7 +559,7 @@ router.put("/profile", async (req, res) => {
 
 
         // =====================================
-        // ATUALIZAR USUÁRIO
+        // ATUALIZAR USUÃRIO
         // =====================================
 
         await pool.execute(
@@ -610,7 +612,7 @@ router.put("/profile", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não encontrado."
+                    "UsuÃ¡rio nÃ£o encontrado."
 
             });
 
@@ -735,7 +737,7 @@ router.put("/password", async (req, res) => {
 
 
         // =====================================
-        // BUSCAR USUÁRIO
+        // BUSCAR USUÃRIO
         // =====================================
 
         const [usuarios] =
@@ -760,7 +762,7 @@ router.put("/password", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não encontrado."
+                    "UsuÃ¡rio nÃ£o encontrado."
 
             });
 
@@ -782,7 +784,7 @@ router.put("/password", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Esta conta não está disponível."
+                    "Esta conta nÃ£o estÃ¡ disponÃ­vel."
 
             });
 
@@ -807,7 +809,7 @@ router.put("/password", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "A senha atual está incorreta."
+                    "A senha atual estÃ¡ incorreta."
 
             });
 
@@ -878,8 +880,607 @@ router.put("/password", async (req, res) => {
 });
 
 
+
+// =========================================================
+// RECUPERAÇÃO DE SENHA
+// =========================================================
+
+router.post("/forgot-password", async (req, res) => {
+
+    try {
+
+        const email =
+            String(req.body.email || "")
+                .trim()
+                .toLowerCase();
+
+
+        // =====================================
+        // VALIDAR E-MAIL
+        // =====================================
+
+        if (!email) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Informe seu e-mail."
+
+            });
+
+        }
+
+
+        // =====================================
+        // BUSCAR USUÁRIO
+        // =====================================
+
+        const [usuarios] =
+            await pool.execute(
+                `
+                SELECT
+                    id,
+                    email,
+                    nome_completo,
+                    status
+                FROM usuarios
+                WHERE email = ?
+                LIMIT 1
+                `,
+                [email]
+            );
+
+
+        // =====================================
+        // RESPOSTA GENÉRICA
+        // =====================================
+
+        if (usuarios.length === 0) {
+
+            return res.status(200).json({
+
+                sucesso: true,
+
+                mensagem:
+                    "Se o e-mail estiver cadastrado, um código de recuperação será enviado."
+
+            });
+
+        }
+
+
+        const usuario = usuarios[0];
+
+
+        // =====================================
+        // VERIFICAR STATUS
+        // =====================================
+
+        if (usuario.status !== "ativo") {
+
+            return res.status(200).json({
+
+                sucesso: true,
+
+                mensagem:
+                    "Se o e-mail estiver cadastrado, um código de recuperação será enviado."
+
+            });
+
+        }
+
+
+        // =====================================
+        // GERAR CÓDIGO DE 6 DÍGITOS
+        // =====================================
+
+        const codigo =
+            crypto
+                .randomInt(100000, 1000000)
+                .toString();
+
+
+        // =====================================
+        // VALIDADE
+        // 10 MINUTOS
+        // =====================================
+
+        const expiracao =
+            new Date(
+                Date.now() + 10 * 60 * 1000
+            );
+
+
+        // =====================================
+        // ENVIAR E-MAIL PRIMEIRO
+        // =====================================
+
+        await enviarEmail({
+
+            para:
+                usuario.email,
+
+            assunto:
+                "Código de recuperação de senha - Aldemar Studios",
+
+            texto:
+                `Olá, ${usuario.nome_completo}.
+
+Seu código de recuperação de senha é:
+
+${codigo}
+
+Este código é válido por 10 minutos.
+
+Se você não solicitou a recuperação de senha, ignore este e-mail.
+
+Aldemar Studios`,
+
+            html:
+                `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 30px;">
+
+                    <h2>
+                        Recuperação de senha
+                    </h2>
+
+                    <p>
+                        Olá, <strong>${usuario.nome_completo}</strong>.
+                    </p>
+
+                    <p>
+                        Recebemos uma solicitação para redefinir
+                        a senha da sua conta no Aldemar Studios.
+                    </p>
+
+                    <p>
+                        Seu código de recuperação é:
+                    </p>
+
+                    <div style="font-size: 32px; font-weight: bold; letter-spacing: 8px; padding: 20px 0;">
+                        ${codigo}
+                    </div>
+
+                    <p>
+                        Este código é válido por
+                        <strong>10 minutos</strong>.
+                    </p>
+
+                    <p>
+                        Se você não solicitou a recuperação de senha,
+                        ignore este e-mail.
+                    </p>
+
+                    <hr>
+
+                    <p>
+                        Aldemar Studios
+                    </p>
+
+                </div>
+                `
+
+        });
+
+
+        // =====================================
+        // SALVAR CÓDIGO APÓS ENVIO
+        // =====================================
+
+        await pool.execute(
+            `
+            UPDATE usuarios
+            SET
+                codigo_recuperacao = ?,
+                codigo_recuperacao_expira = ?,
+                reset_token = NULL,
+                reset_token_expira = NULL
+            WHERE id = ?
+            `,
+            [
+                codigo,
+                expiracao,
+                usuario.id
+            ]
+        );
+
+
+        // =====================================
+        // RESPOSTA
+        // =====================================
+
+        return res.status(200).json({
+
+            sucesso: true,
+
+            mensagem:
+                "Se o e-mail estiver cadastrado, um código de recuperação será enviado."
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao solicitar recuperação de senha:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            sucesso: false,
+
+            mensagem:
+                "Não foi possível enviar o código de recuperação."
+
+        });
+
+    }
+
+});
+
+
+// =========================================================
+// VERIFICAR CÓDIGO DE RECUPERAÇÃO
+// =========================================================
+
+router.post("/verify-code", async (req, res) => {
+
+    try {
+
+        const email =
+            String(req.body.email || "")
+                .trim()
+                .toLowerCase();
+
+        const codigo =
+            String(req.body.codigo || "")
+                .trim();
+
+        // =====================================
+        // VALIDAR CAMPOS
+        // =====================================
+
+        if (!email || !codigo) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "E-mail e código são obrigatórios."
+
+            });
+
+        }
+
+        // =====================================
+        // VALIDAR FORMATO DO CÓDIGO
+        // =====================================
+
+        if (!/^\d{6}$/.test(codigo)) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Código inválido."
+
+            });
+
+        }
+
+        // =====================================
+        // BUSCAR USUÁRIO
+        // =====================================
+
+        const [usuarios] =
+            await pool.execute(
+                `
+                SELECT
+                    id,
+                    email,
+                    codigo_recuperacao,
+                    codigo_recuperacao_expira,
+                    status
+                FROM usuarios
+                WHERE email = ?
+                LIMIT 1
+                `,
+                [email]
+            );
+
+        // =====================================
+        // USUÁRIO NÃO ENCONTRADO
+        // =====================================
+
+        if (usuarios.length === 0) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Código inválido."
+
+            });
+
+        }
+
+        const usuario = usuarios[0];
+
+        // =====================================
+        // VERIFICAR STATUS
+        // =====================================
+
+        if (usuario.status !== "ativo") {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Código inválido."
+
+            });
+
+        }
+
+        // =====================================
+        // VERIFICAR SE EXISTE CÓDIGO
+        // =====================================
+
+        if (!usuario.codigo_recuperacao) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Código inválido."
+
+            });
+
+        }
+
+        // =====================================
+        // VERIFICAR EXPIRAÇÃO
+        // =====================================
+
+        if (
+            !usuario.codigo_recuperacao_expira ||
+            new Date(usuario.codigo_recuperacao_expira) <= new Date()
+        ) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "O código expirou. Solicite um novo código."
+
+            });
+
+        }
+
+        // =====================================
+        // COMPARAR CÓDIGO
+        // =====================================
+
+        if (usuario.codigo_recuperacao !== codigo) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Código inválido."
+
+            });
+
+        }
+
+        // =====================================
+        // GERAR TOKEN DE REDEFINIÇÃO
+        // =====================================
+
+        const resetToken =
+            crypto.randomBytes(32).toString("hex");
+
+        const resetTokenExpira =
+            new Date(
+                Date.now() + 10 * 60 * 1000
+            );
+
+        // =====================================
+        // SALVAR TOKEN E INVALIDAR CÓDIGO
+        // =====================================
+
+        await pool.execute(
+            `
+            UPDATE usuarios
+            SET
+                reset_token = ?,
+                reset_token_expira = ?,
+                codigo_recuperacao = NULL,
+                codigo_recuperacao_expira = NULL
+            WHERE id = ?
+            `,
+            [
+                resetToken,
+                resetTokenExpira,
+                usuario.id
+            ]
+        );
+
+        // =====================================
+        // SUCESSO
+        // =====================================
+
+        return res.status(200).json({
+
+            sucesso: true,
+
+            mensagem:
+                "Código validado com sucesso.",
+
+            token:
+                resetToken
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao verificar código de recuperação:",
+            error
+        );
+
+        return res.status(500).json({
+
+            sucesso: false,
+
+            mensagem:
+                "Erro interno do servidor."
+
+        });
+
+    }
+
+});
+
+
+// =========================================================
+// REDEFINIR SENHA
+// =========================================================
+
+// =========================================================
+
+router.post("/reset-password", async (req, res) => {
+
+    try {
+
+        const {
+            token,
+            nova_senha
+        } = req.body;
+
+        if (!token || !nova_senha) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Token e nova senha são obrigatórios."
+
+            });
+
+        }
+
+        if (nova_senha.length < 8) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "A nova senha deve possuir pelo menos 8 caracteres."
+
+            });
+
+        }
+
+        const [usuarios] =
+            await pool.execute(
+                `
+                SELECT
+                    id
+                FROM usuarios
+                WHERE
+                    reset_token = ?
+                    AND reset_token_expira IS NOT NULL
+                    AND reset_token_expira > NOW()
+                LIMIT 1
+                `,
+                [token]
+            );
+
+        if (usuarios.length === 0) {
+
+            return res.status(400).json({
+
+                sucesso: false,
+
+                mensagem:
+                    "Token inválido ou expirado."
+
+            });
+
+        }
+
+        const senhaHash =
+            await bcrypt.hash(
+                nova_senha,
+                10
+            );
+
+        await pool.execute(
+            `
+            UPDATE usuarios
+            SET
+                senha = ?,
+                reset_token = NULL,
+                reset_token_expira = NULL
+            WHERE id = ?
+            `,
+            [
+                senhaHash,
+                usuarios[0].id
+            ]
+        );
+
+        return res.status(200).json({
+
+            sucesso: true,
+
+            mensagem:
+                "Senha redefinida com sucesso!"
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao redefinir senha:",
+            error
+        );
+
+        return res.status(500).json({
+
+            sucesso: false,
+
+            mensagem:
+                "Erro interno do servidor."
+
+        });
+
+    }
+
+});
 // =========================================================
 // EXPORTAR ROTAS
 // =========================================================
 
 module.exports = router;
+
+
+
+
+
+
+

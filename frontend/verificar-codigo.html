@@ -1,0 +1,1243 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Recuperação de senha — Aldemar Studios</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #0b1020;
+
+            color: #ffffff;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 430px;
+
+            padding: 20px;
+
+        }
+
+
+        .card {
+
+            background: #11182b;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 18px;
+
+            padding: 35px 30px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.35);
+
+            text-align: center;
+
+        }
+
+
+        .logo {
+
+            width: 65px;
+
+            height: 65px;
+
+            margin:
+                0 auto 22px;
+
+            border-radius: 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #1d2742;
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+        }
+
+
+        h1 {
+
+            font-size: 25px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .descricao {
+
+            color: #aeb7ca;
+
+            line-height: 1.6;
+
+            font-size: 15px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .campo {
+
+            width: 100%;
+
+            height: 52px;
+
+            border:
+                1px solid
+                #33415f;
+
+            border-radius: 12px;
+
+            background: #0b1222;
+
+            color: #ffffff;
+
+            padding: 0 16px;
+
+            font-size: 16px;
+
+            outline: none;
+
+        }
+
+
+        .campo:focus {
+
+            border-color: #5c7cff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(92,124,255,0.12);
+
+        }
+
+
+        .campo::placeholder {
+
+            color: #53617a;
+
+        }
+
+
+        .email-info {
+
+            background: #0c1324;
+
+            border-radius: 12px;
+
+            padding: 13px;
+
+            margin-bottom: 22px;
+
+            color: #cbd4e7;
+
+            font-size: 14px;
+
+            word-break: break-word;
+
+        }
+
+
+        .codigo {
+
+            width: 100%;
+
+            height: 60px;
+
+            border:
+                1px solid
+                #33415f;
+
+            border-radius: 12px;
+
+            background: #0b1222;
+
+            color: #ffffff;
+
+            text-align: center;
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            letter-spacing: 10px;
+
+            outline: none;
+
+            padding-left: 10px;
+
+        }
+
+
+        .codigo:focus {
+
+            border-color: #5c7cff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(92,124,255,0.12);
+
+        }
+
+
+        .codigo::placeholder {
+
+            color: #53617a;
+
+            letter-spacing: 6px;
+
+        }
+
+
+        .contador {
+
+            margin-top: 15px;
+
+            color: #9da8bc;
+
+            font-size: 14px;
+
+        }
+
+
+        .contador strong {
+
+            color: #ffffff;
+
+        }
+
+
+        button {
+
+            width: 100%;
+
+            height: 52px;
+
+            margin-top: 25px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #5c7cff;
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        button:hover {
+
+            opacity: 0.9;
+
+            transform: translateY(-1px);
+
+        }
+
+
+        button:disabled {
+
+            opacity: 0.5;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        .mensagem {
+
+            min-height: 22px;
+
+            margin-top: 18px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .mensagem.erro {
+
+            color: #ff7b7b;
+
+        }
+
+
+        .mensagem.sucesso {
+
+            color: #72e6a5;
+
+        }
+
+
+        .acoes {
+
+            margin-top: 20px;
+
+        }
+
+
+        .reenviar {
+
+            background: transparent;
+
+            color: #8fa5ff;
+
+            border: none;
+
+            height: auto;
+
+            margin-top: 5px;
+
+            font-size: 14px;
+
+            font-weight: normal;
+
+        }
+
+
+        .reenviar:hover {
+
+            background: transparent;
+
+            transform: none;
+
+            text-decoration: underline;
+
+        }
+
+
+        .voltar {
+
+            display: block;
+
+            margin-top: 20px;
+
+            color: #8995aa;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+        }
+
+
+        .voltar:hover {
+
+            color: #ffffff;
+
+        }
+
+
+        .oculto {
+
+            display: none;
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .container {
+
+                padding: 15px;
+
+            }
+
+
+            .card {
+
+                padding:
+                    30px 20px;
+
+            }
+
+
+            h1 {
+
+                font-size: 22px;
+
+            }
+
+
+            .codigo {
+
+                font-size: 24px;
+
+                letter-spacing: 7px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="card">
+
+
+        <div class="logo">
+            AS
+        </div>
+
+
+        <!-- =========================================
+             ETAPA 1 — INFORMAR E-MAIL
+        ========================================== -->
+
+        <div id="etapaEmail">
+
+            <h1>
+                Recuperação de senha
+            </h1>
+
+
+            <p class="descricao">
+
+                Digite o e-mail cadastrado
+                na sua conta para receber
+                um código de recuperação.
+
+            </p>
+
+
+            <input
+                type="email"
+                id="email"
+                class="campo"
+                placeholder="Digite seu e-mail"
+                autocomplete="email"
+            >
+
+
+            <button id="btnEnviar">
+
+                Enviar código
+
+            </button>
+
+
+            <div
+                id="mensagemEmail"
+                class="mensagem"
+                aria-live="polite"
+            ></div>
+
+
+        </div>
+
+
+        <!-- =========================================
+             ETAPA 2 — VERIFICAR CÓDIGO
+        ========================================== -->
+
+        <div
+            id="etapaCodigo"
+            class="oculto"
+        >
+
+            <h1>
+                Verificação de segurança
+            </h1>
+
+
+            <p class="descricao">
+
+                Enviamos um código de verificação
+                para o e-mail informado.
+
+            </p>
+
+
+            <div
+                class="email-info"
+                id="emailInfo"
+            ></div>
+
+
+            <input
+                type="text"
+                id="codigo"
+                class="codigo"
+                inputmode="numeric"
+                maxlength="6"
+                autocomplete="one-time-code"
+                placeholder="000000"
+            >
+
+
+            <div class="contador">
+
+                Código válido por:
+
+                <strong id="contador">
+                    10:00
+                </strong>
+
+            </div>
+
+
+            <button id="btnVerificar">
+
+                Verificar código
+
+            </button>
+
+
+            <div
+                id="mensagemCodigo"
+                class="mensagem"
+                aria-live="polite"
+            ></div>
+
+
+            <div class="acoes">
+
+                <button
+                    id="btnReenviar"
+                    class="reenviar"
+                    type="button"
+                >
+
+                    Reenviar código
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="voltar"
+        >
+
+            ← Voltar para o login
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   CONFIGURAÇÃO
+===================================================== */
+
+const API_URL = "http://localhost:3000";
+
+
+/* =====================================================
+   ELEMENTOS — ETAPA 1
+===================================================== */
+
+const etapaEmail =
+    document.getElementById(
+        "etapaEmail"
+    );
+
+
+const emailInput =
+    document.getElementById(
+        "email"
+    );
+
+
+const btnEnviar =
+    document.getElementById(
+        "btnEnviar"
+    );
+
+
+const mensagemEmail =
+    document.getElementById(
+        "mensagemEmail"
+    );
+
+
+/* =====================================================
+   ELEMENTOS — ETAPA 2
+===================================================== */
+
+const etapaCodigo =
+    document.getElementById(
+        "etapaCodigo"
+    );
+
+
+const emailInfo =
+    document.getElementById(
+        "emailInfo"
+    );
+
+
+const codigoInput =
+    document.getElementById(
+        "codigo"
+    );
+
+
+const contador =
+    document.getElementById(
+        "contador"
+    );
+
+
+const btnVerificar =
+    document.getElementById(
+        "btnVerificar"
+    );
+
+
+const btnReenviar =
+    document.getElementById(
+        "btnReenviar"
+    );
+
+
+const mensagemCodigo =
+    document.getElementById(
+        "mensagemCodigo"
+    );
+
+
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+
+let email = "";
+
+let segundosRestantes = 600;
+
+let intervaloContador = null;
+
+
+/* =====================================================
+   MENSAGENS
+===================================================== */
+
+function mostrarMensagem(
+    elemento,
+    texto,
+    tipo = ""
+) {
+
+    elemento.textContent =
+        texto;
+
+    elemento.className =
+        "mensagem " +
+        tipo;
+
+}
+
+
+/* =====================================================
+   CONTADOR
+===================================================== */
+
+function atualizarContador() {
+
+    const minutos =
+        Math.floor(
+            segundosRestantes / 60
+        );
+
+
+    const segundos =
+        segundosRestantes % 60;
+
+
+    contador.textContent =
+        `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+
+
+    if (segundosRestantes <= 0) {
+
+        clearInterval(
+            intervaloContador
+        );
+
+        mostrarMensagem(
+            mensagemCodigo,
+            "O código expirou. Solicite um novo código.",
+            "erro"
+        );
+
+    }
+
+}
+
+
+function iniciarContador() {
+
+    clearInterval(
+        intervaloContador
+    );
+
+    segundosRestantes =
+        600;
+
+    atualizarContador();
+
+
+    intervaloContador =
+        setInterval(
+            () => {
+
+                segundosRestantes--;
+
+                atualizarContador();
+
+            },
+            1000
+        );
+
+}
+
+
+/* =====================================================
+   ETAPA 1 — ENVIAR CÓDIGO
+===================================================== */
+
+btnEnviar.addEventListener(
+    "click",
+    async () => {
+
+        email =
+            emailInput.value
+                .trim()
+                .toLowerCase();
+
+
+        if (!email) {
+
+            mostrarMensagem(
+                mensagemEmail,
+                "Informe seu e-mail.",
+                "erro"
+            );
+
+            emailInput.focus();
+
+            return;
+
+        }
+
+
+        if (
+            !email.includes("@") ||
+            !email.includes(".")
+        ) {
+
+            mostrarMensagem(
+                mensagemEmail,
+                "Digite um e-mail válido.",
+                "erro"
+            );
+
+            emailInput.focus();
+
+            return;
+
+        }
+
+
+        btnEnviar.disabled =
+            true;
+
+
+        mostrarMensagem(
+            mensagemEmail,
+            "Enviando código..."
+        );
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    `${API_URL}/api/auth/forgot-password`,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                email: email
+                            })
+
+                    }
+                );
+
+
+            const dados =
+                await resposta.json();
+
+
+            if (!resposta.ok) {
+
+                mostrarMensagem(
+                    mensagemEmail,
+                    dados.mensagem ||
+                    "Não foi possível enviar o código.",
+                    "erro"
+                );
+
+                btnEnviar.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+            /*
+             * O backend retorna sucesso
+             * somente após concluir o envio
+             * do e-mail.
+             */
+
+            etapaEmail.classList.add(
+                "oculto"
+            );
+
+
+            etapaCodigo.classList.remove(
+                "oculto"
+            );
+
+
+            emailInfo.textContent =
+                email;
+
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "Código enviado com sucesso.",
+                "sucesso"
+            );
+
+
+            iniciarContador();
+
+
+            codigoInput.focus();
+
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao enviar código:",
+                error
+            );
+
+
+            mostrarMensagem(
+                mensagemEmail,
+                "Não foi possível conectar ao servidor. Tente novamente.",
+                "erro"
+            );
+
+
+            btnEnviar.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ENTER NO CAMPO DE E-MAIL
+===================================================== */
+
+emailInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            btnEnviar.click();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ACEITAR SOMENTE NÚMEROS
+===================================================== */
+
+codigoInput.addEventListener(
+    "input",
+    () => {
+
+        codigoInput.value =
+            codigoInput.value
+                .replace(/\D/g, "")
+                .slice(0, 6);
+
+    }
+);
+
+
+/* =====================================================
+   ETAPA 2 — VERIFICAR CÓDIGO
+===================================================== */
+
+btnVerificar.addEventListener(
+    "click",
+    async () => {
+
+        const codigo =
+            codigoInput.value.trim();
+
+
+        if (
+            codigo.length !== 6
+        ) {
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "Digite o código de 6 dígitos.",
+                "erro"
+            );
+
+            codigoInput.focus();
+
+            return;
+
+        }
+
+
+        if (
+            segundosRestantes <= 0
+        ) {
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "O código expirou. Solicite um novo código.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        btnVerificar.disabled =
+            true;
+
+
+        mostrarMensagem(
+            mensagemCodigo,
+            "Verificando código..."
+        );
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    `${API_URL}/api/auth/verify-code`,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                email: email,
+
+                                codigo: codigo
+
+                            })
+
+                    }
+                );
+
+
+            const dados =
+                await resposta.json();
+
+
+            if (!resposta.ok) {
+
+                mostrarMensagem(
+                    mensagemCodigo,
+                    dados.mensagem ||
+                    "Código inválido.",
+                    "erro"
+                );
+
+                btnVerificar.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "Código validado! Redirecionando...",
+                "sucesso"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        `reset-password.html?token=${encodeURIComponent(dados.token)}`;
+
+                },
+                800
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao verificar código:",
+                error
+            );
+
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "Não foi possível verificar o código. Tente novamente.",
+                "erro"
+            );
+
+
+            btnVerificar.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   REENVIAR CÓDIGO
+===================================================== */
+
+btnReenviar.addEventListener(
+    "click",
+    async () => {
+
+        if (!email) {
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "E-mail não informado.",
+                "erro"
+            );
+
+            return;
+
+        }
+
+
+        btnReenviar.disabled =
+            true;
+
+
+        mostrarMensagem(
+            mensagemCodigo,
+            "Enviando novo código..."
+        );
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    `${API_URL}/api/auth/forgot-password`,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                email: email
+                            })
+
+                    }
+                );
+
+
+            const dados =
+                await resposta.json();
+
+
+            if (!resposta.ok) {
+
+                mostrarMensagem(
+                    mensagemCodigo,
+                    dados.mensagem ||
+                    "Não foi possível reenviar o código.",
+                    "erro"
+                );
+
+                btnReenviar.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+            segundosRestantes =
+                600;
+
+            codigoInput.value =
+                "";
+
+
+            atualizarContador();
+
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "Se o e-mail estiver cadastrado, um novo código foi enviado.",
+                "sucesso"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    btnReenviar.disabled =
+                        false;
+
+                },
+                30000
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao reenviar código:",
+                error
+            );
+
+
+            mostrarMensagem(
+                mensagemCodigo,
+                "Erro ao reenviar o código.",
+                "erro"
+            );
+
+
+            btnReenviar.disabled =
+                false;
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
+
+
