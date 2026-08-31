@@ -1,504 +1,3003 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>English Puzzle | Instituto Acutis</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="puzzle.css">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>WORD HUNTER — Caça-Palavras</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+
+    min-height:100vh;
+
+    font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    color:#f8fafc;
+
+    background:
+    radial-gradient(
+        circle at 10% 10%,
+        #172554,
+        transparent 35%
+    ),
+    radial-gradient(
+        circle at 90% 90%,
+        #312e81,
+        transparent 35%
+    ),
+    #050816;
+
+}
+
+
+/* =========================================================
+   GAME
+========================================================= */
+
+.game{
+
+    width:min(1150px,100%);
+
+    margin:auto;
+
+    padding:
+    22px 16px
+    45px;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+.badge{
+
+    display:inline-block;
+
+    padding:
+    7px 14px;
+
+    border-radius:30px;
+
+    background:
+    rgba(56,189,248,.1);
+
+    border:
+    1px solid
+    rgba(56,189,248,.3);
+
+    color:#38bdf8;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+    margin-bottom:10px;
+
+}
+
+.logo{
+
+    font-size:
+    clamp(36px,7vw,64px);
+
+    line-height:1;
+
+    font-weight:1000;
+
+}
+
+.logo span{
+
+    color:#38bdf8;
+
+}
+
+.subtitle{
+
+    color:#94a3b8;
+
+    margin-top:10px;
+
+    line-height:1.5;
+
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+.hud{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:10px;
+
+    margin-bottom:18px;
+
+}
+
+.hud-box{
+
+    background:
+    rgba(15,23,42,.95);
+
+    border:
+    1px solid
+    rgba(255,255,255,.08);
+
+    border-radius:14px;
+
+    padding:12px;
+
+    text-align:center;
+
+}
+
+.hud-label{
+
+    color:#94a3b8;
+
+    font-size:10px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+}
+
+.hud-value{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-top:5px;
+
+}
+
+
+/* =========================================================
+   PHASES
+========================================================= */
+
+.phases{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:7px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:18px;
+
+}
+
+.phase-btn{
+
+    border:
+    1px solid
+    #263452;
+
+    background:#111c33;
+
+    color:#94a3b8;
+
+    border-radius:9px;
+
+    padding:
+    8px 11px;
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.phase-btn.active{
+
+    background:#0284c7;
+
+    border-color:#38bdf8;
+
+    color:white;
+
+}
+
+.phase-btn.completed{
+
+    color:#86efac;
+
+    border-color:
+    rgba(34,197,94,.4);
+
+    background:
+    rgba(34,197,94,.1);
+
+}
+
+.phase-btn.locked{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+
+    display:grid;
+
+    grid-template-columns:
+    minmax(0,1fr)
+    280px;
+
+    gap:18px;
+
+    align-items:start;
+
+}
+
+
+/* =========================================================
+   BOARD CARD
+========================================================= */
+
+.board-card{
+
+    background:
+    rgba(12,20,39,.97);
+
+    border:
+    1px solid
+    rgba(56,189,248,.16);
+
+    border-radius:22px;
+
+    padding:20px;
+
+}
+
+.phase-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+}
+
+.phase-title h2{
+
+    font-size:22px;
+
+}
+
+.phase-title span{
+
+    color:#38bdf8;
+
+}
+
+.difficulty{
+
+    font-size:11px;
+
+    color:#94a3b8;
+
+    background:#111c33;
+
+    padding:
+    7px 10px;
+
+    border-radius:20px;
+
+}
+
+
+/* =========================================================
+   BOARD
+========================================================= */
+
+.board-wrap{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    overflow:auto;
+
+    padding:5px;
+
+}
+
+.board{
+
+    width:
+    min(650px,100%);
+
+    aspect-ratio:1;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(15,1fr);
+
+    gap:3px;
+
+    user-select:none;
+
+    touch-action:none;
+
+}
+
+.cell{
+
+    aspect-ratio:1;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#101b31;
+
+    border:
+    1px solid
+    #23304b;
+
+    border-radius:4px;
+
+    font-size:
+    clamp(10px,2vw,19px);
+
+    font-weight:bold;
+
+    color:#dbeafe;
+
+    cursor:pointer;
+
+    transition:
+    background .12s,
+    transform .12s;
+
+}
+
+.cell:hover{
+
+    background:#172b4c;
+
+}
+
+.cell.selecting{
+
+    background:#075985;
+
+    border-color:#38bdf8;
+
+    color:white;
+
+    transform:scale(.94);
+
+}
+
+.cell.found{
+
+    background:
+    rgba(34,197,94,.3);
+
+    border-color:
+    #22c55e;
+
+    color:#bbf7d0;
+
+}
+
+.cell.found::after{
+
+    content:"";
+
+}
+
+
+/* =========================================================
+   INSTRUCTIONS
+========================================================= */
+
+.instructions{
+
+    text-align:center;
+
+    margin-top:15px;
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+}
+
+.instructions strong{
+
+    color:#38bdf8;
+
+}
+
+
+/* =========================================================
+   WORD LIST
+========================================================= */
+
+.words-card{
+
+    background:
+    rgba(12,20,39,.97);
+
+    border:
+    1px solid
+    rgba(255,255,255,.08);
+
+    border-radius:22px;
+
+    padding:20px;
+
+    position:sticky;
+
+    top:15px;
+
+}
+
+.words-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:14px;
+
+}
+
+.words-header h3{
+
+    font-size:18px;
+
+}
+
+.word-count{
+
+    color:#38bdf8;
+
+    font-weight:bold;
+
+    font-size:13px;
+
+}
+
+.word-list{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:7px;
+
+}
+
+.word{
+
+    background:#111c33;
+
+    border:
+    1px solid
+    #24314c;
+
+    border-radius:8px;
+
+    padding:
+    8px 7px;
+
+    font-size:11px;
+
+    color:#cbd5e1;
+
+    text-align:center;
+
+    transition:.2s;
+
+}
+
+.word.found{
+
+    color:#86efac;
+
+    background:
+    rgba(34,197,94,.1);
+
+    border-color:
+    rgba(34,197,94,.4);
+
+    text-decoration:
+    line-through;
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-container{
+
+    margin-top:18px;
+
+}
+
+.progress-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#94a3b8;
+
+    font-size:11px;
+
+    margin-bottom:7px;
+
+}
+
+.progress{
+
+    height:8px;
+
+    background:#111c33;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.progress-bar{
+
+    width:0%;
+
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        #38bdf8,
+        #22c55e
+    );
+
+    transition:.3s;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(2,6,23,.88);
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:100;
+
+}
+
+.modal{
+
+    width:min(500px,100%);
+
+    background:
+    #0c1427;
+
+    border:
+    1px solid
+    rgba(56,189,248,.3);
+
+    border-radius:24px;
+
+    padding:35px 25px;
+
+    text-align:center;
+
+    box-shadow:
+    0 25px 80px
+    rgba(0,0,0,.5);
+
+}
+
+.modal-icon{
+
+    font-size:70px;
+
+    margin-bottom:12px;
+
+}
+
+.modal h2{
+
+    font-size:30px;
+
+    margin-bottom:10px;
+
+}
+
+.modal p{
+
+    color:#94a3b8;
+
+    line-height:1.6;
+
+}
+
+.modal-score{
+
+    font-size:25px;
+
+    color:#38bdf8;
+
+    font-weight:bold;
+
+    margin:20px;
+
+}
+
+.modal button{
+
+    border:0;
+
+    background:
+    linear-gradient(
+        135deg,
+        #38bdf8,
+        #2563eb
+    );
+
+    color:white;
+
+    padding:
+    13px 28px;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+/* =========================================================
+   FINAL SCREEN
+========================================================= */
+
+.final{
+
+    display:none;
+
+    text-align:center;
+
+    background:
+    rgba(12,20,39,.98);
+
+    border:
+    1px solid
+    rgba(56,189,248,.25);
+
+    border-radius:25px;
+
+    padding:
+    45px 25px;
+
+}
+
+.final-icon{
+
+    font-size:85px;
+
+}
+
+.final h1{
+
+    font-size:
+    clamp(30px,6vw,52px);
+
+    margin:
+    15px 0;
+
+}
+
+.final p{
+
+    color:#94a3b8;
+
+    line-height:1.7;
+
+}
+
+.final-score{
+
+    font-size:40px;
+
+    font-weight:bold;
+
+    color:#38bdf8;
+
+    margin:22px;
+
+}
+
+.restart{
+
+    border:0;
+
+    background:
+    linear-gradient(
+        135deg,
+        #38bdf8,
+        #2563eb
+    );
+
+    color:white;
+
+    padding:
+    14px 28px;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:850px){
+
+    .main{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .words-card{
+
+        position:static;
+
+    }
+
+    .word-list{
+
+        grid-template-columns:
+        repeat(4,1fr);
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    .hud{
+
+        grid-template-columns:
+        1fr 1fr;
+
+    }
+
+    .board-card{
+
+        padding:12px;
+
+    }
+
+    .board{
+
+        gap:2px;
+
+        width:100%;
+
+    }
+
+    .cell{
+
+        border-radius:2px;
+
+    }
+
+    .word-list{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+    .phase-title{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-    <main class="game">
 
-        <!-- =====================================================
-             HEADER
-        ====================================================== -->
+<div class="game">
 
-        <header class="game-header">
 
-            <div class="brand">
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-                <div class="brand-icon">
-                    🧩
-                </div>
+<header>
 
-                <div>
-                    <h1>ENGLISH PUZZLE</h1>
-                    <span>Instituto Acutis</span>
-                </div>
+<div class="badge">
+WORD HUNTER • FASES EDUCATIVAS
+</div>
 
-            </div>
+<div class="logo">
+WORD <span>HUNTER</span> 🔎
+</div>
 
+<div class="subtitle">
+Encontre as 20 palavras escondidas em cada fase.
+Observe, pense e explore a grade!
+</div>
 
-            <div class="game-stats">
+</header>
 
-                <div class="stat">
 
-                    <span>🧩</span>
+<!-- =====================================================
+     HUD
+===================================================== -->
 
-                    <strong>PEÇAS</strong>
+<div class="hud">
 
-                    <b id="piecesCounter">
-                        0/16
-                    </b>
+<div class="hud-box">
 
-                </div>
+<div class="hud-label">
+Fase
+</div>
 
+<div
+class="hud-value"
+id="phaseDisplay">
 
-                <div class="stat">
+1 / 10
 
-                    <span>⏱️</span>
+</div>
 
-                    <strong>TEMPO</strong>
+</div>
 
-                    <b id="gameTimer">
-                        00:00
-                    </b>
 
-                </div>
+<div class="hud-box">
 
-            </div>
+<div class="hud-label">
+Encontradas
+</div>
 
-        </header>
+<div
+class="hud-value"
+id="foundDisplay">
 
+0 / 20
 
+</div>
 
-        <!-- =====================================================
-             ÁREA PRINCIPAL
-        ====================================================== -->
+</div>
 
-        <section class="game-area">
 
+<div class="hud-box">
 
-            <!-- =================================================
-                 INSTRUÇÕES
-            ================================================== -->
+<div class="hud-label">
+Palavras
+</div>
 
-            <aside class="instructions">
+<div
+class="hud-value"
+id="totalWordsDisplay">
 
-                <div class="instruction-icon">
-                    🎯
-                </div>
+20
 
+</div>
 
-                <h2>
-                    MONTE O PUZZLE!
-                </h2>
+</div>
 
 
-                <p>
-                    Responda às perguntas de inglês
-                    para liberar novas peças.
-                </p>
+<div class="hud-box">
 
+<div class="hud-label">
+Pontos
+</div>
 
-                <!-- PROGRESSO -->
+<div
+class="hud-value"
+id="scoreDisplay">
 
-                <div class="progress-container">
+0
 
-                    <div class="progress-label">
+</div>
 
-                        <span>
-                            PROGRESSO
-                        </span>
+</div>
 
-                        <strong id="progressText">
-                            0%
-                        </strong>
+</div>
 
-                    </div>
 
+<!-- =====================================================
+     PHASE BUTTONS
+===================================================== -->
 
-                    <div class="progress-bar">
+<div class="phases">
 
-                        <div
-                            class="progress-fill"
-                            id="progressFill"
-                        ></div>
+<button
+class="phase-btn active"
+id="phaseBtn1"
+onclick="selectPhase(1)">
 
-                    </div>
+1
 
-                </div>
+</button>
 
+<button
+class="phase-btn locked"
+id="phaseBtn2"
+onclick="selectPhase(2)">
 
-                <!-- REGRAS -->
+2 🔒
 
-                <div class="rules">
+</button>
 
-                    <div>
+<button
+class="phase-btn locked"
+id="phaseBtn3"
+onclick="selectPhase(3)">
 
-                        <span>🔒</span>
+3 🔒
 
-                        <p>
-                            Peças bloqueadas precisam
-                            de uma resposta.
-                        </p>
+</button>
 
-                    </div>
+<button
+class="phase-btn locked"
+id="phaseBtn4"
+onclick="selectPhase(4)">
 
+4 🔒
 
-                    <div>
+</button>
 
-                        <span>✅</span>
+<button
+class="phase-btn locked"
+id="phaseBtn5"
+onclick="selectPhase(5)">
 
-                        <p>
-                            Acertou? A peça é liberada!
-                        </p>
+5 🔒
 
-                    </div>
+</button>
 
+<button
+class="phase-btn locked"
+id="phaseBtn6"
+onclick="selectPhase(6)">
 
-                    <div>
+6 🔒
 
-                        <span>🧠</span>
+</button>
 
-                        <p>
-                            Use seus conhecimentos
-                            de inglês.
-                        </p>
+<button
+class="phase-btn locked"
+id="phaseBtn7"
+onclick="selectPhase(7)">
 
-                    </div>
+7 🔒
 
-                </div>
+</button>
 
+<button
+class="phase-btn locked"
+id="phaseBtn8"
+onclick="selectPhase(8)">
 
-                <!-- STATUS DE PEÇAS -->
+8 🔒
 
-                <div class="piece-status">
+</button>
 
-                    <span>
-                        🧩 PEÇAS LIBERADAS
-                    </span>
+<button
+class="phase-btn locked"
+id="phaseBtn9"
+onclick="selectPhase(9)">
 
-                    <strong id="unlockedText">
-                        4/16
-                    </strong>
+9 🔒
 
-                </div>
+</button>
 
-            </aside>
+<button
+class="phase-btn locked"
+id="phaseBtn10"
+onclick="selectPhase(10)">
 
+10 🔒
 
+</button>
 
-            <!-- =================================================
-                 ÁREA DO PUZZLE
-            ================================================== -->
+</div>
 
-            <section class="puzzle-section">
 
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-                <div class="puzzle-title">
+<div
+class="main"
+id="gameMain">
 
-                    <span>
-                        🧩
-                    </span>
 
-                    <h2>
-                        ENGLISH PUZZLE
-                    </h2>
+<!-- =====================================================
+     BOARD
+===================================================== -->
 
-                </div>
+<section class="board-card">
 
+<div class="phase-title">
 
-                <!-- =================================================
-                     TABULEIRO
-                ================================================== -->
+<h2>
 
-                <div
-                    class="puzzle-board"
-                    id="puzzleBoard"
-                >
+FASE <span id="phaseNumber">1</span> —
+<span id="phaseTitle">
+SIMPLE PRESENT
+</span>
 
-                    <!--
-                        O JavaScript cria
-                        os 16 espaços aqui.
-                    -->
+</h2>
 
-                </div>
+<div
+class="difficulty"
+id="difficulty">
 
+🟢 Fácil
 
+</div>
 
-                <!-- =================================================
-                     PEÇAS DISPONÍVEIS
-                ================================================== -->
+</div>
 
-                <div class="pieces-area">
 
-                    <div class="pieces-header">
+<div class="board-wrap">
 
-                        <span>
-                            🧩 PEÇAS DISPONÍVEIS
-                        </span>
+<div
+class="board"
+id="board">
 
-                        <small>
-                            Arraste ou clique em uma peça
-                        </small>
+</div>
 
-                    </div>
+</div>
 
 
-                    <div
-                        class="pieces-container"
-                        id="piecesContainer"
-                    >
+<div class="instructions">
 
-                        <!--
-                            O JavaScript cria
-                            as peças aqui.
-                        -->
+🖱️ <strong>Clique e arraste</strong>
+sobre as letras para selecionar uma palavra.
+<br>
 
-                    </div>
+As palavras podem aparecer
+na horizontal, vertical ou diagonal.
 
-                </div>
+</div>
 
 
+<div class="progress-container">
 
-                <!-- =================================================
-                     MENSAGEM
-                ================================================== -->
+<div class="progress-info">
 
-                <div
-                    class="puzzle-message"
-                    id="gameMessage"
-                >
+<span>Progresso da fase</span>
 
-                    🔒 Responda uma pergunta
-                    para liberar a próxima peça.
+<span
+id="progressText">
 
-                </div>
+0%
 
-            </section>
+</span>
 
-        </section>
+</div>
 
+<div class="progress">
 
+<div
+class="progress-bar"
+id="progressBar">
 
-        <!-- =====================================================
-             PERGUNTA
-        ====================================================== -->
+</div>
 
-        <div
-            class="question-overlay hidden"
-            id="questionOverlay"
-        >
+</div>
 
-            <div class="question-card">
+</div>
 
+</section>
 
-                <!-- CABEÇALHO -->
 
-                <div class="question-top">
+<!-- =====================================================
+     WORD LIST
+===================================================== -->
 
-                    <div class="question-icon">
-                        ❓
-                    </div>
+<aside class="words-card">
 
+<div class="words-header">
 
-                    <div>
+<h3>
+🔎 PALAVRAS
+</h3>
 
-                        <small>
-                            DESAFIO DE INGLÊS
-                        </small>
+<div
+class="word-count"
+id="wordCount">
 
-                        <h2>
-                            Responda para liberar a peça!
-                        </h2>
+0 / 20
 
-                    </div>
+</div>
 
-                </div>
+</div>
 
+<div
+class="word-list"
+id="wordList">
 
+</div>
 
-                <!-- TIMER -->
+</aside>
 
-                <div class="question-timer-box">
+</div>
 
-                    <span>
-                        ⏱️
-                    </span>
 
-                    <strong id="questionTimer">
-                        30
-                    </strong>
+<!-- =====================================================
+     FINAL
+===================================================== -->
 
-                    <small>
-                        segundos
-                    </small>
+<div
+class="final"
+id="final">
 
-                </div>
+<div class="final-icon">
+🏆
+</div>
 
+<h1>
+WORD HUNTER MASTER
+</h1>
 
+<p>
+Você completou as 10 fases e encontrou
+todas as palavras escondidas!
+</p>
 
-                <!-- CATEGORIA -->
+<div class="final-score">
 
-                <div
-                    class="question-category"
-                    id="questionCategory"
-                >
-                    VOCABULARY
-                </div>
+⭐
+<span id="finalScore">
+0
+</span>
+pontos
 
+</div>
 
+<p id="finalMessage">
 
-                <!-- PERGUNTA -->
+</p>
 
-                <h3
-                    id="questionText"
-                    class="question-text"
-                >
-                    Question
-                </h3>
+<br>
 
+<button
+class="restart"
+onclick="restartGame()">
 
+🔄 JOGAR NOVAMENTE
 
-                <!-- RESPOSTAS -->
+</button>
 
-                <div
-                    class="answers"
-                    id="questionAnswers"
-                >
+</div>
 
-                    <!-- JS cria as respostas -->
 
-                </div>
+</div>
 
 
+<!-- =====================================================
+     PHASE COMPLETE MODAL
+===================================================== -->
 
-                <!-- FEEDBACK -->
+<div
+class="overlay"
+id="overlay">
 
-                <div
-                    id="questionFeedback"
-                    class="question-feedback"
-                >
-                    Escolha uma resposta.
-                </div>
+<div class="modal">
 
-            </div>
+<div
+class="modal-icon"
+id="modalIcon">
 
-        </div>
+🎉
 
+</div>
 
+<h2
+id="modalTitle">
 
-        <!-- =====================================================
-             VITÓRIA
-        ====================================================== -->
+FASE CONCLUÍDA!
 
-        <div
-            class="winner-overlay hidden"
-            id="victoryOverlay"
-        >
+</h2>
 
-            <div class="winner-card">
+<p
+id="modalText">
 
+Você encontrou todas as palavras.
 
-                <div class="winner-icon">
-                    🏆
-                </div>
+</p>
 
+<div class="modal-score">
 
-                <span>
-                    PUZZLE COMPLETO!
-                </span>
++<span id="modalScore">
+0
+</span>
+pontos
 
+</div>
 
-                <h1>
-                    CONGRATULATIONS!
-                </h1>
+<button
+onclick="closeModal()">
 
+CONTINUAR ➜
 
-                <p>
-                    Você conseguiu montar todo o
-                    quebra-cabeça e completou os
-                    desafios de inglês!
-                </p>
+</button>
 
+</div>
 
+</div>
 
-                <!-- RESULTADOS -->
 
-                <div class="final-stats">
+<script>
 
+/* =========================================================
+   CONFIGURAÇÕES
+========================================================= */
 
-                    <div>
+const SIZE=15;
 
-                        <strong id="finalTime">
-                            00:00
-                        </strong>
+const DIRECTIONS=[
 
-                        <small>
-                            TEMPO
-                        </small>
+[0,1],
+[0,-1],
+[1,0],
+[-1,0],
+[1,1],
+[1,-1],
+[-1,1],
+[-1,-1]
 
-                    </div>
+];
 
 
-                    <div>
+/* =========================================================
+   FASES
+========================================================= */
 
-                        <strong>
-                            16/16
-                        </strong>
+const phases=[
 
-                        <small>
-                            PEÇAS
-                        </small>
+{
 
-                    </div>
+title:"SIMPLE PRESENT",
 
-                </div>
+difficulty:"🟢 Fácil",
 
+words:[
+"PLAY",
+"WORK",
+"STUDY",
+"LIVE",
+"LIKE",
+"LOVE",
+"WALK",
+"READ",
+"WRITE",
+"EAT",
+"DRINK",
+"GO",
+"COME",
+"HELP",
+"WATCH",
+"LISTEN",
+"SPEAK",
+"LEARN",
+"OPEN",
+"CLOSE"
+]
 
+},
 
-                <button
-                    id="restartButton"
-                >
-                    🔄 JOGAR NOVAMENTE
-                </button>
+{
 
-            </div>
+title:"TRANSPORTATION",
 
-        </div>
+difficulty:"🟢 Fácil",
 
+words:[
+"BUS",
+"CAR",
+"TRAIN",
+"PLANE",
+"BIKE",
+"BOAT",
+"SHIP",
+"TAXI",
+"TRUCK",
+"METRO",
+"SUBWAY",
+"MOTORCYCLE",
+"BICYCLE",
+"AIRPORT",
+"STATION",
+"TICKET",
+"DRIVER",
+"ROAD",
+"TRAVEL",
+"JOURNEY"
+]
 
+},
 
-        <!-- =====================================================
-             FOOTER
-        ====================================================== -->
+{
 
-        <footer>
+title:"SIMPLE PAST",
 
-            <span>
-                🧩 Monte o puzzle
-            </span>
+difficulty:"🟡 Médio",
 
+words:[
+"WENT",
+"SAW",
+"HAD",
+"DID",
+"MADE",
+"TOOK",
+"GOT",
+"CAME",
+"ATE",
+"DRANK",
+"READ",
+"WROTE",
+"BOUGHT",
+"FOUND",
+"PLAYED",
+"WALKED",
+"STUDIED",
+"VISITED",
+"CALLED",
+"HELPED"
+]
 
-            <span>
-                ❓ Responda às perguntas
-            </span>
+},
 
+{
 
-            <span>
-                🏆 Complete o desafio
-            </span>
+title:"BY + EXPRESSIONS",
 
-        </footer>
+difficulty:"🟡 Médio",
 
-    </main>
+words:[
+"BYBUS",
+"BYCAR",
+"BYTRAIN",
+"BYPLANE",
+"BYBOAT",
+"BYBIKE",
+"BYTAXI",
+"BYROAD",
+"BYHAND",
+"BYMAIL",
+"BYCARD",
+"BYFOOT",
+"BYSEA",
+"BYAIR",
+"BYLAND",
+"BYMYSELF",
+"BYCHANCE",
+"BYDAY",
+"BYNIGHT",
+"BYTHETIME"
+]
 
+},
 
+{
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+title:"DAILY ROUTINE",
 
-    <script src="puzzle.js"></script>
+difficulty:"🟡 Médio",
+
+words:[
+"WAKE",
+"GETUP",
+"SHOWER",
+"BRUSH",
+"BREAKFAST",
+"SCHOOL",
+"STUDY",
+"LUNCH",
+"WORK",
+"DINNER",
+"HOME",
+"SLEEP",
+"READ",
+"COOK",
+"CLEAN",
+"PLAY",
+"EXERCISE",
+"REST",
+"WALK",
+"BED"
+]
+
+},
+
+{
+
+title:"PLACES IN THE CITY",
+
+difficulty:"🟠 Difícil",
+
+words:[
+"SCHOOL",
+"HOSPITAL",
+"BANK",
+"LIBRARY",
+"PARK",
+"MARKET",
+"MUSEUM",
+"CINEMA",
+"RESTAURANT",
+"CHURCH",
+"PHARMACY",
+"AIRPORT",
+"STATION",
+"HOTEL",
+"BAKERY",
+"BRIDGE",
+"STREET",
+"SQUARE",
+"THEATER",
+"OFFICE"
+]
+
+},
+
+{
+
+title:"SCHOOL VOCABULARY",
+
+difficulty:"🟠 Difícil",
+
+words:[
+"TEACHER",
+"STUDENT",
+"BOOK",
+"PENCIL",
+"NOTEBOOK",
+"DESK",
+"CHAIR",
+"BOARD",
+"CLASS",
+"LESSON",
+"TEST",
+"HOMEWORK",
+"ANSWER",
+"QUESTION",
+"READING",
+"WRITING",
+"LISTENING",
+"SPEAKING",
+"ENGLISH",
+"LIBRARY"
+]
+
+},
+
+{
+
+title:"TRAVEL & TOURISM",
+
+difficulty:"🔴 Difícil",
+
+words:[
+"TRAVEL",
+"TOURIST",
+"HOTEL",
+"BEACH",
+"CAMERA",
+"PASSPORT",
+"TICKET",
+"SUITCASE",
+"MAP",
+"GUIDE",
+"TRIP",
+"VACATION",
+"FLIGHT",
+"TRAIN",
+"BUS",
+"ISLAND",
+"COUNTRY",
+"CITY",
+"TOUR",
+"RESORT"
+]
+
+},
+
+{
+
+title:"ACTIONS & VERBS",
+
+difficulty:"🔴 Difícil",
+
+words:[
+"RUN",
+"JUMP",
+"SWIM",
+"CLIMB",
+"OPEN",
+"CLOSE",
+"BUILD",
+"CREATE",
+"THINK",
+"KNOW",
+"REMEMBER",
+"FORGET",
+"CHOOSE",
+"START",
+"FINISH",
+"CHANGE",
+"DISCOVER",
+"EXPLAIN",
+"ANSWER",
+"QUESTION"
+]
+
+},
+
+{
+
+title:"ULTIMATE MIX",
+
+difficulty:"👑 Expert",
+
+words:[
+"BYBUS",
+"BYCAR",
+"BYTRAIN",
+"TRAVEL",
+"STUDY",
+"WORK",
+"PLAY",
+"WENT",
+"SAW",
+"MADE",
+"FOUND",
+"LEARN",
+"TEACHER",
+"SCHOOL",
+"LIBRARY",
+"PASSPORT",
+"TICKET",
+"JOURNEY",
+"READING",
+"ENGLISH"
+]
+
+}
+
+];
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let currentPhase=1;
+
+let score=0;
+
+let totalFound=0;
+
+let foundWords=new Set();
+
+let completedPhases=[];
+
+let grid=[];
+
+let placements=[];
+
+let isSelecting=false;
+
+let startCell=null;
+
+let currentSelection=[];
+
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const board=
+document.getElementById("board");
+
+const wordList=
+document.getElementById("wordList");
+
+const phaseTitle=
+document.getElementById("phaseTitle");
+
+const phaseNumber=
+document.getElementById("phaseNumber");
+
+const difficulty=
+document.getElementById("difficulty");
+
+const foundDisplay=
+document.getElementById("foundDisplay");
+
+const scoreDisplay=
+document.getElementById("scoreDisplay");
+
+const wordCount=
+document.getElementById("wordCount");
+
+const progressBar=
+document.getElementById("progressBar");
+
+const progressText=
+document.getElementById("progressText");
+
+const overlay=
+document.getElementById("overlay");
+
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
+function randomLetter(){
+
+    const letters=
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    return letters[
+        Math.floor(
+            Math.random()*letters.length
+        )
+    ];
+
+}
+
+
+function inside(row,col){
+
+    return(
+        row>=0 &&
+        row<SIZE &&
+        col>=0 &&
+        col<SIZE
+    );
+
+}
+
+
+/* =========================================================
+   CRIAÇÃO DO TABULEIRO
+========================================================= */
+
+function createGrid(){
+
+    grid=[];
+
+    for(let r=0;r<SIZE;r++){
+
+        grid[r]=[];
+
+        for(let c=0;c<SIZE;c++){
+
+            grid[r][c]="";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   TENTAR COLOCAR PALAVRA
+========================================================= */
+
+function tryPlaceWord(word){
+
+    for(
+        let attempt=0;
+        attempt<500;
+        attempt++
+    ){
+
+        const direction=
+            DIRECTIONS[
+                Math.floor(
+                    Math.random()*
+                    DIRECTIONS.length
+                )
+            ];
+
+        const dr=direction[0];
+
+        const dc=direction[1];
+
+        const row=
+            Math.floor(
+                Math.random()*SIZE
+            );
+
+        const col=
+            Math.floor(
+                Math.random()*SIZE
+            );
+
+        const endRow=
+            row+
+            dr*(word.length-1);
+
+        const endCol=
+            col+
+            dc*(word.length-1);
+
+
+        if(
+            !inside(endRow,endCol)
+        )
+            continue;
+
+
+        let possible=true;
+
+        for(
+            let i=0;
+            i<word.length;
+            i++
+        ){
+
+            const r=
+                row+
+                dr*i;
+
+            const c=
+                col+
+                dc*i;
+
+            const existing=
+                grid[r][c];
+
+            if(
+                existing!=="" &&
+                existing!==word[i]
+            ){
+
+                possible=false;
+
+                break;
+
+            }
+
+        }
+
+
+        if(!possible)
+            continue;
+
+
+        const cells=[];
+
+
+        for(
+            let i=0;
+            i<word.length;
+            i++
+        ){
+
+            const r=
+                row+
+                dr*i;
+
+            const c=
+                col+
+                dc*i;
+
+            grid[r][c]=word[i];
+
+            cells.push(
+                `${r}-${c}`
+            );
+
+        }
+
+
+        placements.push({
+
+            word,
+            cells
+
+        });
+
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+
+/* =========================================================
+   PREENCHER ESPAÇOS
+========================================================= */
+
+function fillEmpty(){
+
+    for(let r=0;r<SIZE;r++){
+
+        for(let c=0;c<SIZE;c++){
+
+            if(grid[r][c]===""){
+
+                grid[r][c]=
+                    randomLetter();
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   GERAR TABULEIRO
+========================================================= */
+
+function generateBoard(){
+
+    createGrid();
+
+    placements=[];
+
+    /*
+       Palavras maiores primeiro.
+       Isso facilita a criação de um
+       caça-palavras consistente.
+    */
+
+    const words=
+        [...phases[currentPhase-1].words]
+        .sort(
+            (a,b)=>
+            b.length-a.length
+        );
+
+
+    words.forEach(word=>{
+
+        let placed=
+            tryPlaceWord(word);
+
+        /*
+           Caso extremamente raro de
+           não conseguir colocar a palavra,
+           tentamos novamente.
+        */
+
+        if(!placed){
+
+            createGrid();
+
+            placements=[];
+
+            words.forEach(w=>{
+                tryPlaceWord(w);
+            });
+
+            return;
+
+        }
+
+    });
+
+
+    fillEmpty();
+
+    renderBoard();
+
+}
+
+
+/* =========================================================
+   RENDER BOARD
+========================================================= */
+
+function renderBoard(){
+
+    board.innerHTML="";
+
+    for(let r=0;r<SIZE;r++){
+
+        for(let c=0;c<SIZE;c++){
+
+            const cell=
+                document.createElement("div");
+
+            cell.className="cell";
+
+            cell.textContent=
+                grid[r][c];
+
+            cell.dataset.row=r;
+
+            cell.dataset.col=c;
+
+            /*
+               Mouse
+            */
+
+            cell.addEventListener(
+                "mousedown",
+                startSelection
+            );
+
+            cell.addEventListener(
+                "mouseenter",
+                moveSelection
+            );
+
+
+            /*
+               Touch
+            */
+
+            cell.addEventListener(
+                "touchstart",
+                startTouch,
+                {passive:false}
+            );
+
+            cell.addEventListener(
+                "touchmove",
+                moveTouch,
+                {passive:false}
+            );
+
+            cell.addEventListener(
+                "touchend",
+                endSelection
+            );
+
+
+            board.appendChild(cell);
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   GET CELL
+========================================================= */
+
+function getCell(row,col){
+
+    return document.querySelector(
+        `.cell[data-row="${row}"][data-col="${col}"]`
+    );
+
+}
+
+
+/* =========================================================
+   START SELECTION
+========================================================= */
+
+function startSelection(e){
+
+    e.preventDefault();
+
+    isSelecting=true;
+
+    startCell={
+        row:Number(
+            e.currentTarget.dataset.row
+        ),
+        col:Number(
+            e.currentTarget.dataset.col
+        )
+    };
+
+    currentSelection=[];
+
+    updateSelection(
+        startCell.row,
+        startCell.col
+    );
+
+}
+
+
+/* =========================================================
+   MOVE
+========================================================= */
+
+function moveSelection(e){
+
+    if(!isSelecting)
+        return;
+
+    updateSelection(
+        Number(
+            e.currentTarget.dataset.row
+        ),
+        Number(
+            e.currentTarget.dataset.col
+        )
+    );
+
+}
+
+
+/* =========================================================
+   TOUCH
+========================================================= */
+
+function startTouch(e){
+
+    e.preventDefault();
+
+    const touch=e.touches[0];
+
+    const element=
+        document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
+
+    if(!element ||
+       !element.classList.contains("cell"))
+        return;
+
+    isSelecting=true;
+
+    startCell={
+        row:Number(element.dataset.row),
+        col:Number(element.dataset.col)
+    };
+
+    currentSelection=[];
+
+    updateSelection(
+        startCell.row,
+        startCell.col
+    );
+
+}
+
+
+function moveTouch(e){
+
+    if(!isSelecting)
+        return;
+
+    e.preventDefault();
+
+    const touch=e.touches[0];
+
+    const element=
+        document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
+
+    if(!element ||
+       !element.classList.contains("cell"))
+        return;
+
+    updateSelection(
+        Number(element.dataset.row),
+        Number(element.dataset.col)
+    );
+
+}
+
+
+/* =========================================================
+   SELEÇÃO
+========================================================= */
+
+function updateSelection(
+    endRow,
+    endCol
+){
+
+    if(!startCell)
+        return;
+
+
+    const dr=
+        endRow-startCell.row;
+
+    const dc=
+        endCol-startCell.col;
+
+
+    /*
+       Determina direção.
+       Só permite linhas retas ou diagonais.
+    */
+
+    const absR=Math.abs(dr);
+
+    const absC=Math.abs(dc);
+
+
+    let stepR=0;
+
+    let stepC=0;
+
+
+    if(
+        dr===0 &&
+        dc!==0
+    ){
+
+        stepC=
+            dc>0
+            ?1
+            :-1;
+
+    }
+
+    else if(
+        dc===0 &&
+        dr!==0
+    ){
+
+        stepR=
+            dr>0
+            ?1
+            :-1;
+
+    }
+
+    else if(
+        absR===absC &&
+        absR!==0
+    ){
+
+        stepR=
+            dr>0
+            ?1
+            :-1;
+
+        stepC=
+            dc>0
+            ?1
+            :-1;
+
+    }
+
+    else if(
+        dr===0 &&
+        dc===0
+    ){
+
+        stepR=0;
+        stepC=0;
+
+    }
+
+    else{
+
+        return;
+
+    }
+
+
+    /*
+       Remove seleção visual anterior.
+    */
+
+    document
+    .querySelectorAll(".cell.selecting")
+    .forEach(
+        cell=>
+        cell.classList.remove(
+            "selecting"
+        )
+    );
+
+
+    currentSelection=[];
+
+
+    let r=startCell.row;
+
+    let c=startCell.col;
+
+
+    while(
+        inside(r,c)
+    ){
+
+        currentSelection.push(
+            `${r}-${c}`
+        );
+
+        const cell=
+            getCell(r,c);
+
+        if(cell){
+
+            cell.classList.add(
+                "selecting"
+            );
+
+        }
+
+
+        if(
+            r===endRow &&
+            c===endCol
+        )
+            break;
+
+
+        r+=stepR;
+
+        c+=stepC;
+
+    }
+
+}
+
+
+/* =========================================================
+   END
+========================================================= */
+
+function endSelection(){
+
+    if(!isSelecting)
+        return;
+
+    isSelecting=false;
+
+    checkSelection();
+
+    startCell=null;
+
+}
+
+
+/* =========================================================
+   MOUSE GLOBAL
+========================================================= */
+
+document.addEventListener(
+    "mouseup",
+    ()=>{
+        if(isSelecting){
+            endSelection();
+        }
+    }
+);
+
+
+/* =========================================================
+   CHECK WORD
+========================================================= */
+
+function checkSelection(){
+
+    document
+    .querySelectorAll(".cell.selecting")
+    .forEach(
+        cell=>
+        cell.classList.remove(
+            "selecting"
+        )
+    );
+
+
+    if(
+        currentSelection.length<2
+    ){
+
+        currentSelection=[];
+
+        return;
+
+    }
+
+
+    const selectedLetters=
+        currentSelection
+        .map(id=>{
+
+            const parts=
+                id.split("-");
+
+            return grid[
+                Number(parts[0])
+            ][
+                Number(parts[1])
+            ];
+
+        })
+        .join("");
+
+
+    const reversed=
+        selectedLetters
+        .split("")
+        .reverse()
+        .join("");
+
+
+    const phase=
+        phases[currentPhase-1];
+
+
+    let found=null;
+
+
+    phase.words.forEach(
+        word=>{
+
+            if(
+                foundWords.has(word)
+            )
+                return;
+
+            if(
+                selectedLetters===word ||
+                reversed===word
+            ){
+
+                found=word;
+
+            }
+
+        }
+    );
+
+
+    if(found){
+
+        markFound(found);
+
+    }
+
+    currentSelection=[];
+
+}
+
+
+/* =========================================================
+   MARK FOUND
+========================================================= */
+
+function markFound(word){
+
+    foundWords.add(word);
+
+    /*
+       Marca todas as células correspondentes
+       à palavra encontrada.
+    */
+
+    const placement=
+        placements.find(
+            p=>p.word===word
+        );
+
+
+    if(placement){
+
+        placement.cells.forEach(
+            id=>{
+
+                const parts=
+                    id.split("-");
+
+                const cell=
+                    getCell(
+                        Number(parts[0]),
+                        Number(parts[1])
+                    );
+
+                if(cell){
+
+                    cell.classList.add(
+                        "found"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*
+       Atualiza lista
+    */
+
+    const wordElement=
+        document.querySelector(
+            `.word[data-word="${word}"]`
+        );
+
+    if(wordElement){
+
+        wordElement.classList.add(
+            "found"
+        );
+
+    }
+
+
+    /*
+       Pontuação
+    */
+
+    const points=
+        50+
+        currentPhase*10;
+
+    score+=points;
+
+    totalFound++;
+
+
+    updateHUD();
+
+
+    /*
+       Fase completa
+    */
+
+    if(
+        foundWords.size===
+        phases[currentPhase-1].words.length
+    ){
+
+        setTimeout(
+            phaseComplete,
+            450
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   WORD LIST
+========================================================= */
+
+function renderWordList(){
+
+    wordList.innerHTML="";
+
+    phases[
+        currentPhase-1
+    ].words.forEach(
+        word=>{
+
+            const div=
+                document.createElement("div");
+
+            div.className="word";
+
+            div.dataset.word=word;
+
+            div.textContent=
+                word;
+
+            if(
+                foundWords.has(word)
+            ){
+
+                div.classList.add(
+                    "found"
+                );
+
+            }
+
+            wordList.appendChild(div);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD(){
+
+    const total=
+        phases[
+            currentPhase-1
+        ].words.length;
+
+    const found=
+        foundWords.size;
+
+    const percent=
+        Math.round(
+            found/total*100
+        );
+
+
+    phaseDisplay.textContent=
+        `${currentPhase} / 10`;
+
+    document.getElementById(
+        "foundDisplay"
+    ).textContent=
+        `${found} / ${total}`;
+
+    wordCount.textContent=
+        `${found} / ${total}`;
+
+    scoreDisplay.textContent=
+        score;
+
+    progressBar.style.width=
+        `${percent}%`;
+
+    progressText.textContent=
+        `${percent}%`;
+
+}
+
+
+/* =========================================================
+   LOAD PHASE
+========================================================= */
+
+function loadPhase(){
+
+    foundWords=new Set();
+
+    phaseNumber.textContent=
+        currentPhase;
+
+    phaseTitle.textContent=
+        phases[
+            currentPhase-1
+        ].title;
+
+    difficulty.textContent=
+        phases[
+            currentPhase-1
+        ].difficulty;
+
+    generateBoard();
+
+    renderWordList();
+
+    updateHUD();
+
+    updatePhaseButtons();
+
+    document.getElementById(
+        "gameMain"
+    ).style.display="grid";
+
+    document.getElementById(
+        "final"
+    ).style.display="none";
+
+}
+
+
+/* =========================================================
+   PHASE COMPLETE
+========================================================= */
+
+function phaseComplete(){
+
+    const phase=
+        phases[currentPhase-1];
+
+
+    completedPhases.push(
+        currentPhase
+    );
+
+
+    /*
+       Bônus da fase
+    */
+
+    const bonus=
+        500+
+        currentPhase*100;
+
+    score+=bonus;
+
+    updateHUD();
+
+    document.getElementById(
+        "modalScore"
+    ).textContent=
+        bonus;
+
+
+    if(
+        currentPhase<10
+    ){
+
+        document.getElementById(
+            "modalIcon"
+        ).textContent="🎉";
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent=
+            `FASE ${currentPhase} CONCLUÍDA!`;
+
+        document.getElementById(
+            "modalText"
+        ).textContent=
+            `Você encontrou todas as 20 palavras de ${phase.title}. A próxima fase foi desbloqueada!`;
+
+    }
+
+    else{
+
+        document.getElementById(
+            "modalIcon"
+        ).textContent="👑";
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent=
+            "VOCÊ É O WORD HUNTER MASTER!";
+
+        document.getElementById(
+            "modalText"
+        ).textContent=
+            "Você encontrou todas as 200 palavras das 10 fases!";
+
+    }
+
+
+    overlay.style.display=
+        "flex";
+
+    updatePhaseButtons();
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeModal(){
+
+    overlay.style.display=
+        "none";
+
+
+    if(
+        currentPhase<10
+    ){
+
+        currentPhase++;
+
+        loadPhase();
+
+    }
+
+    else{
+
+        finishGame();
+
+    }
+
+}
+
+
+/* =========================================================
+   PHASE SELECT
+========================================================= */
+
+function selectPhase(phase){
+
+    /*
+       Só permite acessar fases liberadas.
+    */
+
+    if(
+        phase!==1 &&
+        !completedPhases.includes(
+            phase-1
+        ) &&
+        !completedPhases.includes(phase)
+    ){
+
+        return;
+
+    }
+
+    currentPhase=phase;
+
+    overlay.style.display=
+        "none";
+
+    loadPhase();
+
+}
+
+
+/* =========================================================
+   PHASE BUTTONS
+========================================================= */
+
+function updatePhaseButtons(){
+
+    for(
+        let i=1;
+        i<=10;
+        i++
+    ){
+
+        const button=
+            document.getElementById(
+                `phaseBtn${i}`
+            );
+
+        if(!button)
+            continue;
+
+
+        button.classList.remove(
+            "active"
+        );
+
+        button.classList.remove(
+            "completed"
+        );
+
+        button.classList.remove(
+            "locked"
+        );
+
+
+        if(
+            i===currentPhase
+        ){
+
+            button.classList.add(
+                "active"
+            );
+
+        }
+
+
+        if(
+            completedPhases.includes(i)
+        ){
+
+            button.classList.add(
+                "completed"
+            );
+
+            button.textContent=
+                `${i} ✓`;
+
+        }
+
+        else if(
+            i>1 &&
+            !completedPhases.includes(i-1)
+        ){
+
+            button.classList.add(
+                "locked"
+            );
+
+            button.textContent=
+                `${i} 🔒`;
+
+        }
+
+        else{
+
+            button.textContent=
+                `${i}`;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+function finishGame(){
+
+    document.getElementById(
+        "gameMain"
+    ).style.display=
+        "none";
+
+    document.getElementById(
+        "final"
+    ).style.display=
+        "block";
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent=
+        score;
+
+
+    const message=
+        `
+        Você completou as 10 fases,
+        encontrou 200 palavras e
+        terminou o desafio Word Hunter.
+        Excelente trabalho!
+        `;
+
+    document.getElementById(
+        "finalMessage"
+    ).textContent=
+        message;
+
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+function restartGame(){
+
+    currentPhase=1;
+
+    score=0;
+
+    totalFound=0;
+
+    completedPhases=[];
+
+    foundWords=new Set();
+
+    document.getElementById(
+        "final"
+    ).style.display="none";
+
+    loadPhase();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadPhase();
+
+</script>
 
 </body>
 
 </html>
-```
