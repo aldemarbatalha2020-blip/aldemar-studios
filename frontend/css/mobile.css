@@ -1,754 +1,1124 @@
 /* =========================================================
    ALDEMAR STUDIOS
    MOBILE.CSS
-   PRIORIDADE: CELULAR
-========================================================= */
+   RESPONSIVIDADE
+   ========================================================= */
 
 
 /* =========================================================
-   CELULARES
-========================================================= */
+   CELULARES — ATÉ 600px
+   ========================================================= */
 
 @media (max-width: 600px) {
 
+    /* -----------------------------------------------------
+       BASE
+       ----------------------------------------------------- */
+
+    html,
     body {
-
-        min-height:
-            100svh;
-
-        overflow-x:
-            hidden;
+        width: 100%;
+        min-width: 0;
+        min-height: 100%;
+        overflow-x: hidden;
     }
 
+    body {
+        margin: 0;
+    }
+
+
+    /* -----------------------------------------------------
+       TELA PRINCIPAL
+       ----------------------------------------------------- */
 
     .screen {
+        width: 100%;
+        min-height: 100svh;
+        height: auto;
 
-        min-height:
-            100svh;
+        box-sizing: border-box;
 
-        padding:
-            22px 15px 70px;
+        padding: 20px 12px 70px;
 
-        align-items:
-            flex-start;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
 
-        justify-content:
-            center;
-
-        overflow-y:
-            auto;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
 
-    /* =====================================================
-       CONTAINER
-    ===================================================== */
+    /* -----------------------------------------------------
+       CONTAINER DE AUTENTICAÇÃO
+       ----------------------------------------------------- */
 
     .auth-container {
+        width: 100%;
+        max-width: 400px;
+        min-width: 0;
 
-        width:
-            100%;
+        margin: 0 auto;
 
-        max-width:
-            430px;
+        display: flex;
+        flex-direction: column;
 
-        display:
-            flex;
+        align-items: center;
 
-        flex-direction:
-            column;
+        gap: 16px;
 
-        gap:
-            10px;
-
-        margin:
-            auto;
+        box-sizing: border-box;
     }
 
 
     /* =====================================================
-       MARCA
-    ===================================================== */
+       MARCA / PARTE SUPERIOR
+       ===================================================== */
 
     .brand {
+        width: 100%;
+        max-width: 400px;
+        min-width: 0;
 
-        width:
-            100%;
+        margin: 0;
+        padding: 0;
 
-        padding:
-            0;
+        display: flex;
+        flex-direction: column;
 
-        text-align:
-            center;
+        align-items: center;
+
+        text-align: center;
+
+        position: relative;
+
+        box-sizing: border-box;
     }
 
 
-    /* =====================================================
-       VISUAL DA FOTO
-    ===================================================== */
+    /* -----------------------------------------------------
+       ÁREA DA FOTO
+       ----------------------------------------------------- */
 
     .brand-visual {
+        position: relative;
 
-        width:
-            155px;
+        width: 130px;
+        height: 130px;
 
-        height:
-            155px;
+        margin: 0 auto 10px;
 
-        margin:
-            0 auto 14px;
+        flex-shrink: 0;
     }
 
 
     .profile-photo {
+        position: relative;
 
-        width:
-            108px;
+        width: 94px;
+        height: 94px;
 
-        height:
-            108px;
+        margin: 18px auto 0;
 
-        padding:
-            4px;
+        padding: 4px;
+
+        box-sizing: border-box;
+
+        border-radius: 50%;
+
+        object-fit: cover;
 
         box-shadow:
-
-            0 0 0 1px
-            rgba(255,255,255,0.08),
-
-            0 0 28px
-            rgba(99,102,241,0.25),
-
-            0 15px 40px
-            rgba(0,0,0,0.45);
+            0 0 0 1px rgba(255,255,255,.08),
+            0 0 30px rgba(99,102,241,.30),
+            0 15px 40px rgba(0,0,0,.45);
     }
 
 
     .photo-placeholder {
-
-        font-size:
-            27px;
-
-        letter-spacing:
-            2px;
+        font-size: 24px;
+        letter-spacing: 2px;
     }
 
 
-    /* =====================================================
-       ÓRBITAS MOBILE
-    ===================================================== */
+    /* -----------------------------------------------------
+       ÓRBITAS
+       ----------------------------------------------------- */
 
     .orbit-one {
-
-        width:
-            140px;
-
-        height:
-            70px;
+        width: 122px;
+        height: 61px;
     }
-
 
     .orbit-two {
-
-        width:
-            115px;
-
-        height:
-            145px;
+        width: 100px;
+        height: 126px;
     }
 
 
     /* =====================================================
-       BADGE
-    ===================================================== */
+       IDENTIDADE
+       ===================================================== */
 
     .brand-badge {
+        display: inline-flex;
 
-        font-size:
-            8px;
+        align-items: center;
+        justify-content: center;
 
-        letter-spacing:
-            1.5px;
+        max-width: 100%;
 
-        padding:
-            6px 10px;
+        padding: 6px 10px;
 
-        margin-bottom:
-            9px;
+        margin: 0 auto 7px;
+
+        font-size: 8px;
+
+        line-height: 1;
+
+        letter-spacing: 1.5px;
+
+        white-space: nowrap;
+
+        box-sizing: border-box;
     }
 
 
-    /* =====================================================
-       TÍTULO
-    ===================================================== */
-
     .brand h1 {
+        width: 100%;
 
-        font-size:
-            clamp(30px, 9vw, 38px);
+        margin: 0 0 6px;
 
-        letter-spacing:
-            -1.8px;
+        font-size: 28px;
 
-        line-height:
-            1.05;
+        line-height: 1.05;
 
-        margin-bottom:
-            8px;
+        letter-spacing: -1.2px;
+
+        text-align: center;
+
+        white-space: normal;
+
+        overflow-wrap: break-word;
     }
 
 
     .brand p {
+        width: 100%;
 
-        max-width:
-            330px;
+        max-width: 330px;
 
-        margin:
-            0 auto;
+        margin: 0 auto;
 
-        font-size:
-            12px;
+        padding: 0 5px;
 
-        line-height:
-            1.5;
+        box-sizing: border-box;
+
+        font-size: 10.5px;
+
+        line-height: 1.45;
+
+        text-align: center;
     }
 
 
     /* =====================================================
-       CARD
-    ===================================================== */
+       CARD DE LOGIN
+       ===================================================== */
 
     .auth-card {
+        width: 100%;
+        max-width: 400px;
+        min-width: 0;
 
-        width:
-            100%;
+        margin: 0 auto;
 
-        padding:
-            24px 19px;
+        padding: 21px 16px;
 
-        border-radius:
-            20px;
+        box-sizing: border-box;
+
+        border-radius: 19px;
+
+        overflow: visible;
 
         box-shadow:
+            0 20px 55px rgba(0,0,0,.45);
 
-            0 20px 55px
-            rgba(0,0,0,0.45);
+        position: relative;
+
+        transform: none;
     }
 
 
     /* =====================================================
-       CABEÇALHO
-    ===================================================== */
+       CABEÇALHO DO CARD
+       ===================================================== */
 
     .card-header {
+        width: 100%;
 
-        margin-bottom:
-            21px;
+        margin-bottom: 18px;
+
+        text-align: center;
     }
 
 
     .card-header h2 {
+        margin: 0 0 6px;
 
-        font-size:
-            23px;
+        font-size: 21px;
 
-        margin-bottom:
-            6px;
+        line-height: 1.2;
     }
 
 
     .card-header p {
+        margin: 0;
 
-        font-size:
-            12px;
+        font-size: 10.5px;
+
+        line-height: 1.4;
     }
 
 
     /* =====================================================
-       INPUTS
-    ===================================================== */
+       CAMPOS
+       ===================================================== */
 
     .input-group {
+        width: 100%;
+        min-width: 0;
 
-        margin-bottom:
-            15px;
+        margin-bottom: 12px;
     }
 
 
     .input-group label {
+        display: block;
 
-        font-size:
-            11px;
+        margin-bottom: 6px;
 
-        margin-bottom:
-            7px;
+        font-size: 10px;
+
+        line-height: 1.2;
     }
 
 
     .input-group input {
+        display: block;
 
-        height:
-            52px;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
 
-        border-radius:
-            12px;
+        height: 49px;
 
-        padding:
-            0 14px;
+        padding: 0 13px;
 
-        font-size:
-            14px;
+        box-sizing: border-box;
+
+        border-radius: 12px;
+
+        font-size: 13px;
+
+        outline: none;
     }
 
 
     /* =====================================================
-       BOTÃO PRINCIPAL
-    ===================================================== */
+       BOTÃO ENTRAR
+       ===================================================== */
 
     .primary-button {
+        display: block;
 
-        height:
-            53px;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
 
-        border-radius:
-            12px;
+        height: 49px;
 
-        font-size:
-            12px;
+        box-sizing: border-box;
+
+        margin-top: 2px;
+
+        border-radius: 12px;
+
+        font-size: 10.5px;
+
+        cursor: pointer;
     }
 
 
     /* =====================================================
-       LINK
-    ===================================================== */
+       ESQUECI A SENHA
+       ===================================================== */
 
     .link-button {
+        display: block;
 
-        margin-top:
-            13px;
+        width: 100%;
 
-        font-size:
-            11px;
+        margin-top: 11px;
+
+        font-size: 9.5px;
+
+        text-align: center;
+
+        white-space: normal;
     }
 
 
     /* =====================================================
        DIVISOR
-    ===================================================== */
+       ===================================================== */
 
     .divider {
+        width: 100%;
 
-        margin:
-            20px 0;
+        margin: 17px 0;
 
-        font-size:
-            10px;
+        box-sizing: border-box;
+
+        font-size: 9px;
+
+        text-align: center;
     }
 
 
     /* =====================================================
        CRIAR CONTA
-    ===================================================== */
+       ===================================================== */
+
+    .create-account {
+        width: 100%;
+
+        text-align: center;
+    }
+
 
     .create-account p {
+        margin: 0 0 8px;
 
-        font-size:
-            11px;
+        font-size: 9.5px;
 
-        margin-bottom:
-            10px;
+        line-height: 1.4;
     }
 
 
     .secondary-button {
+        display: block;
 
-        min-height:
-            49px;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
 
-        border-radius:
-            12px;
+        min-height: 46px;
 
-        font-size:
-            11px;
+        box-sizing: border-box;
+
+        border-radius: 12px;
+
+        font-size: 9.5px;
     }
 
 
     /* =====================================================
        CONTATO
-    ===================================================== */
+       ===================================================== */
 
     .auth-contact {
+        position: fixed;
 
-        bottom:
-            12px;
+        left: 0;
+        bottom: 8px;
 
-        width:
-            100%;
+        width: 100%;
 
-        justify-content:
-            center;
+        display: flex;
 
-        font-size:
-            10px;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0 10px;
+
+        box-sizing: border-box;
+
+        font-size: 8.5px;
+
+        text-align: center;
+
+        z-index: 20;
     }
 
 
     /* =====================================================
-       CADASTRO
-    ===================================================== */
+       TELA DE CADASTRO
+       ===================================================== */
+
+    #registerScreen {
+        width: 100%;
+    }
+
 
     #registerScreen .brand-visual {
+        width: 115px;
+        height: 115px;
 
-        width:
-            120px;
-
-        height:
-            120px;
-
-        margin-bottom:
-            12px;
+        margin-bottom: 8px;
     }
 
 
     #registerScreen .profile-photo {
-
-        width:
-            82px;
-
-        height:
-            82px;
+        width: 82px;
+        height: 82px;
     }
 
 
     #registerScreen .photo-placeholder {
-
-        font-size:
-            22px;
+        font-size: 21px;
     }
 
 
     #registerScreen .brand h1 {
-
-        font-size:
-            30px;
+        font-size: 26px;
     }
 
 
     /* =====================================================
-       SEÇÕES
-    ===================================================== */
+       SEÇÕES DO SITE
+       ===================================================== */
 
     .content-section {
+        width: 100%;
 
-        padding:
-            20px 15px;
+        box-sizing: border-box;
+
+        padding: 20px 14px;
     }
 
 
     .section-title {
-
-        margin-bottom:
-            25px;
+        margin-bottom: 22px;
     }
 
 
     .section-title h2 {
-
-        font-size:
-            24px;
+        font-size: 23px;
     }
 
 
     /* =====================================================
        JOGOS
-    ===================================================== */
+       ===================================================== */
 
     .games-grid {
+        display: grid;
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
 
-        gap:
-            15px;
+        gap: 15px;
+
+        width: 100%;
     }
 
 
     .game-card {
+        width: 100%;
 
-        border-radius:
-            17px;
+        box-sizing: border-box;
+
+        border-radius: 17px;
     }
 
 
     .game-cover {
-
-        min-height:
-            120px;
+        min-height: 120px;
     }
 
 
     .game-card-content {
-
-        padding:
-            18px;
+        padding: 17px;
     }
 
 
     .game-card h3 {
-
-        font-size:
-            18px;
+        font-size: 18px;
     }
 
 
     .game-card p {
-
-        font-size:
-            13px;
+        font-size: 13px;
     }
 
 
     /* =====================================================
        FILTROS
-    ===================================================== */
+       ===================================================== */
 
     .game-filters {
+        width: 100%;
 
-        display:
-            grid;
+        display: grid;
 
         grid-template-columns:
-            repeat(2, 1fr);
+            repeat(2, minmax(0, 1fr));
 
-        gap:
-            7px;
+        gap: 7px;
     }
 
 
     .game-filter {
+        width: 100%;
 
-        width:
-            100%;
+        box-sizing: border-box;
 
-        padding:
-            10px 5px;
+        padding: 10px 5px;
 
-        font-size:
-            9px;
+        font-size: 9px;
     }
 }
 
 
-/* =========================================================
-   CELULARES MUITO PEQUENOS
-========================================================= */
 
-@media (max-width: 380px) {
+/* =========================================================
+   CELULARES PEQUENOS
+   ATÉ 340px
+   ========================================================= */
+
+@media (max-width: 340px) {
 
     .screen {
-
         padding:
-            16px 12px 62px;
+            18px 8px 68px;
+    }
+
+
+    .auth-container {
+        gap: 12px;
     }
 
 
     .brand-visual {
+        width: 125px;
+        height: 125px;
 
-        width:
-            125px;
-
-        height:
-            125px;
-
-        margin-bottom:
-            10px;
+        margin-bottom: 8px;
     }
 
 
     .profile-photo {
+        width: 92px;
+        height: 92px;
 
-        width:
-            88px;
-
-        height:
-            88px;
+        margin-top: 17px;
     }
 
 
-    .photo-placeholder {
-
-        font-size:
-            23px;
+    .orbit-one {
+        width: 118px;
+        height: 59px;
     }
 
 
-    .brand h1 {
-
-        font-size:
-            28px;
-
-        letter-spacing:
-            -1.3px;
-    }
-
-
-    .brand p {
-
-        font-size:
-            11px;
-    }
-
-
-    .auth-card {
-
-        padding:
-            20px 16px;
-
-        border-radius:
-            18px;
-    }
-
-
-    .card-header h2 {
-
-        font-size:
-            21px;
-    }
-
-
-    .input-group input {
-
-        height:
-            49px;
-
-        font-size:
-            13px;
-    }
-
-
-    .primary-button {
-
-        height:
-            50px;
-    }
-
-
-    .auth-contact {
-
-        font-size:
-            9px;
-    }
-}
-
-
-/* =========================================================
-   CELULAR PEQUENO EM ALTURA
-========================================================= */
-
-@media (max-height: 700px) and (max-width: 600px) {
-
-    .screen {
-
-        padding-top:
-            12px;
-
-        padding-bottom:
-            60px;
-    }
-
-
-    .brand-visual {
-
-        width:
-            110px;
-
-        height:
-            110px;
-
-        margin-bottom:
-            7px;
-    }
-
-
-    .profile-photo {
-
-        width:
-            78px;
-
-        height:
-            78px;
-    }
-
-
-    .brand-badge {
-
-        margin-bottom:
-            5px;
+    .orbit-two {
+        width: 98px;
+        height: 123px;
     }
 
 
     .brand h1 {
-
-        font-size:
-            26px;
-
-        margin-bottom:
-            5px;
+        font-size: 25px;
     }
 
 
     .brand p {
+        max-width: 290px;
 
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
 
     .auth-card {
+        padding: 19px 14px;
 
-        padding:
-            18px 15px;
+        border-radius: 18px;
     }
 
 
     .card-header {
+        margin-bottom: 16px;
+    }
 
-        margin-bottom:
-            15px;
+
+    .card-header h2 {
+        font-size: 20px;
     }
 
 
     .input-group {
-
-        margin-bottom:
-            11px;
+        margin-bottom: 11px;
     }
 
 
     .input-group input {
+        height: 47px;
 
-        height:
-            45px;
+        padding-left: 12px;
+        padding-right: 12px;
+
+        font-size: 13px;
     }
 
 
     .primary-button {
-
-        height:
-            47px;
-    }
-
-
-    .divider {
-
-        margin:
-            15px 0;
+        height: 47px;
     }
 
 
     .secondary-button {
+        min-height: 44px;
+    }
 
-        min-height:
-            44px;
+
+    .auth-contact {
+        bottom: 7px;
+
+        font-size: 8px;
+    }
+}
+
+
+
+/* =========================================================
+   CELULARES MÉDIOS
+   341px ATÉ 390px
+   ========================================================= */
+
+@media (min-width: 341px) and (max-width: 390px) {
+
+    .screen {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+
+    .auth-container {
+        gap: 14px;
+    }
+
+
+    .brand-visual {
+        width: 130px;
+        height: 130px;
+
+        margin-bottom: 9px;
+    }
+
+
+    .profile-photo {
+        width: 97px;
+        height: 97px;
+
+        margin-top: 18px;
+    }
+
+
+    .orbit-one {
+        width: 124px;
+        height: 62px;
+    }
+
+
+    .orbit-two {
+        width: 102px;
+        height: 129px;
+    }
+
+
+    .brand h1 {
+        font-size: 27px;
+    }
+
+
+    .brand p {
+        max-width: 315px;
+
+        font-size: 10.5px;
+    }
+
+
+    .auth-card {
+        padding: 20px 16px;
+    }
+
+
+    .input-group input {
+        height: 49px;
+    }
+
+
+    .primary-button {
+        height: 49px;
+    }
+}
+
+
+
+/* =========================================================
+   CELULARES GRANDES
+   391px ATÉ 425px
+
+   IMPORTANTE:
+   NÃO aumenta exageradamente os elementos.
+   Mantém o mesmo padrão visual do celular médio.
+   ========================================================= */
+
+@media (min-width: 391px) and (max-width: 425px) {
+
+    .screen {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+
+    .auth-container {
+        width: 100%;
+        max-width: 400px;
+
+        gap: 14px;
+    }
+
+
+    /* -----------------------------------------------------
+       IMAGEM / ILUSTRAÇÕES
+       ----------------------------------------------------- */
+
+    .brand-visual {
+        width: 130px;
+        height: 130px;
+
+        margin-bottom: 9px;
+    }
+
+
+    .profile-photo {
+        width: 97px;
+        height: 97px;
+
+        margin-top: 18px;
+    }
+
+
+    .orbit-one {
+        width: 124px;
+        height: 62px;
+    }
+
+
+    .orbit-two {
+        width: 102px;
+        height: 129px;
+    }
+
+
+    /* -----------------------------------------------------
+       INFORMAÇÕES
+       ----------------------------------------------------- */
+
+    .brand-badge {
+        margin-bottom: 7px;
+
+        padding: 6px 10px;
+
+        font-size: 8px;
+    }
+
+
+    .brand h1 {
+        font-size: 27px;
+
+        margin-bottom: 6px;
+    }
+
+
+    .brand p {
+        max-width: 340px;
+
+        padding: 0 5px;
+
+        font-size: 10.5px;
+
+        line-height: 1.45;
+    }
+
+
+    /* -----------------------------------------------------
+       CARD
+       ----------------------------------------------------- */
+
+    .auth-card {
+        width: 100%;
+        max-width: 400px;
+
+        padding: 20px 16px;
+
+        border-radius: 19px;
+    }
+
+
+    .card-header {
+        margin-bottom: 18px;
+    }
+
+
+    .card-header h2 {
+        font-size: 21px;
+    }
+
+
+    .card-header p {
+        font-size: 10.5px;
+    }
+
+
+    .input-group {
+        margin-bottom: 12px;
+    }
+
+
+    .input-group input {
+        height: 49px;
+
+        font-size: 13px;
+    }
+
+
+    .primary-button {
+        height: 49px;
+    }
+
+
+    .secondary-button {
+        min-height: 46px;
+    }
+}
+
+
+
+/* =========================================================
+   CELULARES COM POUCA ALTURA
+   SOMENTE QUANDO A ALTURA FOR PEQUENA
+   ========================================================= */
+
+@media (max-width: 600px) and (max-height: 700px) {
+
+    .screen {
+        padding-top: 10px;
+        padding-bottom: 60px;
+    }
+
+
+    .auth-container {
+        gap: 9px;
+    }
+
+
+    .brand-visual {
+        width: 105px;
+        height: 105px;
+
+        margin-bottom: 4px;
+    }
+
+
+    .profile-photo {
+        width: 75px;
+        height: 75px;
+
+        margin-top: 15px;
+    }
+
+
+    .orbit-one {
+        width: 100px;
+        height: 50px;
+    }
+
+
+    .orbit-two {
+        width: 82px;
+        height: 105px;
+    }
+
+
+    .brand-badge {
+        margin-bottom: 4px;
+
+        padding: 5px 8px;
+
+        font-size: 7px;
+    }
+
+
+    .brand h1 {
+        font-size: 24px;
+
+        margin-bottom: 4px;
+    }
+
+
+    .brand p {
+        font-size: 9px;
+
+        line-height: 1.35;
+    }
+
+
+    .auth-card {
+        padding: 16px 14px;
+    }
+
+
+    .card-header {
+        margin-bottom: 12px;
+    }
+
+
+    .card-header h2 {
+        font-size: 19px;
+    }
+
+
+    .card-header p {
+        font-size: 10px;
+    }
+
+
+    .input-group {
+        margin-bottom: 8px;
+    }
+
+
+    .input-group label {
+        margin-bottom: 5px;
+
+        font-size: 9px;
+    }
+
+
+    .input-group input {
+        height: 43px;
+
+        font-size: 12px;
+    }
+
+
+    .primary-button {
+        height: 44px;
+
+        font-size: 10px;
+    }
+
+
+    .link-button {
+        margin-top: 9px;
+
+        font-size: 9px;
+    }
+
+
+    .divider {
+        margin: 12px 0;
+    }
+
+
+    .create-account p {
+        margin-bottom: 6px;
+
+        font-size: 9px;
+    }
+
+
+    .secondary-button {
+        min-height: 41px;
+
+        font-size: 9px;
+    }
+}
+
+
+
+/* =========================================================
+   GARANTIA DE LAYOUT VERTICAL NO MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .auth-container {
+        display: flex !important;
+
+        flex-direction: column !important;
+
+        align-items: center !important;
+
+        justify-content: flex-start !important;
+    }
+
+
+    .brand {
+        display: flex !important;
+
+        flex-direction: column !important;
+
+        align-items: center !important;
+
+        justify-content: flex-start !important;
+
+        position: relative !important;
+
+        transform: none !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+
+        order: 1 !important;
+    }
+
+
+    .auth-card {
+        position: relative !important;
+
+        transform: none !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+
+        order: 2 !important;
+    }
+
+
+    .brand-visual {
+        order: 1;
+    }
+
+
+    .brand-badge {
+        order: 2;
+    }
+
+
+    .brand h1 {
+        order: 3;
+    }
+
+
+    .brand p {
+        order: 4;
     }
 }
