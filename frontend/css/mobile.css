@@ -1,154 +1,754 @@
-@media (max-width: 600px) {
-    body {
-        min-height: 100dvh;
-        overflow-x: hidden;
-        background:
-            radial-gradient(circle at 50% -10%, rgba(99,102,241,.28), transparent 42%),
-            linear-gradient(145deg, #070b18, #0c1224 50%, #111936);
-    }
-
-    .screen {
-        min-height: 100dvh;
-        padding: 20px 15px;
-    }
-
-    .auth-container {
-        width: 100%;
-        max-width: 430px;
-        margin: auto;
-    }
-
-    .brand {
-        margin-bottom: 20px;
-    }
-
-    .brand-icon {
-        width: 68px;
-        height: 68px;
-        border-radius: 20px;
-        margin-bottom: 14px;
-        box-shadow: 0 18px 45px rgba(99,102,241,.28);
-    }
-
-    .brand h1 {
-        font-size: 27px;
-    }
-
-    .brand p {
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    .auth-card {
-        padding: 23px 18px;
-        border-radius: 21px;
-        background: linear-gradient(145deg, rgba(19,29,55,.96), rgba(10,17,34,.98));
-        box-shadow: 0 30px 70px rgba(0,0,0,.45);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
-
-    .card-header h2 {
-        font-size: 22px;
-    }
-
-    .input-group input {
-        height: 53px;
-        font-size: 16px;
-        border-radius: 14px;
-    }
-
-    .primary-button,
-    .secondary-button {
-        min-height: 53px;
-        border-radius: 14px;
-    }
-
-    .link-button {
-        min-height: 40px;
-    }
-}
-
-@media (max-width: 360px) {
-    .screen {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .brand-icon {
-        width: 60px;
-        height: 60px;
-    }
-
-    .brand h1 {
-        font-size: 24px;
-    }
-
-    .auth-card {
-        padding: 20px 15px;
-    }
-}
-
 /* =========================================================
-   MELHORIAS MOBILE — ANDROID
+   ALDEMAR STUDIOS
+   MOBILE.CSS
+   PRIORIDADE: CELULAR
 ========================================================= */
 
-.user-avatar-button {
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-    font: inherit;
-    appearance: none;
-    -webkit-tap-highlight-color: transparent;
-}
 
-.user-avatar-button:active {
-    transform: scale(0.94);
-}
+/* =========================================================
+   CELULARES
+========================================================= */
 
-@media (max-width: 650px) {
+@media (max-width: 600px) {
 
-    .user-avatar-button {
-        width: 42px;
-        height: 42px;
-        min-width: 42px;
-        min-height: 42px;
+    body {
 
-        border: 2px solid rgba(77, 163, 255, 0.35);
+        min-height:
+            100svh;
+
+        overflow-x:
+            hidden;
+    }
+
+
+    .screen {
+
+        min-height:
+            100svh;
+
+        padding:
+            22px 15px 70px;
+
+        align-items:
+            flex-start;
+
+        justify-content:
+            center;
+
+        overflow-y:
+            auto;
+    }
+
+
+    /* =====================================================
+       CONTAINER
+    ===================================================== */
+
+    .auth-container {
+
+        width:
+            100%;
+
+        max-width:
+            430px;
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            10px;
+
+        margin:
+            auto;
+    }
+
+
+    /* =====================================================
+       MARCA
+    ===================================================== */
+
+    .brand {
+
+        width:
+            100%;
+
+        padding:
+            0;
+
+        text-align:
+            center;
+    }
+
+
+    /* =====================================================
+       VISUAL DA FOTO
+    ===================================================== */
+
+    .brand-visual {
+
+        width:
+            155px;
+
+        height:
+            155px;
+
+        margin:
+            0 auto 14px;
+    }
+
+
+    .profile-photo {
+
+        width:
+            108px;
+
+        height:
+            108px;
+
+        padding:
+            4px;
 
         box-shadow:
-            0 4px 18px rgba(0, 0, 0, 0.25);
+
+            0 0 0 1px
+            rgba(255,255,255,0.08),
+
+            0 0 28px
+            rgba(99,102,241,0.25),
+
+            0 15px 40px
+            rgba(0,0,0,0.45);
     }
 
-    .topbar {
-        padding-left: 4px;
-        padding-right: 4px;
+
+    .photo-placeholder {
+
+        font-size:
+            27px;
+
+        letter-spacing:
+            2px;
     }
 
-    .welcome-card {
-        border-radius: 20px;
-        padding: 22px 19px;
+
+    /* =====================================================
+       ÓRBITAS MOBILE
+    ===================================================== */
+
+    .orbit-one {
+
+        width:
+            140px;
+
+        height:
+            70px;
     }
 
-    .access-card,
-    .category-card,
+
+    .orbit-two {
+
+        width:
+            115px;
+
+        height:
+            145px;
+    }
+
+
+    /* =====================================================
+       BADGE
+    ===================================================== */
+
+    .brand-badge {
+
+        font-size:
+            8px;
+
+        letter-spacing:
+            1.5px;
+
+        padding:
+            6px 10px;
+
+        margin-bottom:
+            9px;
+    }
+
+
+    /* =====================================================
+       TÍTULO
+    ===================================================== */
+
+    .brand h1 {
+
+        font-size:
+            clamp(30px, 9vw, 38px);
+
+        letter-spacing:
+            -1.8px;
+
+        line-height:
+            1.05;
+
+        margin-bottom:
+            8px;
+    }
+
+
+    .brand p {
+
+        max-width:
+            330px;
+
+        margin:
+            0 auto;
+
+        font-size:
+            12px;
+
+        line-height:
+            1.5;
+    }
+
+
+    /* =====================================================
+       CARD
+    ===================================================== */
+
+    .auth-card {
+
+        width:
+            100%;
+
+        padding:
+            24px 19px;
+
+        border-radius:
+            20px;
+
+        box-shadow:
+
+            0 20px 55px
+            rgba(0,0,0,0.45);
+    }
+
+
+    /* =====================================================
+       CABEÇALHO
+    ===================================================== */
+
+    .card-header {
+
+        margin-bottom:
+            21px;
+    }
+
+
+    .card-header h2 {
+
+        font-size:
+            23px;
+
+        margin-bottom:
+            6px;
+    }
+
+
+    .card-header p {
+
+        font-size:
+            12px;
+    }
+
+
+    /* =====================================================
+       INPUTS
+    ===================================================== */
+
+    .input-group {
+
+        margin-bottom:
+            15px;
+    }
+
+
+    .input-group label {
+
+        font-size:
+            11px;
+
+        margin-bottom:
+            7px;
+    }
+
+
+    .input-group input {
+
+        height:
+            52px;
+
+        border-radius:
+            12px;
+
+        padding:
+            0 14px;
+
+        font-size:
+            14px;
+    }
+
+
+    /* =====================================================
+       BOTÃO PRINCIPAL
+    ===================================================== */
+
+    .primary-button {
+
+        height:
+            53px;
+
+        border-radius:
+            12px;
+
+        font-size:
+            12px;
+    }
+
+
+    /* =====================================================
+       LINK
+    ===================================================== */
+
+    .link-button {
+
+        margin-top:
+            13px;
+
+        font-size:
+            11px;
+    }
+
+
+    /* =====================================================
+       DIVISOR
+    ===================================================== */
+
+    .divider {
+
+        margin:
+            20px 0;
+
+        font-size:
+            10px;
+    }
+
+
+    /* =====================================================
+       CRIAR CONTA
+    ===================================================== */
+
+    .create-account p {
+
+        font-size:
+            11px;
+
+        margin-bottom:
+            10px;
+    }
+
+
+    .secondary-button {
+
+        min-height:
+            49px;
+
+        border-radius:
+            12px;
+
+        font-size:
+            11px;
+    }
+
+
+    /* =====================================================
+       CONTATO
+    ===================================================== */
+
+    .auth-contact {
+
+        bottom:
+            12px;
+
+        width:
+            100%;
+
+        justify-content:
+            center;
+
+        font-size:
+            10px;
+    }
+
+
+    /* =====================================================
+       CADASTRO
+    ===================================================== */
+
+    #registerScreen .brand-visual {
+
+        width:
+            120px;
+
+        height:
+            120px;
+
+        margin-bottom:
+            12px;
+    }
+
+
+    #registerScreen .profile-photo {
+
+        width:
+            82px;
+
+        height:
+            82px;
+    }
+
+
+    #registerScreen .photo-placeholder {
+
+        font-size:
+            22px;
+    }
+
+
+    #registerScreen .brand h1 {
+
+        font-size:
+            30px;
+    }
+
+
+    /* =====================================================
+       SEÇÕES
+    ===================================================== */
+
+    .content-section {
+
+        padding:
+            20px 15px;
+    }
+
+
+    .section-title {
+
+        margin-bottom:
+            25px;
+    }
+
+
+    .section-title h2 {
+
+        font-size:
+            24px;
+    }
+
+
+    /* =====================================================
+       JOGOS
+    ===================================================== */
+
+    .games-grid {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            15px;
+    }
+
+
     .game-card {
-        border-radius: 17px;
+
+        border-radius:
+            17px;
     }
 
-    .menu-item {
-        -webkit-tap-highlight-color: transparent;
+
+    .game-cover {
+
+        min-height:
+            120px;
     }
 
-    .menu-item > span:first-child {
-        font-size: 20px;
+
+    .game-card-content {
+
+        padding:
+            18px;
     }
 
-    .menu-item > span:nth-child(2) {
-        display: block !important;
-        font-size: 8px;
-        line-height: 1;
-        margin-top: 2px;
+
+    .game-card h3 {
+
+        font-size:
+            18px;
+    }
+
+
+    .game-card p {
+
+        font-size:
+            13px;
+    }
+
+
+    /* =====================================================
+       FILTROS
+    ===================================================== */
+
+    .game-filters {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            7px;
+    }
+
+
+    .game-filter {
+
+        width:
+            100%;
+
+        padding:
+            10px 5px;
+
+        font-size:
+            9px;
     }
 }
 
+
+/* =========================================================
+   CELULARES MUITO PEQUENOS
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .screen {
+
+        padding:
+            16px 12px 62px;
+    }
+
+
+    .brand-visual {
+
+        width:
+            125px;
+
+        height:
+            125px;
+
+        margin-bottom:
+            10px;
+    }
+
+
+    .profile-photo {
+
+        width:
+            88px;
+
+        height:
+            88px;
+    }
+
+
+    .photo-placeholder {
+
+        font-size:
+            23px;
+    }
+
+
+    .brand h1 {
+
+        font-size:
+            28px;
+
+        letter-spacing:
+            -1.3px;
+    }
+
+
+    .brand p {
+
+        font-size:
+            11px;
+    }
+
+
+    .auth-card {
+
+        padding:
+            20px 16px;
+
+        border-radius:
+            18px;
+    }
+
+
+    .card-header h2 {
+
+        font-size:
+            21px;
+    }
+
+
+    .input-group input {
+
+        height:
+            49px;
+
+        font-size:
+            13px;
+    }
+
+
+    .primary-button {
+
+        height:
+            50px;
+    }
+
+
+    .auth-contact {
+
+        font-size:
+            9px;
+    }
+}
+
+
+/* =========================================================
+   CELULAR PEQUENO EM ALTURA
+========================================================= */
+
+@media (max-height: 700px) and (max-width: 600px) {
+
+    .screen {
+
+        padding-top:
+            12px;
+
+        padding-bottom:
+            60px;
+    }
+
+
+    .brand-visual {
+
+        width:
+            110px;
+
+        height:
+            110px;
+
+        margin-bottom:
+            7px;
+    }
+
+
+    .profile-photo {
+
+        width:
+            78px;
+
+        height:
+            78px;
+    }
+
+
+    .brand-badge {
+
+        margin-bottom:
+            5px;
+    }
+
+
+    .brand h1 {
+
+        font-size:
+            26px;
+
+        margin-bottom:
+            5px;
+    }
+
+
+    .brand p {
+
+        font-size:
+            10px;
+    }
+
+
+    .auth-card {
+
+        padding:
+            18px 15px;
+    }
+
+
+    .card-header {
+
+        margin-bottom:
+            15px;
+    }
+
+
+    .input-group {
+
+        margin-bottom:
+            11px;
+    }
+
+
+    .input-group input {
+
+        height:
+            45px;
+    }
+
+
+    .primary-button {
+
+        height:
+            47px;
+    }
+
+
+    .divider {
+
+        margin:
+            15px 0;
+    }
+
+
+    .secondary-button {
+
+        min-height:
+            44px;
+    }
+}

@@ -1,6 +1,49 @@
-/* =========================================
+/* ============================================================
+   ALDEMAR STUDIOS
+   DESKTOP UI
+   Visual futurista • azul • roxo • tecnológico
+============================================================ */
+
+
+/* ============================================================
+   VARIÁVEIS
+============================================================ */
+
+:root {
+    --bg-main: #070b18;
+    --bg-secondary: #0b1020;
+    --bg-card: rgba(12, 18, 38, 0.88);
+
+    --blue: #3b82f6;
+    --blue-light: #60a5fa;
+    --blue-bright: #38bdf8;
+
+    --purple: #6366f1;
+    --purple-light: #8b5cf6;
+
+    --text: #f8fafc;
+    --text-soft: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    --border: rgba(148, 163, 184, 0.16);
+    --border-blue: rgba(59, 130, 246, 0.35);
+
+    --shadow:
+        0 30px 80px rgba(0, 0, 0, 0.45);
+
+    --glow-blue:
+        0 0 35px rgba(59, 130, 246, 0.25);
+
+    --glow-purple:
+        0 0 40px rgba(139, 92, 246, 0.25);
+
+    --radius: 24px;
+}
+
+
+/* ============================================================
    RESET
-========================================= */
+============================================================ */
 
 * {
     margin: 0;
@@ -9,108 +52,989 @@
 }
 
 
-/* =========================================
-   BODY
-========================================= */
+html {
+    scroll-behavior: smooth;
+}
+
 
 body {
-
     min-height: 100vh;
 
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(59, 130, 246, 0.12),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(139, 92, 246, 0.12),
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            #050816 0%,
+            #0b1020 48%,
+            #111a35 100%
+        );
+
+    color: var(--text);
+
     font-family:
+        Inter,
+        "Segoe UI",
         Arial,
         Helvetica,
         sans-serif;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0b1020,
-            #111a35,
-            #172554
-        );
-
-    color: #ffffff;
-
+    overflow-x: hidden;
 }
 
 
-/* =========================================
+/* ============================================================
+   FUNDO TECNOLÓGICO
+============================================================ */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px
+        );
+
+    background-size: 55px 55px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
+
+    z-index: 0;
+}
+
+
+body::after {
+    content: "";
+
+    position: fixed;
+
+    width: 600px;
+    height: 600px;
+
+    right: -250px;
+    top: -250px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(59, 130, 246, 0.12),
+            transparent 68%
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ============================================================
    APP
-========================================= */
+============================================================ */
 
 .app {
+    position: relative;
 
     min-height: 100vh;
 
-    width: 100%;
-
+    z-index: 1;
 }
 
 
-/* =========================================
+/* ============================================================
    TELAS
-========================================= */
+============================================================ */
 
 .screen {
-
     display: none;
 
     min-height: 100vh;
 
     width: 100%;
 
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 30px;
-
+    padding: 50px;
 }
 
 
 .screen.active {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ============================================================
+   LOGIN
+============================================================ */
+
+#loginScreen {
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   CONTAINER PRINCIPAL DO LOGIN
+============================================================ */
+
+#loginScreen .auth-container {
+    position: relative;
+
+    width: min(1180px, 100%);
+
+    min-height: 680px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.05fr)
+        minmax(420px, 0.75fr);
+
+    align-items: center;
+
+    gap: 80px;
+
+    margin: auto;
+}
+
+
+/* ============================================================
+   MARCA / ÁREA ESQUERDA
+============================================================ */
+
+.login-brand {
+    position: relative;
+
+    min-height: 600px;
 
     display: flex;
 
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+    padding: 30px 0;
 }
 
 
-/* =========================================
-   CONTAINER
-========================================= */
+/* ============================================================
+   VISUAL DA FOTO
+============================================================ */
 
-.auth-container {
+.brand-visual {
+    position: relative;
+
+    width: 310px;
+    height: 310px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 42px;
+}
+
+
+/* brilho atrás da foto */
+
+.visual-glow {
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(59, 130, 246, 0.35),
+            rgba(99, 102, 241, 0.18),
+            transparent 70%
+        );
+
+    filter: blur(18px);
+
+    animation: pulseGlow 4s ease-in-out infinite;
+}
+
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+
+/* ============================================================
+   FOTO
+============================================================ */
+
+.profile-photo {
+    position: relative;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    padding: 5px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue-bright),
+            var(--purple),
+            var(--purple-light)
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 0 35px rgba(59,130,246,0.32),
+        0 0 75px rgba(99,102,241,0.18);
+
+    z-index: 3;
+}
+
+
+.profile-photo::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -7px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(96,165,250,0.45);
+
+    opacity: 0.8;
+}
+
+
+.profile-photo::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -18px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(99,102,241,0.16);
+
+    z-index: -1;
+}
+
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #1e293b
+        );
+}
+
+
+/* ============================================================
+   PLACEHOLDER DA FOTO
+============================================================ */
+
+.photo-fallback {
+    position: absolute;
+
+    inset: 5px;
+
+    border-radius: 50%;
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(96,165,250,0.18),
+            transparent 55%
+        ),
+        #111827;
+
+    color: var(--text-muted);
+}
+
+
+.profile-photo.empty .photo-fallback {
+    display: flex;
+}
+
+
+.photo-initials {
+    font-size: 42px;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+    color: var(--blue-light);
+
+    text-shadow:
+        0 0 25px rgba(59,130,246,0.5);
+}
+
+
+.photo-label {
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    color: #64748b;
+}
+
+
+/* ============================================================
+   ÓRBITAS
+============================================================ */
+
+.orbit {
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(96,165,250,0.22);
+
+    pointer-events: none;
+}
+
+
+.orbit-one {
+    width: 285px;
+    height: 285px;
+
+    transform: rotate(-20deg);
+
+    border-top-color: rgba(56,189,248,0.8);
+    border-bottom-color: rgba(99,102,241,0.5);
+
+    animation: orbitRotate 12s linear infinite;
+}
+
+
+.orbit-two {
+    width: 330px;
+    height: 180px;
+
+    transform: rotate(35deg);
+
+    border-left-color: rgba(139,92,246,0.6);
+    border-right-color: rgba(59,130,246,0.4);
+
+    animation: orbitRotateReverse 16s linear infinite;
+}
+
+
+@keyframes orbitRotate {
+
+    from {
+        transform: rotate(-20deg);
+    }
+
+    to {
+        transform: rotate(340deg);
+    }
+}
+
+
+@keyframes orbitRotateReverse {
+
+    from {
+        transform: rotate(35deg);
+    }
+
+    to {
+        transform: rotate(-325deg);
+    }
+}
+
+
+/* ============================================================
+   PONTOS TECNOLÓGICOS
+============================================================ */
+
+.tech-point {
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--blue-bright);
+
+    box-shadow:
+        0 0 12px rgba(56,189,248,0.9);
+}
+
+
+.point-one {
+    top: 22px;
+    right: 58px;
+}
+
+
+.point-two {
+    bottom: 38px;
+    left: 36px;
+
+    background: var(--purple-light);
+
+    box-shadow:
+        0 0 12px rgba(139,92,246,0.9);
+}
+
+
+.point-three {
+    top: 110px;
+    left: -5px;
+}
+
+
+.point-four {
+    right: 5px;
+    bottom: 105px;
+
+    background: var(--purple-light);
+}
+
+
+/* ============================================================
+   TEXTO DA MARCA
+============================================================ */
+
+.brand-copy {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.brand-kicker {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 14px;
+
+    color: var(--blue-light);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 4px;
+}
+
+
+.brand-kicker::before {
+    content: "";
+
+    width: 28px;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue-bright),
+            var(--purple)
+        );
+}
+
+
+.brand h1 {
+    margin-bottom: 14px;
+
+    font-size: clamp(38px, 4vw, 58px);
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    background:
+        linear-gradient(
+            110deg,
+            #ffffff 10%,
+            #bfdbfe 48%,
+            #a78bfa 90%
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+.brand p {
+    max-width: 510px;
+
+    color: var(--text-muted);
+
+    font-size: 17px;
+
+    line-height: 1.7;
+}
+
+
+/* ============================================================
+   FEATURES
+============================================================ */
+
+.brand-features {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 34px;
+}
+
+
+.brand-features span {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px 13px;
+
+    border: 1px solid rgba(96,165,250,0.13);
+
+    border-radius: 8px;
+
+    background: rgba(15,23,42,0.45);
+
+    color: #64748b;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+.brand-features strong {
+    color: var(--blue-light);
+
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   CONTATO
+============================================================ */
+
+.contact-badge {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-top: 28px;
+
+    padding: 12px 17px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(15,23,42,0.6);
+
+    border: 1px solid rgba(59,130,246,0.16);
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,0.03);
+}
+
+
+.contact-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #6366f1
+        );
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 0 20px rgba(59,130,246,0.25);
+}
+
+
+.contact-text {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.contact-text small {
+    color: #64748b;
+
+    font-size: 8px;
+
+    letter-spacing: 1.8px;
+
+    font-weight: 700;
+}
+
+
+.contact-text strong {
+    color: #dbeafe;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   CARD DE AUTENTICAÇÃO
+============================================================ */
+
+.auth-card {
+    position: relative;
 
     width: 100%;
 
-    max-width: 430px;
+    padding: 38px;
 
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,24,39,0.95),
+            rgba(9,14,29,0.94)
+        );
+
+    border: 1px solid var(--border);
+
+    box-shadow:
+        var(--shadow),
+        inset 0 1px rgba(255,255,255,0.04);
+
+    backdrop-filter: blur(24px);
 }
 
 
-/* =========================================
-   MARCA
-========================================= */
+/* linha luminosa superior */
 
-.brand {
+.auth-card::before {
+    content: "";
 
-    text-align: center;
+    position: absolute;
 
-    margin-bottom: 28px;
+    top: -1px;
+    left: 12%;
 
+    width: 76%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--blue),
+            var(--purple-light),
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px rgba(59,130,246,0.45);
 }
 
 
-.brand-icon {
+.auth-card::after {
+    content: "";
 
-    width: 72px;
+    position: absolute;
 
-    height: 72px;
+    width: 150px;
+    height: 150px;
 
-    margin: 0 auto 18px;
+    top: -75px;
+    right: -75px;
 
-    border-radius: 20px;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(99,102,241,0.12),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   CABEÇALHO DO CARD
+============================================================ */
+
+.auth-header {
+    margin-bottom: 30px;
+}
+
+
+.auth-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 18px;
+
+    color: #64748b;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 10px rgba(34,197,94,0.8);
+}
+
+
+.auth-header h2 {
+    margin-bottom: 8px;
+
+    font-size: 29px;
+
+    font-weight: 750;
+
+    letter-spacing: -0.7px;
+}
+
+
+.auth-header p {
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.auth-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.input-group label {
+    color: #cbd5e1;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.4px;
+}
+
+
+.input-wrapper {
+    position: relative;
+}
+
+
+.input-icon {
+    position: absolute;
+
+    left: 16px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    z-index: 2;
+}
+
+
+.input-wrapper input {
+    width: 100%;
+
+    height: 52px;
+
+    padding:
+        0 16px 0 44px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(148,163,184,0.14);
+
+    outline: none;
+
+    background:
+        rgba(2,6,23,0.65);
+
+    color: #f8fafc;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.input-wrapper input::placeholder {
+    color: #475569;
+}
+
+
+.input-wrapper input:hover {
+    border-color:
+        rgba(96,165,250,0.25);
+}
+
+
+.input-wrapper input:focus {
+    border-color:
+        rgba(59,130,246,0.7);
+
+    background:
+        rgba(15,23,42,0.85);
+
+    box-shadow:
+        0 0 0 3px rgba(59,130,246,0.08),
+        0 0 20px rgba(59,130,246,0.08);
+}
+
+
+.input-wrapper:focus-within .input-icon {
+    color: var(--blue-light);
+}
+
+
+/* ============================================================
+   BOTÃO PRINCIPAL
+============================================================ */
+
+.primary-button {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 54px;
 
     display: flex;
 
@@ -118,417 +1042,807 @@ body {
 
     justify-content: center;
 
-    font-size: 24px;
+    gap: 18px;
 
-    font-weight: 800;
+    margin-top: 4px;
 
-    letter-spacing: 1px;
+    padding: 0 20px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #6366f1,
-            #8b5cf6
-        );
-
-    box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.35);
-
-}
-
-
-.brand h1 {
-
-    font-size: 30px;
-
-    font-weight: 800;
-
-    letter-spacing: -0.5px;
-
-}
-
-
-.brand p {
-
-    margin-top: 8px;
-
-    color: #aab4d0;
-
-    font-size: 14px;
-
-}
-
-
-/* =========================================
-   CARD
-========================================= */
-
-.auth-card {
-
-    background:
-        rgba(15, 23, 42, 0.92);
-
-    border:
-        1px solid rgba(255, 255, 255, 0.08);
-
-    border-radius: 22px;
-
-    padding: 32px;
-
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.4);
-
-    backdrop-filter: blur(15px);
-
-}
-
-
-/* =========================================
-   HEADER DO CARD
-========================================= */
-
-.card-header {
-
-    margin-bottom: 25px;
-
-}
-
-
-.card-header h2 {
-
-    font-size: 25px;
-
-    margin-bottom: 7px;
-
-}
-
-
-.card-header p {
-
-    color: #9ca8c3;
-
-    font-size: 14px;
-
-}
-
-
-/* =========================================
-   INPUTS
-========================================= */
-
-.input-group {
-
-    margin-bottom: 18px;
-
-}
-
-
-.input-group label {
-
-    display: block;
-
-    margin-bottom: 8px;
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    color: #dbe3f5;
-
-}
-
-
-.input-group input {
-
-    width: 100%;
-
-    height: 50px;
-
-    padding:
-        0 15px;
-
-    border:
-        1px solid #2b3858;
-
-    border-radius: 12px;
-
-    outline: none;
-
-    background:
-        #0b1224;
-
-    color: #ffffff;
-
-    font-size: 15px;
-
-    transition:
-        0.2s ease;
-
-}
-
-
-.input-group input::placeholder {
-
-    color: #64708b;
-
-}
-
-
-.input-group input:focus {
-
-    border-color: #6366f1;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(99, 102, 241, 0.15);
-
-}
-
-
-/* =========================================
-   BOTÃO PRINCIPAL
-========================================= */
-
-.primary-button {
-
-    width: 100%;
-
-    height: 52px;
-
-    border: none;
+    border: 0;
 
     border-radius: 12px;
 
     cursor: pointer;
 
+    overflow: hidden;
+
+    color: white;
+
     background:
         linear-gradient(
-            135deg,
-            #6366f1,
-            #8b5cf6
+            110deg,
+            #2563eb,
+            #4f46e5 55%,
+            #7c3aed
         );
 
-    color: #ffffff;
-
-    font-size: 14px;
+    font-size: 11px;
 
     font-weight: 800;
 
-    letter-spacing: 0.5px;
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 10px 30px rgba(59,130,246,0.2);
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
 
+
+.primary-button::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.18),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.6s ease;
 }
 
 
 .primary-button:hover {
-
     transform: translateY(-2px);
 
     box-shadow:
-        0 10px 25px
-        rgba(99, 102, 241, 0.3);
+        0 15px 40px rgba(59,130,246,0.3);
 
+    filter: brightness(1.08);
+}
+
+
+.primary-button:hover::before {
+    left: 140%;
 }
 
 
 .primary-button:active {
-
     transform: translateY(0);
-
 }
 
 
-/* =========================================
+.button-arrow {
+    font-size: 18px;
+
+    font-weight: 400;
+}
+
+
+/* ============================================================
    LINK
-========================================= */
+============================================================ */
 
 .link-button {
-
-    width: 100%;
-
-    margin-top: 15px;
-
-    border: none;
+    border: 0;
 
     background: transparent;
 
-    color: #9ca8ff;
+    color: #64748b;
 
     cursor: pointer;
 
-    font-size: 13px;
+    font-size: 11px;
 
+    transition:
+        color 0.2s ease;
 }
 
 
 .link-button:hover {
-
-    text-decoration: underline;
-
+    color: var(--blue-light);
 }
 
 
-/* =========================================
+/* ============================================================
    DIVISOR
-========================================= */
+============================================================ */
 
 .divider {
-
     display: flex;
 
     align-items: center;
 
-    gap: 12px;
+    gap: 14px;
 
-    margin:
-        25px 0;
-
-    color: #69758f;
-
-    font-size: 12px;
-
+    margin: 25px 0;
 }
 
 
-.divider::before,
-.divider::after {
-
-    content: "";
-
+.divider span {
     flex: 1;
 
     height: 1px;
 
     background:
-        #27334f;
-
+        rgba(148,163,184,0.1);
 }
 
 
-/* =========================================
-   CRIAR CONTA
-========================================= */
+.divider small {
+    color: #475569;
 
-.create-account {
+    font-size: 10px;
 
-    text-align: center;
+    text-transform: uppercase;
 
+    letter-spacing: 1px;
 }
 
 
-.create-account p {
-
-    color: #8f9ab3;
-
-    font-size: 13px;
-
-    margin-bottom: 12px;
-
-}
-
-
-/* =========================================
+/* ============================================================
    BOTÃO SECUNDÁRIO
-========================================= */
+============================================================ */
 
 .secondary-button {
-
     width: 100%;
 
-    height: 50px;
+    min-height: 50px;
 
-    border:
-        1px solid #3a496d;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 0 18px;
 
     border-radius: 12px;
 
-    background:
-        transparent;
+    border: 1px solid rgba(96,165,250,0.16);
 
-    color: #ffffff;
+    background:
+        rgba(15,23,42,0.55);
+
+    color: #cbd5e1;
 
     cursor: pointer;
 
-    font-size: 13px;
+    font-size: 10px;
 
     font-weight: 700;
 
-    transition:
-        0.2s ease;
+    letter-spacing: 1.3px;
 
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
 }
 
 
 .secondary-button:hover {
+    border-color:
+        rgba(96,165,250,0.4);
 
     background:
-        rgba(99, 102, 241, 0.1);
+        rgba(30,41,59,0.7);
 
-    border-color:
-        #6366f1;
+    color: white;
 
+    transform: translateY(-1px);
 }
 
 
-/* =========================================
+/* ============================================================
+   SEGURANÇA
+============================================================ */
+
+.security-note {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 22px;
+
+    color: #475569;
+
+    font-size: 9px;
+}
+
+
+.security-icon {
+    color: #60a5fa;
+
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   CADASTRO
+============================================================ */
+
+#registerScreen .auth-container {
+    width: min(440px, 100%);
+}
+
+
+#registerScreen .brand {
+    text-align: center;
+
+    margin-bottom: 28px;
+}
+
+
+#registerScreen .brand-copy {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+#registerScreen .brand-kicker::before {
+    display: none;
+}
+
+
+.brand-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3b82f6,
+            #6366f1 55%,
+            #8b5cf6
+        );
+
+    color: white;
+
+    font-size: 22px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 15px 40px rgba(59,130,246,0.25);
+}
+
+
+/* ============================================================
    INFORMAÇÃO DA SENHA
-========================================= */
+============================================================ */
 
 .password-info {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
 
     margin-top: -7px;
 
-    margin-bottom: 18px;
+    color: #64748b;
 
-    color: #7e8aa5;
-
-    font-size: 11px;
+    font-size: 10px;
 
     line-height: 1.5;
-
 }
 
 
-/* =========================================
-   RESPONSIVIDADE
-========================================= */
+.password-info span {
+    color: #60a5fa;
+}
 
-@media (max-width: 500px) {
 
-    .screen {
+/* ============================================================
+   CONTENT SECTIONS
+============================================================ */
 
-        padding: 18px;
+.content-section {
+    display: none;
 
+    min-height: 100vh;
+
+    padding: 50px;
+}
+
+
+.content-section.active {
+    display: block;
+}
+
+
+.section-container {
+    width: min(1200px, 100%);
+
+    margin: 0 auto;
+}
+
+
+.section-header {
+    margin-bottom: 35px;
+}
+
+
+.welcome-label {
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    color: var(--blue-light);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+
+.section-title {
+    font-size: 40px;
+
+    letter-spacing: -1px;
+
+    margin-bottom: 8px;
+}
+
+
+.section-header p {
+    color: var(--text-muted);
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   BACK BUTTON
+============================================================ */
+
+.back-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 35px;
+
+    padding: 10px 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background:
+        rgba(15,23,42,0.55);
+
+    color: var(--text-soft);
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+
+.back-button:hover {
+    border-color: var(--border-blue);
+
+    color: white;
+
+    transform: translateX(-3px);
+}
+
+
+/* ============================================================
+   JOGOS
+============================================================ */
+
+.games-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 22px;
+}
+
+
+.game-card {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    border: 1px solid var(--border);
+
+    background:
+        rgba(15,23,42,0.72);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.game-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(96,165,250,0.35);
+
+    box-shadow:
+        0 25px 50px rgba(0,0,0,0.3);
+}
+
+
+.game-cover {
+    min-height: 190px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 65px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(59,130,246,0.2),
+            transparent 65%
+        ),
+        #0b1225;
+}
+
+
+.game-card-content {
+    padding: 22px;
+}
+
+
+.game-tag {
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    color: var(--blue-light);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.game-card h3 {
+    margin-bottom: 8px;
+
+    font-size: 19px;
+}
+
+
+.game-card p {
+    color: var(--text-muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   CURSO
+============================================================ */
+
+.course-grid {
+    display: grid;
+
+    grid-template-columns: 1fr;
+}
+
+
+.course-card {
+    display: flex;
+
+    gap: 25px;
+
+    padding: 28px;
+
+    border-radius: 20px;
+
+    border: 1px solid var(--border);
+
+    background:
+        rgba(15,23,42,0.72);
+}
+
+
+.course-icon {
+    width: 90px;
+    height: 90px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #6366f1
+        );
+
+    font-size: 22px;
+
+    font-weight: 900;
+}
+
+
+.course-info {
+    flex: 1;
+}
+
+
+.course-info h3 {
+    margin-bottom: 8px;
+
+    font-size: 22px;
+}
+
+
+.course-info p {
+    color: var(--text-muted);
+
+    margin-bottom: 20px;
+}
+
+
+.course-progress {
+    margin-bottom: 20px;
+}
+
+
+.progress-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 7px;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+}
+
+
+.progress-bar {
+    width: 100%;
+
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 99px;
+
+    background:
+        rgba(148,163,184,0.1);
+}
+
+
+.progress-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #3b82f6,
+            #8b5cf6
+        );
+}
+
+
+.primary-small {
+    padding: 11px 18px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #6366f1
+        );
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    #loginScreen .auth-container {
+        grid-template-columns:
+            1fr 400px;
+
+        gap: 45px;
     }
 
 
-    .auth-card {
+    .brand-visual {
+        width: 260px;
+        height: 260px;
+    }
 
-        padding: 24px 20px;
 
-        border-radius: 18px;
+    .profile-photo {
+        width: 190px;
+        height: 190px;
+    }
 
+
+    .orbit-one {
+        width: 245px;
+        height: 245px;
+    }
+
+
+    .orbit-two {
+        width: 285px;
+        height: 160px;
     }
 
 
     .brand h1 {
-
-        font-size: 26px;
-
+        font-size: 42px;
     }
 
 
-    .brand-icon {
+    .brand p {
+        font-size: 15px;
+    }
 
-        width: 62px;
 
-        height: 62px;
+    .brand-features {
+        flex-wrap: wrap;
+    }
 
-        border-radius: 17px;
 
+    .auth-card {
+        padding: 30px;
+    }
+
+}
+
+
+/* ============================================================
+   DESKTOP GRANDE
+============================================================ */
+
+@media (min-width: 1400px) {
+
+    #loginScreen .auth-container {
+        width: min(1280px, 90vw);
+
+        grid-template-columns:
+            minmax(0, 1.1fr)
+            460px;
+
+        gap: 100px;
+    }
+
+
+    .login-brand {
+        padding-left: 30px;
+    }
+
+
+    .brand-visual {
+        width: 340px;
+        height: 340px;
+    }
+
+
+    .profile-photo {
+        width: 245px;
+        height: 245px;
+    }
+
+
+    .orbit-one {
+        width: 315px;
+        height: 315px;
+    }
+
+
+    .orbit-two {
+        width: 360px;
+        height: 195px;
+    }
+
+
+    .auth-card {
+        padding: 42px;
+    }
+
+}
+
+
+/* ============================================================
+   REDUÇÃO DE MOVIMENTO
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
     }
 
 }
