@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Materiais de Inglês | Instituto Acutis</title>
+
+    <meta
+        name="description"
+        content="Materiais gratuitos de inglês preparados pelo Instituto Acutis. Baixe gratuitamente e comece seus estudos."
+    >
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #050816;
+            --bg-secondary: #0a1022;
+            --card: rgba(13, 22, 45, 0.88);
+            --border: rgba(88, 166, 255, 0.22);
+            --blue: #42a5ff;
+            --cyan: #55e6ff;
+            --purple: #9b7cff;
+            --green: #42e6a4;
+            --text: #f4f7ff;
+            --muted: #9ba8c7;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 10% 10%, rgba(66, 165, 255, 0.13), transparent 28%),
+                radial-gradient(circle at 90% 20%, rgba(155, 124, 255, 0.11), transparent 30%),
+                radial-gradient(circle at 50% 100%, rgba(66, 230, 164, 0.07), transparent 35%),
+                var(--bg);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.18;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 42px 42px;
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(2px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-one {
+            width: 180px;
+            height: 180px;
+            top: 100px;
+            left: -90px;
+            background: rgba(66, 165, 255, 0.08);
+        }
+
+        .orb-two {
+            width: 240px;
+            height: 240px;
+            right: -120px;
+            top: 420px;
+            background: rgba(155, 124, 255, 0.07);
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HEADER */
+
+        header {
+            padding: 26px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            background: rgba(5, 8, 22, 0.72);
+            backdrop-filter: blur(14px);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+            background: linear-gradient(
+                145deg,
+                rgba(66,165,255,0.18),
+                rgba(155,124,255,0.18)
+            );
+            border: 1px solid var(--border);
+            box-shadow: 0 0 28px rgba(66,165,255,0.08);
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--cyan);
+        }
+
+        .brand-text span {
+            display: block;
+            margin-top: 3px;
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 0.7px;
+        }
+
+        .back-button {
+            text-decoration: none;
+            color: #dceaff;
+            border: 1px solid rgba(66,165,255,0.25);
+            background: rgba(66,165,255,0.07);
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.7px;
+            transition: 0.25s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(85,230,255,0.6);
+            background: rgba(66,165,255,0.13);
+            box-shadow: 0 0 22px rgba(66,165,255,0.12);
+        }
+
+        /* HERO */
+
+        .hero {
+            text-align: center;
+            padding: 75px 0 55px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(66,165,255,0.07);
+            border: 1px solid rgba(66,165,255,0.2);
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            margin-bottom: 22px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 12px var(--green);
+        }
+
+        .hero h1 {
+            max-width: 850px;
+            margin: 0 auto;
+            font-size: clamp(36px, 6vw, 68px);
+            line-height: 0.98;
+            letter-spacing: -2px;
+            font-weight: 900;
+        }
+
+        .hero h1 span {
+            color: var(--cyan);
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 25px auto 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .hero-badge {
+            padding: 9px 14px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #cbd6ee;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.6px;
+        }
+
+        /* MATERIALS */
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .free-label {
+            color: var(--green);
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .material-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 470px;
+            display: flex;
+            flex-direction: column;
+            padding: 27px;
+            border-radius: 20px;
+            background: linear-gradient(
+                145deg,
+                rgba(17,28,57,0.95),
+                rgba(8,15,33,0.95)
+            );
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 50px rgba(0,0,0,0.22);
+            transition: 0.3s ease;
+        }
+
+        .material-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(85,230,255,0.42);
+            box-shadow:
+                0 24px 65px rgba(0,0,0,0.32),
+                0 0 35px rgba(66,165,255,0.08);
+        }
+
+        .material-card::after {
+            content: "";
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            right: -75px;
+            top: -75px;
+            background: rgba(66,165,255,0.06);
+        }
+
+        .material-number {
+            font-size: 11px;
+            color: var(--cyan);
+            font-weight: bold;
+            letter-spacing: 1.5px;
+        }
+
+        .material-icon {
+            width: 74px;
+            height: 74px;
+            display: grid;
+            place-items: center;
+            margin: 22px 0;
+            border-radius: 18px;
+            font-size: 34px;
+            background: rgba(66,165,255,0.08);
+            border: 1px solid rgba(66,165,255,0.2);
+        }
+
+        .material-card:nth-child(2) .material-icon {
+            background: rgba(155,124,255,0.08);
+            border-color: rgba(155,124,255,0.2);
+        }
+
+        .material-card:nth-child(3) .material-icon {
+            background: rgba(66,230,164,0.08);
+            border-color: rgba(66,230,164,0.2);
+        }
+
+        .level {
+            display: inline-block;
+            align-self: flex-start;
+            padding: 6px 9px;
+            border-radius: 7px;
+            background: rgba(255,255,255,0.045);
+            color: #cbd6ee;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .material-card h3 {
+            margin-top: 17px;
+            font-size: 22px;
+            line-height: 1.15;
+        }
+
+        .material-card > p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.65;
+            margin-top: 12px;
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 20px;
+            display: grid;
+            gap: 9px;
+        }
+
+        .features li {
+            color: #c9d4ea;
+            font-size: 12px;
+        }
+
+        .features li::before {
+            content: "✓";
+            color: var(--green);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 25px;
+        }
+
+        .download-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 48px;
+            text-decoration: none;
+            border-radius: 11px;
+            color: #04101d;
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            transition: 0.25s ease;
+            box-shadow: 0 10px 25px rgba(66,165,255,0.12);
+        }
+
+        .download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 32px rgba(66,165,255,0.2);
+        }
+
+        .file-info {
+            text-align: center;
+            color: #71809f;
+            font-size: 10px;
+            margin-top: 9px;
+        }
+
+        /* MESSAGE */
+
+        .message {
+            margin: 65px auto;
+            max-width: 850px;
+            padding: 32px;
+            text-align: center;
+            border-radius: 20px;
+            background: rgba(13,22,45,0.7);
+            border: 1px solid rgba(85,230,255,0.12);
+        }
+
+        .message-icon {
+            font-size: 30px;
+            margin-bottom: 13px;
+        }
+
+        .message h2 {
+            font-size: 23px;
+        }
+
+        .message p {
+            max-width: 650px;
+            margin: 12px auto 0;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        /* CTA */
+
+        .cta {
+            margin: 0 0 70px;
+            padding: 45px;
+            border-radius: 22px;
+            text-align: center;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(66,165,255,0.09),
+                    rgba(155,124,255,0.07)
+                );
+            border: 1px solid rgba(66,165,255,0.18);
+        }
+
+        .cta small {
+            color: var(--cyan);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+        }
+
+        .cta h2 {
+            margin-top: 12px;
+            font-size: 29px;
+        }
+
+        .cta p {
+            max-width: 650px;
+            margin: 13px auto 23px;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 21px;
+            border-radius: 10px;
+            color: white;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.12);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            transition: 0.25s ease;
+        }
+
+        .cta-button:hover {
+            background: rgba(255,255,255,0.09);
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 25px 0 35px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+        }
+
+        footer strong {
+            color: #dce7ff;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        footer p {
+            color: #687594;
+            font-size: 10px;
+            margin-top: 7px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .material-card {
+                min-height: auto;
+            }
+
+            .card-footer {
+                margin-top: 25px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: min(100% - 24px, 1180px);
+            }
+
+            header {
+                padding: 17px 0;
+            }
+
+            .brand-text span {
+                display: none;
+            }
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .back-button {
+                padding: 10px 12px;
+                font-size: 10px;
+            }
+
+            .hero {
+                padding: 55px 0 42px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+                letter-spacing: -1.5px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .section-heading {
+                display: block;
+            }
+
+            .free-label {
+                display: block;
+                margin-top: 12px;
+            }
+
+            .material-card {
+                padding: 23px;
+            }
+
+            .cta {
+                padding: 30px 20px;
+            }
+
+            .cta h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
+
+    <header>
+        <div class="container header-content">
+
+            <div class="brand">
+                <div class="brand-icon">📚</div>
+
+                <div class="brand-text">
+                    <strong>INSTITUTO ACUTIS</strong>
+                    <span>Materiais Educacionais</span>
+                </div>
+            </div>
+
+            <a href="../../dashboard.html" class="back-button">
+                ← VOLTAR AO DASHBOARD
+            </a>
+
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="container">
+
+                <div class="eyebrow">
+                    ACERVO GRATUITO
+                </div>
+
+                <h1>
+                    MATERIAIS DE<br>
+                    <span>INGLÊS</span>
+                </h1>
+
+                <p>
+                    Materiais preparados para ajudar você a dar os primeiros
+                    passos no inglês com conteúdo direto, prático e organizado.
+                    Baixe gratuitamente e comece seus estudos.
+                </p>
+
+                <div class="hero-badges">
+                    <span class="hero-badge">✓ 100% GRATUITOS</span>
+                    <span class="hero-badge">✓ NÍVEL A1</span>
+                    <span class="hero-badge">✓ PDF</span>
+                    <span class="hero-badge">✓ INSTITUTO ACUTIS</span>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="container">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Materiais disponíveis</h2>
+                    <p>Escolha um material e comece agora.</p>
+                </div>
+
+                <span class="free-label">
+                    ● ACESSO GRATUITO
+                </span>
+            </div>
+
+            <div class="materials-grid">
+
+                <!-- MATERIAL 01 -->
+
+                <article class="material-card">
+
+                    <span class="material-number">
+                        MATERIAL 01
+                    </span>
+
+                    <div class="material-icon">
+                        📘
+                    </div>
+
+                    <span class="level">
+                        NÍVEL A1
+                    </span>
+
+                    <h3>
+                        Guia de Inglês A1
+                    </h3>
+
+                    <p>
+                        Um guia para quem está começando do zero,
+                        apresentando os primeiros conteúdos essenciais
+                        para construir uma base em inglês.
+                    </p>
+
+                    <ul class="features">
+                        <li>Greetings</li>
+                        <li>Personal Pronouns</li>
+                        <li>Verb To Be</li>
+                        <li>Articles</li>
+                        <li>Vocabulário essencial</li>
+                        <li>Atividades práticas</li>
+                    </ul>
+
+                    <div class="card-footer">
+
+                        <a
+                            href="material-01-guia-a1.pdf"
+                            class="download-button"
+                            download
+                        >
+                            ↓ BAIXAR PDF
+                        </a>
+
+                        <div class="file-info">
+                            PDF • GRATUITO
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- MATERIAL 02 -->
+
+                <article class="material-card">
+
+                    <span class="material-number">
+                        MATERIAL 02
+                    </span>
+
+                    <div class="material-icon">
+                        📚
+                    </div>
+
+                    <span class="level">
+                        NÍVEL A1
+                    </span>
+
+                    <h3>
+                        50 Palavras Essenciais
+                    </h3>
+
+                    <p>
+                        Amplie seu vocabulário com 50 palavras muito
+                        importantes para situações básicas do dia a dia.
+                    </p>
+
+                    <ul class="features">
+                        <li>50 palavras essenciais</li>
+                        <li>Tradução em português</li>
+                        <li>Pronúncia aproximada</li>
+                        <li>Frases de exemplo</li>
+                        <li>Atividades de fixação</li>
+                        <li>Mini Reading</li>
+                    </ul>
+
+                    <div class="card-footer">
+
+                        <a
+                            href="material-02-50-palavras-essenciais.pdf"
+                            class="download-button"
+                            download
+                        >
+                            ↓ BAIXAR PDF
+                        </a>
+
+                        <div class="file-info">
+                            PDF • GRATUITO
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- MATERIAL 03 -->
+
+                <article class="material-card">
+
+                    <span class="material-number">
+                        MATERIAL 03
+                    </span>
+
+                    <div class="material-icon">
+                        ✏️
+                    </div>
+
+                    <span class="level">
+                        NÍVEL A1
+                    </span>
+
+                    <h3>
+                        Simple Present na Prática
+                    </h3>
+
+                    <p>
+                        Aprenda a compreender e utilizar o Simple Present
+                        através de explicações, exemplos e atividades.
+                    </p>
+
+                    <ul class="features">
+                        <li>Estrutura afirmativa</li>
+                        <li>Terceira pessoa</li>
+                        <li>Forma negativa</li>
+                        <li>Questions</li>
+                        <li>Daily Routine</li>
+                        <li>Atividades e desafios</li>
+                    </ul>
+
+                    <div class="card-footer">
+
+                        <a
+                            href="material-03-simple-present.pdf"
+                            class="download-button"
+                            download
+                        >
+                            ↓ BAIXAR PDF
+                        </a>
+
+                        <div class="file-info">
+                            PDF • GRATUITO
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <section class="container">
+
+            <div class="message">
+
+                <div class="message-icon">
+                    🚀
+                </div>
+
+                <h2>
+                    Comece pelo básico. Evolua todos os dias.
+                </h2>
+
+                <p>
+                    Você não precisa aprender tudo de uma vez.
+                    Escolha um material, estude no seu ritmo,
+                    pratique e volte sempre que precisar.
+                    O mais importante é continuar avançando.
+                </p>
+
+            </div>
+
+
+            <div class="cta">
+
+                <small>
+                    QUER IR ALÉM?
+                </small>
+
+                <h2>
+                    Continue sua jornada no inglês.
+                </h2>
+
+                <p>
+                    Se você gostou da proposta desses materiais,
+                    conheça também o Mini Curso de Inglês e continue
+                    seus estudos com uma sequência organizada de conteúdos.
+                </p>
+
+                <a
+                    href="/cursos/ingles-gratis/"
+                    class="cta-button"
+                >
+                    CONHECER O MINI CURSO →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <div class="container">
+
+            <strong>
+                INSTITUTO ACUTIS • APRENDENDO INGLÊS COM ALDEMAR
+            </strong>
+
+            <p>
+                Materiais educacionais gratuitos para apoiar sua jornada de aprendizagem.
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>
