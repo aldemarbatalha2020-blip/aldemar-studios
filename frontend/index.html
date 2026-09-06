@@ -1,1101 +1,1073 @@
 ﻿<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Aldemar Studios - Educação, tecnologia, criatividade e aprendizagem.">
+  <meta name="theme-color" content="#0b1020">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
+  <title>Aldemar Studios</title>
 
-    <meta
-        name="description"
-        content="Aldemar Studios - Educação, tecnologia, criatividade e aprendizagem."
-    >
-
-    <meta name="theme-color" content="#0b1020">
-
-    <title>Aldemar Studios</title>
-
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- CSS RESPONSIVO -->
-    <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
 </head>
 
 <body>
 
-    <main class="app">
+<main class="app">
 
-        <!-- =========================================================
-             TELA DE LOGIN
-        ========================================================== -->
+  <!-- =========================================================
+       TELA DE LOGIN
+  ========================================================== -->
 
-        <section
-            id="loginScreen"
-            class="screen active"
-            aria-label="Tela de login"
+  <section id="loginScreen" class="screen active" aria-label="Tela de login">
+
+
+<div class="auth-container login-container">
+
+  <!-- IDENTIDADE / LADO ESQUERDO -->
+  <div class="brand login-brand">
+
+    <div class="brand-visual">
+
+      <div class="visual-glow"></div>
+
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+
+      <span class="tech-point point-one"></span>
+      <span class="tech-point point-two"></span>
+      <span class="tech-point point-three"></span>
+      <span class="tech-point point-four"></span>
+
+      <div class="profile-photo" aria-label="Área reservada para foto">
+
+        <img
+          src="img/Logotipo.jpeg"
+          alt="Foto de Aldemar"
+          onerror="this.style.display='none'; this.parentElement.classList.add('empty');"
         >
 
-            <div class="auth-container login-container">
+        <div class="photo-fallback">
+          <span class="photo-initials">AF</span>
+          <span class="photo-label">SUA FOTO</span>
+        </div>
 
-                <!-- =================================================
-                     ÁREA VISUAL / MARCA
-                ================================================== -->
+      </div>
 
-                <div class="brand login-brand">
+    </div>
 
-                    <!-- Elementos decorativos -->
-                    <div class="brand-visual">
+    <div class="brand-copy">
 
-                        <div class="visual-glow"></div>
+      <span class="brand-kicker">
+        ALDEMAR STUDIOS
+      </span>
 
-                        <div class="orbit orbit-one"></div>
-                        <div class="orbit orbit-two"></div>
+      <h1>
+        Aldemar Studios
+      </h1>
 
-                        <span class="tech-point point-one"></span>
-                        <span class="tech-point point-two"></span>
-                        <span class="tech-point point-three"></span>
-                        <span class="tech-point point-four"></span>
+      <p>
+        Educação, tecnologia e criatividade em um só lugar.
+      </p>
 
-                        <!-- FOTO DO ALDEMAR
-                             Coloque sua foto em:
-                             img/aldemar.jpg
-                        -->
+    </div>
 
-                        <div
-                            class="profile-photo"
-                            aria-label="Área reservada para foto"
-                        >
+    <div class="brand-features">
 
-                            <img
-                                src="img/Logotipo.jpeg"
-                                alt="Foto de Aldemar"
-                                onerror="
-                                    this.style.display='none';
-                                    this.parentElement.classList.add('empty');
-                                "
-                            >
+      <span>
+        <strong>01</strong> EDUCAÇÃO
+      </span>
 
-                            <div class="photo-fallback">
-                                <span class="photo-initials">AF</span>
-                                <span class="photo-label">SUA FOTO</span>
-                            </div>
+      <span>
+        <strong>02</strong> TECNOLOGIA
+      </span>
 
-                        </div>
+      <span>
+        <strong>03</strong> CRIATIVIDADE
+      </span>
 
-                    </div>
+    </div>
 
+    <div class="contact-badge">
 
-                    <!-- Informações da marca -->
+      <div class="contact-icon">
+        WA
+      </div>
 
-                    <div class="brand-copy">
+      <div class="contact-text">
 
-                        <span class="brand-kicker">
-                            ALDEMAR STUDIOS
-                        </span>
+        <small>
+          ENTRE EM CONTATO
+        </small>
 
-                        <h1>
-                            Aldemar Studios
-                        </h1>
+        <strong>
+          WhatsApp • 82 9 9654-8511
+        </strong>
 
-                        <p>
-                            Educação, tecnologia e criatividade
-                            em um só lugar.
-                        </p>
+      </div>
 
-                    </div>
+    </div>
 
+  </div>
 
-                    <!-- Elementos tecnológicos -->
 
-                    <div class="brand-features">
+  <!-- CARD DE LOGIN -->
+  <div class="auth-card">
 
-                        <span>
-                            <strong>01</strong>
-                            EDUCAÇÃO
-                        </span>
+    <div class="auth-header">
 
-                        <span>
-                            <strong>02</strong>
-                            TECNOLOGIA
-                        </span>
+      <span class="auth-status">
+        <span class="status-dot"></span>
+        SISTEMA ONLINE
+      </span>
 
-                        <span>
-                            <strong>03</strong>
-                            CRIATIVIDADE
-                        </span>
+      <h2>
+        Bem-vindo!
+      </h2>
 
-                    </div>
+      <p>
+        Entre para acessar sua plataforma.
+      </p>
 
+    </div>
 
-                    <!-- CONTATO -->
 
-                    <div class="contact-badge">
+    <form id="loginForm" class="auth-form">
 
-                        <div class="contact-icon">
-                            WA
-                        </div>
+      <div class="input-group">
 
-                        <div class="contact-text">
+        <label for="loginEmail">
+          E-mail
+        </label>
 
-                            <small>
-                                ENTRE EM CONTATO
-                            </small>
+        <div class="input-wrapper">
 
-                            <strong>
-                                WhatsApp • 82 9 9654-8511
-                            </strong>
+          <span class="input-icon">
+            @
+          </span>
 
-                        </div>
+          <input
+            type="email"
+            id="loginEmail"
+            name="email"
+            placeholder="seu@email.com"
+            autocomplete="email"
+            required
+          >
 
-                    </div>
+        </div>
 
-                </div>
+      </div>
 
 
-                <!-- =================================================
-                     CARD DE LOGIN
-                ================================================== -->
+      <div class="input-group">
 
-                <div class="auth-card">
+        <label for="loginPassword">
+          Senha
+        </label>
 
-                    <div class="auth-header">
+        <div class="input-wrapper">
 
-                        <span class="auth-status">
-                            <span class="status-dot"></span>
-                            SISTEMA ONLINE
-                        </span>
+          <span class="input-icon">
+            •
+          </span>
 
-                        <h2>
-                            Bem-vindo!
-                        </h2>
+          <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+            required
+          >
 
-                        <p>
-                            Entre para acessar sua plataforma.
-                        </p>
+        </div>
 
-                    </div>
+      </div>
 
 
-                    <!-- FORMULÁRIO DE LOGIN -->
+      <button
+        type="submit"
+        class="primary-button"
+      >
 
-                    <form
-                        id="loginForm"
-                        class="auth-form"
-                    >
+        <span>
+          ACESSAR
+        </span>
 
-                        <!-- E-MAIL -->
+        <span class="button-arrow">
+          →
+        </span>
 
-                        <div class="input-group">
+      </button>
 
-                            <label for="loginEmail">
-                                E-mail
-                            </label>
 
-                            <div class="input-wrapper">
+      <button
+        type="button"
+        id="forgotPassword"
+        class="link-button"
+      >
+        Esqueci minha senha
+      </button>
 
-                                <span class="input-icon">
-                                    @
-                                </span>
+    </form>
 
-                                <input
-                                    type="email"
-                                    id="loginEmail"
-                                    name="email"
-                                    placeholder="seu@email.com"
-                                    autocomplete="email"
-                                    required
-                                >
 
-                            </div>
+    <div class="divider">
 
-                        </div>
+      <span></span>
 
+      <small>
+        ou
+      </small>
 
-                        <!-- SENHA -->
+      <span></span>
 
-                        <div class="input-group">
+    </div>
 
-                            <label for="loginPassword">
-                                Senha
-                            </label>
 
-                            <div class="input-wrapper">
+    <!--
+      IMPORTANTE:
+      Abre o cadastro em uma NOVA ABA.
+    -->
+    <button
+      type="button"
+      id="openRegister"
+      class="secondary-button"
+      onclick="abrirCadastro()"
+    >
 
-                                <span class="input-icon">
-                                    •
-                                </span>
+      <span>
+        CRIAR MINHA CONTA AGORA
+      </span>
 
-                                <input
-                                    type="password"
-                                    id="loginPassword"
-                                    name="password"
-                                    placeholder="Digite sua senha"
-                                    autocomplete="current-password"
-                                    required
-                                >
+      <span>
+        +
+      </span>
 
-                            </div>
+    </button>
 
-                        </div>
 
+    <div class="security-note">
 
-                        <!-- BOTÃO ACESSAR -->
+      <span class="security-icon">
+        ✓
+      </span>
 
-                        <button
-                            type="submit"
-                            class="primary-button"
-                        >
+      <span>
+        Ambiente seguro para aprendizagem
+      </span>
 
-                            <span>
-                                ACESSAR
-                            </span>
+    </div>
 
-                            <span class="button-arrow">
-                                →
-                            </span>
+  </div>
 
-                        </button>
+</div>
 
 
-                        <!-- ESQUECI A SENHA -->
+  </section>
 
-                        <button
-                            type="button"
-                            id="forgotPassword"
-                            class="link-button"
-                        >
-                            Esqueci minha senha
-                        </button>
+  <!-- =========================================================
+       TELA DE CADASTRO
+  ========================================================== -->
 
-                    </form>
+  <section
+    id="registerScreen"
+    class="screen"
+    aria-label="Tela de cadastro"
+  >
 
 
-                    <!-- DIVISOR -->
+<div class="auth-container">
 
-                    <div class="divider">
+  <div class="brand">
 
-                        <span></span>
+    <div class="brand-icon">
+      AS
+    </div>
 
-                        <small>
-                            ou
-                        </small>
+    <div class="brand-copy">
 
-                        <span></span>
+      <span class="brand-kicker">
+        ALDEMAR STUDIOS
+      </span>
 
-                    </div>
+      <h1>
+        Criar conta
+      </h1>
 
+      <p>
+        Faça parte da plataforma.
+      </p>
 
-                    <!-- CADASTRO -->
+    </div>
 
-                    <button
-                        type="button"
-                        id="openRegister"
-                        class="secondary-button"
-                    >
+  </div>
 
-                        <span>
-                            CRIAR MINHA CONTA AGORA
-                        </span>
 
-                        <span>
-                            +
-                        </span>
+  <div class="auth-card">
 
-                    </button>
+    <div class="auth-header">
 
+      <span class="auth-status">
 
-                    <!-- SEGURANÇA -->
+        <span class="status-dot"></span>
 
-                    <div class="security-note">
+        NOVO USUÁRIO
 
-                        <span class="security-icon">
-                            ✓
-                        </span>
+      </span>
 
-                        <span>
-                            Ambiente seguro para aprendizagem
-                        </span>
+      <h2>
+        Criar minha conta
+      </h2>
 
-                    </div>
+      <p>
+        Preencha seus dados para começar.
+      </p>
 
-                </div>
+    </div>
 
-            </div>
 
-        </section>
+    <form
+      id="registerForm"
+      class="auth-form"
+    >
 
+      <div class="input-group">
 
-        <!-- =========================================================
-             TELA DE CADASTRO
-        ========================================================== -->
+        <label for="registerName">
+          Nome completo
+        </label>
 
-        <section
-            id="registerScreen"
-            class="screen"
-            aria-label="Tela de cadastro"
+        <div class="input-wrapper">
+
+          <span class="input-icon">
+            A
+          </span>
+
+          <input
+            type="text"
+            id="registerName"
+            name="name"
+            placeholder="Digite seu nome"
+            autocomplete="name"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label for="registerEmail">
+          E-mail
+        </label>
+
+        <div class="input-wrapper">
+
+          <span class="input-icon">
+            @
+          </span>
+
+          <input
+            type="email"
+            id="registerEmail"
+            name="email"
+            placeholder="seu@email.com"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label for="registerPassword">
+          Senha
+        </label>
+
+        <div class="input-wrapper">
+
+          <span class="input-icon">
+            •
+          </span>
+
+          <input
+            type="password"
+            id="registerPassword"
+            name="password"
+            placeholder="Crie uma senha"
+            autocomplete="new-password"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="password-info">
+
+        <span>
+          ✓
+        </span>
+
+        <p>
+          Use uma senha com pelo menos 6 caracteres.
+        </p>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="primary-button"
+      >
+
+        <span>
+          CRIAR CONTA
+        </span>
+
+        <span class="button-arrow">
+          →
+        </span>
+
+      </button>
+
+    </form>
+
+
+    <div class="divider">
+
+      <span></span>
+
+      <small>
+        já possui uma conta?
+      </small>
+
+      <span></span>
+
+    </div>
+
+
+    <button
+      type="button"
+      id="backToLogin"
+      class="secondary-button"
+      onclick="voltarParaLogin()"
+    >
+
+      <span>
+        VOLTAR PARA O LOGIN
+      </span>
+
+      <span>
+        ←
+      </span>
+
+    </button>
+
+
+    <div class="security-note">
+
+      <span class="security-icon">
+        WA
+      </span>
+
+      <span>
+        WhatsApp: 82 9 9654-8511
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  </section>
+
+  <!-- =========================================================
+       CENTRAL DE JOGOS
+  ========================================================== -->
+
+  <section
+    id="jogosSection"
+    class="content-section"
+  >
+
+
+<div class="section-container">
+
+  <button
+    class="back-button"
+    onclick="voltarJogos()"
+    type="button"
+  >
+    ← Voltar
+  </button>
+
+
+  <div class="section-header">
+
+    <span class="welcome-label">
+      ALDEMAR STUDIOS
+    </span>
+
+    <h2 class="section-title">
+      Central de Jogos
+    </h2>
+
+    <p>
+      Aprenda, pratique e divirta-se.
+    </p>
+
+  </div>
+
+
+  <div class="games-grid">
+
+    <article
+      class="game-card"
+      onclick="abrirCategoriaPassatempo()"
+    >
+
+      <div class="game-cover">
+        🎮
+      </div>
+
+      <div class="game-card-content">
+
+        <span class="game-tag">
+          PASSATEMPO
+        </span>
+
+        <h3>
+          Jogos de Passatempo
+        </h3>
+
+        <p>
+          Divirta-se com desafios rápidos e interativos.
+        </p>
+
+      </div>
+
+    </article>
+
+
+    <article
+      class="game-card"
+      onclick="abrirCategoriaEducativos()"
+    >
+
+      <div class="game-cover">
+        🧠
+      </div>
+
+      <div class="game-card-content">
+
+        <span class="game-tag">
+          EDUCATIVOS
+        </span>
+
+        <h3>
+          Jogos Educativos
+        </h3>
+
+        <p>
+          Aprenda enquanto joga com atividades interativas.
+        </p>
+
+      </div>
+
+    </article>
+
+
+    <article
+      class="game-card"
+      onclick="abrirJogosIngles()"
+    >
+
+      <div class="game-cover">
+        🇺🇸
+      </div>
+
+      <div class="game-card-content">
+
+        <span class="game-tag">
+          INGLÊS
+        </span>
+
+        <h3>
+          Aprender Jogando
+        </h3>
+
+        <p>
+          Pratique inglês através de jogos educativos.
+        </p>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</div>
+
+
+  </section>
+
+  <!-- =========================================================
+       CURSOS
+  ========================================================== -->
+
+  <section
+    id="cursosSection"
+    class="content-section"
+  >
+
+
+<div class="section-container">
+
+  <button
+    class="back-button"
+    type="button"
+    onclick="voltarCursos()"
+  >
+    ← Voltar
+  </button>
+
+
+  <div class="section-header">
+
+    <span class="welcome-label">
+      ALDEMAR STUDIOS
+    </span>
+
+    <h2 class="section-title">
+      Meus Cursos
+    </h2>
+
+    <p>
+      Acesse seus conteúdos e acompanhe sua evolução.
+    </p>
+
+  </div>
+
+
+  <div class="course-grid">
+
+    <article class="course-card">
+
+      <div class="course-icon">
+        EN
+      </div>
+
+      <div class="course-info">
+
+        <span class="game-tag">
+          CURSO
+        </span>
+
+        <h3>
+          Curso de Inglês para Iniciantes
+        </h3>
+
+        <p>
+          Aprenda inglês de forma simples, prática e progressiva.
+        </p>
+
+
+        <div class="course-progress">
+
+          <div class="progress-header">
+
+            <span>
+              Progresso
+            </span>
+
+            <strong>
+              0%
+            </strong>
+
+          </div>
+
+
+          <div class="progress-bar">
+
+            <div
+              class="progress-fill"
+              style="width: 0%;"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="primary-small"
+          type="button"
         >
+          CONTINUAR
+        </button>
 
-            <div class="auth-container">
+      </div>
 
-                <!-- MARCA -->
+    </article>
 
-                <div class="brand">
+  </div>
 
-                    <div class="brand-icon">
-                        AS
-                    </div>
+</div>
 
-                    <div class="brand-copy">
 
-                        <span class="brand-kicker">
-                            ALDEMAR STUDIOS
-                        </span>
+  </section>
 
-                        <h1>
-                            Criar conta
-                        </h1>
+  <!-- =========================================================
+       DASHBOARD
+  ========================================================== -->
 
-                        <p>
-                            Faça parte da plataforma.
-                        </p>
+  <section
+    id="dashboardSection"
+    class="content-section"
+  >
 
-                    </div>
 
-                </div>
+<div class="section-container">
 
+  <div class="section-header">
 
-                <!-- CARD -->
+    <span class="welcome-label">
+      ALDEMAR STUDIOS
+    </span>
 
-                <div class="auth-card">
+    <h2 class="section-title">
+      Dashboard
+    </h2>
 
-                    <div class="auth-header">
+    <p>
+      Sua plataforma de aprendizagem.
+    </p>
 
-                        <span class="auth-status">
-                            <span class="status-dot"></span>
-                            NOVO USUÁRIO
-                        </span>
+  </div>
 
-                        <h2>
-                            Criar minha conta
-                        </h2>
+</div>
 
-                        <p>
-                            Preencha seus dados para começar.
-                        </p>
 
-                    </div>
+  </section>
 
+</main>
 
-                    <!-- FORMULÁRIO DE CADASTRO -->
+<!-- =========================================================
+     JAVASCRIPT PRINCIPAL
+========================================================== -->
 
-                    <form
-                        id="registerForm"
-                        class="auth-form"
-                    >
+<script src="js/app.js"></script>
 
-                        <!-- NOME -->
+<!-- =========================================================
+     FUNÇÕES DE NAVEGAÇÃO DA PÁGINA
+========================================================== -->
 
-                        <div class="input-group">
+<script>
 
-                            <label for="registerName">
-                                Nome completo
-                            </label>
+  /*
+   * ABRIR CADASTRO
+   *
+   * O cadastro abre em uma NOVA ABA.
+   * O #cadastro informa à página qual tela deve aparecer.
+   */
+  function abrirCadastro() {
 
-                            <div class="input-wrapper">
+    window.open(
+      "index.html#cadastro",
+      "_blank"
+    );
 
-                                <span class="input-icon">
-                                    A
-                                </span>
+  }
 
-                                <input
-                                    type="text"
-                                    id="registerName"
-                                    name="name"
-                                    placeholder="Digite seu nome"
-                                    autocomplete="name"
-                                    required
-                                >
 
-                            </div>
 
-                        </div>
+  /*
+   * VOLTAR PARA LOGIN
+   */
+  function voltarParaLogin() {
 
+    const loginScreen =
+      document.getElementById("loginScreen");
 
-                        <!-- E-MAIL -->
+    const registerScreen =
+      document.getElementById("registerScreen");
 
-                        <div class="input-group">
 
-                            <label for="registerEmail">
-                                E-mail
-                            </label>
+    if (
+      !loginScreen ||
+      !registerScreen
+    ) {
 
-                            <div class="input-wrapper">
+      return;
 
-                                <span class="input-icon">
-                                    @
-                                </span>
+    }
 
-                                <input
-                                    type="email"
-                                    id="registerEmail"
-                                    name="email"
-                                    placeholder="seu@email.com"
-                                    autocomplete="email"
-                                    required
-                                >
 
-                            </div>
+    registerScreen.classList.remove("active");
 
-                        </div>
+    loginScreen.classList.add("active");
 
 
-                        <!-- SENHA -->
+    window.scrollTo({
 
-                        <div class="input-group">
+      top: 0,
 
-                            <label for="registerPassword">
-                                Senha
-                            </label>
+      behavior: "smooth"
 
-                            <div class="input-wrapper">
+    });
 
-                                <span class="input-icon">
-                                    •
-                                </span>
+  }
 
-                                <input
-                                    type="password"
-                                    id="registerPassword"
-                                    name="password"
-                                    placeholder="Crie uma senha"
-                                    autocomplete="new-password"
-                                    required
-                                >
 
-                            </div>
 
-                        </div>
+  /*
+   * MOSTRAR UMA SEÇÃO
+   */
+  function mostrarSecao(id) {
 
+    const screens =
+      document.querySelectorAll(
+        ".screen, .content-section"
+      );
 
-                        <!-- INFORMAÇÃO DA SENHA -->
 
-                        <div class="password-info">
+    screens.forEach(
+      function(element) {
 
-                            <span>
-                                ✓
-                            </span>
+        element.classList.remove("active");
 
-                            <p>
-                                Use uma senha com pelo menos
-                                6 caracteres.
-                            </p>
+      }
+    );
 
-                        </div>
 
+    const target =
+      document.getElementById(id);
 
-                        <!-- CRIAR CONTA -->
 
-                        <button
-                            type="submit"
-                            class="primary-button"
-                        >
+    if (target) {
 
-                            <span>
-                                CRIAR CONTA
-                            </span>
+      target.classList.add("active");
 
-                            <span class="button-arrow">
-                                →
-                            </span>
+    }
 
-                        </button>
 
-                    </form>
+    window.scrollTo({
 
+      top: 0,
 
-                    <!-- DIVISOR -->
+      behavior: "smooth"
 
-                    <div class="divider">
+    });
 
-                        <span></span>
+  }
 
-                        <small>
-                            já possui uma conta?
-                        </small>
 
-                        <span></span>
 
-                    </div>
+  /*
+   * VOLTAR DOS JOGOS
+   */
+  function voltarJogos() {
 
+    mostrarSecao(
+      "dashboardSection"
+    );
 
-                    <!-- VOLTAR -->
+  }
 
-                    <button
-                        type="button"
-                        id="backToLogin"
-                        class="secondary-button"
-                    >
 
-                        <span>
-                            VOLTAR PARA O LOGIN
-                        </span>
 
-                        <span>
-                            ←
-                        </span>
+  /*
+   * VOLTAR DOS CURSOS
+   */
+  function voltarCursos() {
 
-                    </button>
+    mostrarSecao(
+      "dashboardSection"
+    );
 
+  }
 
-                    <!-- CONTATO -->
 
-                    <div class="security-note">
 
-                        <span class="security-icon">
-                            WA
-                        </span>
+  /*
+   * CATEGORIA PASSATEMPO
+   */
+  function abrirCategoriaPassatempo() {
 
-                        <span>
-                            WhatsApp: 82 9 9654-8511
-                        </span>
+    if (
+      typeof window.abrirCategoriaPassatempoOriginal
+      === "function"
+    ) {
 
-                    </div>
+      window.abrirCategoriaPassatempoOriginal();
 
-                </div>
+      return;
 
-            </div>
+    }
 
-        </section>
 
+    console.log(
+      "Categoria Passatempo selecionada."
+    );
 
-        <!-- =========================================================
-             SEÇÃO DE JOGOS
-        ========================================================== -->
+  }
 
-        <section
-            id="jogosSection"
-            class="content-section"
-        >
 
-            <div class="section-container">
 
-                <!-- BOTÃO VOLTAR -->
+  /*
+   * CATEGORIA EDUCATIVOS
+   */
+  function abrirCategoriaEducativos() {
 
-                <button
-                    class="back-button"
-                    onclick="voltarJogos()"
-                    type="button"
-                >
-                    ← Voltar
-                </button>
+    if (
+      typeof window.abrirCategoriaEducativosOriginal
+      === "function"
+    ) {
 
+      window.abrirCategoriaEducativosOriginal();
 
-                <!-- TÍTULO -->
+      return;
 
-                <div class="section-header">
+    }
 
-                    <span class="welcome-label">
-                        ALDEMAR STUDIOS
-                    </span>
 
-                    <h2 class="section-title">
-                        Central de Jogos
-                    </h2>
+    console.log(
+      "Categoria Educativos selecionada."
+    );
 
-                    <p>
-                        Aprenda, pratique e divirta-se.
-                    </p>
+  }
 
-                </div>
 
 
-                <!-- CATEGORIAS -->
+  /*
+   * JOGOS DE INGLÊS
+   */
+  function abrirJogosIngles() {
 
-                <div class="games-grid">
+    if (
+      typeof window.abrirJogosInglesOriginal
+      === "function"
+    ) {
 
-                    <!-- PASSATEMPO -->
+      window.abrirJogosInglesOriginal();
 
-                    <article
-                        class="game-card"
-                        onclick="abrirCategoriaPassatempo()"
-                    >
+      return;
 
-                        <div class="game-cover">
-                            🎮
-                        </div>
+    }
 
-                        <div class="game-card-content">
 
-                            <span class="game-tag">
-                                PASSATEMPO
-                            </span>
+    console.log(
+      "Jogos de Inglês selecionados."
+    );
 
-                            <h3>
-                                Jogos de Passatempo
-                            </h3>
+  }
 
-                            <p>
-                                Divirta-se com desafios
-                                rápidos e interativos.
-                            </p>
 
-                        </div>
 
-                    </article>
+  /*
+   * FILTRO DE JOGOS EDUCATIVOS
+   */
+  function filtrarEducativos() {
 
+    console.log(
+      "Filtro de jogos educativos."
+    );
 
-                    <!-- EDUCATIVOS -->
+  }
 
-                    <article
-                        class="game-card"
-                        onclick="abrirCategoriaEducativos()"
-                    >
 
-                        <div class="game-cover">
-                            🧠
-                        </div>
 
-                        <div class="game-card-content">
+  /*
+   * VERIFICA SE A PÁGINA FOI ABERTA
+   * COM #cadastro
+   *
+   * Exemplo:
+   *
+   * index.html#cadastro
+   *
+   * Nesse caso:
+   * LOGIN = oculto
+   * CADASTRO = exibido
+   */
+  function verificarTelaInicial() {
 
-                            <span class="game-tag">
-                                EDUCATIVOS
-                            </span>
+    if (
+      window.location.hash === "#cadastro"
+    ) {
 
-                            <h3>
-                                Jogos Educativos
-                            </h3>
+      const loginScreen =
+        document.getElementById(
+          "loginScreen"
+        );
 
-                            <p>
-                                Aprenda enquanto joga
-                                com atividades interativas.
-                            </p>
+      const registerScreen =
+        document.getElementById(
+          "registerScreen"
+        );
 
-                        </div>
 
-                    </article>
+      if (
+        loginScreen &&
+        registerScreen
+      ) {
 
+        loginScreen.classList.remove(
+          "active"
+        );
 
-                    <!-- INGLÊS -->
+        registerScreen.classList.add(
+          "active"
+        );
 
-                    <article
-                        class="game-card"
-                        onclick="abrirJogosIngles()"
-                    >
 
-                        <div class="game-cover">
-                            🇺🇸
-                        </div>
+        window.scrollTo({
 
-                        <div class="game-card-content">
+          top: 0,
 
-                            <span class="game-tag">
-                                INGLÊS
-                            </span>
+          behavior: "auto"
 
-                            <h3>
-                                Aprender Jogando
-                            </h3>
+        });
 
-                            <p>
-                                Pratique inglês através
-                                de jogos educativos.
-                            </p>
+      }
 
-                        </div>
+    }
 
-                    </article>
+  }
 
-                </div>
 
-            </div>
 
-        </section>
+  /*
+   * VERIFICAÇÃO INICIAL
+   */
+  document.addEventListener(
+    "DOMContentLoaded",
+    verificarTelaInicial
+  );
 
 
-        <!-- =========================================================
-             SEÇÃO DE CURSOS
-        ========================================================== -->
 
-        <section
-            id="cursosSection"
-            class="content-section"
-        >
+  /*
+   * CASO O HASH MUDE
+   */
+  window.addEventListener(
+    "hashchange",
+    verificarTelaInicial
+  );
 
-            <div class="section-container">
-
-                <!-- VOLTAR -->
-
-                <button
-                    class="back-button"
-                    type="button"
-                    onclick="voltarCursos()"
-                >
-                    ← Voltar
-                </button>
-
-
-                <!-- CABEÇALHO -->
-
-                <div class="section-header">
-
-                    <span class="welcome-label">
-                        ALDEMAR STUDIOS
-                    </span>
-
-                    <h2 class="section-title">
-                        Meus Cursos
-                    </h2>
-
-                    <p>
-                        Acesse seus conteúdos e acompanhe
-                        sua evolução.
-                    </p>
-
-                </div>
-
-
-                <!-- CURSO -->
-
-                <div class="course-grid">
-
-                    <article class="course-card">
-
-                        <div class="course-icon">
-                            EN
-                        </div>
-
-                        <div class="course-info">
-
-                            <span class="game-tag">
-                                CURSO
-                            </span>
-
-                            <h3>
-                                Curso de Inglês para Iniciantes
-                            </h3>
-
-                            <p>
-                                Aprenda inglês de forma simples,
-                                prática e progressiva.
-                            </p>
-
-                            <div class="course-progress">
-
-                                <div class="progress-header">
-
-                                    <span>
-                                        Progresso
-                                    </span>
-
-                                    <strong>
-                                        0%
-                                    </strong>
-
-                                </div>
-
-                                <div class="progress-bar">
-
-                                    <div
-                                        class="progress-fill"
-                                        style="width: 0%;"
-                                    ></div>
-
-                                </div>
-
-                            </div>
-
-                            <button
-                                class="primary-small"
-                                type="button"
-                            >
-                                CONTINUAR
-                            </button>
-
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================================================
-             ÁREA PARA FUTURAS SEÇÕES
-        ========================================================== -->
-
-        <section
-            id="dashboardSection"
-            class="content-section"
-        >
-
-            <div class="section-container">
-
-                <div class="section-header">
-
-                    <span class="welcome-label">
-                        ALDEMAR STUDIOS
-                    </span>
-
-                    <h2 class="section-title">
-                        Dashboard
-                    </h2>
-
-                    <p>
-                        Sua plataforma de aprendizagem.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =============================================================
-         JAVASCRIPT PRINCIPAL
-    ============================================================== -->
-
-    <script src="js/app.js"></script>
-
-
-    <!-- =============================================================
-         NAVEGAÇÃO BÁSICA
-    ============================================================== -->
-
-    <script>
-
-        /*
-         * Abre a tela de cadastro
-         */
-
-        const openRegisterButton =
-            document.getElementById("openRegister");
-
-        const backToLoginButton =
-            document.getElementById("backToLogin");
-
-        const loginScreen =
-            document.getElementById("loginScreen");
-
-        const registerScreen =
-            document.getElementById("registerScreen");
-
-
-        if (openRegisterButton) {
-
-            openRegisterButton.addEventListener(
-                "click",
-                function () {
-
-                    loginScreen.classList.remove("active");
-
-                    registerScreen.classList.add("active");
-
-                    window.scrollTo({
-                        top: 0,
-                        behavior: "smooth"
-                    });
-
-                }
-            );
-
-        }
-
-
-        /*
-         * Volta para o login
-         */
-
-        if (backToLoginButton) {
-
-            backToLoginButton.addEventListener(
-                "click",
-                function () {
-
-                    registerScreen.classList.remove("active");
-
-                    loginScreen.classList.add("active");
-
-                    window.scrollTo({
-                        top: 0,
-                        behavior: "smooth"
-                    });
-
-                }
-            );
-
-        }
-
-
-        /*
-         * Funções auxiliares das seções.
-         * Caso já existam no app.js, o app.js continuará
-         * sendo responsável pela lógica principal.
-         */
-
-        function mostrarSecao(id) {
-
-            const screens =
-                document.querySelectorAll(
-                    ".screen, .content-section"
-                );
-
-            screens.forEach(function (element) {
-
-                element.classList.remove("active");
-
-            });
-
-            const target =
-                document.getElementById(id);
-
-            if (target) {
-
-                target.classList.add("active");
-
-            }
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-        }
-
-
-        /*
-         * Voltar dos jogos
-         */
-
-        function voltarJogos() {
-
-            mostrarSecao("dashboardSection");
-
-        }
-
-
-        /*
-         * Voltar dos cursos
-         */
-
-        function voltarCursos() {
-
-            mostrarSecao("dashboardSection");
-
-        }
-
-
-        /*
-         * Categorias dos jogos.
-         * Estas funções podem ser substituídas pelo app.js
-         * caso já existam implementações específicas.
-         */
-
-        function abrirCategoriaPassatempo() {
-
-            if (
-                typeof window.abrirCategoriaPassatempoOriginal
-                === "function"
-            ) {
-
-                window.abrirCategoriaPassatempoOriginal();
-
-                return;
-
-            }
-
-            console.log(
-                "Categoria Passatempo selecionada."
-            );
-
-        }
-
-
-        function abrirCategoriaEducativos() {
-
-            if (
-                typeof window.abrirCategoriaEducativosOriginal
-                === "function"
-            ) {
-
-                window.abrirCategoriaEducativosOriginal();
-
-                return;
-
-            }
-
-            console.log(
-                "Categoria Educativos selecionada."
-            );
-
-        }
-
-
-        function abrirJogosIngles() {
-
-            if (
-                typeof window.abrirJogosInglesOriginal
-                === "function"
-            ) {
-
-                window.abrirJogosInglesOriginal();
-
-                return;
-
-            }
-
-            console.log(
-                "Jogos de Inglês selecionados."
-            );
-
-        }
-
-
-        /*
-         * Filtro educativo
-         */
-
-        function filtrarEducativos() {
-
-            console.log(
-                "Filtro de jogos educativos."
-            );
-
-        }
-
-
-        /*
-         * Esqueci minha senha
-         */
-
-        const forgotPassword =
-            document.getElementById("forgotPassword");
-
-
-        if (forgotPassword) {
-
-            forgotPassword.addEventListener(
-                "click",
-                function () {
-
-                    alert(
-                        "Para recuperar sua senha, entre em contato pelo WhatsApp: 82 9 9654-8511."
-                    );
-
-                }
-            );
-
-        }
-
-    </script>
+</script>
 
 </body>
 </html>
