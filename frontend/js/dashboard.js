@@ -108,6 +108,7 @@ function getUserId() {
 
 function getUserName() {
     return (
+        usuario?.nome_completo ||
         usuario?.nome ||
         usuario?.name ||
         usuario?.fullName ||
@@ -1903,3 +1904,4 @@ document.addEventListener(
 /* =========================================================
    FIM DO DASHBOARD.JS
 ========================================================= */
+
