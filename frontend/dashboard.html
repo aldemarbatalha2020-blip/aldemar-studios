@@ -94,11 +94,7 @@
                  MINI CURSO
             ================================================== -->
 
-            <button
-                type="button"
-                class="menu-item"
-                data-section="ingles"
-            >
+            <a href="/cursos/ingles-gratis/" class="menu-item">
 
                 <span class="menu-icon">🇺🇸</span>
 
@@ -106,7 +102,7 @@
                     Mini Curso
                 </span>
 
-            </button>
+            </a>
 
 
             <button
@@ -375,7 +371,7 @@
 
                 <article
                     class="access-card"
-                    data-section-link="ingles"
+                    onclick="window.location.href='/cursos/ingles-gratis/'"
                     tabindex="0"
                 >
 
@@ -563,6 +559,11 @@
         >
 
 
+            <button type="button" class="back-button" data-games-central-back>
+                ← VOLTAR
+            </button>
+
+
             <div id="gamesCategories">
 
                 <div class="section-title">
@@ -589,6 +590,7 @@
                     <div
                         class="category-card game-category-card"
                         data-game-category="passatempo"
+                        data-game-category-open="passatempoArea"
                         tabindex="0"
                         role="button"
                     >
@@ -616,6 +618,7 @@
                     <div
                         class="category-card game-category-card"
                         data-game-category="educativos"
+                        data-game-category-open="educativosArea"
                         tabindex="0"
                         role="button"
                     >
@@ -2052,7 +2055,7 @@
 
                 <div
                     class="category-card"
-                    data-section-link="ingles"
+                    onclick="window.location.href='/cursos/ingles-gratis/'"
                     tabindex="0"
                 >
 
@@ -2101,47 +2104,6 @@
                     <span class="card-link">
                         Acessar jogos →
                     </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 INFORMAÇÕES DO MINI CURSO
-            ================================================== -->
-
-            <div class="course-intro-card">
-
-                <div class="course-intro-icon">
-                    🎯
-                </div>
-
-
-                <div>
-
-                    <h3>
-                        Sobre o Mini Curso
-                    </h3>
-
-                    <p>
-                        O Mini Curso de Inglês foi desenvolvido
-                        para quem deseja começar a aprender inglês
-                        de forma simples, gradual e organizada.
-                    </p>
-
-                    <p>
-                        Todo o conteúdo está organizado em módulos,
-                        permitindo que o aluno avance progressivamente
-                        pelos assuntos do curso.
-                    </p>
-
-                    <a
-                        href="cursos/ingles-gratis/index.html"
-                        class="primary-small"
-                    >
-                        VER ÍNDICE DOS MÓDULOS →
-                    </a>
 
                 </div>
 
@@ -2270,46 +2232,13 @@
 
 
                     <a
-                        href="cursos/ingles-gratis/index.html"
+                        href="/cursos/ingles-gratis/"
                         class="primary-small"
                     >
                         COMEÇAR →
                     </a>
 
                 </article>
-
-            </div>
-
-
-            <div class="course-intro-card">
-
-                <div class="course-intro-icon">
-                    🎯
-                </div>
-
-
-                <div>
-
-                    <h3>
-                        Nossa proposta
-                    </h3>
-
-                    <p>
-                        O Aldemar Studios está desenvolvendo
-                        uma plataforma de cursos gratuitos
-                        para ampliar o acesso à educação.
-                    </p>
-
-                    <p>
-                        O primeiro projeto será o curso
-                        <strong>
-                            Inglês para Iniciantes
-                        </strong>,
-                        organizado em 10 módulos com 10 aulas
-                        cada.
-                    </p>
-
-                </div>
 
             </div>
 
@@ -3206,7 +3135,7 @@
      JAVASCRIPT
 ========================================================== -->
 
-<script src="js/dashboard.js?v=20260905"></script>
+<script src="js/dashboard.js?v=20260905-2"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -3226,6 +3155,19 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

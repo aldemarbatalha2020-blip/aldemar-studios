@@ -1905,3 +1905,73 @@ document.addEventListener(
    FIM DO DASHBOARD.JS
 ========================================================= */
 
+
+/* =========================================================
+   NAVEGAÇÃO DA CENTRAL DE JOGOS
+========================================================= */
+
+document.querySelectorAll("[data-game-category-open]").forEach(button => {
+
+    button.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        const category = this.dataset.gameCategoryOpen;
+
+        if (!category) return;
+
+        const categories = document.getElementById("gamesCategories");
+        const target = document.getElementById(category);
+
+        if (categories) {
+            categories.style.display = "none";
+        }
+
+        document.querySelectorAll(".games-area").forEach(area => {
+            area.hidden = true;
+        });
+
+        if (target) {
+            target.hidden = false;
+        }
+
+    });
+
+});
+
+
+document.querySelectorAll("[data-games-back]").forEach(button => {
+
+    button.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        document.querySelectorAll(".games-area").forEach(area => {
+            area.hidden = true;
+        });
+
+        const categories = document.getElementById("gamesCategories");
+
+        if (categories) {
+            categories.style.display = "";
+        }
+
+    });
+
+});
+
+
+document.querySelectorAll("[data-games-central-back]").forEach(button => {
+
+    button.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        if (typeof showSection === "function") {
+            showSection("inicio");
+        }
+
+    });
+
+});
+
