@@ -193,7 +193,11 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
 
+    const inicioLogin = Date.now();
+
     try {
+
+        console.log("🔵 LOGIN INICIADO");
 
         const {
             email,
@@ -208,12 +212,9 @@ router.post("/login", async (req, res) => {
         if (!email || !senha) {
 
             return res.status(400).json({
-
                 sucesso: false,
-
                 mensagem:
                     "Informe seu e-mail e sua senha."
-
             });
 
         }
@@ -224,8 +225,10 @@ router.post("/login", async (req, res) => {
 
 
         // =====================================
-        // BUSCAR USUÃRIO
+        // TESTAR MYSQL
         // =====================================
+
+        const inicioMysql = Date.now();
 
         const [usuarios] =
             await pool.execute(
@@ -246,20 +249,21 @@ router.post("/login", async (req, res) => {
                 [emailNormalizado]
             );
 
+        console.log(
+            `🟡 MYSQL: ${Date.now() - inicioMysql} ms`
+        );
+
 
         // =====================================
-        // USUÃRIO NÃƒO ENCONTRADO
+        // USUÁRIO NÃO ENCONTRADO
         // =====================================
 
         if (usuarios.length === 0) {
 
             return res.status(401).json({
-
                 sucesso: false,
-
                 mensagem:
                     "E-mail ou senha incorretos."
-
             });
 
         }
@@ -276,20 +280,19 @@ router.post("/login", async (req, res) => {
         if (usuario.status !== "ativo") {
 
             return res.status(403).json({
-
                 sucesso: false,
-
                 mensagem:
-                    "Esta conta nÃ£o estÃ¡ disponÃ­vel."
-
+                    "Esta conta não está disponível."
             });
 
         }
 
 
         // =====================================
-        // COMPARAR SENHA
+        // TESTAR BCRYPT
         // =====================================
+
+        const inicioBcrypt = Date.now();
 
         const senhaCorreta =
             await bcrypt.compare(
@@ -297,19 +300,29 @@ router.post("/login", async (req, res) => {
                 usuario.senha
             );
 
+        console.log(
+            `🟠 BCRYPT: ${Date.now() - inicioBcrypt} ms`
+        );
+
 
         if (!senhaCorreta) {
 
             return res.status(401).json({
-
                 sucesso: false,
-
                 mensagem:
                     "E-mail ou senha incorretos."
-
             });
 
         }
+
+
+        // =====================================
+        // TEMPO TOTAL
+        // =====================================
+
+        console.log(
+            `🟢 LOGIN TOTAL: ${Date.now() - inicioLogin} ms`
+        );
 
 
         // =====================================
@@ -351,10 +364,13 @@ router.post("/login", async (req, res) => {
     } catch (error) {
 
         console.error(
-            "Erro ao realizar login:",
+            "🔴 ERRO AO REALIZAR LOGIN:",
             error
         );
 
+        console.log(
+            `🔴 LOGIN COM ERRO: ${Date.now() - inicioLogin} ms`
+        );
 
         return res.status(500).json({
 
