@@ -3,168 +3,1328 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inglês Grátis | Instituto Acutis</title>
+
+<title>Aprendendo Inglês com Aldemar | Instituto Acutis</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f7fb;
-    color:#172033;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(0,210,255,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(102,72,255,.15),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(0,255,180,.08),
+            transparent 35%
+        ),
+        #050914;
+
+    color:#fff;
     min-height:100vh;
+    overflow-x:hidden;
 }
-header{
-    background:#0b1f3a;
-    color:white;
-    padding:28px 20px;
-    text-align:center;
+
+
+/* =========================================================
+   FUNDO FUTURISTA
+========================================================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        );
+
+    background-size:50px 50px;
+
+    mask-image:linear-gradient(
+        to bottom,
+        black,
+        transparent 90%
+    );
+
+    pointer-events:none;
+    z-index:0;
 }
-header h1{font-size:30px;margin-bottom:8px}
-header p{opacity:.85;font-size:16px}
-main{
-    max-width:1000px;
-    margin:40px auto;
-    padding:0 20px;
+
+.orb{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(70px);
+    pointer-events:none;
+    opacity:.35;
+    z-index:0;
 }
-h2{
-    text-align:center;
-    margin-bottom:10px;
-    font-size:28px;
+
+.orb-one{
+    width:280px;
+    height:280px;
+    background:#00d9ff;
+    top:80px;
+    left:-120px;
 }
-.subtitle{
-    text-align:center;
-    color:#657085;
-    margin-bottom:35px;
+
+.orb-two{
+    width:320px;
+    height:320px;
+    background:#6547ff;
+    right:-150px;
+    top:350px;
 }
-.modules{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:20px;
+
+.orb-three{
+    width:250px;
+    height:250px;
+    background:#00ffae;
+    left:35%;
+    bottom:-150px;
 }
-.module{
-    background:white;
-    border-radius:16px;
-    padding:25px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
-    border:1px solid #e4e9f0;
-}
-.module h3{
-    margin-bottom:10px;
-    font-size:21px;
-}
-.module p{
-    color:#667085;
-    margin-bottom:20px;
-    line-height:1.5;
-}
-.btn{
-    display:block;
-    text-align:center;
-    background:#1769e0;
-    color:white;
+
+
+/* =========================================================
+   BOTÃO VOLTAR
+========================================================= */
+
+.btn-voltar{
+    position:relative;
+    z-index:20;
+
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    margin:22px 25px 0;
+
+    padding:10px 18px;
+
+    color:#dffaff;
     text-decoration:none;
-    padding:13px;
-    border-radius:10px;
-    font-weight:bold;
-}
-.btn:hover{background:#0e55bd}
-footer{
-    text-align:center;
-    padding:30px;
-    color:#737d8f;
+
     font-size:14px;
+    font-weight:700;
+    letter-spacing:.5px;
+
+    border:1px solid rgba(0,220,255,.35);
+    border-radius:10px;
+
+    background:rgba(5,15,30,.65);
+
+    backdrop-filter:blur(12px);
+
+    transition:.3s;
+}
+
+.btn-voltar:hover{
+    color:#fff;
+    border-color:#00d9ff;
+    background:rgba(0,210,255,.12);
+
+    box-shadow:
+        0 0 20px rgba(0,220,255,.2);
+
+    transform:translateX(-3px);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    position:relative;
+    z-index:1;
+
+    max-width:1150px;
+
+    margin:0 auto;
+
+    padding:70px 25px 60px;
+
+    text-align:center;
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+
+    padding:8px 16px;
+
+    border:1px solid rgba(0,220,255,.3);
+    border-radius:50px;
+
+    background:rgba(0,210,255,.06);
+
+    color:#65eaff;
+
+    font-size:12px;
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+        inset 0 0 20px rgba(0,210,255,.03),
+        0 0 25px rgba(0,210,255,.05);
+}
+
+.hero-badge span{
+    width:7px;
+    height:7px;
+
+    background:#00ffae;
+
+    border-radius:50%;
+
+    box-shadow:
+        0 0 10px #00ffae;
+
+    animation:pulse 1.8s infinite;
+}
+
+.hero h1{
+    font-size:clamp(38px,7vw,76px);
+
+    line-height:1.02;
+
+    font-weight:900;
+
+    letter-spacing:-2px;
+
+    margin-bottom:20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #7cecff,
+            #9b8cff,
+            #ffffff
+        );
+
+    background-size:250% auto;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+
+    animation:gradientMove 6s linear infinite;
+}
+
+.hero h1 strong{
+    display:block;
+
+    font-size:.45em;
+
+    letter-spacing:5px;
+
+    margin-bottom:12px;
+
+    color:#64eaff;
+}
+
+.hero-description{
+    max-width:680px;
+
+    margin:0 auto 35px;
+
+    color:#aebbd2;
+
+    font-size:18px;
+
+    line-height:1.7;
+}
+
+.hero-description strong{
+    color:#fff;
+}
+
+
+/* =========================================================
+   HERO ESTATÍSTICAS
+========================================================= */
+
+.stats{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+
+    gap:14px;
+
+    margin-top:35px;
+}
+
+.stat{
+    min-width:145px;
+
+    padding:15px 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.06),
+            rgba(255,255,255,.015)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:14px;
+
+    backdrop-filter:blur(15px);
+}
+
+.stat-number{
+    display:block;
+
+    font-size:24px;
+    font-weight:900;
+
+    color:#67eaff;
+
+    margin-bottom:4px;
+}
+
+.stat-label{
+    font-size:11px;
+
+    color:#8190a8;
+
+    text-transform:uppercase;
+
+    letter-spacing:1.5px;
+}
+
+
+/* =========================================================
+   SEÇÃO JORNADA
+========================================================= */
+
+.journey{
+    position:relative;
+    z-index:1;
+
+    max-width:1150px;
+
+    margin:0 auto;
+
+    padding:20px 25px 80px;
+}
+
+.section-heading{
+    text-align:center;
+
+    margin-bottom:45px;
+}
+
+.section-tag{
+    display:block;
+
+    color:#00d9ff;
+
+    font-size:11px;
+    font-weight:800;
+
+    letter-spacing:3px;
+
+    margin-bottom:12px;
+}
+
+.section-heading h2{
+    font-size:clamp(28px,4vw,42px);
+
+    margin-bottom:12px;
+}
+
+.section-heading p{
+    color:#8491a7;
+
+    font-size:15px;
+}
+
+
+/* =========================================================
+   LINHA DA JORNADA
+========================================================= */
+
+.modules{
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(260px,1fr)
+        );
+
+    gap:22px;
+}
+
+.modules::before{
+    content:"";
+
+    position:absolute;
+
+    top:50%;
+
+    left:0;
+    right:0;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,220,255,.2),
+            transparent
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.module{
+    position:relative;
+
+    padding:28px;
+
+    min-height:245px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,28,50,.92),
+            rgba(7,14,28,.92)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.25),
+        inset 0 1px rgba(255,255,255,.04);
+
+    overflow:hidden;
+
+    transition:
+        transform .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
+}
+
+.module::before{
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+    height:130px;
+
+    top:-70px;
+    right:-60px;
+
+    border-radius:50%;
+
+    background:#00d9ff;
+
+    filter:blur(55px);
+
+    opacity:.12;
+
+    transition:.35s;
+}
+
+.module::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+    height:2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00d9ff,
+            transparent
+        );
+
+    opacity:.35;
+}
+
+.module:hover{
+    transform:translateY(-8px);
+
+    border-color:
+        rgba(0,220,255,.35);
+
+    box-shadow:
+        0 25px 55px rgba(0,0,0,.4),
+        0 0 30px rgba(0,210,255,.08);
+}
+
+.module:hover::before{
+    opacity:.25;
+}
+
+
+/* =========================================================
+   NÚMERO DO MÓDULO
+========================================================= */
+
+.module-number{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:48px;
+    height:48px;
+
+    margin-bottom:22px;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,220,255,.15),
+            rgba(105,73,255,.15)
+        );
+
+    border:1px solid rgba(0,220,255,.25);
+
+    color:#70eaff;
+
+    font-size:15px;
+    font-weight:900;
+
+    box-shadow:
+        0 0 20px rgba(0,220,255,.08);
+}
+
+.module:nth-child(n+4) .module-number{
+    color:#a796ff;
+
+    border-color:
+        rgba(140,110,255,.3);
+}
+
+
+/* =========================================================
+   TEXTO DOS MÓDULOS
+========================================================= */
+
+.module h3{
+    font-size:21px;
+
+    margin-bottom:10px;
+
+    color:#fff;
+}
+
+.module p{
+    color:#8290a8;
+
+    line-height:1.6;
+
+    font-size:14px;
+
+    min-height:67px;
+
+    margin-bottom:20px;
+}
+
+
+/* =========================================================
+   BOTÃO DOS MÓDULOS
+========================================================= */
+
+.btn{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:10px;
+
+    width:100%;
+
+    padding:13px 18px;
+
+    border-radius:11px;
+
+    text-decoration:none;
+
+    color:#fff;
+
+    font-size:13px;
+    font-weight:800;
+
+    letter-spacing:.5px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #087fa3,
+            #4051b5
+        );
+
+    border:1px solid rgba(100,230,255,.2);
+
+    overflow:hidden;
+
+    transition:.3s;
+}
+
+.btn::before{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-100%;
+
+    width:100%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.2),
+            transparent
+        );
+
+    transition:.5s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(0,210,255,.18);
+
+    border-color:#5eeaff;
+}
+
+.btn:hover::before{
+    left:100%;
+}
+
+.btn-arrow{
+    font-size:16px;
+}
+
+
+/* =========================================================
+   FRASE FINAL
+========================================================= */
+
+.motivation{
+    position:relative;
+    z-index:1;
+
+    max-width:900px;
+
+    margin:0 auto 70px;
+
+    padding:45px 30px;
+
+    text-align:center;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,210,255,.07),
+            rgba(110,75,255,.07)
+        );
+
+    border:1px solid rgba(255,255,255,.07);
+
+    overflow:hidden;
+}
+
+.motivation::before{
+    content:"";
+
+    position:absolute;
+
+    inset:-2px;
+
+    border-radius:24px;
+
+    padding:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,220,255,.4),
+            transparent,
+            rgba(130,90,255,.4),
+            transparent
+        );
+
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    mask-composite:exclude;
+
+    pointer-events:none;
+}
+
+.motivation-icon{
+    font-size:38px;
+
+    margin-bottom:15px;
+
+    filter:
+        drop-shadow(
+            0 0 15px rgba(0,220,255,.5)
+        );
+}
+
+.motivation h2{
+    font-size:27px;
+
+    margin-bottom:12px;
+}
+
+.motivation p{
+    color:#8997ae;
+
+    line-height:1.7;
+
+    max-width:620px;
+
+    margin:auto;
+}
+
+.motivation strong{
+    color:#6eeaff;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+    position:relative;
+    z-index:1;
+
+    padding:30px 20px 40px;
+
+    text-align:center;
+
+    border-top:
+        1px solid rgba(255,255,255,.05);
+
+    color:#647189;
+
+    font-size:12px;
+
+    letter-spacing:.5px;
+}
+
+footer strong{
+    color:#93a2bb;
+}
+
+
+/* =========================================================
+   ANIMAÇÕES
+========================================================= */
+
+@keyframes pulse{
+
+    0%,100%{
+        opacity:1;
+        transform:scale(1);
+    }
+
+    50%{
+        opacity:.5;
+        transform:scale(.7);
+    }
+
+}
+
+@keyframes gradientMove{
+
+    0%{
+        background-position:0% center;
+    }
+
+    100%{
+        background-position:250% center;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width:700px){
+
+    .btn-voltar{
+        margin:15px 15px 0;
+    }
+
+    .hero{
+        padding:
+            50px 20px
+            45px;
+    }
+
+    .hero h1{
+        letter-spacing:-1px;
+    }
+
+    .hero h1 strong{
+        letter-spacing:3px;
+    }
+
+    .hero-description{
+        font-size:15px;
+    }
+
+    .stats{
+        gap:8px;
+    }
+
+    .stat{
+        min-width:
+            calc(50% - 8px);
+
+        padding:13px 10px;
+    }
+
+    .journey{
+        padding:
+            10px 15px
+            60px;
+    }
+
+    .modules{
+        grid-template-columns:1fr;
+    }
+
+    .modules::before{
+        display:none;
+    }
+
+    .module{
+        min-height:auto;
+    }
+
+    .module p{
+        min-height:auto;
+    }
+
+    .motivation{
+        margin:
+            0 15px
+            50px;
+
+        padding:
+            35px 22px;
+    }
+
+}
+
+@media(max-width:400px){
+
+    .hero h1{
+        font-size:35px;
+    }
+
+    .stat{
+        min-width:100%;
+    }
+
 }
 </style>
 </head>
 
+
 <body>
-<a href="../../Tela Inicial.html" class="btn-voltar-Tela Inicial">
-    Tela Inicial
+
+<!-- ELEMENTOS DECORATIVOS -->
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+<div class="orb orb-three"></div>
+
+
+<!-- ======================================================
+     BOTÃO VOLTAR
+======================================================= -->
+
+<a
+    href="../../dashboard.html"
+    class="btn-voltar"
+>
+    ← Tela Inicial
 </a>
 
-<header>
-    <h1>APRENDENDO INGLÊS COM ALDEMAR</h1>
-    <p>Curso gratuito de Inglês — Instituto Acutis</p>
+
+<!-- ======================================================
+     HERO
+======================================================= -->
+
+<header class="hero">
+
+    <div class="hero-badge">
+        <span></span>
+        MINI CURSO GRATUITO
+    </div>
+
+    <h1>
+
+        <strong>INSTITUTO ACUTIS</strong>
+
+        APRENDENDO INGLÊS
+        <br>
+        COM ALDEMAR
+
+    </h1>
+
+    <p class="hero-description">
+
+        <strong>Seu inglês começa aqui.</strong>
+
+        Aprenda de forma progressiva, pratique seus conhecimentos
+        e avance por uma jornada preparada para levar você
+        cada vez mais longe.
+
+    </p>
+
+
+    <!-- ESTATÍSTICAS -->
+
+    <div class="stats">
+
+        <div class="stat">
+            <span class="stat-number">10</span>
+            <span class="stat-label">Módulos</span>
+        </div>
+
+        <div class="stat">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Gratuito</span>
+        </div>
+
+        <div class="stat">
+            <span class="stat-number">A1 → A2</span>
+            <span class="stat-label">Evolução</span>
+        </div>
+
+    </div>
+
 </header>
 
-<main>
 
-    <h2>O que você deve fazer?</h2>
-    <p class="subtitle">
-        Escolha um módulo, estude as aulas em ordem e avance no seu aprendizado.
-    </p>
+<!-- ======================================================
+     JORNADA
+======================================================= -->
+
+<main class="journey">
+
+    <div class="section-heading">
+
+        <span class="section-tag">
+            SUA JORNADA NO INGLÊS
+        </span>
+
+        <h2>
+            Escolha seu próximo passo
+        </h2>
+
+        <p>
+            Comece pelo primeiro módulo e avance no seu ritmo.
+        </p>
+
+    </div>
+
 
     <section class="modules">
 
-        <div class="module">
-            <h3>Módulo 01</h3>
-            <p>Comece aqui. Aprenda os primeiros conteúdos do curso.</p>
-            <a class="btn" href="modulos/modulo-01/aula-01.html">Começar</a>
-        </div>
+
+        <!-- MÓDULO 01 -->
 
         <div class="module">
-            <h3>Módulo 02</h3>
-            <p>Continue seus estudos e avance para novos conteúdos.</p>
-            <a class="btn" href="modulos/modulo-02/aula-01.html">Acessar</a>
+
+            <div class="module-number">
+                01
+            </div>
+
+            <h3>
+                Primeiros Passos
+            </h3>
+
+            <p>
+                Comece aqui. Aprenda os primeiros conteúdos
+                e construa sua base no inglês.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-01/aula-01.html"
+            >
+                COMEÇAR JORNADA
+                <span class="btn-arrow">→</span>
+            </a>
+
         </div>
 
-        <div class="module">
-            <h3>Módulo 03</h3>
-            <p>Amplie seu vocabulário e sua compreensão em Inglês.</p>
-            <a class="btn" href="modulos/modulo-03/aula-01.html">Acessar</a>
-        </div>
+
+        <!-- MÓDULO 02 -->
 
         <div class="module">
-            <h3>Módulo 04</h3>
-            <p>Desenvolva ainda mais seus conhecimentos.</p>
-            <a class="btn" href="modulos/modulo-04/aula-01.html">Acessar</a>
+
+            <div class="module-number">
+                02
+            </div>
+
+            <h3>
+                Construindo a Base
+            </h3>
+
+            <p>
+                Continue seus estudos e avance para
+                novos conteúdos da língua inglesa.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-02/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
         </div>
 
-        <div class="module">
-            <h3>Módulo 05</h3>
-            <p>Continue sua jornada de aprendizagem.</p>
-            <a class="btn" href="modulos/modulo-05/aula-01.html">Acessar</a>
-        </div>
+
+        <!-- MÓDULO 03 -->
 
         <div class="module">
-            <h3>Módulo 06</h3>
-            <p>Novos conteúdos para continuar avançando.</p>
-            <a class="btn" href="modulos/modulo-06/aula-01.html">Acessar</a>
+
+            <div class="module-number">
+                03
+            </div>
+
+            <h3>
+                Expandindo o Vocabulário
+            </h3>
+
+            <p>
+                Amplie seu vocabulário e desenvolva
+                sua compreensão em inglês.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-03/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
         </div>
 
-        <div class="module">
-            <h3>Módulo 07</h3>
-            <p>Aprofunde seus conhecimentos em Inglês.</p>
-            <a class="btn" href="modulos/modulo-07/aula-01.html">Acessar</a>
-        </div>
+
+        <!-- MÓDULO 04 -->
 
         <div class="module">
-            <h3>Módulo 08</h3>
-            <p>Pratique e desenvolva sua comunicação.</p>
-            <a class="btn" href="modulos/modulo-08/aula-01.html">Acessar</a>
+
+            <div class="module-number">
+                04
+            </div>
+
+            <h3>
+                Desenvolvendo Conhecimentos
+            </h3>
+
+            <p>
+                Desenvolva ainda mais seus conhecimentos
+                e continue sua evolução.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-04/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
         </div>
 
-        <div class="module">
-            <h3>Módulo 09</h3>
-            <p>Continue avançando rumo à fluência.</p>
-            <a class="btn" href="modulos/modulo-09/aula-01.html">Acessar</a>
-        </div>
+
+        <!-- MÓDULO 05 -->
 
         <div class="module">
-            <h3>Módulo 10</h3>
-            <p>Conclua esta etapa da sua formação.</p>
-            <a class="btn" href="modulos/modulo-10/aula-01.html">Acessar</a>
+
+            <div class="module-number">
+                05
+            </div>
+
+            <h3>
+                Nova Etapa
+            </h3>
+
+            <p>
+                Continue sua jornada de aprendizagem
+                e fortaleça tudo o que já estudou.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-05/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
         </div>
+
+
+        <!-- MÓDULO 06 -->
+
+        <div class="module">
+
+            <div class="module-number">
+                06
+            </div>
+
+            <h3>
+                Avançando
+            </h3>
+
+            <p>
+                Novos conteúdos para continuar
+                avançando na sua formação.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-06/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
+        </div>
+
+
+        <!-- MÓDULO 07 -->
+
+        <div class="module">
+
+            <div class="module-number">
+                07
+            </div>
+
+            <h3>
+                Aprofundamento
+            </h3>
+
+            <p>
+                Aprofunde seus conhecimentos e
+                desenvolva novas habilidades.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-07/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
+        </div>
+
+
+        <!-- MÓDULO 08 -->
+
+        <div class="module">
+
+            <div class="module-number">
+                08
+            </div>
+
+            <h3>
+                Comunicação
+            </h3>
+
+            <p>
+                Pratique e desenvolva cada vez mais
+                sua comunicação em inglês.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-08/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
+        </div>
+
+
+        <!-- MÓDULO 09 -->
+
+        <div class="module">
+
+            <div class="module-number">
+                09
+            </div>
+
+            <h3>
+                Rumo à Fluência
+            </h3>
+
+            <p>
+                Continue avançando e coloque em prática
+                tudo o que aprendeu.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-09/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
+        </div>
+
+
+        <!-- MÓDULO 10 -->
+
+        <div class="module">
+
+            <div class="module-number">
+                10
+            </div>
+
+            <h3>
+                Próximo Nível
+            </h3>
+
+            <p>
+                Conclua esta etapa da sua formação
+                e prepare-se para novos desafios.
+            </p>
+
+            <a
+                class="btn"
+                href="modulos/modulo-10/aula-01.html"
+            >
+                ACESSAR MÓDULO
+                <span class="btn-arrow">→</span>
+            </a>
+
+        </div>
+
 
     </section>
 
 </main>
 
+
+<!-- ======================================================
+     MENSAGEM INSPIRADORA
+======================================================= -->
+
+<section class="motivation">
+
+    <div class="motivation-icon">
+        ✦
+    </div>
+
+    <h2>
+        Seu próximo nível começa com um passo.
+    </h2>
+
+    <p>
+        Não precisa saber tudo hoje.
+        <strong>Aprenda um pouco, pratique um pouco
+        e continue avançando.</strong>
+        Cada módulo é mais uma conquista na sua jornada.
+    </p>
+
+</section>
+
+
+<!-- ======================================================
+     FOOTER
+======================================================= -->
+
 <footer>
-    Instituto Acutis · Aprendendo Inglês com Aldemar
+
+    <strong>Instituto Acutis</strong>
+    · Aprendendo Inglês com Aldemar
+    · Curso gratuito
+
 </footer>
+
 
 </body>
 </html>
-
-
-
