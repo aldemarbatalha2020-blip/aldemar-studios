@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
    ALDEMAR STUDIOS — DASHBOARD.JS
    Versão atualizada
    Menu responsivo + funções do dashboard
@@ -412,7 +412,7 @@ document.querySelectorAll("[data-section-link]").forEach(element => {
    BOTÕES COM DATA-SECTION
 ========================================================= */
 
-document.querySelectorAll("button[data-section]").forEach(button => {
+document.querySelectorAll("[data-section]").forEach(button => {
 
     button.addEventListener("click", function(event) {
 
@@ -1974,4 +1974,171 @@ document.querySelectorAll("[data-games-central-back]").forEach(button => {
     });
 
 });
+
+
+/* =========================================================
+   PLANOS PREMIUM — FUNCIONALIDADE
+   ========================================================= */
+
+(function () {
+    "use strict";
+
+    function formatarPreco(valor) {
+        return Number(valor).toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    function atualizarPrecos(periodo) {
+        const cards = document.querySelectorAll(".plan-card[data-plan]");
+
+        cards.forEach(card => {
+            const preco = card.querySelector(".plan-price-value");
+            const periodoTexto = card.querySelector(".plan-period-label");
+
+            if (!preco) return;
+
+            const mapaPeriodos = {
+                diario: "daily",
+                mensal: "monthly",
+                anual: "annual"
+            };
+
+            const atributoPreco = mapaPeriodos[periodo];
+
+            if (!atributoPreco) return;
+
+            const valor = card.dataset[atributoPreco];
+
+            if (!valor) return;
+
+            preco.textContent = formatarPreco(valor);
+
+            if (periodoTexto) {
+                if (periodo === "diario") {
+                    periodoTexto.textContent = "por dia";
+                } else if (periodo === "mensal") {
+                    periodoTexto.textContent = "por mês";
+                } else if (periodo === "anual") {
+                    periodoTexto.textContent = "por ano";
+                }
+            }
+        });
+    }
+
+    function configurarPeriodos() {
+        const botoes = document.querySelectorAll(".plan-period");
+
+        if (!botoes.length) return;
+
+        botoes.forEach(botao => {
+            botao.addEventListener("click", function () {
+                const periodo = this.dataset.period;
+
+                if (!periodo) return;
+
+                botoes.forEach(item => {
+                    item.classList.remove("active");
+                });
+
+                this.classList.add("active");
+
+                atualizarPrecos(periodo);
+            });
+        });
+
+        atualizarPrecos("mensal");
+    }
+
+    function configurarAssinaturas() {
+        const botoes = document.querySelectorAll(".plan-button[data-plan]");
+
+        if (!botoes.length) return;
+
+        botoes.forEach(botao => {
+            botao.addEventListener("click", function () {
+                const plano = this.dataset.plan;
+
+                const periodoAtivo =
+                    document.querySelector(".plan-period.active");
+
+                const periodo = periodoAtivo
+                    ? periodoAtivo.dataset.period
+                    : "mensal";
+
+                const card = this.closest(".plan-card");
+
+                const mapaPeriodos = {
+                    diario: "daily",
+                    mensal: "monthly",
+                    anual: "annual"
+                };
+
+                const atributoPreco = mapaPeriodos[periodo];
+
+                const valor =
+                    card && atributoPreco
+                        ? card.dataset[atributoPreco]
+                        : null;
+
+                console.log("Assinatura selecionada:", {
+                    plano,
+                    periodo,
+                    valor
+                });
+
+                const nomesPlanos = {
+                    bronze: "Bronze",
+                    prata: "Prata",
+                    ouro: "Ouro"
+                };
+
+                const nomesPeriodos = {
+                    diario: "Diário",
+                    mensal: "Mensal",
+                    anual: "Anual"
+                };
+
+                const nomePlano = nomesPlanos[plano] || plano;
+                const nomePeriodo = nomesPeriodos[periodo] || periodo;
+                const valorFormatado = formatarPreco(valor);
+
+                const mensagem =
+                    "Olá, Aldemar! 👋\n\n" +
+                    "Quero assinar um plano do Aldemar Studios.\n\n" +
+                    "⭐ Plano: " + nomePlano + "\n" +
+                    "📅 Período: " + nomePeriodo + "\n" +
+                    "💰 Valor: R$ " + valorFormatado + "\n\n" +
+                    "Gostaria de receber as informações para realizar o pagamento.";
+
+                const numeroWhatsApp = "5582996548511";
+
+                const urlWhatsApp =
+                    "https://wa.me/" +
+                    numeroWhatsApp +
+                    "?text=" +
+                    encodeURIComponent(mensagem);
+
+                window.open(urlWhatsApp, "_blank");
+            });
+        });
+    }
+
+    function iniciarPlanos() {
+        configurarPeriodos();
+        configurarAssinaturas();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", iniciarPlanos);
+    } else {
+        iniciarPlanos();
+    }
+
+})();
+
+
+
+
 

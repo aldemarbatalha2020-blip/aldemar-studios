@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -172,9 +172,8 @@
 
             <button
                 type="button"
-                class="menu-item locked"
-                data-locked="true"
-                aria-disabled="true"
+                class="menu-item"
+                data-section="planos"
             >
 
                 <span class="menu-icon">⭐</span>
@@ -184,7 +183,6 @@
                 </span>
 
                 <span class="lock">
-                    🔒
                 </span>
 
             </button>
@@ -520,6 +518,7 @@
                 <div
                     class="coming-card"
                     data-locked-card="true"
+                    data-section="planos"
                 >
 
                     <span>
@@ -539,7 +538,6 @@
                     </div>
 
                     <b>
-                        🔒
                     </b>
 
                 </div>
@@ -2611,7 +2609,6 @@
                 ← VOLTAR
             </button>
 
-
             <div class="section-title">
 
                 <span class="welcome-label">
@@ -2623,26 +2620,229 @@
                 </h2>
 
                 <p>
-                    Esta área ainda está em desenvolvimento.
+                    Escolha o plano que combina com você.
+                    Tenha acesso a conteúdos, jogos e recursos exclusivos.
                 </p>
 
             </div>
 
+            <div class="plans-period-selector">
 
-            <div class="locked-section-card">
+                <button type="button" class="plan-period active" data-period="mensal">
+                    MENSAL
+                </button>
 
-                <div class="locked-icon">
-                    🔒
+                <button type="button" class="plan-period" data-period="diario">
+                    DIÁRIO
+                </button>
+
+                <button type="button" class="plan-period" data-period="anual">
+                    ANUAL
+                </button>
+
+            </div>
+
+            <div class="plans-grid">
+
+                <article class="plan-card plan-free">
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🆓</span>
+                        <span class="plan-label">GRATUITO</span>
+                    </div>
+
+                    <h3>Gratuito</h3>
+
+                    <p class="plan-description">
+                        Comece sua jornada gratuitamente.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong>0</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        acesso gratuito
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Conteúdos gratuitos</div>
+                        <div>✓ Jogos gratuitos</div>
+                        <div>✓ Acesso ao dashboard</div>
+                    </div>
+
+                    <button type="button" class="plan-button plan-button-secondary" disabled>
+                        PLANO ATUAL
+                    </button>
+
+                </article>
+
+                <article
+                    class="plan-card plan-bronze"
+                    data-plan="bronze"
+                    data-daily="5"
+                    data-monthly="30"
+                    data-annual="300"
+                >
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🥉</span>
+                        <span class="plan-label">PREMIUM</span>
+                    </div>
+
+                    <h3>Bronze</h3>
+
+                    <p class="plan-description">
+                        O essencial para ampliar sua experiência.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong class="plan-price-value">30</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        por mês
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Jogos Premium</div>
+                        <div>✓ Materiais Premium</div>
+                        <div>✓ Conteúdos de Inglês Premium</div>
+                        <div>✓ Novos conteúdos Premium</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="plan-button"
+                        data-plan-action="assinar"
+                        data-plan="bronze"
+                    >
+                        QUERO ASSINAR
+                    </button>
+
+                </article>
+
+                <article
+                    class="plan-card plan-silver featured"
+                    data-plan="prata"
+                    data-daily="8"
+                    data-monthly="50"
+                    data-annual="500"
+                >
+
+                    <div class="plan-popular">
+                        MAIS ESCOLHIDO
+                    </div>
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🥈</span>
+                        <span class="plan-label">PREMIUM</span>
+                    </div>
+
+                    <h3>Prata</h3>
+
+                    <p class="plan-description">
+                        Mais recursos para uma experiência completa.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong class="plan-price-value">50</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        por mês
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Tudo do plano Bronze</div>
+                        <div>✓ Simulados Premium</div>
+                        <div>✓ Cursos Premium selecionados</div>
+                        <div>✓ Conteúdos educacionais adicionais</div>
+                        <div>✓ Novos conteúdos Premium</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="plan-button"
+                        data-plan-action="assinar"
+                        data-plan="prata"
+                    >
+                        QUERO ASSINAR
+                    </button>
+
+                </article>
+
+                <article
+                    class="plan-card plan-gold"
+                    data-plan="ouro"
+                    data-daily="12"
+                    data-monthly="80"
+                    data-annual="800"
+                >
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🥇</span>
+                        <span class="plan-label">PREMIUM</span>
+                    </div>
+
+                    <h3>Ouro</h3>
+
+                    <p class="plan-description">
+                        A experiência completa do Aldemar Studios.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong class="plan-price-value">80</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        por mês
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Tudo do plano Prata</div>
+                        <div>✓ Todos os jogos Premium</div>
+                        <div>✓ Todos os materiais Premium</div>
+                        <div>✓ Todos os cursos</div>
+                        <div>✓ Conteúdos exclusivos</div>
+                        <div>✓ Novidades Premium</div>
+                        <div>✓ Acesso completo à plataforma</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="plan-button"
+                        data-plan-action="assinar"
+                        data-plan="ouro"
+                    >
+                        QUERO ASSINAR
+                    </button>
+
+                </article>
+
+            </div>
+
+            <div class="plans-contact-info">
+
+                <span>🔐</span>
+
+                <div>
+
+                    <strong>
+                        Pagamento seguro e atendimento direto
+                    </strong>
+
+                    <p>
+                        Ao escolher um plano, você poderá entrar em contato
+                        diretamente com Aldemar para combinar o pagamento.
+                        Após a confirmação, seu plano será ativado no sistema.
+                    </p>
+
                 </div>
-
-                <h3>
-                    Área em desenvolvimento
-                </h3>
-
-                <p>
-                    Os planos do Aldemar Studios estarão
-                    disponíveis em breve.
-                </p>
 
             </div>
 
@@ -3155,6 +3355,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
+
+
 
 
 
