@@ -1842,7 +1842,10 @@ document.addEventListener(
 
         saveOriginalProfileData();
 
-        showSection("inicio");
+        const parametrosURL = new URLSearchParams(window.location.search);
+const secaoURL = parametrosURL.get("secao");
+
+showSection(secaoURL || "inicio");
 
 
         /* ---------------------------------------------
@@ -1968,7 +1971,10 @@ document.querySelectorAll("[data-games-central-back]").forEach(button => {
         event.preventDefault();
 
         if (typeof showSection === "function") {
-            showSection("inicio");
+            const parametrosURL = new URLSearchParams(window.location.search);
+const secaoURL = parametrosURL.get("secao");
+
+showSection(secaoURL || "inicio");
         }
 
     });
@@ -2137,6 +2143,7 @@ document.querySelectorAll("[data-games-central-back]").forEach(button => {
     }
 
 })();
+
 
 
 
