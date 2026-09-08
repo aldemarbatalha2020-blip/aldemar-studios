@@ -4,10 +4,12 @@ const path = require("path");
 require("dotenv").config();
 
 const { testarConexao } = require("./database/connection");
+
 const authRoutes = require("./routes/auth");
 const usuariosRoutes = require("./routes/usuarios");
 const planosRoutes = require("./routes/planos");
 const adminRoutes = require("./routes/admin");
+
 const { autenticarToken, exigirAdmin } = require("./middleware/auth");
 const { exigirAssinatura } = require("./middleware/assinatura");
 const { protegerAmbienteAluno } = require("./middleware/ambienteAluno");
@@ -16,7 +18,6 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 const HOST = "0.0.0.0";
-
 
 // =========================================================
 // CAMINHO DO FRONTEND
@@ -28,9 +29,8 @@ const frontendPath = path.join(
     "frontend"
 );
 
-
 // =========================================================
-// CONFIGURAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O DO CORS
+// CONFIGURAÇÃO DO CORS
 // =========================================================
 
 const allowedOrigins = [
@@ -39,19 +39,20 @@ const allowedOrigins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 
+    // Render
+    "https://aldemar-studios-api.onrender.com",
+
     // GitHub Pages
     "https://aldemarbatalha2020-blip.github.io",
 
-    // DomÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­nio oficial
+    // Domínio oficial
     "https://aldemarstudios.com",
     "https://www.aldemarstudios.com"
 
 ];
 
-
 app.use(
     cors({
-
         origin: function (origin, callback) {
 
             if (!origin) {
@@ -59,9 +60,7 @@ app.use(
             }
 
             if (allowedOrigins.includes(origin)) {
-
                 return callback(null, true);
-
             }
 
             console.warn(
@@ -71,10 +70,9 @@ app.use(
 
             return callback(
                 new Error(
-                    "Origem nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autorizada pelo CORS."
+                    "Origem não autorizada pelo CORS."
                 )
             );
-
         },
 
         methods: [
@@ -93,10 +91,8 @@ app.use(
         ],
 
         credentials: true
-
     })
 );
-
 
 // =========================================================
 // MIDDLEWARES
@@ -108,42 +104,47 @@ app.use(
     })
 );
 
-
 // =========================================================
-// SERVIR FRONTEND
+// AMBIENTE DO ALUNO — ACESSO EXCLUSIVO PARA ASSINANTES
 // =========================================================
 
- // =========================================================
- // AMBIENTE DO ALUNO — ACESSO EXCLUSIVO PARA ASSINANTES
- // =========================================================
-
- app.use(
+app.use(
     "/ambiente-aluno",
     (req, res, next) => {
 
         const cabecalho = req.headers.authorization;
+
         const possuiBearer =
             cabecalho &&
             cabecalho.startsWith("Bearer ");
 
         const possuiCookie =
             req.headers.cookie &&
-            /(?:^|;\s*)token=([^;]+)/.test(req.headers.cookie);
+            /(?:^|;\s*)token=([^;]+)/.test(
+                req.headers.cookie
+            );
 
         if (!possuiBearer && !possuiCookie) {
-            return res.redirect("/acesso-premium.html");
+            return res.redirect(
+                "/acesso-premium.html"
+            );
         }
 
         next();
     },
+
     autenticarToken,
+
     protegerAmbienteAluno
 );
+
+// =========================================================
+// SERVIR FRONTEND
+// =========================================================
 
 app.use(
     express.static(frontendPath)
 );
-
 
 // =========================================================
 // ROTA PRINCIPAL DA API
@@ -169,9 +170,8 @@ app.get("/api", (req, res) => {
 
 });
 
-
 // =========================================================
-// ROTA DE SAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡DE DA API
+// ROTA DE SAÚDE DA API
 // =========================================================
 
 app.get("/health", (req, res) => {
@@ -194,9 +194,8 @@ app.get("/health", (req, res) => {
 
 });
 
-
 // =========================================================
-// ROTAS DE AUTENTICAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O
+// ROTAS DE AUTENTICAÇÃO
 // =========================================================
 
 app.use(
@@ -204,9 +203,8 @@ app.use(
     authRoutes
 );
 
-
 // =========================================================
-// ROTAS DE USUÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂRIOS
+// ROTAS DE USUÁRIOS
 // =========================================================
 
 app.use(
@@ -223,13 +221,6 @@ app.use(
     planosRoutes
 );
 
-
-// =========================================================
-// TRATAMENTO DE ROTA NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O ENCONTRADA
-// =========================================================
-
-
-
 // =========================================================
 // ROTAS ADMINISTRATIVAS
 // =========================================================
@@ -241,6 +232,10 @@ app.use(
     adminRoutes
 );
 
+// =========================================================
+// TRATAMENTO DE ROTA NÃO ENCONTRADA
+// =========================================================
+
 app.use(
     (req, res) => {
 
@@ -250,13 +245,12 @@ app.use(
                 false,
 
             mensagem:
-                "Rota nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada."
+                "Rota não encontrada."
 
         });
 
     }
 );
-
 
 // =========================================================
 // TRATAMENTO GLOBAL DE ERROS
@@ -270,10 +264,9 @@ app.use(
             error
         );
 
-
         if (
             error.message ===
-            "Origem nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autorizada pelo CORS."
+            "Origem não autorizada pelo CORS."
         ) {
 
             return res.status(403).json({
@@ -282,12 +275,11 @@ app.use(
                     false,
 
                 mensagem:
-                    "Origem nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autorizada."
+                    "Origem não autorizada."
 
             });
 
         }
-
 
         return res.status(500).json({
 
@@ -301,7 +293,6 @@ app.use(
 
     }
 );
-
 
 // =========================================================
 // INICIAR SERVIDOR
@@ -347,13 +338,7 @@ app.listen(
             "================================="
         );
 
-
         await testarConexao();
 
     }
 );
-
-
-
-
-
