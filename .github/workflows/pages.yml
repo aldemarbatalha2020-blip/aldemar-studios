@@ -26,6 +26,7 @@ jobs:
         run: |
           mkdir _site
           cp -R frontend/. _site/
+          rm -rf _site/ambiente-aluno
 
       - name: Enviar arquivos
         uses: actions/upload-pages-artifact@v3
@@ -34,4 +35,5 @@ jobs:
 
       - name: Publicar no GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
+
