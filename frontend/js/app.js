@@ -1,15 +1,14 @@
 ﻿// =====================================================
 // ALDEMAR STUDIOS
-// APLICAÃƒâ€¡ÃƒÆ’O PRINCIPAL
+// APLICAÇÃO PRINCIPAL
 // =====================================================
 
 
 // =====================================================
-// CONFIGURAÃƒâ€¡ÃƒÆ’O DA API
+// CONFIGURAÇÃO DA API
 // =====================================================
 
-const API_URL =
-    "https://aldemar-studios-api.onrender.com/api";
+const API_URL = "/api";
 
 
 // =====================================================
@@ -24,7 +23,7 @@ const registerScreen =
 
 
 // =====================================================
-// BOTÃƒâ€¢ES
+// BOTÕES
 // =====================================================
 
 const openRegister =
@@ -38,7 +37,7 @@ const forgotPassword =
 
 
 // =====================================================
-// FORMULÃƒÂRIOS
+// FORMULÁRIOS
 // =====================================================
 
 const loginForm =
@@ -49,7 +48,7 @@ const registerForm =
 
 
 // =====================================================
-// VERIFICAÃƒâ€¡ÃƒÆ’O DOS ELEMENTOS
+// VERIFICAÇÃO DOS ELEMENTOS
 // =====================================================
 
 console.log(
@@ -72,13 +71,21 @@ if (openRegister) {
         "click",
         () => {
 
-            loginScreen.classList.remove(
-                "active"
-            );
+            if (loginScreen) {
 
-            registerScreen.classList.add(
-                "active"
-            );
+                loginScreen.classList.remove(
+                    "active"
+                );
+
+            }
+
+            if (registerScreen) {
+
+                registerScreen.classList.add(
+                    "active"
+                );
+
+            }
 
         }
     );
@@ -96,13 +103,21 @@ if (backToLogin) {
         "click",
         () => {
 
-            registerScreen.classList.remove(
-                "active"
-            );
+            if (registerScreen) {
 
-            loginScreen.classList.add(
-                "active"
-            );
+                registerScreen.classList.remove(
+                    "active"
+                );
+
+            }
+
+            if (loginScreen) {
+
+                loginScreen.classList.add(
+                    "active"
+                );
+
+            }
 
         }
     );
@@ -158,8 +173,9 @@ if (loginForm) {
                     await fetch(
                         `${API_URL}/auth/login`,
                         {
-
                             method: "POST",
+
+                            credentials: "include",
 
                             headers: {
                                 "Content-Type":
@@ -171,7 +187,6 @@ if (loginForm) {
                                     email,
                                     senha
                                 })
-
                         }
                     );
 
@@ -203,15 +218,13 @@ if (loginForm) {
 
 
                 // =====================================
-                // USUÃƒÂRIO AUTENTICADO
+                // USUÁRIO AUTENTICADO
                 // =====================================
 
-                if (
-                    !dados.usuario
-                ) {
+                if (!dados.usuario) {
 
                     alert(
-                        "Login realizado, mas os dados do usuÃƒÂ¡rio nÃƒÂ£o foram recebidos."
+                        "Login realizado, mas os dados do usuário não foram recebidos."
                     );
 
                     return;
@@ -220,20 +233,24 @@ if (loginForm) {
 
 
                 // =====================================
-                // SALVAR SESSÃƒÆ’O
+                // SALVAR SESSÃO
                 // =====================================
 
                 sessionStorage.setItem(
                     "usuario",
                     JSON.stringify({
+
                         ...dados.usuario,
-                        token: dados.token
+
+                        token:
+                            dados.token
+
                     })
                 );
 
 
                 console.log(
-                    "UsuÃƒÂ¡rio autenticado:",
+                    "Usuário autenticado:",
                     dados.usuario
                 );
 
@@ -252,7 +269,7 @@ if (loginForm) {
                 // =====================================
 
                 window.location.href =
-                    "dashboard.html";
+                    "/dashboard.html";
 
 
             } catch (error) {
@@ -264,7 +281,7 @@ if (loginForm) {
 
 
                 alert(
-                    "NÃƒÂ£o foi possÃƒÂ­vel conectar ao servidor. Verifique sua conexÃƒÂ£o."
+                    "Não foi possível conectar ao servidor. Verifique sua conexão."
                 );
 
             }
@@ -309,7 +326,7 @@ if (registerForm) {
 
 
             // =====================================
-            // VALIDAÃƒâ€¡Ãƒâ€¢ES
+            // VALIDAÇÕES
             // =====================================
 
             if (!nome_completo) {
@@ -356,8 +373,9 @@ if (registerForm) {
                     await fetch(
                         `${API_URL}/auth/register`,
                         {
-
                             method: "POST",
+
+                            credentials: "include",
 
                             headers: {
                                 "Content-Type":
@@ -366,13 +384,10 @@ if (registerForm) {
 
                             body:
                                 JSON.stringify({
-
                                     nome_completo,
                                     email,
                                     senha
-
                                 })
-
                         }
                     );
 
@@ -395,7 +410,7 @@ if (registerForm) {
 
                     alert(
                         dados.mensagem ||
-                        "NÃƒÂ£o foi possÃƒÂ­vel criar a conta."
+                        "Não foi possível criar a conta."
                     );
 
                     return;
@@ -404,43 +419,78 @@ if (registerForm) {
 
 
                 // =====================================
-                // CADASTRO CONCLUÃƒÂDO
+                // CADASTRO CONCLUÍDO
                 // =====================================
 
                 alert(
-                    "Conta criada com sucesso! Agora vocÃƒÂª pode entrar."
+                    "Conta criada com sucesso! Agora você pode entrar."
                 );
 
 
-                // Limpar formulÃƒÂ¡rio
+                // =====================================
+                // LIMPAR FORMULÁRIO
+                // =====================================
 
                 registerForm.reset();
 
 
-                // Voltar para login
+                // =====================================
+                // VOLTAR PARA LOGIN
+                // =====================================
 
-                registerScreen.classList.remove(
-                    "active"
-                );
+                if (registerScreen) {
 
-                loginScreen.classList.add(
-                    "active"
-                );
+                    registerScreen.classList.remove(
+                        "active"
+                    );
+
+                }
+
+                if (loginScreen) {
+
+                    loginScreen.classList.add(
+                        "active"
+                    );
+
+                }
 
 
-                // Preencher e-mail
+                // =====================================
+                // PREENCHER E-MAIL
+                // =====================================
 
-                document
-                    .getElementById("loginEmail")
-                    .value =
-                    dados.usuario.email;
+                const campoEmailLogin =
+                    document.getElementById(
+                        "loginEmail"
+                    );
 
 
-                // Foco na senha
+                if (
+                    campoEmailLogin &&
+                    dados.usuario
+                ) {
 
-                document
-                    .getElementById("loginPassword")
-                    .focus();
+                    campoEmailLogin.value =
+                        dados.usuario.email;
+
+                }
+
+
+                // =====================================
+                // FOCO NA SENHA
+                // =====================================
+
+                const campoSenhaLogin =
+                    document.getElementById(
+                        "loginPassword"
+                    );
+
+
+                if (campoSenhaLogin) {
+
+                    campoSenhaLogin.focus();
+
+                }
 
 
             } catch (error) {
@@ -452,7 +502,7 @@ if (registerForm) {
 
 
                 alert(
-                    "NÃƒÂ£o foi possÃƒÂ­vel conectar ao servidor."
+                    "Não foi possível conectar ao servidor."
                 );
 
             }
@@ -473,15 +523,17 @@ if (forgotPassword) {
         "click",
         () => {
 
-            window.location.href = "verificar-codigo.html";
+            window.location.href =
+                "/verificar-codigo.html";
 
         }
     );
 
 }
 
+
 // =====================================================
-// SESSÃƒÆ’O EXISTENTE
+// SESSÃO EXISTENTE
 // =====================================================
 
 const usuarioSalvo =
@@ -501,7 +553,7 @@ if (usuarioSalvo) {
 
 
         console.log(
-            "SessÃƒÂ£o encontrada:",
+            "Sessão encontrada:",
             usuario
         );
 
@@ -509,7 +561,7 @@ if (usuarioSalvo) {
     } catch (error) {
 
         console.error(
-            "SessÃƒÂ£o invÃƒÂ¡lida:",
+            "Sessão inválida:",
             error
         );
 
@@ -524,46 +576,68 @@ if (usuarioSalvo) {
 
 
 // =====================================================
-// NAVEGAÃƒâ€¡ÃƒÆ’O ENTRE SEÃƒâ€¡Ãƒâ€¢ES
+// NAVEGAÇÃO ENTRE SEÇÕES
 // =====================================================
 
 function processarRetornoPremium() {
 
     const parametros =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+            window.location.search
+        );
+
 
     const origem =
-        parametros.get("origem");
+        parametros.get(
+            "origem"
+        );
+
 
     const destino =
-        parametros.get("destino");
+        parametros.get(
+            "destino"
+        );
+
 
     if (origem !== "premium") {
+
         return;
+
     }
+
 
     const restaurado =
         restaurarPaginaInicial();
 
+
     if (!restaurado) {
+
         return;
+
     }
+
 
     if (destino === "planos") {
 
         const planos =
-            document.getElementById("planos");
+            document.getElementById(
+                "planos"
+            );
+
 
         if (planos) {
 
-            setTimeout(() => {
+            setTimeout(
+                () => {
 
-                planos.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
+                    planos.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
 
-            }, 300);
+                },
+                300
+            );
 
         }
 
@@ -571,48 +645,102 @@ function processarRetornoPremium() {
 
 }
 
+
+// =====================================================
+// RESTAURAR PÁGINA INICIAL
+// =====================================================
+
 function restaurarPaginaInicial() {
 
     const usuarioSalvo =
-        sessionStorage.getItem("usuario");
+        sessionStorage.getItem(
+            "usuario"
+        );
+
 
     if (!usuarioSalvo) {
+
         return false;
+
     }
+
 
     const loginScreen =
-        document.getElementById("loginScreen");
+        document.getElementById(
+            "loginScreen"
+        );
+
 
     const registerScreen =
-        document.getElementById("registerScreen");
+        document.getElementById(
+            "registerScreen"
+        );
+
 
     const dashboardSection =
-        document.getElementById("dashboardSection");
+        document.getElementById(
+            "dashboardSection"
+        );
+
 
     if (loginScreen) {
-        loginScreen.classList.remove("active");
-        loginScreen.style.display = "none";
+
+        loginScreen.classList.remove(
+            "active"
+        );
+
+        loginScreen.style.display =
+            "none";
+
     }
+
 
     if (registerScreen) {
-        registerScreen.classList.remove("active");
-        registerScreen.style.display = "none";
+
+        registerScreen.classList.remove(
+            "active"
+        );
+
+        registerScreen.style.display =
+            "none";
+
     }
+
 
     if (dashboardSection) {
-        document
-            .querySelectorAll(".content-section")
-            .forEach((section) => {
-                section.style.display = "none";
-            });
 
-        dashboardSection.style.display = "block";
+        document
+            .querySelectorAll(
+                ".content-section"
+            )
+            .forEach(
+                (section) => {
+
+                    section.style.display =
+                        "none";
+
+                }
+            );
+
+
+        dashboardSection.style.display =
+            "block";
+
     }
 
+
     return true;
+
 }
 
-function showSection(sectionId) {
+
+// =====================================================
+// MOSTRAR SEÇÃO
+// =====================================================
+
+function showSection(
+    sectionId
+) {
 
     const sections =
         document.querySelectorAll(
@@ -687,7 +815,9 @@ function filterGames(
     );
 
 
-    // Atualizar botÃƒÂ£o ativo
+    // =====================================
+    // ATUALIZAR BOTÃO ATIVO
+    // =====================================
 
     const filters =
         document.querySelectorAll(
@@ -718,17 +848,22 @@ function filterGames(
 
 
 // =====================================================
-// EXPORTAR FUNÃƒâ€¡Ãƒâ€¢ES
+// EXPORTAR FUNÇÕES
 // =====================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    processarRetornoPremium();
+        processarRetornoPremium();
 
-});
+    }
+);
+
 
 window.showSection =
     showSection;
+
 
 window.filterGames =
     filterGames;
@@ -741,6 +876,3 @@ window.filterGames =
 console.log(
     "Aldemar Studios iniciado com sucesso."
 );
-
-
-
