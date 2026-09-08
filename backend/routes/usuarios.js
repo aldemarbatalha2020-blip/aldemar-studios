@@ -1,16 +1,30 @@
 const express = require("express");
+const { autenticarToken } = require("../middleware/auth");
 const bcrypt = require("bcrypt");
 
 const { pool } = require("../database/connection");
 
 const router = express.Router();
 
+router.use(autenticarToken);
+
+function garantirProprioUsuario(req, res, next) {
+    if (!req.usuario || String(req.usuario.id) !== String(req.params.id)) {
+        return res.status(403).json({
+            sucesso: false,
+            mensagem: "Acesso não autorizado a este usuário."
+        });
+    }
+
+    next();
+}
+
 
 // =========================================================
-// BUSCAR USUÁRIO
+// BUSCAR USUÃƒÆ’Ã‚ÂRIO
 // =========================================================
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", garantirProprioUsuario, async (req, res) => {
 
     try {
 
@@ -20,7 +34,7 @@ router.get("/:id", async (req, res) => {
 
             return res.status(400).json({
                 sucesso: false,
-                mensagem: "Usuário não informado."
+                mensagem: "UsuÃƒÆ’Ã‚Â¡rio nÃƒÆ’Ã‚Â£o informado."
             });
 
         }
@@ -48,7 +62,7 @@ router.get("/:id", async (req, res) => {
 
             return res.status(404).json({
                 sucesso: false,
-                mensagem: "Usuário não encontrado."
+                mensagem: "UsuÃƒÆ’Ã‚Â¡rio nÃƒÆ’Ã‚Â£o encontrado."
             });
 
         }
@@ -89,7 +103,7 @@ router.get("/:id", async (req, res) => {
     } catch (error) {
 
         console.error(
-            "Erro ao buscar usuário:",
+            "Erro ao buscar usuÃƒÆ’Ã‚Â¡rio:",
             error
         );
 
@@ -112,7 +126,7 @@ router.get("/:id", async (req, res) => {
 // ATUALIZAR PERFIL
 // =========================================================
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", garantirProprioUsuario, async (req, res) => {
 
     try {
 
@@ -136,7 +150,7 @@ router.put("/:id", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não informado."
+                    "UsuÃƒÆ’Ã‚Â¡rio nÃƒÆ’Ã‚Â£o informado."
 
             });
 
@@ -196,7 +210,7 @@ router.put("/:id", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Digite um e-mail válido."
+                    "Digite um e-mail vÃƒÆ’Ã‚Â¡lido."
 
             });
 
@@ -236,7 +250,7 @@ router.put("/:id", async (req, res) => {
                     sucesso: false,
 
                     mensagem:
-                        "O nick deve possuir no máximo 30 caracteres."
+                        "O nick deve possuir no mÃƒÆ’Ã‚Â¡ximo 30 caracteres."
 
                 });
 
@@ -253,7 +267,7 @@ router.put("/:id", async (req, res) => {
                     sucesso: false,
 
                     mensagem:
-                        "O nick pode conter apenas letras, números, ponto, hífen e underline."
+                        "O nick pode conter apenas letras, nÃƒÆ’Ã‚Âºmeros, ponto, hÃƒÆ’Ã‚Â­fen e underline."
 
                 });
 
@@ -263,7 +277,7 @@ router.put("/:id", async (req, res) => {
 
 
         // =====================================================
-        // VERIFICAR SE USUÁRIO EXISTE
+        // VERIFICAR SE USUÃƒÆ’Ã‚ÂRIO EXISTE
         // =====================================================
 
         const [usuarioExistente] =
@@ -287,7 +301,7 @@ router.put("/:id", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não encontrado."
+                    "UsuÃƒÆ’Ã‚Â¡rio nÃƒÆ’Ã‚Â£o encontrado."
 
             });
 
@@ -321,7 +335,7 @@ router.put("/:id", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Este e-mail já está sendo utilizado."
+                    "Este e-mail jÃƒÆ’Ã‚Â¡ estÃƒÆ’Ã‚Â¡ sendo utilizado."
 
             });
 
@@ -357,7 +371,7 @@ router.put("/:id", async (req, res) => {
                     sucesso: false,
 
                     mensagem:
-                        "Este nick já está sendo utilizado."
+                        "Este nick jÃƒÆ’Ã‚Â¡ estÃƒÆ’Ã‚Â¡ sendo utilizado."
 
                 });
 
@@ -389,7 +403,7 @@ router.put("/:id", async (req, res) => {
 
 
         // =====================================================
-        // BUSCAR USUÁRIO ATUALIZADO
+        // BUSCAR USUÃƒÆ’Ã‚ÂRIO ATUALIZADO
         // =====================================================
 
         const [usuarios] =
@@ -479,7 +493,7 @@ router.put("/:id", async (req, res) => {
 // ATUALIZAR FOTO
 // =========================================================
 
-router.put("/:id/foto", async (req, res) => {
+router.put("/:id/foto", garantirProprioUsuario, async (req, res) => {
 
     try {
 
@@ -495,7 +509,7 @@ router.put("/:id/foto", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não informado."
+                    "UsuÃƒÆ’Ã‚Â¡rio nÃƒÆ’Ã‚Â£o informado."
 
             });
 
@@ -517,7 +531,7 @@ router.put("/:id/foto", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Foto inválida."
+                    "Foto invÃƒÆ’Ã‚Â¡lida."
 
             });
 
@@ -538,7 +552,7 @@ router.put("/:id/foto", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "A imagem é muito grande."
+                    "A imagem ÃƒÆ’Ã‚Â© muito grande."
 
             });
 
@@ -546,7 +560,7 @@ router.put("/:id/foto", async (req, res) => {
 
 
         // =====================================================
-        // VERIFICAR USUÁRIO
+        // VERIFICAR USUÃƒÆ’Ã‚ÂRIO
         // =====================================================
 
         const [usuariosExistentes] =
@@ -568,7 +582,7 @@ router.put("/:id/foto", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não encontrado."
+                    "UsuÃƒÆ’Ã‚Â¡rio nÃƒÆ’Ã‚Â£o encontrado."
 
             });
 
@@ -681,7 +695,7 @@ router.put("/:id/foto", async (req, res) => {
 // ALTERAR SENHA
 // =========================================================
 
-router.put("/:id/senha", async (req, res) => {
+router.put("/:id/senha", garantirProprioUsuario, async (req, res) => {
 
     try {
 
@@ -743,7 +757,7 @@ router.put("/:id/senha", async (req, res) => {
 
 
         // =====================================================
-        // BUSCAR USUÁRIO
+        // BUSCAR USUÃƒÆ’Ã‚ÂRIO
         // =====================================================
 
         const [usuarios] =
@@ -768,7 +782,7 @@ router.put("/:id/senha", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Usuário não encontrado."
+                    "UsuÃƒÆ’Ã‚Â¡rio nÃƒÆ’Ã‚Â£o encontrado."
 
             });
 
@@ -790,7 +804,7 @@ router.put("/:id/senha", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Esta conta não está disponível."
+                    "Esta conta nÃƒÆ’Ã‚Â£o estÃƒÆ’Ã‚Â¡ disponÃƒÆ’Ã‚Â­vel."
 
             });
 
@@ -815,7 +829,7 @@ router.put("/:id/senha", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "A senha atual está incorreta."
+                    "A senha atual estÃƒÆ’Ã‚Â¡ incorreta."
 
             });
 

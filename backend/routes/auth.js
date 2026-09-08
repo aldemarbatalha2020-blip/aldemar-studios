@@ -2,8 +2,8 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const { enviarEmail } = require("../services/email");
-
 const { pool } = require("../database/connection");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
 
 
         // =====================================
-        // VALIDAÃ‡Ã•ES
+        // VALIDAÇÕES
         // =====================================
 
         if (!nome_completo || !email || !senha) {
@@ -83,7 +83,7 @@ router.post("/register", async (req, res) => {
             return res.status(409).json({
                 sucesso: false,
                 mensagem:
-                    "Este e-mail jÃ¡ estÃ¡ cadastrado."
+                    "Este e-mail já está cadastrado."
             });
 
         }
@@ -98,35 +98,63 @@ router.post("/register", async (req, res) => {
 
 
         // =====================================
-        // CRIAR USUÃRIO
+        // CRIAR USUÁRIO
         // =====================================
 
-        const [resultado] =
+        await pool.execute(
+            `
+            INSERT INTO usuarios
+            (
+                nome_completo,
+                email,
+                senha,
+                plano,
+                status,
+                tipo_conta
+            )
+            VALUES
+            (
+                ?,
+                ?,
+                ?,
+                'gratuito',
+                'ativo',
+                'usuario'
+            )
+            `,
+            [
+                nome_completo.trim(),
+                emailNormalizado,
+                senhaHash
+            ]
+        );
+
+
+        // =====================================
+        // BUSCAR USUÁRIO CRIADO
+        // =====================================
+
+        const [usuariosCriados] =
             await pool.execute(
                 `
-                INSERT INTO usuarios
-                (
+                SELECT
+                    id,
                     nome_completo,
+                    nick,
                     email,
-                    senha,
+                    foto,
                     plano,
-                    status
-                )
-                VALUES
-                (
-                    ?,
-                    ?,
-                    ?,
-                    'gratuito',
-                    'ativo'
-                )
+                    tipo_conta
+                FROM usuarios
+                WHERE email = ?
+                LIMIT 1
                 `,
-                [
-                    nome_completo.trim(),
-                    emailNormalizado,
-                    senhaHash
-                ]
+                [emailNormalizado]
             );
+
+
+        const usuarioCriado =
+            usuariosCriados[0];
 
 
         // =====================================
@@ -143,22 +171,25 @@ router.post("/register", async (req, res) => {
             usuario: {
 
                 id:
-                    resultado.insertId,
+                    usuarioCriado.id,
 
                 nome_completo:
-                    nome_completo.trim(),
+                    usuarioCriado.nome_completo,
 
                 nick:
-                    null,
+                    usuarioCriado.nick,
 
                 email:
-                    emailNormalizado,
+                    usuarioCriado.email,
 
                 foto:
-                    null,
+                    usuarioCriado.foto,
 
                 plano:
-                    "gratuito"
+                    usuarioCriado.plano,
+
+                tipo_conta:
+                    usuarioCriado.tipo_conta
 
             }
 
@@ -168,7 +199,7 @@ router.post("/register", async (req, res) => {
     } catch (error) {
 
         console.error(
-            "Erro ao cadastrar usuÃ¡rio:",
+            "Erro ao cadastrar usuário:",
             error
         );
 
@@ -241,7 +272,8 @@ router.post("/login", async (req, res) => {
                     foto,
                     senha,
                     plano,
-                    status
+                    status,
+                    tipo_conta
                 FROM usuarios
                 WHERE email = ?
                 LIMIT 1
@@ -317,6 +349,21 @@ router.post("/login", async (req, res) => {
 
 
         // =====================================
+        // GERAR TOKEN JWT
+        // =====================================
+
+        const token = jwt.sign(
+            {
+                sub: usuario.id
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "8h"
+            }
+        );
+
+
+        // =====================================
         // TEMPO TOTAL
         // =====================================
 
@@ -329,12 +376,26 @@ router.post("/login", async (req, res) => {
         // LOGIN AUTORIZADO
         // =====================================
 
+        // =====================================
+        // COOKIE DE AUTENTICAÇÃO
+        // =====================================
+
+        const cookieToken =
+            `token=${encodeURIComponent(token)}; HttpOnly; Path=/; SameSite=Lax; Max-Age=28800`;
+
+        res.setHeader(
+            "Set-Cookie",
+            cookieToken
+        );
+
         return res.status(200).json({
 
             sucesso: true,
 
             mensagem:
                 "Login realizado com sucesso!",
+
+            token,
 
             usuario: {
 
@@ -354,7 +415,10 @@ router.post("/login", async (req, res) => {
                     usuario.foto,
 
                 plano:
-                    usuario.plano
+                    usuario.plano,
+
+                tipo_conta:
+                    usuario.tipo_conta
 
             }
 
@@ -414,7 +478,7 @@ router.put("/profile", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "UsuÃ¡rio nÃ£o informado."
+                    "Usuário não informado."
 
             });
 
@@ -501,7 +565,7 @@ router.put("/profile", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Este e-mail jÃ¡ estÃ¡ sendo utilizado."
+                    "Este e-mail já está sendo utilizado."
 
             });
 
@@ -535,7 +599,7 @@ router.put("/profile", async (req, res) => {
                     sucesso: false,
 
                     mensagem:
-                        "O nick deve possuir no mÃ¡ximo 30 caracteres."
+                        "O nick deve possuir no máximo 30 caracteres."
 
                 });
 
@@ -565,7 +629,7 @@ router.put("/profile", async (req, res) => {
                     sucesso: false,
 
                     mensagem:
-                        "Este nick jÃ¡ estÃ¡ sendo utilizado."
+                        "Este nick já está sendo utilizado."
 
                 });
 
@@ -575,7 +639,7 @@ router.put("/profile", async (req, res) => {
 
 
         // =====================================
-        // ATUALIZAR USUÃRIO
+        // ATUALIZAR USUÁRIO
         // =====================================
 
         await pool.execute(
@@ -628,7 +692,7 @@ router.put("/profile", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "UsuÃ¡rio nÃ£o encontrado."
+                    "Usuário não encontrado."
 
             });
 
@@ -753,7 +817,7 @@ router.put("/password", async (req, res) => {
 
 
         // =====================================
-        // BUSCAR USUÃRIO
+        // BUSCAR USUÁRIO
         // =====================================
 
         const [usuarios] =
@@ -778,7 +842,7 @@ router.put("/password", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "UsuÃ¡rio nÃ£o encontrado."
+                    "Usuário não encontrado."
 
             });
 
@@ -800,7 +864,7 @@ router.put("/password", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "Esta conta nÃ£o estÃ¡ disponÃ­vel."
+                    "Esta conta não está disponível."
 
             });
 
@@ -825,7 +889,7 @@ router.put("/password", async (req, res) => {
                 sucesso: false,
 
                 mensagem:
-                    "A senha atual estÃ¡ incorreta."
+                    "A senha atual está incorreta."
 
             });
 
@@ -894,7 +958,6 @@ router.put("/password", async (req, res) => {
     }
 
 });
-
 
 
 // =========================================================
@@ -1156,6 +1219,7 @@ router.post("/verify-code", async (req, res) => {
             String(req.body.codigo || "")
                 .trim();
 
+
         // =====================================
         // VALIDAR CAMPOS
         // =====================================
@@ -1173,6 +1237,7 @@ router.post("/verify-code", async (req, res) => {
 
         }
 
+
         // =====================================
         // VALIDAR FORMATO DO CÓDIGO
         // =====================================
@@ -1189,6 +1254,7 @@ router.post("/verify-code", async (req, res) => {
             });
 
         }
+
 
         // =====================================
         // BUSCAR USUÁRIO
@@ -1210,6 +1276,7 @@ router.post("/verify-code", async (req, res) => {
                 [email]
             );
 
+
         // =====================================
         // USUÁRIO NÃO ENCONTRADO
         // =====================================
@@ -1227,7 +1294,9 @@ router.post("/verify-code", async (req, res) => {
 
         }
 
+
         const usuario = usuarios[0];
+
 
         // =====================================
         // VERIFICAR STATUS
@@ -1246,6 +1315,7 @@ router.post("/verify-code", async (req, res) => {
 
         }
 
+
         // =====================================
         // VERIFICAR SE EXISTE CÓDIGO
         // =====================================
@@ -1262,6 +1332,7 @@ router.post("/verify-code", async (req, res) => {
             });
 
         }
+
 
         // =====================================
         // VERIFICAR EXPIRAÇÃO
@@ -1283,6 +1354,7 @@ router.post("/verify-code", async (req, res) => {
 
         }
 
+
         // =====================================
         // COMPARAR CÓDIGO
         // =====================================
@@ -1300,6 +1372,7 @@ router.post("/verify-code", async (req, res) => {
 
         }
 
+
         // =====================================
         // GERAR TOKEN DE REDEFINIÇÃO
         // =====================================
@@ -1311,6 +1384,7 @@ router.post("/verify-code", async (req, res) => {
             new Date(
                 Date.now() + 10 * 60 * 1000
             );
+
 
         // =====================================
         // SALVAR TOKEN E INVALIDAR CÓDIGO
@@ -1332,6 +1406,7 @@ router.post("/verify-code", async (req, res) => {
                 usuario.id
             ]
         );
+
 
         // =====================================
         // SUCESSO
@@ -1374,8 +1449,6 @@ router.post("/verify-code", async (req, res) => {
 // REDEFINIR SENHA
 // =========================================================
 
-// =========================================================
-
 router.post("/reset-password", async (req, res) => {
 
     try {
@@ -1384,6 +1457,7 @@ router.post("/reset-password", async (req, res) => {
             token,
             nova_senha
         } = req.body;
+
 
         if (!token || !nova_senha) {
 
@@ -1398,6 +1472,7 @@ router.post("/reset-password", async (req, res) => {
 
         }
 
+
         if (nova_senha.length < 8) {
 
             return res.status(400).json({
@@ -1410,6 +1485,7 @@ router.post("/reset-password", async (req, res) => {
             });
 
         }
+
 
         const [usuarios] =
             await pool.execute(
@@ -1426,6 +1502,7 @@ router.post("/reset-password", async (req, res) => {
                 [token]
             );
 
+
         if (usuarios.length === 0) {
 
             return res.status(400).json({
@@ -1439,11 +1516,13 @@ router.post("/reset-password", async (req, res) => {
 
         }
 
+
         const senhaHash =
             await bcrypt.hash(
                 nova_senha,
                 10
             );
+
 
         await pool.execute(
             `
@@ -1460,6 +1539,7 @@ router.post("/reset-password", async (req, res) => {
             ]
         );
 
+
         return res.status(200).json({
 
             sucesso: true,
@@ -1468,6 +1548,7 @@ router.post("/reset-password", async (req, res) => {
                 "Senha redefinida com sucesso!"
 
         });
+
 
     } catch (error) {
 
@@ -1488,15 +1569,11 @@ router.post("/reset-password", async (req, res) => {
     }
 
 });
+
+
 // =========================================================
 // EXPORTAR ROTAS
 // =========================================================
 
 module.exports = router;
-
-
-
-
-
-
 

@@ -6,6 +6,11 @@ require("dotenv").config();
 const { testarConexao } = require("./database/connection");
 const authRoutes = require("./routes/auth");
 const usuariosRoutes = require("./routes/usuarios");
+const planosRoutes = require("./routes/planos");
+const adminRoutes = require("./routes/admin");
+const { autenticarToken, exigirAdmin } = require("./middleware/auth");
+const { exigirAssinatura } = require("./middleware/assinatura");
+const { protegerAmbienteAluno } = require("./middleware/ambienteAluno");
 
 const app = express();
 
@@ -25,7 +30,7 @@ const frontendPath = path.join(
 
 
 // =========================================================
-// CONFIGURAÇÃO DO CORS
+// CONFIGURAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O DO CORS
 // =========================================================
 
 const allowedOrigins = [
@@ -37,7 +42,7 @@ const allowedOrigins = [
     // GitHub Pages
     "https://aldemarbatalha2020-blip.github.io",
 
-    // Domínio oficial
+    // DomÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­nio oficial
     "https://aldemarstudios.com",
     "https://www.aldemarstudios.com"
 
@@ -66,7 +71,7 @@ app.use(
 
             return callback(
                 new Error(
-                    "Origem não autorizada pelo CORS."
+                    "Origem nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autorizada pelo CORS."
                 )
             );
 
@@ -108,6 +113,33 @@ app.use(
 // SERVIR FRONTEND
 // =========================================================
 
+ // =========================================================
+ // AMBIENTE DO ALUNO — ACESSO EXCLUSIVO PARA ASSINANTES
+ // =========================================================
+
+ app.use(
+    "/ambiente-aluno",
+    (req, res, next) => {
+
+        const cabecalho = req.headers.authorization;
+        const possuiBearer =
+            cabecalho &&
+            cabecalho.startsWith("Bearer ");
+
+        const possuiCookie =
+            req.headers.cookie &&
+            /(?:^|;\s*)token=([^;]+)/.test(req.headers.cookie);
+
+        if (!possuiBearer && !possuiCookie) {
+            return res.redirect("/acesso-premium.html");
+        }
+
+        next();
+    },
+    autenticarToken,
+    protegerAmbienteAluno
+);
+
 app.use(
     express.static(frontendPath)
 );
@@ -139,7 +171,7 @@ app.get("/api", (req, res) => {
 
 
 // =========================================================
-// ROTA DE SAÚDE DA API
+// ROTA DE SAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡DE DA API
 // =========================================================
 
 app.get("/health", (req, res) => {
@@ -164,7 +196,7 @@ app.get("/health", (req, res) => {
 
 
 // =========================================================
-// ROTAS DE AUTENTICAÇÃO
+// ROTAS DE AUTENTICAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O
 // =========================================================
 
 app.use(
@@ -174,7 +206,7 @@ app.use(
 
 
 // =========================================================
-// ROTAS DE USUÁRIOS
+// ROTAS DE USUÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂRIOS
 // =========================================================
 
 app.use(
@@ -182,10 +214,32 @@ app.use(
     usuariosRoutes
 );
 
+// =========================================================
+// ROTAS DE PLANOS
+// =========================================================
+
+app.use(
+    "/api/planos",
+    planosRoutes
+);
+
 
 // =========================================================
-// TRATAMENTO DE ROTA NÃO ENCONTRADA
+// TRATAMENTO DE ROTA NÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O ENCONTRADA
 // =========================================================
+
+
+
+// =========================================================
+// ROTAS ADMINISTRATIVAS
+// =========================================================
+
+app.use(
+    "/api/admin",
+    autenticarToken,
+    exigirAdmin,
+    adminRoutes
+);
 
 app.use(
     (req, res) => {
@@ -196,7 +250,7 @@ app.use(
                 false,
 
             mensagem:
-                "Rota não encontrada."
+                "Rota nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o encontrada."
 
         });
 
@@ -219,7 +273,7 @@ app.use(
 
         if (
             error.message ===
-            "Origem não autorizada pelo CORS."
+            "Origem nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autorizada pelo CORS."
         ) {
 
             return res.status(403).json({
@@ -228,7 +282,7 @@ app.use(
                     false,
 
                 mensagem:
-                    "Origem não autorizada."
+                    "Origem nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£o autorizada."
 
             });
 
@@ -298,3 +352,8 @@ app.listen(
 
     }
 );
+
+
+
+
+

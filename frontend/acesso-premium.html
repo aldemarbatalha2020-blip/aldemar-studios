@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aldemar Studios | Área Premium</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(0, 180, 255, 0.12), transparent 35%),
+                radial-gradient(circle at 80% 80%, rgba(120, 60, 255, 0.12), transparent 35%),
+                #080b14;
+            color: #fff;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 650px;
+            padding: 45px 40px;
+            text-align: center;
+            border: 1px solid rgba(0, 200, 255, 0.25);
+            border-radius: 24px;
+            background: rgba(15, 20, 35, 0.92);
+            box-shadow:
+                0 0 40px rgba(0, 180, 255, 0.08),
+                0 25px 80px rgba(0, 0, 0, 0.45);
+        }
+
+        .icon {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 38px;
+            background: rgba(0, 180, 255, 0.10);
+            border: 1px solid rgba(0, 200, 255, 0.30);
+        }
+
+        h1 {
+            margin-bottom: 22px;
+            font-size: clamp(26px, 5vw, 38px);
+            letter-spacing: 0.5px;
+        }
+
+        .description {
+            color: #c8d0df;
+            font-size: 17px;
+            line-height: 1.75;
+            margin-bottom: 18px;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .actions {
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            max-width: 340px;
+            padding: 15px 24px;
+            border: none;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(135deg, #008cff, #6845ff);
+            box-shadow: 0 10px 30px rgba(0, 140, 255, 0.20);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 35px rgba(0, 140, 255, 0.30);
+        }
+
+        .btn-secondary {
+            color: #aeb9cc;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .brand {
+            margin-top: 30px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 18px;
+            }
+
+            .card {
+                padding: 35px 22px;
+            }
+
+            .description {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="card">
+
+        <div class="icon">🔒</div>
+
+        <h1>Área exclusiva para alunos Premium</h1>
+
+        <p class="description">
+            Esta área faz parte da experiência de aprendizagem do
+            <span class="highlight">Aldemar Studios</span> e está disponível
+            exclusivamente para alunos com uma assinatura ativa.
+        </p>
+
+        <p class="description">
+            Ative seu plano e tenha acesso ao seu Ambiente do Aluno,
+            curso de inglês, módulos, atividades, avaliações, materiais
+            e recursos exclusivos.
+        </p>
+
+        <div class="actions">
+
+            <a href="/dashboard.html?secao=planos" class="btn btn-primary">
+                ✨ CONHECER OS PLANOS
+            </a>
+
+            <a href="/dashboard.html?secao=inicio" class="btn btn-secondary">
+                ← VOLTAR
+            </a>
+
+        </div>
+
+        <div class="brand">
+            Aldemar Studios • Educação, Tecnologia e Aprendizagem
+        </div>
+
+    </main>
+
+<script>
+function voltarParaPaginaInicial(event, abrirPlanos) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    const usuario = sessionStorage.getItem("usuario");
+
+    if (!usuario) {
+        window.location.href = "/";
+        return;
+    }
+
+    if (abrirPlanos) {
+        window.location.href = "/#planos";
+    } else {
+        window.location.href = "/";
+    }
+}
+</script>
+</body>
+</html>
+
+
+

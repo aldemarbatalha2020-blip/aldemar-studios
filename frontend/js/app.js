@@ -1,11 +1,11 @@
 ﻿// =====================================================
 // ALDEMAR STUDIOS
-// APLICAÃ‡ÃƒO PRINCIPAL
+// APLICAÃƒâ€¡ÃƒÆ’O PRINCIPAL
 // =====================================================
 
 
 // =====================================================
-// CONFIGURAÃ‡ÃƒO DA API
+// CONFIGURAÃƒâ€¡ÃƒÆ’O DA API
 // =====================================================
 
 const API_URL =
@@ -24,7 +24,7 @@ const registerScreen =
 
 
 // =====================================================
-// BOTÃ•ES
+// BOTÃƒâ€¢ES
 // =====================================================
 
 const openRegister =
@@ -38,7 +38,7 @@ const forgotPassword =
 
 
 // =====================================================
-// FORMULÃRIOS
+// FORMULÃƒÂRIOS
 // =====================================================
 
 const loginForm =
@@ -49,7 +49,7 @@ const registerForm =
 
 
 // =====================================================
-// VERIFICAÃ‡ÃƒO DOS ELEMENTOS
+// VERIFICAÃƒâ€¡ÃƒÆ’O DOS ELEMENTOS
 // =====================================================
 
 console.log(
@@ -203,7 +203,7 @@ if (loginForm) {
 
 
                 // =====================================
-                // USUÃRIO AUTENTICADO
+                // USUÃƒÂRIO AUTENTICADO
                 // =====================================
 
                 if (
@@ -211,7 +211,7 @@ if (loginForm) {
                 ) {
 
                     alert(
-                        "Login realizado, mas os dados do usuÃ¡rio nÃ£o foram recebidos."
+                        "Login realizado, mas os dados do usuÃƒÂ¡rio nÃƒÂ£o foram recebidos."
                     );
 
                     return;
@@ -220,19 +220,20 @@ if (loginForm) {
 
 
                 // =====================================
-                // SALVAR SESSÃƒO
+                // SALVAR SESSÃƒÆ’O
                 // =====================================
 
                 sessionStorage.setItem(
                     "usuario",
-                    JSON.stringify(
-                        dados.usuario
-                    )
+                    JSON.stringify({
+                        ...dados.usuario,
+                        token: dados.token
+                    })
                 );
 
 
                 console.log(
-                    "UsuÃ¡rio autenticado:",
+                    "UsuÃƒÂ¡rio autenticado:",
                     dados.usuario
                 );
 
@@ -263,7 +264,7 @@ if (loginForm) {
 
 
                 alert(
-                    "NÃ£o foi possÃ­vel conectar ao servidor. Verifique sua conexÃ£o."
+                    "NÃƒÂ£o foi possÃƒÂ­vel conectar ao servidor. Verifique sua conexÃƒÂ£o."
                 );
 
             }
@@ -308,7 +309,7 @@ if (registerForm) {
 
 
             // =====================================
-            // VALIDAÃ‡Ã•ES
+            // VALIDAÃƒâ€¡Ãƒâ€¢ES
             // =====================================
 
             if (!nome_completo) {
@@ -394,7 +395,7 @@ if (registerForm) {
 
                     alert(
                         dados.mensagem ||
-                        "NÃ£o foi possÃ­vel criar a conta."
+                        "NÃƒÂ£o foi possÃƒÂ­vel criar a conta."
                     );
 
                     return;
@@ -403,15 +404,15 @@ if (registerForm) {
 
 
                 // =====================================
-                // CADASTRO CONCLUÃDO
+                // CADASTRO CONCLUÃƒÂDO
                 // =====================================
 
                 alert(
-                    "Conta criada com sucesso! Agora vocÃª pode entrar."
+                    "Conta criada com sucesso! Agora vocÃƒÂª pode entrar."
                 );
 
 
-                // Limpar formulÃ¡rio
+                // Limpar formulÃƒÂ¡rio
 
                 registerForm.reset();
 
@@ -451,7 +452,7 @@ if (registerForm) {
 
 
                 alert(
-                    "NÃ£o foi possÃ­vel conectar ao servidor."
+                    "NÃƒÂ£o foi possÃƒÂ­vel conectar ao servidor."
                 );
 
             }
@@ -480,7 +481,7 @@ if (forgotPassword) {
 }
 
 // =====================================================
-// SESSÃƒO EXISTENTE
+// SESSÃƒÆ’O EXISTENTE
 // =====================================================
 
 const usuarioSalvo =
@@ -500,7 +501,7 @@ if (usuarioSalvo) {
 
 
         console.log(
-            "SessÃ£o encontrada:",
+            "SessÃƒÂ£o encontrada:",
             usuario
         );
 
@@ -508,7 +509,7 @@ if (usuarioSalvo) {
     } catch (error) {
 
         console.error(
-            "SessÃ£o invÃ¡lida:",
+            "SessÃƒÂ£o invÃƒÂ¡lida:",
             error
         );
 
@@ -523,8 +524,93 @@ if (usuarioSalvo) {
 
 
 // =====================================================
-// NAVEGAÃ‡ÃƒO ENTRE SEÃ‡Ã•ES
+// NAVEGAÃƒâ€¡ÃƒÆ’O ENTRE SEÃƒâ€¡Ãƒâ€¢ES
 // =====================================================
+
+function processarRetornoPremium() {
+
+    const parametros =
+        new URLSearchParams(window.location.search);
+
+    const origem =
+        parametros.get("origem");
+
+    const destino =
+        parametros.get("destino");
+
+    if (origem !== "premium") {
+        return;
+    }
+
+    const restaurado =
+        restaurarPaginaInicial();
+
+    if (!restaurado) {
+        return;
+    }
+
+    if (destino === "planos") {
+
+        const planos =
+            document.getElementById("planos");
+
+        if (planos) {
+
+            setTimeout(() => {
+
+                planos.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }, 300);
+
+        }
+
+    }
+
+}
+
+function restaurarPaginaInicial() {
+
+    const usuarioSalvo =
+        sessionStorage.getItem("usuario");
+
+    if (!usuarioSalvo) {
+        return false;
+    }
+
+    const loginScreen =
+        document.getElementById("loginScreen");
+
+    const registerScreen =
+        document.getElementById("registerScreen");
+
+    const dashboardSection =
+        document.getElementById("dashboardSection");
+
+    if (loginScreen) {
+        loginScreen.classList.remove("active");
+        loginScreen.style.display = "none";
+    }
+
+    if (registerScreen) {
+        registerScreen.classList.remove("active");
+        registerScreen.style.display = "none";
+    }
+
+    if (dashboardSection) {
+        document
+            .querySelectorAll(".content-section")
+            .forEach((section) => {
+                section.style.display = "none";
+            });
+
+        dashboardSection.style.display = "block";
+    }
+
+    return true;
+}
 
 function showSection(sectionId) {
 
@@ -601,7 +687,7 @@ function filterGames(
     );
 
 
-    // Atualizar botÃ£o ativo
+    // Atualizar botÃƒÂ£o ativo
 
     const filters =
         document.querySelectorAll(
@@ -632,8 +718,14 @@ function filterGames(
 
 
 // =====================================================
-// EXPORTAR FUNÃ‡Ã•ES
+// EXPORTAR FUNÃƒâ€¡Ãƒâ€¢ES
 // =====================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    processarRetornoPremium();
+
+});
 
 window.showSection =
     showSection;
@@ -649,3 +741,6 @@ window.filterGames =
 console.log(
     "Aldemar Studios iniciado com sucesso."
 );
+
+
+
