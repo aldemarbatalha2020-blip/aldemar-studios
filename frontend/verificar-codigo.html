@@ -846,60 +846,51 @@ btnEnviar.addEventListener(
 
                     }
                 );
+            let dados = {};
 
-
-            const dados =
-                await resposta.json();
-
-
-            if (!resposta.ok) {
-
-                mostrarMensagem(
-                    mensagemEmail,
-                    dados.mensagem ||
-                    "Não foi possível enviar o código.",
-                    "erro"
-                );
-
-                btnEnviar.disabled =
-                    false;
-
-                return;
-
+            try {
+                dados = await resposta.json();
+            } catch (e) {
+                dados = {};
             }
 
-
             /*
-             * O backend retorna sucesso
-             * somente após concluir o envio
-             * do e-mail.
+             * O servidor recebeu a solicitação.
+             * A interface deve avançar para a
+             * verificação do código.
              */
 
-            etapaEmail.classList.add(
-                "oculto"
-            );
+            if (resposta.ok) {
 
+                etapaEmail.classList.add("oculto");
 
-            etapaCodigo.classList.remove(
-                "oculto"
-            );
+                etapaCodigo.classList.remove("oculto");
 
+                emailInfo.textContent = email;
 
-            emailInfo.textContent =
-                email;
+                mostrarMensagem(
+                    mensagemCodigo,
+                    "Código enviado com sucesso. Digite o código recebido no seu e-mail.",
+                    "sucesso"
+                );
 
+                iniciarContador();
+
+                codigoInput.value = "";
+                codigoInput.focus();
+
+                return;
+            }
 
             mostrarMensagem(
-                mensagemCodigo,
-                "Código enviado com sucesso.",
-                "sucesso"
+                mensagemEmail,
+                dados.mensagem ||
+                "Não foi possível enviar o código.",
+                "erro"
             );
 
+            btnEnviar.disabled = false;
 
-            iniciarContador();
-
-
-            codigoInput.focus();
 
 
         } catch (error) {
@@ -1239,6 +1230,7 @@ btnReenviar.addEventListener(
 </body>
 
 </html>
+
 
 
 
