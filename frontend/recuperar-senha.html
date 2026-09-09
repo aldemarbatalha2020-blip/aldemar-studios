@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recuperar senha - Aldemar Studios</title>
+<link rel="stylesheet" href="/css/recuperacao.css">
+</head>
+<body>
+<div class="recuperacao-container">
+    <div class="recuperacao-card">
+
+        <div class="logo">ALDEMAR <span>STUDIOS</span></div>
+
+        <div class="etapas">
+            <div class="etapa ativa"><b>1</b><span>Enviar código</span></div>
+            <div class="linha"></div>
+            <div class="etapa"><b>2</b><span>Verificar</span></div>
+            <div class="linha"></div>
+            <div class="etapa"><b>3</b><span>Nova senha</span></div>
+        </div>
+
+        <div class="icone">🔐</div>
+
+        <h1>Recuperar senha</h1>
+        <p class="descricao">
+            Informe o e-mail da sua conta para receber um código de recuperação.
+        </p>
+
+        <form id="recuperarForm">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+
+            <div id="mensagem"></div>
+
+            <button type="submit" id="btnEnviar">ENVIAR CÓDIGO</button>
+        </form>
+
+        <a href="/index.html" class="voltar">← Voltar para o login</a>
+
+    </div>
+</div>
+
+<script src="/js/recuperar-senha.js"></script>
+</body>
+</html>

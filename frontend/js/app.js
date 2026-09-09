@@ -524,7 +524,7 @@ if (forgotPassword) {
         () => {
 
             window.location.href =
-                "/verificar-codigo.html";
+                "/recuperar-senha.html";
 
         }
     );
