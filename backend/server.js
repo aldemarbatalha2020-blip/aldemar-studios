@@ -1,4 +1,12 @@
-﻿const express = require("express");
+﻿const { execFileSync } = require("child_process");
+const pathMigracao = require("path");
+
+execFileSync(
+    process.execPath,
+    [pathMigracao.join(__dirname, "migrar-recuperacao.js")],
+    { stdio: "inherit" }
+);
+const express = require("express");
 const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
