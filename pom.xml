@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+            http://maven.apache.org/POM/4.0.0
+            https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================
+         SPRING BOOT
+         ============================================================ -->
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.1</version>
+        <relativePath/>
+    </parent>
+
+
+    <!-- ============================================================
+         IDENTIDADE DO PROJETO
+         ============================================================ -->
+
+    <groupId>com.aldemarstudios</groupId>
+
+    <artifactId>aldemar-studios</artifactId>
+
+    <version>1.0.0</version>
+
+    <name>Aldemar Studios</name>
+
+    <description>
+        Plataforma educacional Aldemar Studios
+    </description>
+
+
+    <!-- ============================================================
+         VERSÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ES
+         ============================================================ -->
+
+    <properties>
+
+        <java.version>21</java.version>
+
+        <vaadin.version>25.2.7</vaadin.version>
+
+        <flyway.version>13.6.0</flyway.version>
+
+    </properties>
+
+
+    <!-- ============================================================
+         DEPENDENCY MANAGEMENT
+         ============================================================ -->
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <!-- VAADIN BOM -->
+
+            <dependency>
+
+                <groupId>com.vaadin</groupId>
+
+                <artifactId>vaadin-bom</artifactId>
+
+                <version>${vaadin.version}</version>
+
+                <type>pom</type>
+
+                <scope>import</scope>
+
+            </dependency>
+
+
+            <!-- FLYWAY -->
+
+            <dependency>
+
+                <groupId>org.flywaydb</groupId>
+
+                <artifactId>flyway-core</artifactId>
+
+                <version>${flyway.version}</version>
+
+            </dependency>
+
+
+            <dependency>
+
+                <groupId>org.flywaydb</groupId>
+
+                <artifactId>flyway-mysql</artifactId>
+
+                <version>${flyway.version}</version>
+
+            </dependency>
+    </dependencies>
+
+    </dependencyManagement>
+
+
+    <!-- ============================================================
+         DEPENDÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â NCIAS
+         ============================================================ -->
+
+    <dependencies>
+
+
+        <!-- ========================================================
+             WEB
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             SPRING SECURITY
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-security</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             VALIDAÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢O
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-validation</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             JPA / HIBERNATE
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             VAADIN
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>com.vaadin</groupId>
+
+            <artifactId>vaadin-spring-boot-starter</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             VAADIN DEVELOPMENT TOOLS
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>com.vaadin</groupId>
+
+            <artifactId>vaadin-dev</artifactId>
+
+            <optional>true</optional>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             MYSQL
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>com.mysql</groupId>
+
+            <artifactId>mysql-connector-j</artifactId>
+
+            <scope>runtime</scope>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             EMAIL / BREVO SMTP
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-mail</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             ACTUATOR
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-actuator</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             DEVTOOLS
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-devtools</artifactId>
+
+            <scope>runtime</scope>
+
+            <optional>true</optional>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             FLYWAY
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.flywaydb</groupId>
+
+            <artifactId>flyway-core</artifactId>
+
+        </dependency>
+
+
+        <dependency>
+
+            <groupId>org.flywaydb</groupId>
+
+            <artifactId>flyway-mysql</artifactId>
+
+        </dependency>
+
+
+        <!-- ========================================================
+             TESTES
+             ======================================================== -->
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-test</artifactId>
+
+            <scope>test</scope>
+
+        </dependency>
+
+
+        <dependency>
+
+            <groupId>org.springframework.security</groupId>
+
+            <artifactId>spring-security-test</artifactId>
+
+            <scope>test</scope>
+
+        </dependency>
+
+            <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.82</version>
+        </dependency>
+    </dependencies>
+
+
+    <!-- ============================================================
+         BUILD
+         ============================================================ -->
+
+    <build>
+
+        <plugins>
+
+
+            <!-- ====================================================
+                 SPRING BOOT
+                 ==================================================== -->
+
+            <plugin>
+
+                <groupId>org.springframework.boot</groupId>
+
+                <artifactId>spring-boot-maven-plugin</artifactId>
+
+            </plugin>
+
+
+            <!-- ====================================================
+                 VAADIN MAVEN PLUGIN
+                 ==================================================== -->
+
+            <plugin>
+
+                <groupId>com.vaadin</groupId>
+
+                <artifactId>vaadin-maven-plugin</artifactId>
+
+                <version>${vaadin.version}</version>
+
+                <executions>
+
+                    <execution>
+
+                        <goals>
+
+                            <goal>build-frontend</goal>
+
+                        </goals>
+
+                    </execution>
+
+                </executions>
+
+            </plugin>
+
+
+            <!-- ====================================================
+                 FLYWAY MAVEN PLUGIN
+                 ==================================================== -->
+
+            <plugin>
+
+                <groupId>org.flywaydb</groupId>
+
+                <artifactId>flyway-maven-plugin</artifactId>
+
+                <version>${flyway.version}</version>
+
+                <configuration>
+
+                    <locations>
+
+                        <location>
+                            classpath:db/migration
+                        </location>
+
+                    </locations>
+
+                    <url>${env.DATABASE_URL}</url>
+
+                    <user>${env.DATABASE_USERNAME}</user>
+
+                    <password>${env.DATABASE_PASSWORD}</password>
+
+                </configuration>
+
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>

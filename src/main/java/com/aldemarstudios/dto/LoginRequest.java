@@ -1,0 +1,7 @@
+package com.aldemarstudios.dto;
+
+public record LoginRequest(
+        String email,
+        String senha
+) {
+}
