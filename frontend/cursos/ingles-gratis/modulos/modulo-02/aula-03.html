@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aula 03 — Furniture</title>
+
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<a href="../../index.html" class="btn-voltar-Tela Inicial">
+← Selecionar Módulos
+</a>
+
+<header>
+
+<h1>APRENDENDO INGLÊS COM ALDEMAR</h1>
+
+<p>Instituto Acutis</p>
+
+</header>
+
+<main class="container">
+
+<section class="lesson">
+
+<div class="module">
+Módulo 02 · Aula 03
+</div>
+
+<h2>Furniture</h2>
+
+<div class="lesson-intro">
+
+<p>
+Aprenda o vocabulário dos principais móveis encontrados dentro de uma casa.
+</p>
+
+</div>
+
+<!-- CONTEÚDO -->
+
+<section class="lesson-section">
+
+<h3>📚 1. Conteúdo</h3>
+
+<div class="box">
+
+<table>
+<tr><th>English</th><th>Português</th></tr>
+<tr><td>Bed</td><td>Cama</td></tr>
+<tr><td>Sofa</td><td>Sofá</td></tr>
+<tr><td>Table</td><td>Mesa</td></tr>
+<tr><td>Chair</td><td>Cadeira</td></tr>
+<tr><td>Desk</td><td>Escrivaninha</td></tr>
+<tr><td>Wardrobe</td><td>Guarda-roupa</td></tr>
+<tr><td>Bookshelf</td><td>Estante de livros</td></tr>
+<tr><td>Lamp</td><td>Lâmpada / Abajur</td></tr>
+</table>
+
+<p><strong>There is a bed in my bedroom.</strong></p>
+
+<p><strong>There are two chairs in the kitchen.</strong></p>
+
+<p><strong>My books are on the bookshelf.</strong></p>
+
+</div>
+
+</section>
+
+<!-- EXPLICAÇÃO -->
+
+<section class="lesson-section">
+
+<h3>🎙️ 2. Explicação do Professor Aldemar</h3>
+
+<div class="box">
+
+<p>
+Furniture significa <strong>móveis</strong>. Observe como podemos combinar o nome dos móveis com os cômodos. A cama normalmente está no quarto, o sofá na sala e a mesa pode estar na cozinha ou sala de jantar.
+</p>
+
+<p>
+<strong>💡 Dica do Professor:</strong>
+Leia os exemplos lentamente, compreenda o significado e depois
+tente criar frases próprias.
+</p>
+
+</div>
+
+<audio controls style="width:100%; margin-top:15px;">
+<source src="../../audios/modulo-02/aula-03.mp3" type="audio/mpeg">
+Seu navegador não suporta áudio.
+</audio>
+
+</section>
+
+<!-- LEITURA -->
+
+<section class="lesson-section">
+
+<h3>📖 3. Atividade de Leitura</h3>
+
+<div class="box">
+
+<div class="example">
+
+<p><strong>Emma:</strong> I have a new bedroom.</p>
+
+<p><strong>Paul:</strong> Really? What furniture do you have?</p>
+
+<p><strong>Emma:</strong> I have a bed, a desk and a bookshelf.</p>
+
+<p><strong>Paul:</strong> Where are your books?</p>
+
+<p><strong>Emma:</strong> They are on the bookshelf.</p>
+
+</div>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>1.</strong> What furniture does Emma have?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(1,"bed desk bookshelf","bed desk bookshelf")'>A bed, a desk and a bookshelf</button><button onclick='answerQuestion(1,"sofa table chair","bed desk bookshelf")'>A sofa, table and chair</button>
+
+</div>
+
+<p id="feedback1"></p>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>2.</strong> Where are Emma's books?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(2,"on the bookshelf","on the bookshelf")'>On the bookshelf</button><button onclick='answerQuestion(2,"under the bed","on the bookshelf")'>Under the bed</button>
+
+</div>
+
+<p id="feedback2"></p>
+
+</div>
+
+</section>
+
+<!-- ESCRITA -->
+
+<section class="lesson-section">
+
+<h3>✍️ 4. Atividade de Escrita</h3>
+
+<div class="box">
+
+<p>
+Descreva os móveis de um quarto. Escreva pelo menos 3 frases.
+</p>
+
+<textarea
+id="writing"
+rows="6"
+placeholder="Escreva sua resposta em Inglês..."
+></textarea>
+
+<button onclick="checkWriting()">
+Verificar atividade
+</button>
+
+<p id="writingFeedback"></p>
+
+</div>
+
+</section>
+
+<!-- PRONÚNCIA -->
+
+<section class="lesson-section">
+
+<h3>🗣️ 5. Atividade de Pronúncia</h3>
+
+<div class="box">
+
+<p>
+Leia cada frase em Inglês em voz alta.
+Depois clique no botão para ouvir a pronúncia.
+</p>
+
+<button onclick='speak(There is a bed in my room.)'>🔊 There is a bed in my room.</button><br><button onclick='speak(There is a desk near the window.)'>🔊 There is a desk near the window.</button><br><button onclick='speak(My books are on the bookshelf.)'>🔊 My books are on the bookshelf.</button>
+
+</div>
+
+</section>
+
+<!-- DESAFIO -->
+
+<section class="challenge">
+
+<h3>🎯 Desafio da Aula</h3>
+
+<p>
+Imagine seu quarto. Escreva pelo menos quatro frases dizendo quais móveis existem nele.
+</p>
+
+<textarea
+id="challenge"
+rows="6"
+placeholder="Escreva seu desafio aqui..."
+></textarea>
+
+<button onclick="checkChallenge()">
+Concluir desafio
+</button>
+
+<p id="challengeFeedback"></p>
+
+</section>
+
+<!-- PONTUAÇÃO -->
+
+<div class="lesson-complete">
+
+<h3>🏆 Aula concluída?</h3>
+
+<p>
+Complete as atividades para acompanhar sua evolução.
+</p>
+
+<p>
+<strong>Pontuação:</strong>
+<span id="score">0</span>
+</p>
+
+</div>
+
+<!-- NAVEGAÇÃO -->
+
+<div class="navigation">
+
+<a class='btn' href='aula-02.html'>← Aula anterior</a>
+
+<a class='btn' href='aula-04.html'>Próxima aula →</a>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+Instituto Acutis · Aprendendo Inglês com Aldemar
+
+</footer>
+
+<script>
+
+let score = 0;
+
+function updateScore(points) {
+
+    score += points;
+
+    document.getElementById("score").textContent = score;
+
+}
+
+function checkQuestion(number, correct) {
+
+    const buttons = document.querySelectorAll(
+        "#feedback" + number + " ~ button"
+    );
+
+}
+
+function answerQuestion(number, selected, correct) {
+
+    const feedback =
+        document.getElementById("feedback" + number);
+
+    if (selected === correct) {
+
+        feedback.textContent =
+            "✅ Muito bem! Resposta correta.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "❌ Não foi dessa vez. Leia novamente o texto.";
+
+        feedback.style.color = "#ff5555";
+
+    }
+
+}
+
+function checkWriting() {
+
+    const text =
+        document.getElementById("writing").value.trim();
+
+    const feedback =
+        document.getElementById("writingFeedback");
+
+    if (text.length >= 15) {
+
+        feedback.textContent =
+            "✅ Excelente! Sua atividade de escrita foi concluída.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "✍️ Escreva pelo menos uma frase completa em Inglês.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function checkChallenge() {
+
+    const text =
+        document.getElementById("challenge").value.trim();
+
+    const feedback =
+        document.getElementById("challengeFeedback");
+
+    if (text.length >= 20) {
+
+        feedback.textContent =
+            "🏆 Desafio concluído! Excelente trabalho.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(20);
+
+    } else {
+
+        feedback.textContent =
+            "🎯 Escreva mais detalhes para concluir o desafio.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function speak(text) {
+
+    if ("speechSynthesis" in window) {
+
+        speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = "en-US";
+
+        utterance.rate = 0.85;
+
+        speechSynthesis.speak(utterance);
+
+    } else {
+
+        alert(
+            "A reprodução de voz não está disponível neste navegador."
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

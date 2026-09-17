@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aula 10 — Review Module 02</title>
+
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<a href="../../index.html" class="btn-voltar-Tela Inicial">
+← Selecionar Módulos
+</a>
+
+<header>
+
+<h1>APRENDENDO INGLÊS COM ALDEMAR</h1>
+
+<p>Instituto Acutis</p>
+
+</header>
+
+<main class="container">
+
+<section class="lesson">
+
+<div class="module">
+Módulo 02 · Aula 10
+</div>
+
+<h2>Review Module 02</h2>
+
+<div class="lesson-intro">
+
+<p>
+Revise todo o conteúdo do Módulo 02 e prepare-se para avançar para o próximo módulo.
+</p>
+
+</div>
+
+<!-- CONTEÚDO -->
+
+<section class="lesson-section">
+
+<h3>📚 1. Conteúdo</h3>
+
+<div class="box">
+
+<h4>🏠 Vocabulário</h4>
+
+<p>
+House · bedroom · bathroom · kitchen · living room ·
+bed · sofa · table · chair · desk · book · phone
+</p>
+
+<h4>📍 Preposições</h4>
+
+<p>
+in · on · under · next to · behind · in front of · between
+</p>
+
+<h4>📚 Estruturas</h4>
+
+<p><strong>There is</strong> — singular</p>
+
+<p><strong>There are</strong> — plural</p>
+
+<p><strong>There isn't</strong> — singular negativo</p>
+
+<p><strong>There aren't</strong> — plural negativo</p>
+
+<h4>🗣️ Descrição</h4>
+
+<p>
+My house is small and comfortable.
+</p>
+
+<p>
+There are two bedrooms.
+</p>
+
+<p>
+There is a sofa in the living room.
+</p>
+
+</div>
+
+</section>
+
+<!-- EXPLICAÇÃO -->
+
+<section class="lesson-section">
+
+<h3>🎙️ 2. Explicação do Professor Aldemar</h3>
+
+<div class="box">
+
+<p>
+Esta é a revisão geral do Módulo 02. Você estudou casas, cômodos, móveis, objetos, preposições, <strong>There is</strong>, <strong>There are</strong> e descrição de lugares. Antes de avançar, revise as palavras que ainda parecem difíceis.
+</p>
+
+<p>
+<strong>💡 Dica do Professor:</strong>
+Leia os exemplos lentamente, compreenda o significado e depois
+tente criar frases próprias.
+</p>
+
+</div>
+
+<audio controls style="width:100%; margin-top:15px;">
+<source src="../../audios/modulo-02/aula-10.mp3" type="audio/mpeg">
+Seu navegador não suporta áudio.
+</audio>
+
+</section>
+
+<!-- LEITURA -->
+
+<section class="lesson-section">
+
+<h3>📖 3. Atividade de Leitura</h3>
+
+<div class="box">
+
+<div class="example">
+
+<p><strong>My House — Review</strong></p>
+
+<p>
+I live in a comfortable house.
+There are two bedrooms and one bathroom.
+</p>
+
+<p>
+There is a kitchen next to the living room.
+There is a sofa in the living room.
+</p>
+
+<p>
+There is a small table in front of the sofa.
+My favorite place is my bedroom because it is quiet.
+</p>
+
+</div>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>1.</strong> How many bedrooms are there?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(1,"two","two")'>Two</button><button onclick='answerQuestion(1,"three","two")'>Three</button>
+
+</div>
+
+<p id="feedback1"></p>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>2.</strong> Where is the sofa?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(2,"in the living room","in the living room")'>In the living room</button><button onclick='answerQuestion(2,"in the bedroom","in the living room")'>In the bedroom</button>
+
+</div>
+
+<p id="feedback2"></p>
+
+</div>
+
+</section>
+
+<!-- ESCRITA -->
+
+<section class="lesson-section">
+
+<h3>✍️ 4. Atividade de Escrita</h3>
+
+<div class="box">
+
+<p>
+Escreva um texto final de 8 a 10 frases sobre uma casa. Use vocabulário, <strong>There is</strong>, <strong>There are</strong> e preposições de lugar.
+</p>
+
+<textarea
+id="writing"
+rows="6"
+placeholder="Escreva sua resposta em Inglês..."
+></textarea>
+
+<button onclick="checkWriting()">
+Verificar atividade
+</button>
+
+<p id="writingFeedback"></p>
+
+</div>
+
+</section>
+
+<!-- PRONÚNCIA -->
+
+<section class="lesson-section">
+
+<h3>🗣️ 5. Atividade de Pronúncia</h3>
+
+<div class="box">
+
+<p>
+Leia cada frase em Inglês em voz alta.
+Depois clique no botão para ouvir a pronúncia.
+</p>
+
+<button onclick='speak(There is a sofa in the living room.)'>🔊 There is a sofa in the living room.</button><br><button onclick='speak(There are two bedrooms.)'>🔊 There are two bedrooms.</button><br><button onclick='speak(My house is comfortable.)'>🔊 My house is comfortable.</button>
+
+</div>
+
+</section>
+
+<!-- DESAFIO -->
+
+<section class="challenge">
+
+<h3>🎯 Desafio da Aula</h3>
+
+<p>
+🏆 DESAFIO FINAL: escreva uma descrição completa de uma casa imaginária. Inclua os cômodos, móveis, objetos, características e posições. Tente produzir pelo menos 10 frases em Inglês.
+</p>
+
+<textarea
+id="challenge"
+rows="6"
+placeholder="Escreva seu desafio aqui..."
+></textarea>
+
+<button onclick="checkChallenge()">
+Concluir desafio
+</button>
+
+<p id="challengeFeedback"></p>
+
+</section>
+
+<!-- PONTUAÇÃO -->
+
+<div class="lesson-complete">
+
+<h3>🏆 Aula concluída?</h3>
+
+<p>
+Complete as atividades para acompanhar sua evolução.
+</p>
+
+<p>
+<strong>Pontuação:</strong>
+<span id="score">0</span>
+</p>
+
+</div>
+
+<!-- NAVEGAÇÃO -->
+
+<div class="navigation">
+
+<a class='btn' href='aula-09.html'>← Aula anterior</a>
+
+<a class='btn' href='../modulo-03/aula-01.html'>Próximo módulo →</a>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+Instituto Acutis · Aprendendo Inglês com Aldemar
+
+</footer>
+
+<script>
+
+let score = 0;
+
+function updateScore(points) {
+
+    score += points;
+
+    document.getElementById("score").textContent = score;
+
+}
+
+function checkQuestion(number, correct) {
+
+    const buttons = document.querySelectorAll(
+        "#feedback" + number + " ~ button"
+    );
+
+}
+
+function answerQuestion(number, selected, correct) {
+
+    const feedback =
+        document.getElementById("feedback" + number);
+
+    if (selected === correct) {
+
+        feedback.textContent =
+            "✅ Muito bem! Resposta correta.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "❌ Não foi dessa vez. Leia novamente o texto.";
+
+        feedback.style.color = "#ff5555";
+
+    }
+
+}
+
+function checkWriting() {
+
+    const text =
+        document.getElementById("writing").value.trim();
+
+    const feedback =
+        document.getElementById("writingFeedback");
+
+    if (text.length >= 15) {
+
+        feedback.textContent =
+            "✅ Excelente! Sua atividade de escrita foi concluída.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "✍️ Escreva pelo menos uma frase completa em Inglês.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function checkChallenge() {
+
+    const text =
+        document.getElementById("challenge").value.trim();
+
+    const feedback =
+        document.getElementById("challengeFeedback");
+
+    if (text.length >= 20) {
+
+        feedback.textContent =
+            "🏆 Desafio concluído! Excelente trabalho.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(20);
+
+    } else {
+
+        feedback.textContent =
+            "🎯 Escreva mais detalhes para concluir o desafio.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function speak(text) {
+
+    if ("speechSynthesis" in window) {
+
+        speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = "en-US";
+
+        utterance.rate = 0.85;
+
+        speechSynthesis.speak(utterance);
+
+    } else {
+
+        alert(
+            "A reprodução de voz não está disponível neste navegador."
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

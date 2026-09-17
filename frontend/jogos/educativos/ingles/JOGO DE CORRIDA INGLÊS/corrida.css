@@ -1,0 +1,201 @@
+/* =========================================================
+ENGLISH RACE
+CSS — MULTIPLAYER / LUDO RACING
+INSTITUTO ACUTIS
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+:root {
+--bg: #07101f;
+--panel: #0d1b2e;
+--panel-light: #12253d;
+--border: rgba(255,255,255,.10);
+--text: #f4f8ff;
+--muted: #8fa6c2;
+--blue: #35a7ff;
+--purple: #a56bff;
+--green: #3ee58b;
+--yellow: #ffd45a;
+--red: #ff5575;
+}
+
+html,
+body {
+width: 100%;
+min-height: 100%;
+}
+
+body {
+font-family: Arial, Helvetica, sans-serif;
+background:
+radial-gradient(circle at 20% 10%, rgba(53,167,255,.12), transparent 30%),
+radial-gradient(circle at 80% 20%, rgba(165,107,255,.12), transparent 30%),
+var(--bg);
+color: var(--text);
+overflow-x: hidden;
+}
+
+/* =========================================================
+GAME
+========================================================= */
+
+.race-game {
+width: min(1500px, 96vw);
+margin: 0 auto;
+padding: 20px 0;
+}
+
+/* =========================================================
+HEADER
+========================================================= */
+
+.race-header {
+min-height: 90px;
+padding: 18px 24px;
+
+
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 20px;
+
+background: rgba(13,27,46,.92);
+border: 1px solid var(--border);
+border-radius: 20px;
+
+box-shadow: 0 20px 50px rgba(0,0,0,.25);
+
+
+}
+
+.brand {
+display: flex;
+align-items: center;
+gap: 14px;
+}
+
+.brand-icon {
+width: 58px;
+height: 58px;
+
+
+display: grid;
+place-items: center;
+
+font-size: 30px;
+
+background: var(--panel-light);
+border: 1px solid var(--border);
+border-radius: 16px;
+
+
+}
+
+.brand h1 {
+font-size: clamp(22px, 3vw, 34px);
+letter-spacing: 2px;
+}
+
+.brand span {
+display: block;
+margin-top: 4px;
+color: var(--muted);
+font-size: 13px;
+}
+
+.race-info {
+display: flex;
+gap: 12px;
+}
+
+.info-box {
+min-width: 145px;
+padding: 12px 16px;
+
+
+display: flex;
+align-items: center;
+gap: 10px;
+
+background: rgba(255,255,255,.04);
+border: 1px solid var(--border);
+border-radius: 14px;
+
+
+}
+
+.info-box > span {
+font-size: 23px;
+}
+
+.info-box small {
+display: block;
+color: var(--muted);
+font-size: 10px;
+letter-spacing: 1px;
+}
+
+.info-box strong {
+display: block;
+margin-top: 3px;
+font-size: 14px;
+}
+
+/* =========================================================
+ÁREA DOS JOGADORES
+========================================================= */
+
+.race-area {
+margin-top: 20px;
+
+
+display: grid;
+grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr);
+gap: 16px;
+
+align-items: stretch;
+
+
+}
+
+/* =========================================================
+PAINEL PLAYER
+========================================================= */
+
+.player-race {
+min-width: 0;
+padding: 16px;
+
+
+background: rgba(13,27,46,.95);
+border: 1px solid var(--border);
+border-radius: 22px;
+
+box-shadow: 0 18px 45px rgba(0,0,0,.25);
+
+display: flex;
+flex-direction: column;
+
+
+}
+
+.player-one {
+border-top: 3px solid var(--blue);
+}
+
+.player-two {
+border-top: 3px solid var(--purple);
+}
+
+/* =========================================================
+PLAYER HEADER
+========================================================= */
+
+.player-header {
+display: flex
+}

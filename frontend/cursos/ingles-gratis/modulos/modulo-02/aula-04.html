@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aula 04 — There Is and There Are</title>
+
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<a href="../../index.html" class="btn-voltar-Tela Inicial">
+← Selecionar Módulos
+</a>
+
+<header>
+
+<h1>APRENDENDO INGLÊS COM ALDEMAR</h1>
+
+<p>Instituto Acutis</p>
+
+</header>
+
+<main class="container">
+
+<section class="lesson">
+
+<div class="module">
+Módulo 02 · Aula 04
+</div>
+
+<h2>There Is and There Are</h2>
+
+<div class="lesson-intro">
+
+<p>
+Aprenda a dizer que algo existe ou está presente em determinado lugar.
+</p>
+
+</div>
+
+<!-- CONTEÚDO -->
+
+<section class="lesson-section">
+
+<h3>📚 1. Conteúdo</h3>
+
+<div class="box">
+
+<h4>Singular</h4>
+
+<p><strong>There is</strong> = Há / Existe / Tem</p>
+
+<p><strong>There is a table in the kitchen.</strong></p>
+
+<p>Há uma mesa na cozinha.</p>
+
+<h4>Plural</h4>
+
+<p><strong>There are</strong> = Há / Existem / Tem</p>
+
+<p><strong>There are three chairs in the room.</strong></p>
+
+<p>Há três cadeiras no quarto.</p>
+
+<h4>Forma negativa</h4>
+
+<p><strong>There isn't a television.</strong></p>
+
+<p><strong>There aren't any books.</strong></p>
+
+<h4>Perguntas</h4>
+
+<p><strong>Is there a sofa?</strong></p>
+
+<p><strong>Are there two bedrooms?</strong></p>
+
+</div>
+
+</section>
+
+<!-- EXPLICAÇÃO -->
+
+<section class="lesson-section">
+
+<h3>🎙️ 2. Explicação do Professor Aldemar</h3>
+
+<div class="box">
+
+<p>
+Use <strong>there is</strong> quando estamos falando de uma coisa no singular. Use <strong>there are</strong> quando estamos falando de duas ou mais coisas. Essa diferença é muito importante para descrever casas, salas e lugares.
+</p>
+
+<p>
+<strong>💡 Dica do Professor:</strong>
+Leia os exemplos lentamente, compreenda o significado e depois
+tente criar frases próprias.
+</p>
+
+</div>
+
+<audio controls style="width:100%; margin-top:15px;">
+<source src="../../audios/modulo-02/aula-04.mp3" type="audio/mpeg">
+Seu navegador não suporta áudio.
+</audio>
+
+</section>
+
+<!-- LEITURA -->
+
+<section class="lesson-section">
+
+<h3>📖 3. Atividade de Leitura</h3>
+
+<div class="box">
+
+<div class="example">
+
+<p>My bedroom is simple.</p>
+
+<p><strong>There is</strong> a bed next to the wall.</p>
+
+<p><strong>There is</strong> a desk near the window.</p>
+
+<p><strong>There are</strong> two chairs in the room.</p>
+
+<p><strong>There are</strong> some books on the desk.</p>
+
+</div>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>1.</strong> How many chairs are there in the bedroom?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(1,"two","two")'>Two</button><button onclick='answerQuestion(1,"three","two")'>Three</button>
+
+</div>
+
+<p id="feedback1"></p>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>2.</strong> Which sentence is correct?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(2,"there is a desk","there is a desk")'>There is a desk.</button><button onclick='answerQuestion(2,"there are a desk","there is a desk")'>There are a desk.</button>
+
+</div>
+
+<p id="feedback2"></p>
+
+</div>
+
+</section>
+
+<!-- ESCRITA -->
+
+<section class="lesson-section">
+
+<h3>✍️ 4. Atividade de Escrita</h3>
+
+<div class="box">
+
+<p>
+Escreva 4 frases: duas usando <strong>There is</strong> e duas usando <strong>There are</strong>.
+</p>
+
+<textarea
+id="writing"
+rows="6"
+placeholder="Escreva sua resposta em Inglês..."
+></textarea>
+
+<button onclick="checkWriting()">
+Verificar atividade
+</button>
+
+<p id="writingFeedback"></p>
+
+</div>
+
+</section>
+
+<!-- PRONÚNCIA -->
+
+<section class="lesson-section">
+
+<h3>🗣️ 5. Atividade de Pronúncia</h3>
+
+<div class="box">
+
+<p>
+Leia cada frase em Inglês em voz alta.
+Depois clique no botão para ouvir a pronúncia.
+</p>
+
+<button onclick='speak(There is a bed in my room.)'>🔊 There is a bed in my room.</button><br><button onclick='speak(There are two chairs.)'>🔊 There are two chairs.</button><br><button onclick='speak(There is a desk.)'>🔊 There is a desk.</button>
+
+</div>
+
+</section>
+
+<!-- DESAFIO -->
+
+<section class="challenge">
+
+<h3>🎯 Desafio da Aula</h3>
+
+<p>
+Descreva um cômodo imaginário usando pelo menos duas frases com <strong>There is</strong> e duas com <strong>There are</strong>.
+</p>
+
+<textarea
+id="challenge"
+rows="6"
+placeholder="Escreva seu desafio aqui..."
+></textarea>
+
+<button onclick="checkChallenge()">
+Concluir desafio
+</button>
+
+<p id="challengeFeedback"></p>
+
+</section>
+
+<!-- PONTUAÇÃO -->
+
+<div class="lesson-complete">
+
+<h3>🏆 Aula concluída?</h3>
+
+<p>
+Complete as atividades para acompanhar sua evolução.
+</p>
+
+<p>
+<strong>Pontuação:</strong>
+<span id="score">0</span>
+</p>
+
+</div>
+
+<!-- NAVEGAÇÃO -->
+
+<div class="navigation">
+
+<a class='btn' href='aula-03.html'>← Aula anterior</a>
+
+<a class='btn' href='aula-05.html'>Próxima aula →</a>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+Instituto Acutis · Aprendendo Inglês com Aldemar
+
+</footer>
+
+<script>
+
+let score = 0;
+
+function updateScore(points) {
+
+    score += points;
+
+    document.getElementById("score").textContent = score;
+
+}
+
+function checkQuestion(number, correct) {
+
+    const buttons = document.querySelectorAll(
+        "#feedback" + number + " ~ button"
+    );
+
+}
+
+function answerQuestion(number, selected, correct) {
+
+    const feedback =
+        document.getElementById("feedback" + number);
+
+    if (selected === correct) {
+
+        feedback.textContent =
+            "✅ Muito bem! Resposta correta.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "❌ Não foi dessa vez. Leia novamente o texto.";
+
+        feedback.style.color = "#ff5555";
+
+    }
+
+}
+
+function checkWriting() {
+
+    const text =
+        document.getElementById("writing").value.trim();
+
+    const feedback =
+        document.getElementById("writingFeedback");
+
+    if (text.length >= 15) {
+
+        feedback.textContent =
+            "✅ Excelente! Sua atividade de escrita foi concluída.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "✍️ Escreva pelo menos uma frase completa em Inglês.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function checkChallenge() {
+
+    const text =
+        document.getElementById("challenge").value.trim();
+
+    const feedback =
+        document.getElementById("challengeFeedback");
+
+    if (text.length >= 20) {
+
+        feedback.textContent =
+            "🏆 Desafio concluído! Excelente trabalho.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(20);
+
+    } else {
+
+        feedback.textContent =
+            "🎯 Escreva mais detalhes para concluir o desafio.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function speak(text) {
+
+    if ("speechSynthesis" in window) {
+
+        speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = "en-US";
+
+        utterance.rate = 0.85;
+
+        speechSynthesis.speak(utterance);
+
+    } else {
+
+        alert(
+            "A reprodução de voz não está disponível neste navegador."
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

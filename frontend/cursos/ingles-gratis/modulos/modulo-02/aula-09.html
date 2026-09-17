@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aula 09 — Reading Practice</title>
+
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<a href="../../index.html" class="btn-voltar-Tela Inicial">
+← Selecionar Módulos
+</a>
+
+<header>
+
+<h1>APRENDENDO INGLÊS COM ALDEMAR</h1>
+
+<p>Instituto Acutis</p>
+
+</header>
+
+<main class="container">
+
+<section class="lesson">
+
+<div class="module">
+Módulo 02 · Aula 09
+</div>
+
+<h2>Reading Practice</h2>
+
+<div class="lesson-intro">
+
+<p>
+Desenvolva sua leitura em Inglês utilizando o vocabulário estudado no Módulo 02.
+</p>
+
+</div>
+
+<!-- CONTEÚDO -->
+
+<section class="lesson-section">
+
+<h3>📚 1. Conteúdo</h3>
+
+<div class="box">
+
+<h4>📖 Texto: My Home</h4>
+
+<p>
+My name is Sofia and I live in a small house with my family.
+</p>
+
+<p>
+My house has three bedrooms, one bathroom, a kitchen and a living room.
+</p>
+
+<p>
+My favorite room is my bedroom. There is a bed next to the wall
+and a small desk near the window.
+</p>
+
+<p>
+There are many books on the desk and a lamp next to the bed.
+</p>
+
+<p>
+Our living room is comfortable. There is a sofa in front of the television.
+</p>
+
+<p>
+I love my home because it is simple, clean and comfortable.
+</p>
+
+</div>
+
+</section>
+
+<!-- EXPLICAÇÃO -->
+
+<section class="lesson-section">
+
+<h3>🎙️ 2. Explicação do Professor Aldemar</h3>
+
+<div class="box">
+
+<p>
+Leia o texto com calma. Primeiro tente compreender a ideia geral. Depois volte ao texto para localizar informações específicas. Não é necessário traduzir todas as palavras para compreender o texto.
+</p>
+
+<p>
+<strong>💡 Dica do Professor:</strong>
+Leia os exemplos lentamente, compreenda o significado e depois
+tente criar frases próprias.
+</p>
+
+</div>
+
+<audio controls style="width:100%; margin-top:15px;">
+<source src="../../audios/modulo-02/aula-09.mp3" type="audio/mpeg">
+Seu navegador não suporta áudio.
+</audio>
+
+</section>
+
+<!-- LEITURA -->
+
+<section class="lesson-section">
+
+<h3>📖 3. Atividade de Leitura</h3>
+
+<div class="box">
+
+<div class="example">
+
+<p>
+<strong>My Home</strong>
+</p>
+
+<p>
+Sofia lives in a small house with her family.
+</p>
+
+<p>
+Her house has three bedrooms, one bathroom, a kitchen and a living room.
+</p>
+
+<p>
+In her bedroom, there is a bed next to the wall and a desk near the window.
+</p>
+
+<p>
+There are many books on the desk.
+</p>
+
+<p>
+The living room has a sofa in front of the television.
+</p>
+
+</div>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>1.</strong> How many bedrooms does Sofia's house have?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(1,"three","three")'>Three</button><button onclick='answerQuestion(1,"two","three")'>Two</button>
+
+</div>
+
+<p id="feedback1"></p>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>2.</strong> Where is the desk?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(2,"near the window","near the window")'>Near the window</button><button onclick='answerQuestion(2,"under the bed","near the window")'>Under the bed</button>
+
+</div>
+
+<p id="feedback2"></p>
+
+</div>
+
+</section>
+
+<!-- ESCRITA -->
+
+<section class="lesson-section">
+
+<h3>✍️ 4. Atividade de Escrita</h3>
+
+<div class="box">
+
+<p>
+Escreva em Português, com suas próprias palavras, o que você entendeu do texto. Depois escreva duas frases em Inglês sobre a casa de Sofia.
+</p>
+
+<textarea
+id="writing"
+rows="6"
+placeholder="Escreva sua resposta em Inglês..."
+></textarea>
+
+<button onclick="checkWriting()">
+Verificar atividade
+</button>
+
+<p id="writingFeedback"></p>
+
+</div>
+
+</section>
+
+<!-- PRONÚNCIA -->
+
+<section class="lesson-section">
+
+<h3>🗣️ 5. Atividade de Pronúncia</h3>
+
+<div class="box">
+
+<p>
+Leia cada frase em Inglês em voz alta.
+Depois clique no botão para ouvir a pronúncia.
+</p>
+
+<button onclick='speak(I live in a small house.)'>🔊 I live in a small house.</button><br><button onclick='speak(My bedroom is comfortable.)'>🔊 My bedroom is comfortable.</button><br><button onclick='speak(There are many books on the desk.)'>🔊 There are many books on the desk.</button>
+
+</div>
+
+</section>
+
+<!-- DESAFIO -->
+
+<section class="challenge">
+
+<h3>🎯 Desafio da Aula</h3>
+
+<p>
+Leia o texto novamente e escreva cinco informações que você conseguiu encontrar sobre a casa de Sofia.
+</p>
+
+<textarea
+id="challenge"
+rows="6"
+placeholder="Escreva seu desafio aqui..."
+></textarea>
+
+<button onclick="checkChallenge()">
+Concluir desafio
+</button>
+
+<p id="challengeFeedback"></p>
+
+</section>
+
+<!-- PONTUAÇÃO -->
+
+<div class="lesson-complete">
+
+<h3>🏆 Aula concluída?</h3>
+
+<p>
+Complete as atividades para acompanhar sua evolução.
+</p>
+
+<p>
+<strong>Pontuação:</strong>
+<span id="score">0</span>
+</p>
+
+</div>
+
+<!-- NAVEGAÇÃO -->
+
+<div class="navigation">
+
+<a class='btn' href='aula-08.html'>← Aula anterior</a>
+
+<a class='btn' href='aula-10.html'>Próxima aula →</a>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+Instituto Acutis · Aprendendo Inglês com Aldemar
+
+</footer>
+
+<script>
+
+let score = 0;
+
+function updateScore(points) {
+
+    score += points;
+
+    document.getElementById("score").textContent = score;
+
+}
+
+function checkQuestion(number, correct) {
+
+    const buttons = document.querySelectorAll(
+        "#feedback" + number + " ~ button"
+    );
+
+}
+
+function answerQuestion(number, selected, correct) {
+
+    const feedback =
+        document.getElementById("feedback" + number);
+
+    if (selected === correct) {
+
+        feedback.textContent =
+            "✅ Muito bem! Resposta correta.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "❌ Não foi dessa vez. Leia novamente o texto.";
+
+        feedback.style.color = "#ff5555";
+
+    }
+
+}
+
+function checkWriting() {
+
+    const text =
+        document.getElementById("writing").value.trim();
+
+    const feedback =
+        document.getElementById("writingFeedback");
+
+    if (text.length >= 15) {
+
+        feedback.textContent =
+            "✅ Excelente! Sua atividade de escrita foi concluída.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "✍️ Escreva pelo menos uma frase completa em Inglês.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function checkChallenge() {
+
+    const text =
+        document.getElementById("challenge").value.trim();
+
+    const feedback =
+        document.getElementById("challengeFeedback");
+
+    if (text.length >= 20) {
+
+        feedback.textContent =
+            "🏆 Desafio concluído! Excelente trabalho.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(20);
+
+    } else {
+
+        feedback.textContent =
+            "🎯 Escreva mais detalhes para concluir o desafio.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function speak(text) {
+
+    if ("speechSynthesis" in window) {
+
+        speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = "en-US";
+
+        utterance.rate = 0.85;
+
+        speechSynthesis.speak(utterance);
+
+    } else {
+
+        alert(
+            "A reprodução de voz não está disponível neste navegador."
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

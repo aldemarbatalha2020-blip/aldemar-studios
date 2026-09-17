@@ -1,0 +1,1185 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aldemar Studios | Ambiente do Aluno</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #070b14;
+            --bg-2: #0b1120;
+            --card: rgba(17, 25, 42, 0.82);
+            --card-hover: rgba(25, 36, 59, 0.95);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f4f7fb;
+            --muted: #9aa8bd;
+            --primary: #6c63ff;
+            --primary-2: #8b84ff;
+            --cyan: #29d9ff;
+            --green: #35e08f;
+            --yellow: #ffc857;
+            --red: #ff647c;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(108, 99, 255, 0.14), transparent 30%),
+                radial-gradient(circle at 90% 20%, rgba(41, 217, 255, 0.09), transparent 28%),
+                radial-gradient(circle at 50% 100%, rgba(108, 99, 255, 0.08), transparent 35%),
+                var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black, transparent);
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================== */
+
+        .sidebar {
+            width: 265px;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 20;
+            padding: 24px 16px;
+            background: rgba(6, 10, 20, 0.88);
+            backdrop-filter: blur(18px);
+            border-right: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px 28px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            box-shadow: 0 0 25px rgba(108, 99, 255, 0.28);
+        }
+
+        .brand strong {
+            display: block;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .brand span {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+            color: #69778d;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav button {
+            width: 100%;
+            border: 1px solid transparent;
+            border-radius: 13px;
+            padding: 12px 13px;
+            background: transparent;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            font: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .nav button:hover,
+        .nav button.active {
+            color: var(--text);
+            background: rgba(108, 99, 255, 0.11);
+            border-color: rgba(108, 99, 255, 0.18);
+        }
+
+        .nav button.active {
+            box-shadow: inset 3px 0 0 var(--primary);
+        }
+
+        .nav-icon {
+            width: 25px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 20px;
+        }
+
+        .back-dashboard {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 12px;
+            background: rgba(255,255,255,0.025);
+            color: var(--muted);
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .back-dashboard:hover {
+            color: var(--text);
+            border-color: rgba(41, 217, 255, 0.25);
+            background: rgba(41, 217, 255, 0.06);
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        .main {
+            width: calc(100% - 265px);
+            margin-left: 265px;
+            padding: 30px 34px 50px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .topbar h1 {
+            font-size: clamp(24px, 3vw, 34px);
+            line-height: 1.1;
+        }
+
+        .topbar p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .student-status {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.025);
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 12px rgba(53,224,143,0.65);
+        }
+
+        .student-status span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            border-radius: 24px;
+            background:
+                linear-gradient(135deg, rgba(108, 99, 255, 0.16), rgba(41, 217, 255, 0.04)),
+                var(--card);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.24);
+            margin-bottom: 24px;
+        }
+
+        .hero::after {
+            content: "🎓";
+            position: absolute;
+            right: 45px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 105px;
+            opacity: 0.08;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+        }
+
+        .hero h2 {
+            font-size: clamp(21px, 3vw, 30px);
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .badge {
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid var(--border);
+            color: #c9d4e5;
+            font-size: 11px;
+        }
+
+        /* =========================
+           PROGRESS
+        ========================== */
+
+        .section-title {
+            margin: 30px 0 14px;
+        }
+
+        .section-title h2 {
+            font-size: 18px;
+        }
+
+        .section-title p {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .overview {
+            display: grid;
+            grid-template-columns: 1.35fr repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .overview-card,
+        .course-card,
+        .feature-card {
+            border: 1px solid var(--border);
+            background: var(--card);
+            border-radius: 18px;
+        }
+
+        .overview-card {
+            padding: 20px;
+        }
+
+        .progress-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .progress-label {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .progress-number {
+            margin-top: 7px;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .progress-ring {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: conic-gradient(var(--primary) 0deg, rgba(255,255,255,0.06) 0deg);
+            position: relative;
+        }
+
+        .progress-ring::before {
+            content: "";
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #11192a;
+        }
+
+        .progress-ring span {
+            position: relative;
+            z-index: 1;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .progress-bar {
+            height: 7px;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.07);
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--primary), var(--cyan));
+        }
+
+        .stat-icon {
+            font-size: 21px;
+            margin-bottom: 14px;
+        }
+
+        .stat-number {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        /* =========================
+           COURSES
+        ========================== */
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .course-card {
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.25s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(108, 99, 255, 0.32);
+            background: var(--card-hover);
+        }
+
+        .course-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .course-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            font-size: 25px;
+            background: rgba(108, 99, 255, 0.12);
+            border: 1px solid rgba(108, 99, 255, 0.16);
+        }
+
+        .course-state {
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: rgba(53,224,143,0.08);
+            border: 1px solid rgba(53,224,143,0.16);
+            color: var(--green);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+        }
+
+        .course-card h3 {
+            margin-top: 18px;
+            font-size: 17px;
+        }
+
+        .course-card p {
+            margin-top: 7px;
+            color: var(--muted);
+            line-height: 1.55;
+            font-size: 12px;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 14px;
+            margin-top: 18px;
+            color: #8e9cb0;
+            font-size: 10px;
+        }
+
+        .course-progress {
+            margin-top: 18px;
+        }
+
+        .course-progress-top {
+            display: flex;
+            justify-content: space-between;
+            color: #9eabc0;
+            font-size: 10px;
+            margin-bottom: 7px;
+        }
+
+        .course-action {
+            margin-top: 17px;
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid rgba(108,99,255,0.25);
+            border-radius: 11px;
+            background: rgba(108,99,255,0.1);
+            color: #dfe2ff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* =========================
+           FEATURES
+        ========================== */
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 13px;
+        }
+
+        .feature-card {
+            padding: 18px;
+            cursor: pointer;
+            transition: 0.22s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            background: var(--card-hover);
+            border-color: rgba(41,217,255,0.18);
+        }
+
+        .feature-icon {
+            font-size: 23px;
+        }
+
+        .feature-card h3 {
+            margin-top: 13px;
+            font-size: 13px;
+        }
+
+        .feature-card p {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           BIMESTERS
+        ========================== */
+
+        .bimesters {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 13px;
+        }
+
+        .bimestre {
+            padding: 17px;
+            border-radius: 17px;
+            border: 1px solid var(--border);
+            background: rgba(17,25,42,0.7);
+        }
+
+        .bimestre-number {
+            color: var(--primary-2);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .bimestre h3 {
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .bimestre p {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .module-range {
+            display: inline-block;
+            margin-top: 13px;
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: rgba(255,255,255,0.04);
+            color: #aebbd0;
+            font-size: 9px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            margin-top: 45px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: #66748a;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1100px) {
+            .overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .progress-card {
+                grid-column: span 2;
+            }
+
+            .features-grid,
+            .bimesters {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 760px) {
+            .sidebar {
+                width: 72px;
+                padding: 18px 9px;
+            }
+
+            .brand {
+                justify-content: center;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .brand-text,
+            .nav-title,
+            .nav-label,
+            .sidebar-bottom span {
+                display: none;
+            }
+
+            .nav button {
+                justify-content: center;
+                padding: 12px 8px;
+            }
+
+            .nav-icon {
+                font-size: 19px;
+            }
+
+            .sidebar-bottom {
+                left: 9px;
+                right: 9px;
+            }
+
+            .main {
+                width: calc(100% - 72px);
+                margin-left: 72px;
+                padding: 22px 17px 40px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .hero {
+                padding: 23px;
+            }
+
+            .hero::after {
+                display: none;
+            }
+
+            .overview,
+            .features-grid,
+            .bimesters {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-card {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">A</div>
+
+            <div class="brand-text">
+                <strong>Aldemar Studios</strong>
+                <span>Ambiente do Aluno</span>
+            </div>
+        </div>
+
+        <div class="nav-title">Área acadêmica</div>
+
+        <nav class="nav">
+
+            <button class="active" onclick="scrollToSection('inicio')">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Início</span>
+            </button>
+
+            <button onclick="scrollToSection('cursos')">
+                <span class="nav-icon">🎓</span>
+                <span class="nav-label">Meus Cursos</span>
+            </button>
+
+            <button onclick="scrollToSection('progresso')">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Meu Progresso</span>
+            </button>
+
+            <button onclick="scrollToSection('recursos')">
+                <span class="nav-icon">📚</span>
+                <span class="nav-label">Recursos</span>
+            </button>
+
+            <button onclick="scrollToSection('bimestres')">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Bimestres</span>
+            </button>
+
+            <button onclick="scrollToSection('avaliacoes')">
+                <span class="nav-icon">📝</span>
+                <span class="nav-label">Avaliações</span>
+            </button>
+
+            <button onclick="scrollToSection('certificado')">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-label">Certificado</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <button class="back-dashboard" onclick="voltarDashboard()">
+                ← <span>Voltar ao Dashboard</span>
+            </button>
+        </div>
+
+    </aside>
+
+
+    <main class="main" id="inicio">
+
+        <header class="topbar">
+
+            <div>
+                <div class="eyebrow">Ambiente acadêmico</div>
+
+                <h1>Bem-vindo ao seu espaço de aprendizagem.</h1>
+
+                <p>
+                    Aqui você acompanha seus cursos, progresso, atividades e trajetória acadêmica.
+                </p>
+            </div>
+
+            <div class="student-status">
+                <div class="status-dot"></div>
+                <span>Área do aluno ativa</span>
+            </div>
+
+        </header>
+
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <h2>🎓 Sua jornada começa aqui.</h2>
+
+                <p>
+                    O Ambiente do Aluno foi desenvolvido para reunir tudo o que você precisa
+                    durante sua formação. Conforme seus cursos forem liberados, suas aulas,
+                    módulos, atividades e avaliações aparecerão aqui.
+                </p>
+
+                <div class="hero-badges">
+                    <span class="badge">📚 Cursos</span>
+                    <span class="badge">📊 Progresso</span>
+                    <span class="badge">🎯 Avaliações</span>
+                    <span class="badge">🏆 Certificação</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROGRESSO
+        ========================== -->
+
+        <section id="progresso">
+
+            <div class="section-title">
+                <h2>Visão geral</h2>
+                <p>Acompanhe sua evolução acadêmica.</p>
+            </div>
+
+            <div class="overview">
+
+                <article class="overview-card progress-card">
+
+                    <div class="progress-top">
+
+                        <div>
+                            <div class="progress-label">Progresso geral</div>
+                            <div class="progress-number">0%</div>
+                        </div>
+
+                        <div class="progress-ring">
+                            <span>0%</span>
+                        </div>
+
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="stat-icon">🎓</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Cursos em andamento</div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Módulos concluídos</div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Certificados</div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CURSOS
+        ========================== -->
+
+        <section id="cursos">
+
+            <div class="section-title">
+                <h2>🎓 Meus Cursos</h2>
+                <p>Somente os cursos liberados para sua conta aparecerão nesta área.</p>
+            </div>
+
+            <div class="courses-grid">
+
+                <article class="course-card">
+
+                    <div class="course-head">
+
+                        <div class="course-icon">🇺🇸</div>
+
+                        <span class="course-state">
+                            Área preparada
+                        </span>
+
+                    </div>
+
+                    <h3>Curso de Inglês</h3>
+
+                    <p>
+                        Curso principal com módulos progressivos, aulas, atividades,
+                        avaliações, recursos e acompanhamento de desempenho.
+                    </p>
+
+                    <div class="course-meta">
+                        <span>📚 100 módulos</span>
+                        <span>🎯 5.000 aulas</span>
+                    </div>
+
+                    <div class="course-progress">
+
+                        <div class="course-progress-top">
+                            <span>Progresso</span>
+                            <span>0%</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+
+                    </div>
+
+                    <button class="course-action" onclick="cursoIndisponivel()">
+                        Acessar curso →
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RECURSOS
+        ========================== -->
+
+        <section id="recursos">
+
+            <div class="section-title">
+                <h2>📚 Recursos de aprendizagem</h2>
+                <p>Ferramentas que farão parte da experiência acadêmica.</p>
+            </div>
+
+            <div class="features-grid">
+
+                <article class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <h3>Reading</h3>
+                    <p>Leitura e interpretação de textos.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">🎧</div>
+                    <h3>Listening</h3>
+                    <p>Atividades de compreensão auditiva.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">🗣️</div>
+                    <h3>Pronúncia</h3>
+                    <p>Prática e desenvolvimento da fala.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3>Writing</h3>
+                    <p>Produção escrita e exercícios.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Jogos educativos</h3>
+                    <p>Aprendizagem por meio de desafios.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">📥</div>
+                    <h3>Materiais</h3>
+                    <p>Materiais complementares e downloads.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">🎥</div>
+                    <h3>Videoaulas</h3>
+                    <p>Aulas em vídeo integradas ao curso.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Desafios</h3>
+                    <p>Atividades especiais para reforçar a aprendizagem.</p>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BIMESTRES
+        ========================== -->
+
+        <section id="bimestres">
+
+            <div class="section-title">
+                <h2>📅 Organização acadêmica</h2>
+                <p>O curso será liberado progressivamente ao longo dos quatro bimestres.</p>
+            </div>
+
+            <div class="bimesters">
+
+                <article class="bimestre">
+                    <div class="bimestre-number">Bimestre 01</div>
+                    <h3>Primeira etapa</h3>
+                    <p>Primeiro conjunto de módulos liberados.</p>
+                    <span class="module-range">Módulos 01–25</span>
+                </article>
+
+                <article class="bimestre">
+                    <div class="bimestre-number">Bimestre 02</div>
+                    <h3>Segunda etapa</h3>
+                    <p>Continuação da jornada acadêmica.</p>
+                    <span class="module-range">Módulos 26–50</span>
+                </article>
+
+                <article class="bimestre">
+                    <div class="bimestre-number">Bimestre 03</div>
+                    <h3>Terceira etapa</h3>
+                    <p>Avanço para a terceira etapa do curso.</p>
+                    <span class="module-range">Módulos 51–75</span>
+                </article>
+
+                <article class="bimestre">
+                    <div class="bimestre-number">Bimestre 04</div>
+                    <h3>Etapa final</h3>
+                    <p>Conclusão da jornada e preparação para certificação.</p>
+                    <span class="module-range">Módulos 76–100</span>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             AVALIAÇÕES
+        ========================== -->
+
+        <section id="avaliacoes">
+
+            <div class="section-title">
+                <h2>📝 Avaliações</h2>
+                <p>Área reservada para o acompanhamento das avaliações presenciais.</p>
+            </div>
+
+            <div class="overview-card">
+
+                <div class="stat-icon">📅</div>
+
+                <h3>Agendamento de avaliação</h3>
+
+                <p style="margin-top:8px; color:var(--muted); font-size:12px; line-height:1.6;">
+                    Quando o período de avaliação estiver aberto, você poderá solicitar
+                    seu agendamento nesta área e acompanhar a confirmação do polo.
+                </p>
+
+                <div class="hero-badges">
+                    <span class="badge">Agendamento aberto</span>
+                    <span class="badge">Aguardando confirmação</span>
+                    <span class="badge">Avaliação realizada</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CERTIFICADO
+        ========================== -->
+
+        <section id="certificado">
+
+            <div class="section-title">
+                <h2>🏆 Certificação</h2>
+                <p>Seu certificado será disponibilizado após a conclusão dos requisitos acadêmicos.</p>
+            </div>
+
+            <div class="overview-card">
+
+                <div class="stat-icon">🎓</div>
+
+                <h3>Certificado ainda não disponível</h3>
+
+                <p style="margin-top:8px; color:var(--muted); font-size:12px; line-height:1.6;">
+                    A certificação dependerá da conclusão do curso e do cumprimento
+                    dos critérios de desempenho definidos pela instituição.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+            © 2026 Aldemar Studios · Ambiente do Aluno
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    function scrollToSection(id) {
+
+        const section = document.getElementById(id);
+
+        if (!section) return;
+
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        document.querySelectorAll(".nav button").forEach(button => {
+            button.classList.remove("active");
+        });
+
+        const matchingButton = [...document.querySelectorAll(".nav button")]
+            .find(button => button.getAttribute("onclick")?.includes("'" + id + "'"));
+
+        if (matchingButton) {
+            matchingButton.classList.add("active");
+        }
+    }
+
+
+    function voltarDashboard() {
+        window.location.href = "/dashboard.html";
+    }
+
+
+    function cursoIndisponivel() {
+        alert(
+            "A estrutura do Curso de Inglês já está preparada. " +
+            "A liberação das aulas será conectada ao sistema acadêmico."
+        );
+    }
+
+
+    // Atualiza o aluno quando houver uma sessão ativa.
+    try {
+
+        const usuario = JSON.parse(
+            sessionStorage.getItem("usuario") || "null"
+        );
+
+        if (usuario && usuario.nome_completo) {
+
+            const titulo = document.querySelector(".topbar h1");
+
+            if (titulo) {
+                titulo.textContent =
+                    "Olá, " + usuario.nome_completo.split(" ")[0] + "!";
+            }
+
+        }
+
+    } catch (erro) {
+
+        console.warn(
+            "Não foi possível carregar os dados da sessão.",
+            erro
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

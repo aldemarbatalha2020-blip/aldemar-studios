@@ -1,0 +1,2548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>English Reading Challenge</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+
+    min-height:100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:#fff;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #193f61 0%,
+            #081b2b 45%,
+            #02070c 100%
+        );
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+
+    height:75px;
+
+    padding:0 30px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    background:
+        rgba(2,10,17,.9);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+
+    backdrop-filter:blur(12px);
+
+}
+
+.logo{
+
+    font-size:23px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+}
+
+.logo span{
+
+    color:#55e5ff;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.timer-label{
+
+    color:#718c9c;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+.timer{
+
+    min-width:100px;
+
+    padding:8px 15px;
+
+    text-align:center;
+
+    border-radius:10px;
+
+    font-size:23px;
+
+    font-weight:900;
+
+    color:#55e5ff;
+
+    background:
+        rgba(85,229,255,.08);
+
+    border:
+        1px solid
+        rgba(85,229,255,.25);
+
+}
+
+.timer.warning{
+
+    color:#ffd35a;
+
+}
+
+.timer.danger{
+
+    color:#ff5959;
+
+    animation:
+        timerPulse
+        .7s
+        infinite
+        alternate;
+
+}
+
+@keyframes timerPulse{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.05);
+    }
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.game{
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:25px;
+
+}
+
+
+/* =========================================================
+   TOP
+========================================================= */
+
+.game-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.game-title{
+
+    font-size:20px;
+
+    font-weight:900;
+
+}
+
+.game-subtitle{
+
+    margin-top:5px;
+
+    color:#7f9aa9;
+
+    font-size:12px;
+
+}
+
+.round{
+
+    padding:8px 14px;
+
+    border-radius:20px;
+
+    color:#55e5ff;
+
+    background:
+        rgba(85,229,255,.08);
+
+    border:
+        1px solid
+        rgba(85,229,255,.2);
+
+    font-size:11px;
+
+    font-weight:900;
+
+}
+
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+.players{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+
+.player-card{
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+        rgba(6,21,34,.85);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+}
+
+.player-card.p1{
+
+    border-top:
+        3px solid #55e5ff;
+
+}
+
+.player-card.p2{
+
+    border-top:
+        3px solid #ff72d4;
+
+}
+
+.player-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:15px;
+
+}
+
+.player-name{
+
+    font-size:18px;
+
+    font-weight:900;
+
+}
+
+.p1-name{
+
+    color:#55e5ff;
+
+}
+
+.p2-name{
+
+    color:#ff72d4;
+
+}
+
+.player-status{
+
+    color:#76909f;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress{
+
+    width:100%;
+
+    height:7px;
+
+    margin-bottom:10px;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    background:
+        rgba(255,255,255,.06);
+
+}
+
+.progress-bar{
+
+    width:0%;
+
+    height:100%;
+
+    transition:.3s;
+
+    background:#55e5ff;
+
+}
+
+.p2 .progress-bar{
+
+    background:#ff72d4;
+
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.player-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+    color:#7d98a7;
+
+    font-size:11px;
+
+}
+
+.player-info strong{
+
+    color:white;
+
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.text-box{
+
+    margin-bottom:18px;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,55,79,.7),
+            rgba(7,22,34,.8)
+        );
+
+    border:
+        1px solid
+        rgba(85,229,255,.12);
+
+}
+
+.p2 .text-box{
+
+    border-color:
+        rgba(255,114,212,.12);
+
+}
+
+.text-label{
+
+    margin-bottom:12px;
+
+    color:#55e5ff;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+}
+
+.p2 .text-label{
+
+    color:#ff72d4;
+
+}
+
+.text-box p{
+
+    margin-bottom:15px;
+
+    color:#d9e7ed;
+
+    font-size:15px;
+
+    line-height:1.75;
+
+}
+
+.text-box p:last-child{
+
+    margin-bottom:0;
+
+}
+
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+.question-area{
+
+    margin-top:18px;
+
+}
+
+.question{
+
+    margin-bottom:13px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+
+}
+
+.question-number{
+
+    margin-bottom:6px;
+
+    color:#55e5ff;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+.p2 .question-number{
+
+    color:#ff72d4;
+
+}
+
+.question-title{
+
+    margin-bottom:12px;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+    font-weight:800;
+
+}
+
+.answers{
+
+    display:grid;
+
+    gap:7px;
+
+}
+
+.answer{
+
+    width:100%;
+
+    padding:10px 12px;
+
+    text-align:left;
+
+    color:#c9d9df;
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    transition:.15s;
+
+}
+
+.answer:hover{
+
+    border-color:#55e5ff;
+
+    background:
+        rgba(85,229,255,.07);
+
+}
+
+.p2 .answer:hover{
+
+    border-color:#ff72d4;
+
+    background:
+        rgba(255,114,212,.07);
+
+}
+
+.answer.selected{
+
+    color:white;
+
+    border-color:#55e5ff;
+
+    background:
+        rgba(85,229,255,.13);
+
+}
+
+.p2 .answer.selected{
+
+    border-color:#ff72d4;
+
+    background:
+        rgba(255,114,212,.13);
+
+}
+
+.answer.correct{
+
+    color:#62f5a0;
+
+    border-color:#62f5a0;
+
+    background:
+        rgba(98,245,160,.08);
+
+}
+
+.answer.wrong{
+
+    color:#ff6565;
+
+    border-color:#ff6565;
+
+    background:
+        rgba(255,101,101,.08);
+
+}
+
+.answer.disabled{
+
+    cursor:default;
+
+}
+
+.answer.disabled:hover{
+
+    transform:none;
+
+}
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+.finish-area{
+
+    margin-top:18px;
+
+    text-align:center;
+
+}
+
+.finish-button{
+
+    width:100%;
+
+    padding:13px;
+
+    border:0;
+
+    border-radius:10px;
+
+    color:#021018;
+
+    background:#55e5ff;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.p2 .finish-button{
+
+    color:#170516;
+
+    background:#ff72d4;
+
+}
+
+.finish-button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.finish-button:disabled{
+
+    opacity:.3;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+
+/* =========================================================
+   MODAIS
+========================================================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:100;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(0,0,0,.82);
+
+    backdrop-filter:blur(9px);
+
+}
+
+.modal.show{
+
+    display:flex;
+
+}
+
+.modal-box{
+
+    width:100%;
+
+    max-width:560px;
+
+    padding:32px;
+
+    text-align:center;
+
+    border-radius:23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #102e45,
+            #06131f
+        );
+
+    border:
+        1px solid
+        rgba(85,229,255,.2);
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.6);
+
+}
+
+.modal-icon{
+
+    font-size:60px;
+
+    margin-bottom:8px;
+
+}
+
+.modal-box h1{
+
+    margin-bottom:12px;
+
+    font-size:28px;
+
+}
+
+.modal-box p{
+
+    margin-bottom:24px;
+
+    color:#9db3bf;
+
+    line-height:1.6;
+
+}
+
+.btn{
+
+    padding:12px 22px;
+
+    border:0;
+
+    border-radius:10px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.btn-primary{
+
+    color:#021018;
+
+    background:#55e5ff;
+
+}
+
+
+/* =========================================================
+   RESULTADOS
+========================================================= */
+
+.final-results{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+    margin:20px 0;
+
+}
+
+.result-player{
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.04);
+
+}
+
+.result-player h3{
+
+    margin-bottom:10px;
+
+}
+
+.result-number{
+
+    font-size:27px;
+
+    font-weight:900;
+
+    color:#55e5ff;
+
+}
+
+.result-player.p2 .result-number{
+
+    color:#ff72d4;
+
+}
+
+.result-label{
+
+    color:#7893a2;
+
+    font-size:10px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width:900px){
+
+    .players{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    header{
+
+        padding:0 12px;
+
+    }
+
+    .logo{
+
+        font-size:15px;
+
+    }
+
+    .timer{
+
+        min-width:78px;
+
+        font-size:18px;
+
+    }
+
+    .timer-label{
+
+        display:none;
+
+    }
+
+    .game{
+
+        padding:12px;
+
+    }
+
+    .game-top{
+
+        align-items:flex-start;
+
+    }
+
+    .game-title{
+
+        font-size:16px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+    <div class="logo">
+
+        📖 ENGLISH
+        <span>READING CHALLENGE</span>
+
+    </div>
+
+    <div class="header-right">
+
+        <span class="timer-label">
+            TIME LEFT
+        </span>
+
+        <div
+            class="timer"
+            id="timer"
+        >
+            05:00
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     GAME
+========================================================= -->
+
+<main class="game">
+
+
+    <div class="game-top">
+
+        <div>
+
+            <div class="game-title">
+                Reading Interpretation Battle
+            </div>
+
+            <div class="game-subtitle">
+
+                Read your text, understand it
+                and answer as fast as you can.
+
+            </div>
+
+        </div>
+
+        <div class="round">
+
+            5 QUESTIONS EACH
+
+        </div>
+
+    </div>
+
+
+    <div class="players">
+
+
+        <!-- =================================================
+             PLAYER 1
+        ================================================== -->
+
+        <section
+            class="player-card p1"
+            id="player1"
+        >
+
+            <div class="player-header">
+
+                <div class="player-name p1-name">
+
+                    🔵 PLAYER 1
+
+                </div>
+
+                <div
+                    class="player-status"
+                    id="status1"
+                >
+
+                    WAITING
+
+                </div>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    id="progress1"
+                ></div>
+
+            </div>
+
+
+            <div class="player-info">
+
+                <span>
+
+                    Correct:
+                    <strong id="correct1">
+                        0
+                    </strong>
+
+                </span>
+
+                <span>
+
+                    Answered:
+                    <strong id="answered1">
+                        0/5
+                    </strong>
+
+                </span>
+
+            </div>
+
+
+            <!-- O JS INSERE AQUI O TEXTO E AS PERGUNTAS -->
+
+            <div id="questions1"></div>
+
+
+            <div class="finish-area">
+
+                <button
+                    class="finish-button"
+                    id="finish1"
+                    onclick="finishPlayer(1)"
+                    disabled
+                >
+
+                    FINISH — PLAYER 1
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PLAYER 2
+        ================================================== -->
+
+        <section
+            class="player-card p2"
+            id="player2"
+        >
+
+            <div class="player-header">
+
+                <div class="player-name p2-name">
+
+                    🩷 PLAYER 2
+
+                </div>
+
+                <div
+                    class="player-status"
+                    id="status2"
+                >
+
+                    WAITING
+
+                </div>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    id="progress2"
+                ></div>
+
+            </div>
+
+
+            <div class="player-info">
+
+                <span>
+
+                    Correct:
+                    <strong id="correct2">
+                        0
+                    </strong>
+
+                </span>
+
+                <span>
+
+                    Answered:
+                    <strong id="answered2">
+                        0/5
+                    </strong>
+
+                </span>
+
+            </div>
+
+
+            <!-- O JS INSERE AQUI O TEXTO E AS PERGUNTAS -->
+
+            <div id="questions2"></div>
+
+
+            <div class="finish-area">
+
+                <button
+                    class="finish-button"
+                    id="finish2"
+                    onclick="finishPlayer(2)"
+                    disabled
+                >
+
+                    FINISH — PLAYER 2
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     START MODAL
+========================================================= -->
+
+<div
+    class="modal show"
+    id="startModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-icon">
+            📖
+        </div>
+
+        <h1>
+            READING CHALLENGE
+        </h1>
+
+        <p>
+
+            🔵 Player 1 and 🩷 Player 2
+            will receive different texts.
+
+            <br><br>
+
+            Each player has
+            <strong>5 questions</strong>.
+
+            <br>
+
+            The questions are in
+            <strong>Portuguese</strong>.
+
+            <br><br>
+
+            ⏱️ You have
+            <strong>5 minutes</strong>.
+
+            <br>
+
+            The timer NEVER stops.
+
+            <br><br>
+
+            Complete all questions as quickly
+            as possible!
+
+        </p>
+
+        <button
+            class="btn btn-primary"
+            onclick="startGame()"
+        >
+
+            START CHALLENGE
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FINAL MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="finalModal"
+>
+
+    <div class="modal-box">
+
+        <div
+            class="modal-icon"
+            id="finalIcon"
+        >
+            🏆
+        </div>
+
+        <h1 id="finalTitle">
+
+            CHALLENGE COMPLETE!
+
+        </h1>
+
+        <p id="finalText"></p>
+
+
+        <div class="final-results">
+
+
+            <div class="result-player">
+
+                <h3>
+
+                    🔵 PLAYER 1
+
+                </h3>
+
+                <div
+                    class="result-number"
+                    id="resultCorrect1"
+                >
+
+                    0/5
+
+                </div>
+
+                <div class="result-label">
+
+                    CORRECT ANSWERS
+
+                </div>
+
+                <br>
+
+                <div
+                    class="result-number"
+                    id="resultTime1"
+                >
+
+                    00:00
+
+                </div>
+
+                <div class="result-label">
+
+                    TIME
+
+                </div>
+
+            </div>
+
+
+            <div class="result-player p2">
+
+                <h3>
+
+                    🩷 PLAYER 2
+
+                </h3>
+
+                <div
+                    class="result-number"
+                    id="resultCorrect2"
+                >
+
+                    0/5
+
+                </div>
+
+                <div class="result-label">
+
+                    CORRECT ANSWERS
+
+                </div>
+
+                <br>
+
+                <div
+                    class="result-number"
+                    id="resultTime2"
+                >
+
+                    00:00
+
+                </div>
+
+                <div class="result-label">
+
+                    TIME
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="location.reload()"
+        >
+
+            PLAY AGAIN
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURAÇÕES
+========================================================= */
+
+const GAME_TIME = 300;
+
+const TOTAL_QUESTIONS = 5;
+
+
+/* =========================================================
+   CONTEÚDO DOS JOGADORES
+========================================================= */
+
+const PLAYER_CONTENT = {
+
+    /* =====================================================
+       PLAYER 1
+    ===================================================== */
+
+    1: {
+
+        text: [
+
+            `My name is Lucas. I am eleven years old.
+            I live in a small apartment with my mother
+            and my sister. Every morning, I wake up at
+            seven o'clock and eat breakfast. I usually
+            eat bread, eggs and fruit.`,
+
+            `After breakfast, I go to school by bus.
+            My favorite subject is English because
+            I like learning new words. In the afternoon,
+            I come home and do my homework. After that,
+            I play soccer with my friends in the park.
+            At night, I have dinner and watch TV with
+            my family.`
+        ],
+
+        questions: [
+
+            {
+
+                question:
+                "Qual é o nome do personagem principal?",
+
+                answers: [
+                    "Lucas",
+                    "Peter",
+                    "John",
+                    "Michael"
+                ],
+
+                correct: 0
+
+            },
+
+            {
+
+                question:
+                "Quantos anos Lucas tem?",
+
+                answers: [
+                    "Ten years old.",
+                    "Eleven years old.",
+                    "Twelve years old.",
+                    "Thirteen years old."
+                ],
+
+                correct: 1
+
+            },
+
+            {
+
+                question:
+                "Com quem Lucas mora?",
+
+                answers: [
+                    "Com seu pai e seu irmão.",
+                    "Com seus amigos.",
+                    "Com sua mãe e sua irmã.",
+                    "Sozinho."
+                ],
+
+                correct: 2
+
+            },
+
+            {
+
+                question:
+                "Como Lucas vai para a escola?",
+
+                answers: [
+                    "De bicicleta.",
+                    "De carro.",
+                    "A pé.",
+                    "De ônibus."
+                ],
+
+                correct: 3
+
+            },
+
+            {
+
+                question:
+                "O que Lucas faz depois de fazer sua tarefa?",
+
+                answers: [
+                    "Joga futebol com os amigos.",
+                    "Vai para a escola.",
+                    "Dorme.",
+                    "Lê um livro."
+                ],
+
+                correct: 0
+
+            }
+
+        ]
+
+    },
+
+
+    /* =====================================================
+       PLAYER 2
+    ===================================================== */
+
+    2: {
+
+        text: [
+
+            `Emma is thirteen years old. She lives in a
+            house with her father, her mother and her cat.
+            She gets up at six thirty every morning.
+            She takes a shower and then has breakfast.
+            Her favorite breakfast is bread and milk.`,
+
+            `Emma walks to school because her school is
+            near her house. She likes Science and Art.
+            In the afternoon, she returns home and helps
+            her mother in the kitchen. Later, she studies
+            for her tests and listens to music in her room.
+            Before sleeping, she reads a short book.`
+        ],
+
+        questions: [
+
+            {
+
+                question:
+                "Qual é o nome da personagem principal?",
+
+                answers: [
+                    "Anna",
+                    "Emma",
+                    "Lucy",
+                    "Sophie"
+                ],
+
+                correct: 1
+
+            },
+
+            {
+
+                question:
+                "Quantos anos Emma tem?",
+
+                answers: [
+                    "Eleven years old.",
+                    "Twelve years old.",
+                    "Thirteen years old.",
+                    "Fourteen years old."
+                ],
+
+                correct: 2
+
+            },
+
+            {
+
+                question:
+                "Qual animal Emma tem?",
+
+                answers: [
+                    "Um cachorro.",
+                    "Um pássaro.",
+                    "Um coelho.",
+                    "Um gato."
+                ],
+
+                correct: 3
+
+            },
+
+            {
+
+                question:
+                "Como Emma vai para a escola?",
+
+                answers: [
+                    "Ela vai de ônibus.",
+                    "Ela vai de carro.",
+                    "Ela vai caminhando.",
+                    "Ela vai de bicicleta."
+                ],
+
+                correct: 2
+
+            },
+
+            {
+
+                question:
+                "O que Emma faz antes de dormir?",
+
+                answers: [
+                    "Joga futebol.",
+                    "Lê um livro curto.",
+                    "Vai para a escola.",
+                    "Prepara o jantar."
+                ],
+
+                correct: 1
+
+            }
+
+        ]
+
+    }
+
+};
+
+
+/* =========================================================
+   ESTADO DOS JOGADORES
+========================================================= */
+
+const players = {
+
+    1: {
+
+        answers: [],
+
+        correct: 0,
+
+        answered: 0,
+
+        finished: false,
+
+        finishTime: null
+
+    },
+
+    2: {
+
+        answers: [],
+
+        correct: 0,
+
+        answered: 0,
+
+        finished: false,
+
+        finishTime: null
+
+    }
+
+};
+
+
+/* =========================================================
+   ESTADO DO JOGO
+========================================================= */
+
+let gameStarted = false;
+
+let gameEnded = false;
+
+let timeLeft = GAME_TIME;
+
+let timerInterval = null;
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+function startGame(){
+
+    document
+        .getElementById("startModal")
+        .classList
+        .remove("show");
+
+
+    gameStarted = true;
+
+    timeLeft = GAME_TIME;
+
+
+    createQuestions(1);
+
+    createQuestions(2);
+
+
+    updateAll();
+
+    startTimer();
+
+}
+
+
+/* =========================================================
+   CRIAR TEXTO + PERGUNTAS
+========================================================= */
+
+function createQuestions(player){
+
+    const container =
+        document.getElementById(
+            `questions${player}`
+        );
+
+
+    container.innerHTML = "";
+
+
+    const content =
+        PLAYER_CONTENT[player];
+
+
+    /* =====================================================
+       TEXTO
+    ===================================================== */
+
+    const textBox =
+        document.createElement("div");
+
+
+    textBox.className =
+        "text-box";
+
+
+    textBox.innerHTML = `
+
+        <div class="text-label">
+
+            TEXT — A1
+
+        </div>
+
+        <p>
+            ${content.text[0]}
+        </p>
+
+        <p>
+            ${content.text[1]}
+        </p>
+
+    `;
+
+
+    container.appendChild(
+        textBox
+    );
+
+
+    /* =====================================================
+       PERGUNTAS
+    ===================================================== */
+
+    const questionArea =
+        document.createElement("div");
+
+
+    questionArea.className =
+        "question-area";
+
+
+    content.questions.forEach(
+        (question,index)=>{
+
+            const questionBox =
+                document.createElement("div");
+
+
+            questionBox.className =
+                "question";
+
+
+            questionBox.innerHTML = `
+
+                <div class="question-number">
+
+                    QUESTION ${index + 1}
+
+                </div>
+
+                <div class="question-title">
+
+                    ${question.question}
+
+                </div>
+
+                <div
+                    class="answers"
+                    id="answers-${player}-${index}"
+                ></div>
+
+            `;
+
+
+            questionArea.appendChild(
+                questionBox
+            );
+
+
+            const answers =
+                questionBox.querySelector(
+                    ".answers"
+                );
+
+
+            question.answers.forEach(
+                (answer,answerIndex)=>{
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.className =
+                        "answer";
+
+
+                    button.textContent =
+                        `${String.fromCharCode(65 + answerIndex)}) ${answer}`;
+
+
+                    button.addEventListener(
+                        "click",
+                        function(){
+
+                            selectAnswer(
+                                player,
+                                index,
+                                answerIndex,
+                                button
+                            );
+
+                        }
+                    );
+
+
+                    answers.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    container.appendChild(
+        questionArea
+    );
+
+}
+
+
+/* =========================================================
+   SELECIONAR RESPOSTA
+========================================================= */
+
+function selectAnswer(
+    player,
+    questionIndex,
+    answerIndex,
+    button
+){
+
+    if(
+        !gameStarted ||
+        gameEnded ||
+        players[player].finished
+    ){
+
+        return;
+
+    }
+
+
+    /*
+     * Impede responder a mesma pergunta
+     * duas vezes.
+     */
+
+    if(
+        players[player]
+            .answers[questionIndex]
+        !== undefined
+    ){
+
+        return;
+
+    }
+
+
+    const content =
+        PLAYER_CONTENT[player];
+
+
+    const question =
+        content.questions[
+            questionIndex
+        ];
+
+
+    /*
+     * Registra resposta.
+     */
+
+    players[player]
+        .answers[questionIndex] =
+        answerIndex;
+
+
+    players[player]
+        .answered++;
+
+
+    /*
+     * Verifica acerto.
+     */
+
+    if(
+        answerIndex ===
+        question.correct
+    ){
+
+        players[player]
+            .correct++;
+
+    }
+
+
+    /*
+     * Desabilita todas
+     * as alternativas.
+     */
+
+    const answers =
+        document.querySelectorAll(
+            `#answers-${player}-${questionIndex} .answer`
+        );
+
+
+    answers.forEach(
+        btn=>{
+
+            btn.classList.add(
+                "disabled"
+            );
+
+        }
+    );
+
+
+    /*
+     * Mostra resposta escolhida.
+     */
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    /*
+     * Mostra acerto/erro.
+     */
+
+    if(
+        answerIndex ===
+        question.correct
+    ){
+
+        button.classList.add(
+            "correct"
+        );
+
+    }
+    else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        answers[
+            question.correct
+        ]
+        .classList.add(
+            "correct"
+        );
+
+    }
+
+
+    updateAll();
+
+
+    /*
+     * Liberar botão Finish
+     * quando responder tudo.
+     */
+
+    if(
+        players[player].answered ===
+        TOTAL_QUESTIONS
+    ){
+
+        document
+            .getElementById(
+                `finish${player}`
+            )
+            .disabled = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FINALIZAR JOGADOR
+========================================================= */
+
+function finishPlayer(player){
+
+    if(
+        players[player].answered !==
+        TOTAL_QUESTIONS
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        players[player].finished
+    ){
+
+        return;
+
+    }
+
+
+    players[player].finished = true;
+
+
+    players[player].finishTime =
+        GAME_TIME - timeLeft;
+
+
+    document
+        .getElementById(
+            `finish${player}`
+        )
+        .disabled = true;
+
+
+    document
+        .getElementById(
+            `status${player}`
+        )
+        .textContent =
+        "FINISHED ✓";
+
+
+    updateAll();
+
+
+    /*
+     * Se ambos terminaram,
+     * encerra a partida.
+     */
+
+    if(
+        players[1].finished &&
+        players[2].finished
+    ){
+
+        finishGame();
+
+    }
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    timerInterval =
+        setInterval(
+            function(){
+
+                if(gameEnded){
+
+                    return;
+
+                }
+
+
+                timeLeft--;
+
+
+                updateTimer();
+
+
+                /*
+                 * O TIMER NÃO PARA
+                 * DURANTE AS PERGUNTAS.
+                 */
+
+                if(
+                    timeLeft <= 0
+                ){
+
+                    timeLeft = 0;
+
+                    timeUp();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================================
+   ATUALIZAR TIMER
+========================================================= */
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(
+            timeLeft / 60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    const seconds =
+        (
+            timeLeft % 60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    const timer =
+        document.getElementById(
+            "timer"
+        );
+
+
+    timer.textContent =
+        `${minutes}:${seconds}`;
+
+
+    timer.classList.toggle(
+        "warning",
+        timeLeft <= 60 &&
+        timeLeft > 20
+    );
+
+
+    timer.classList.toggle(
+        "danger",
+        timeLeft <= 20
+    );
+
+}
+
+
+/* =========================================================
+   ATUALIZAR INTERFACE
+========================================================= */
+
+function updateAll(){
+
+    updateTimer();
+
+
+    [1,2].forEach(
+        player=>{
+
+            const data =
+                players[player];
+
+
+            document
+                .getElementById(
+                    `correct${player}`
+                )
+                .textContent =
+                data.correct;
+
+
+            document
+                .getElementById(
+                    `answered${player}`
+                )
+                .textContent =
+                `${data.answered}/5`;
+
+
+            document
+                .getElementById(
+                    `progress${player}`
+                )
+                .style.width =
+                `${(data.answered / 5) * 100}%`;
+
+
+            if(
+                data.finished
+            ){
+
+                document
+                    .getElementById(
+                        `status${player}`
+                    )
+                    .textContent =
+                    "FINISHED ✓";
+
+            }
+            else if(
+                data.answered > 0
+            ){
+
+                document
+                    .getElementById(
+                        `status${player}`
+                    )
+                    .textContent =
+                    "PLAYING";
+
+            }
+            else{
+
+                document
+                    .getElementById(
+                        `status${player}`
+                    )
+                    .textContent =
+                    "READY";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TEMPO ESGOTADO
+========================================================= */
+
+function timeUp(){
+
+    if(gameEnded){
+
+        return;
+
+    }
+
+
+    timeLeft = 0;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    /*
+     * Quem não terminou
+     * recebe tempo máximo.
+     */
+
+    [1,2].forEach(
+        player=>{
+
+            if(
+                !players[player].finished
+            ){
+
+                players[player]
+                    .finished = true;
+
+                players[player]
+                    .finishTime =
+                    GAME_TIME;
+
+            }
+
+        }
+    );
+
+
+    finishGame();
+
+}
+
+
+/* =========================================================
+   FINAL DO JOGO
+========================================================= */
+
+function finishGame(){
+
+    if(gameEnded){
+
+        return;
+
+    }
+
+
+    gameEnded = true;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const p1 =
+        players[1];
+
+    const p2 =
+        players[2];
+
+
+    /*
+     * REGRA:
+     *
+     * 1. Mais acertos vence.
+     *
+     * 2. Se empatar em acertos,
+     *    vence quem terminou mais rápido.
+     */
+
+    let winner = null;
+
+
+    if(
+        p1.correct >
+        p2.correct
+    ){
+
+        winner = 1;
+
+    }
+    else if(
+        p2.correct >
+        p1.correct
+    ){
+
+        winner = 2;
+
+    }
+    else{
+
+        if(
+            p1.finishTime <
+            p2.finishTime
+        ){
+
+            winner = 1;
+
+        }
+        else if(
+            p2.finishTime <
+            p1.finishTime
+        ){
+
+            winner = 2;
+
+        }
+
+    }
+
+
+    /*
+     * RESULTADOS
+     */
+
+    document
+        .getElementById(
+            "resultCorrect1"
+        )
+        .textContent =
+        `${p1.correct}/5`;
+
+
+    document
+        .getElementById(
+            "resultCorrect2"
+        )
+        .textContent =
+        `${p2.correct}/5`;
+
+
+    document
+        .getElementById(
+            "resultTime1"
+        )
+        .textContent =
+        formatTime(
+            p1.finishTime
+        );
+
+
+    document
+        .getElementById(
+            "resultTime2"
+        )
+        .textContent =
+        formatTime(
+            p2.finishTime
+        );
+
+
+    /* =====================================================
+       VENCEDOR
+    ===================================================== */
+
+    if(winner === 1){
+
+        document
+            .getElementById(
+                "finalIcon"
+            )
+            .textContent =
+            "🔵";
+
+
+        document
+            .getElementById(
+                "finalTitle"
+            )
+            .textContent =
+            "PLAYER 1 WINS!";
+
+
+        document
+            .getElementById(
+                "finalText"
+            )
+            .textContent =
+            "Player 1 had the best interpretation result!";
+
+    }
+
+    else if(winner === 2){
+
+        document
+            .getElementById(
+                "finalIcon"
+            )
+            .textContent =
+            "🩷";
+
+
+        document
+            .getElementById(
+                "finalTitle"
+            )
+            .textContent =
+            "PLAYER 2 WINS!";
+
+
+        document
+            .getElementById(
+                "finalText"
+            )
+            .textContent =
+            "Player 2 had the best interpretation result!";
+
+    }
+
+    else{
+
+        document
+            .getElementById(
+                "finalIcon"
+            )
+            .textContent =
+            "🤝";
+
+
+        document
+            .getElementById(
+                "finalTitle"
+            )
+            .textContent =
+            "DRAW!";
+
+
+        document
+            .getElementById(
+                "finalText"
+            )
+            .textContent =
+            "Both players finished with the same result and time!";
+
+    }
+
+
+    document
+        .getElementById(
+            "finalModal"
+        )
+        .classList
+        .add("show");
+
+}
+
+
+/* =========================================================
+   FORMATAR TEMPO
+========================================================= */
+
+function formatTime(seconds){
+
+    const minutes =
+        Math.floor(
+            seconds / 60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    const secs =
+        (
+            seconds % 60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    return `${minutes}:${secs}`;
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tirinhas - Missão na Sala de Aula</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#11162d;
+    color:#fff;
+}
+
+button{
+    font-family:inherit;
+}
+
+/* =========================
+   TELA PRINCIPAL
+========================= */
+
+.app{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+.container{
+    width:min(1250px,100%);
+    min-height:700px;
+    background:#f3efe5;
+    color:#171717;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.header{
+    background:#20284d;
+    color:#fff;
+    padding:22px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+}
+
+.header span{
+    background:#5868c7;
+    padding:9px 15px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+.content{
+    padding:35px;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.title h2{
+    margin:0 0 8px;
+    font-size:36px;
+}
+
+.title p{
+    margin:0;
+    color:#555;
+    font-size:18px;
+}
+
+/* =========================
+   TIRINHAS
+========================= */
+
+.comic{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:22px;
+}
+
+.panel{
+    background:#fff;
+    border:4px solid #171717;
+    min-height:275px;
+    position:relative;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    box-shadow:8px 8px 0 #171717;
+}
+
+.panelNumber{
+    position:absolute;
+    top:-18px;
+    left:-18px;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#f5c542;
+    border:4px solid #171717;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.scene{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    min-height:115px;
+}
+
+.character{
+    font-size:70px;
+}
+
+.speech{
+    position:relative;
+    background:#fff;
+    border:3px solid #171717;
+    border-radius:20px;
+    padding:15px 18px;
+    font-size:18px;
+    line-height:1.35;
+    max-width:430px;
+    font-weight:bold;
+}
+
+.speech:after{
+    content:"";
+    position:absolute;
+    left:25px;
+    bottom:-18px;
+    width:25px;
+    height:25px;
+    background:#fff;
+    border-right:3px solid #171717;
+    border-bottom:3px solid #171717;
+    transform:rotate(45deg);
+}
+
+.caption{
+    background:#171717;
+    color:white;
+    padding:12px 15px;
+    font-size:16px;
+    line-height:1.4;
+    margin-top:15px;
+}
+
+/* =========================
+   CONTROLES
+========================= */
+
+.controls{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:35px;
+    flex-wrap:wrap;
+}
+
+.control{
+    border:0;
+    padding:15px 28px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:16px;
+    background:#20284d;
+    color:white;
+}
+
+.control:hover{
+    transform:translateY(-2px);
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* =========================
+   QUESTÕES
+========================= */
+
+.questions{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.question{
+    background:#fff;
+    border:3px solid #20284d;
+    border-radius:15px;
+    padding:22px;
+}
+
+.question h3{
+    margin:0 0 12px;
+    font-size:21px;
+}
+
+.question p{
+    margin:0;
+    font-size:18px;
+    line-height:1.5;
+}
+
+.question .options{
+    margin-top:15px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.option{
+    padding:10px 15px;
+    border-radius:10px;
+    background:#e8eafa;
+    font-weight:bold;
+}
+
+.answerSpace{
+    margin-top:15px;
+    border-bottom:2px solid #333;
+    height:35px;
+}
+
+/* =========================
+   DESAFIO FINAL
+========================= */
+
+.challenge{
+    margin-top:25px;
+    background:#20284d;
+    color:white;
+    padding:25px;
+    border-radius:18px;
+}
+
+.challenge h3{
+    margin-top:0;
+    font-size:24px;
+}
+
+.challenge p{
+    font-size:19px;
+    line-height:1.5;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:800px){
+
+    .comic{
+        grid-template-columns:1fr;
+    }
+
+    .content{
+        padding:20px;
+    }
+
+    .header{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .panel{
+        min-height:250px;
+    }
+
+    .title h2{
+        font-size:28px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="container">
+
+<header class="header">
+    <h1>🎬 MISSÃO NA SALA DE AULA</h1>
+    <span>ATIVIDADE EM EQUIPE</span>
+</header>
+
+
+<div class="content">
+
+
+<!-- =====================================================
+     PÁGINA 1 — HISTÓRIA
+===================================================== -->
+
+<section class="page active" id="story">
+
+<div class="title">
+
+<h2>📖 A TURMA QUE QUERIA UMA SALA MELHOR</h2>
+
+<p>
+Leia as tirinhas com atenção. 
+<strong>Não responda ainda!</strong>
+</p>
+
+</div>
+
+
+<div class="comic">
+
+
+<!-- TIRINHA 1 -->
+
+<div class="panel">
+
+<div class="panelNumber">1</div>
+
+<div class="scene">
+
+<div class="character">👩‍🏫</div>
+
+<div class="speech">
+Bom dia, turma! Hoje vamos conversar sobre como podemos tornar nossa sala melhor para todos.
+</div>
+
+</div>
+
+<div class="caption">
+A professora propõe um desafio para a turma.
+</div>
+
+</div>
+
+
+<!-- TIRINHA 2 -->
+
+<div class="panel">
+
+<div class="panelNumber">2</div>
+
+<div class="scene">
+
+<div class="character">👦</div>
+
+<div class="speech">
+Professora, eu acho que todo aluno tem o direito de falar e dar sua opinião.
+</div>
+
+</div>
+
+<div class="caption">
+João lembra que os alunos também possuem direitos.
+</div>
+
+</div>
+
+
+<!-- TIRINHA 3 -->
+
+<div class="panel">
+
+<div class="panelNumber">3</div>
+
+<div class="scene">
+
+<div class="character">👧</div>
+
+<div class="speech">
+Sim! Mas quando alguém estiver falando, também precisamos ouvir e respeitar.
+</div>
+
+</div>
+
+<div class="caption">
+Maria percebe que viver em grupo também envolve responsabilidades.
+</div>
+
+</div>
+
+
+<!-- TIRINHA 4 -->
+
+<div class="panel">
+
+<div class="panelNumber">4</div>
+
+<div class="scene">
+
+<div class="character">🧑‍🎓</div>
+
+<div class="speech">
+Olhem! Tem lixo no chão. Não fui eu que joguei...
+</div>
+
+</div>
+
+<div class="caption">
+A turma encontra um problema dentro da própria sala.
+</div>
+
+</div>
+
+
+<!-- TIRINHA 5 -->
+
+<div class="panel">
+
+<div class="panelNumber">5</div>
+
+<div class="scene">
+
+<div class="character">👦</div>
+
+<div class="speech">
+Mesmo assim, podemos ajudar. A sala é de todos nós!
+</div>
+
+</div>
+
+<div class="caption">
+João decide recolher alguns papéis e colocá-los na lixeira.
+</div>
+
+</div>
+
+
+<!-- TIRINHA 6 -->
+
+<div class="panel">
+
+<div class="panelNumber">6</div>
+
+<div class="scene">
+
+<div class="character">👩‍🏫</div>
+
+<div class="speech">
+Muito bem! Mas lembrem-se: algumas regras da escola precisam ser cumpridas por todos.
+</div>
+
+</div>
+
+<div class="caption">
+A professora lembra que existem regras que devem ser respeitadas.
+</div>
+
+</div>
+
+
+<!-- TIRINHA 7 -->
+
+<div class="panel">
+
+<div class="panelNumber">7</div>
+
+<div class="scene">
+
+<div class="character">👧</div>
+
+<div class="speech">
+Então podemos dizer que viver bem juntos depende apenas dos nossos direitos?
+</div>
+
+</div>
+
+<div class="caption">
+Maria faz uma pergunta importante.
+</div>
+
+</div>
+
+
+<!-- TIRINHA 8 -->
+
+<div class="panel">
+
+<div class="panelNumber">8</div>
+
+<div class="scene">
+
+<div class="character">👦</div>
+
+<div class="speech">
+Acho que não! Temos direitos, mas também precisamos cumprir nossos deveres e respeitar as obrigações.
+</div>
+
+</div>
+
+<div class="caption">
+A turma começa a perceber que cidadania também envolve atitudes.
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="controls">
+
+<button class="control" onclick="showQuestions()">
+➡️ AGORA VAMOS RESPONDER
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PÁGINA 2 — QUESTÕES
+===================================================== -->
+
+<section class="page" id="questions">
+
+<div class="title">
+
+<h2>🧠 AGORA É COM VOCÊ!</h2>
+
+<p>
+Responda às questões com base nas tirinhas.
+<strong>Vamos discutir as respostas em sala.</strong>
+</p>
+
+</div>
+
+
+<div class="questions">
+
+
+<div class="question">
+
+<h3>1️⃣ Na tirinha 2, João afirma que o aluno tem o direito de falar e dar sua opinião.</h3>
+
+<p>
+Por que podemos considerar essa atitude um <strong>direito</strong>?
+</p>
+
+<div class="answerSpace"></div>
+
+</div>
+
+
+
+<div class="question">
+
+<h3>2️⃣ Na tirinha 3, Maria afirma que também devemos ouvir e respeitar quem está falando.</h3>
+
+<p>
+Essa atitude está relacionada a um <strong>direito, dever ou obrigação</strong>? Explique.
+</p>
+
+<div class="answerSpace"></div>
+
+</div>
+
+
+
+<div class="question">
+
+<h3>3️⃣ Na tirinha 5, João decide recolher o lixo mesmo sem ter sido ele quem sujou a sala.</h3>
+
+<p>
+Você acha que João tomou uma atitude correta? <strong>Por quê?</strong>
+</p>
+
+<div class="answerSpace"></div>
+
+</div>
+
+
+
+<div class="question">
+
+<h3>4️⃣ Na tirinha 6, a professora diz que algumas regras precisam ser cumpridas por todos.</h3>
+
+<p>
+Por que algumas regras podem ser consideradas uma <strong>obrigação</strong>?
+</p>
+
+<div class="answerSpace"></div>
+
+</div>
+
+
+
+<div class="question">
+
+<h3>5️⃣ DESAFIO 🏆</h3>
+
+<p>
+Imagine que amanhã sua turma vai colocar essa missão em prática.
+Cite <strong>uma atitude concreta</strong> que você poderia tomar para melhorar a convivência na sala de aula.
+</p>
+
+<div class="answerSpace"></div>
+
+</div>
+
+
+</div>
+
+
+<div class="challenge">
+
+<h3>🎯 MISSÃO DA TURMA</h3>
+
+<p>
+Depois de responder, a turma deverá escolher uma das atitudes sugeridas
+e tentar colocá-la em prática durante a aula.
+</p>
+
+<p>
+<strong>
+A cidadania não fica apenas no papel. Ela aparece nas nossas atitudes!
+</strong>
+</p>
+
+</div>
+
+
+<div class="controls">
+
+<button class="control" onclick="showStory()">
+⬅️ VOLTAR ÀS TIRINHAS
+</button>
+
+</div>
+
+</section>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function showQuestions(){
+
+    document.getElementById("story").classList.remove("active");
+
+    document.getElementById("questions").classList.add("active");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function showStory(){
+
+    document.getElementById("questions").classList.remove("active");
+
+    document.getElementById("story").classList.add("active");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>English Quiz Arena</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <!-- =========================
+             TELA DO JOGO
+        ========================== -->
+
+        <div id="quizScreen">
+
+            <header class="topbar">
+
+                <div class="logo-area">
+                    <div class="logo-icon">🇬🇧</div>
+
+                    <div>
+                        <h1>English Quiz</h1>
+                        <span>ARENA</span>
+                    </div>
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <span>⭐</span>
+                        <strong id="score">0</strong>
+                    </div>
+
+                    <div class="stat">
+                        <span>🔥</span>
+                        <strong id="combo">0</strong>
+                    </div>
+
+                    <div class="stat">
+                        <span>❤️</span>
+                        <strong id="lives">3</strong>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- PROGRESSO -->
+
+            <section class="progress-section">
+
+                <div class="question-info">
+
+                    <span>
+                        Question
+                        <strong id="questionNumber">1</strong>
+                        / 10
+                    </span>
+
+                    <span id="category">
+                        Grammar
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div id="progress"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CRONÔMETRO -->
+
+            <div class="timer-container">
+
+                <div class="timer-circle">
+
+                    <span id="timer">
+                        20
+                    </span>
+
+                    <small>
+                        SEC
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- PERGUNTA -->
+
+            <main class="quiz-content">
+
+                <div class="difficulty">
+                    MEDIUM
+                </div>
+
+                <h2 id="question">
+                    Loading question...
+                </h2>
+
+
+                <!-- ALTERNATIVAS -->
+
+                <div
+                    id="answers"
+                    class="answers"
+                ></div>
+
+
+                <!-- DICA -->
+
+                <div
+                    id="hint"
+                    class="hint hidden"
+                >
+
+                    <span>💡</span>
+
+                    <div>
+                        <strong>Hint</strong>
+
+                        <p id="hintText"></p>
+                    </div>
+
+                </div>
+
+
+                <!-- BOTÃO DICA -->
+
+                <button
+                    id="hintButton"
+                    class="hint-button"
+                >
+                    💡 Use a hint
+                </button>
+
+
+                <!-- FEEDBACK -->
+
+                <div
+                    id="feedback"
+                    class="feedback hidden"
+                ></div>
+
+
+                <!-- PRÓXIMA -->
+
+                <button
+                    id="nextButton"
+                    class="next-button hidden"
+                >
+                    Next Question →
+                </button>
+
+            </main>
+
+        </div>
+
+
+        <!-- =========================
+             TELA FINAL
+        ========================== -->
+
+        <div
+            id="resultScreen"
+            class="result-screen hidden"
+        >
+
+            <div class="result-icon">
+                🏆
+            </div>
+
+            <h2>Quiz Complete!</h2>
+
+            <p>
+                Great job! Let's see your result.
+            </p>
+
+
+            <div class="final-score">
+
+                <span>
+                    FINAL SCORE
+                </span>
+
+                <strong id="finalScore">
+                    0
+                </strong>
+
+                <small>
+                    points
+                </small>
+
+            </div>
+
+
+            <div class="result-stats">
+
+                <div>
+                    <strong id="correctAnswers">
+                        0
+                    </strong>
+
+                    <span>
+                        Correct
+                    </span>
+                </div>
+
+                <div>
+                    <strong id="wrongAnswers">
+                        0
+                    </strong>
+
+                    <span>
+                        Wrong
+                    </span>
+                </div>
+
+                <div>
+                    <strong id="accuracy">
+                        0%
+                    </strong>
+
+                    <span>
+                        Accuracy
+                    </span>
+                </div>
+
+            </div>
+
+
+            <button
+                id="restartButton"
+                class="restart-button"
+            >
+                🔄 Play Again
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

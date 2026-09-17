@@ -1,0 +1,910 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Conversation | Aldemar Studios</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    min-height:100%;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07111f;
+    color:#fff;
+}
+
+body{
+    min-height:100vh;
+    padding:20px;
+}
+
+.container{
+    width:min(100%,950px);
+    margin:auto;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 14px;
+    border:1px solid rgba(100,200,255,.3);
+    border-radius:999px;
+    color:#8ddcff;
+    font-size:12px;
+    letter-spacing:1px;
+    margin-bottom:15px;
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+h1{
+    margin:0 0 8px;
+    font-size:clamp(30px,5vw,48px);
+}
+
+.subtitle{
+    color:#9fb1c7;
+    line-height:1.5;
+}
+
+.card{
+    background:rgba(12,28,47,.96);
+    border:1px solid rgba(120,180,255,.15);
+    border-radius:22px;
+    padding:25px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+.screen{display:none}
+.screen.active{display:block}
+
+.back{
+    border:1px solid #29465f;
+    background:transparent;
+    color:#b9c9d9;
+    padding:10px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:18px;
+}
+
+.center{text-align:center}
+
+.levels{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin:25px 0;
+}
+
+.level-card{
+    border:1px solid #28465f;
+    background:#0a1b2d;
+    color:white;
+    border-radius:15px;
+    padding:20px 12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.level-card:hover{
+    transform:translateY(-3px);
+    border-color:#43c6ff;
+}
+
+.level-card.selected{
+    border-color:#43c6ff;
+    box-shadow:0 0 20px rgba(67,198,255,.15);
+}
+
+.level-card strong{
+    display:block;
+    font-size:20px;
+    margin-bottom:7px;
+}
+
+.level-card span{
+    color:#8fa4b8;
+    font-size:13px;
+}
+
+.a1{color:#63e6a0}
+.a2{color:#ffd166}
+.b1{color:#8cbcff}
+
+.main{
+    border:0;
+    background:#43c6ff;
+    color:#03111c;
+    font-weight:bold;
+    padding:14px 25px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+    transition:.2s;
+}
+
+.main:hover{
+    transform:translateY(-2px);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.stat{
+    background:#091a2c;
+    border-radius:12px;
+    padding:12px;
+    text-align:center;
+}
+
+.stat small{
+    display:block;
+    color:#8095aa;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+.stat strong{
+    font-size:18px;
+}
+
+.progress{
+    height:7px;
+    background:#07111f;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.progress-bar{
+    width:0;
+    height:100%;
+    background:#43c6ff;
+    transition:.3s;
+}
+
+.category{
+    color:#65d9ff;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-size:13px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.target{
+    text-align:center;
+    margin:15px 0 25px;
+}
+
+.target-label{
+    color:#8296aa;
+    font-size:13px;
+}
+
+.target-word{
+    font-size:clamp(30px,6vw,50px);
+    font-weight:bold;
+    margin:8px 0;
+}
+
+.target-meaning{
+    color:#9db0c2;
+}
+
+.listen-area{
+    text-align:center;
+    background:#081727;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:20px;
+}
+
+.listen-button{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:2px solid #43c6ff;
+    background:#0d2a40;
+    color:#fff;
+    font-size:38px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.listen-button:hover{
+    transform:scale(1.05);
+    background:#123a57;
+}
+
+.listen-status{
+    color:#91a8bb;
+    margin-top:12px;
+    min-height:20px;
+}
+
+.speak-area{
+    text-align:center;
+    padding:20px;
+    border:1px solid #1e3c55;
+    border-radius:18px;
+}
+
+.mic{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    border:0;
+    background:#18364c;
+    color:white;
+    font-size:32px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.mic.listening{
+    background:#d94b63;
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(217,75,99,.5)}
+    70%{box-shadow:0 0 0 20px rgba(217,75,99,0)}
+    100%{box-shadow:0 0 0 0 rgba(217,75,99,0)}
+}
+
+.speak-status{
+    color:#91a8bb;
+    margin:12px 0;
+    min-height:22px;
+}
+
+.recognized{
+    background:#071521;
+    border-radius:10px;
+    padding:14px;
+    color:#d8e7f2;
+    min-height:22px;
+}
+
+.feedback{
+    display:none;
+    margin-top:18px;
+    padding:18px;
+    border-radius:14px;
+    text-align:center;
+}
+
+.feedback.show{display:block}
+.feedback.good{
+    background:#103a29;
+    border:1px solid #3bd98a;
+}
+.feedback.mid{
+    background:#3c3215;
+    border:1px solid #e8c34d;
+}
+.feedback.bad{
+    background:#3d1b24;
+    border:1px solid #ef637b;
+}
+
+.accuracy{
+    font-size:34px;
+    font-weight:bold;
+    margin:8px 0;
+}
+
+.next{
+    margin-top:15px;
+    display:none;
+}
+
+.result-score{
+    font-size:60px;
+    font-weight:bold;
+    color:#66d9ff;
+    margin:20px 0;
+}
+
+.instructions{
+    text-align:left;
+    display:grid;
+    gap:10px;
+    margin:20px 0;
+}
+
+.instruction{
+    background:#091a2c;
+    padding:13px;
+    border-radius:10px;
+    color:#bdcddd;
+}
+
+@media(max-width:700px){
+    .levels{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .card{padding:18px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<button class="back" onclick="history.back()">← Voltar</button>
+
+<header>
+<div class="badge">ALDEMAR STUDIOS • ENGLISH GAMES</div>
+<h1>🎤 English Conversation</h1>
+<p class="subtitle">
+Ouça, fale e pratique sua pronúncia em inglês.
+</p>
+</header>
+
+<div class="card">
+
+<!-- SELEÇÃO -->
+
+<section id="startScreen" class="screen active center">
+
+<h2>Choose your level</h2>
+
+<p class="subtitle">
+Escolha seu nível e tente pronunciar corretamente as palavras e frases.
+</p>
+
+<div class="levels">
+
+<button class="level-card" onclick="selectLevel('A1',this)">
+<strong class="a1">A1</strong>
+<span>Beginner</span>
+</button>
+
+<button class="level-card" onclick="selectLevel('A2',this)">
+<strong class="a2">A2</strong>
+<span>Elementary</span>
+</button>
+
+<button class="level-card" onclick="selectLevel('B1',this)">
+<strong class="b1">B1</strong>
+<span>Intermediate</span>
+</button>
+
+</div>
+
+<div class="instructions">
+
+<div class="instruction">🎧 <strong>1.</strong> Ouça a palavra ou frase.</div>
+<div class="instruction">🎙️ <strong>2.</strong> Clique no microfone e fale.</div>
+<div class="instruction">🤖 <strong>3.</strong> O sistema reconhece sua fala.</div>
+<div class="instruction">⭐ <strong>4.</strong> Receba sua pontuação.</div>
+
+</div>
+
+<button class="main" onclick="startGame()">COMEÇAR</button>
+
+</section>
+
+<!-- JOGO -->
+
+<section id="gameScreen" class="screen">
+
+<div class="stats">
+
+<div class="stat">
+<small>NÍVEL</small>
+<strong id="levelDisplay">A1</strong>
+</div>
+
+<div class="stat">
+<small>QUESTÃO</small>
+<strong id="questionDisplay">1/10</strong>
+</div>
+
+<div class="stat">
+<small>PONTOS</small>
+<strong id="scoreDisplay">0</strong>
+</div>
+
+<div class="stat">
+<small>ACERTOS</small>
+<strong id="correctDisplay">0</strong>
+</div>
+
+</div>
+
+<div class="progress">
+<div id="progressBar" class="progress-bar"></div>
+</div>
+
+<div class="category" id="category"></div>
+
+<div class="target">
+
+<div class="target-label">TARGET</div>
+
+<div class="target-word" id="targetWord"></div>
+
+<div class="target-meaning" id="targetMeaning"></div>
+
+</div>
+
+<div class="listen-area">
+
+<button class="listen-button" onclick="speakTarget()">🔊</button>
+
+<div class="listen-status" id="listenStatus">
+Clique para ouvir a pronúncia.
+</div>
+
+</div>
+
+<div class="speak-area">
+
+<h3>🎙️ Your turn</h3>
+
+<p class="subtitle">
+Clique no microfone e pronuncie o que ouviu.
+</p>
+
+<button id="micButton" class="mic" onclick="startListening()">🎙️</button>
+
+<div class="speak-status" id="speakStatus">
+Microfone aguardando...
+</div>
+
+<div class="recognized" id="recognized">
+Sua fala aparecerá aqui.
+</div>
+
+<div id="feedback" class="feedback"></div>
+
+<button id="nextButton" class="main next" onclick="nextQuestion()">
+PRÓXIMO →
+</button>
+
+</div>
+
+</section>
+
+<!-- FINAL -->
+
+<section id="endScreen" class="screen center">
+
+<h2>🎉 Conversation Complete!</h2>
+
+<p class="subtitle">Você terminou o nível.</p>
+
+<div class="result-score" id="finalScore">0</div>
+
+<p id="finalMessage"></p>
+
+<br>
+
+<button class="main" onclick="startGame()">JOGAR NOVAMENTE</button>
+
+</section>
+
+</div>
+</div>
+
+<script>
+
+const levels = {
+
+A1:[
+{cat:"Greetings",word:"Hello",meaning:"Olá"},
+{cat:"Greetings",word:"Good morning",meaning:"Bom dia"},
+{cat:"People",word:"Teacher",meaning:"Professor(a)"},
+{cat:"School",word:"School",meaning:"Escola"},
+{cat:"Family",word:"Family",meaning:"Família"},
+{cat:"Home",word:"House",meaning:"Casa"},
+{cat:"Food",word:"Water",meaning:"Água"},
+{cat:"Food",word:"Breakfast",meaning:"Café da manhã"},
+{cat:"Daily life",word:"Thank you",meaning:"Obrigado(a)"},
+{cat:"Daily life",word:"See you later",meaning:"Até mais tarde"}
+],
+
+A2:[
+{cat:"Conversation",word:"How are you?",meaning:"Como você está?"},
+{cat:"Conversation",word:"What's your name?",meaning:"Qual é o seu nome?"},
+{cat:"Daily life",word:"Where do you live?",meaning:"Onde você mora?"},
+{cat:"School",word:"I study English every day.",meaning:"Eu estudo inglês todos os dias."},
+{cat:"Hobbies",word:"I like playing soccer.",meaning:"Eu gosto de jogar futebol."},
+{cat:"Shopping",word:"How much is this?",meaning:"Quanto custa isso?"},
+{cat:"Restaurant",word:"Can I have some water, please?",meaning:"Posso tomar um pouco de água, por favor?"},
+{cat:"Travel",word:"Where is the bus station?",meaning:"Onde fica a estação de ônibus?"},
+{cat:"Daily life",word:"What time do you wake up?",meaning:"Que horas você acorda?"},
+{cat:"Conversation",word:"Nice to meet you.",meaning:"Prazer em conhecê-lo(a)."}
+],
+
+B1:[
+{cat:"Conversation",word:"What do you usually do on weekends?",meaning:"O que você costuma fazer nos fins de semana?"},
+{cat:"Opinions",word:"I think learning English is very important.",meaning:"Eu acho que aprender inglês é muito importante."},
+{cat:"Travel",word:"Could you tell me how to get to the airport?",meaning:"Você poderia me dizer como chegar ao aeroporto?"},
+{cat:"Daily life",word:"I've been studying English for three years.",meaning:"Estudo inglês há três anos."},
+{cat:"Conversation",word:"What would you like to do this weekend?",meaning:"O que você gostaria de fazer neste fim de semana?"},
+{cat:"Opinions",word:"In my opinion, practice is the key to improvement.",meaning:"Na minha opinião, a prática é a chave para melhorar."},
+{cat:"Restaurant",word:"Could I have the menu, please?",meaning:"Eu poderia ver o cardápio, por favor?"},
+{cat:"Work",word:"I'm looking for a job that allows me to work remotely.",meaning:"Estou procurando um trabalho que permita trabalhar remotamente."},
+{cat:"Conversation",word:"Could you repeat that more slowly, please?",meaning:"Você poderia repetir isso mais devagar, por favor?"},
+{cat:"Conversation",word:"I would like to improve my English pronunciation.",meaning:"Eu gostaria de melhorar minha pronúncia em inglês."}
+]
+
+};
+
+let selectedLevel="A1";
+let questions=[];
+let current=0;
+let score=0;
+let correct=0;
+let recognition=null;
+let listening=false;
+let evaluated=false;
+
+function selectLevel(level,button){
+
+selectedLevel=level;
+
+document.querySelectorAll(".level-card").forEach(b=>{
+b.classList.remove("selected");
+});
+
+button.classList.add("selected");
+
+document.getElementById("levelDisplay").textContent=level;
+}
+
+function startGame(){
+
+questions=[...levels[selectedLevel]];
+
+current=0;
+score=0;
+correct=0;
+evaluated=false;
+
+document.getElementById("scoreDisplay").textContent=score;
+document.getElementById("correctDisplay").textContent=correct;
+document.getElementById("levelDisplay").textContent=selectedLevel;
+
+showScreen("gameScreen");
+
+loadQuestion();
+
+}
+
+function showScreen(id){
+
+document.querySelectorAll(".screen").forEach(s=>{
+s.classList.remove("active");
+});
+
+document.getElementById(id).classList.add("active");
+
+}
+
+function loadQuestion(){
+
+evaluated=false;
+
+const q=questions[current];
+
+document.getElementById("questionDisplay").textContent=
+`${current+1}/${questions.length}`;
+
+document.getElementById("progressBar").style.width=
+`${(current/questions.length)*100}%`;
+
+document.getElementById("category").textContent=q.cat;
+
+document.getElementById("targetWord").textContent=q.word;
+
+document.getElementById("targetMeaning").textContent=q.meaning;
+
+document.getElementById("recognized").textContent=
+"Sua fala aparecerá aqui.";
+
+document.getElementById("speakStatus").textContent=
+"Microfone aguardando...";
+
+document.getElementById("listenStatus").textContent=
+"Clique para ouvir a pronúncia.";
+
+const feedback=document.getElementById("feedback");
+
+feedback.className="feedback";
+feedback.innerHTML="";
+
+const next=document.getElementById("nextButton");
+
+next.style.display="none";
+
+}
+
+function speakTarget(){
+
+const text=questions[current].word;
+
+if(!("speechSynthesis" in window)){
+
+document.getElementById("listenStatus").textContent=
+"Seu navegador não possui reprodução de voz.";
+
+return;
+
+}
+
+speechSynthesis.cancel();
+
+const utterance=new SpeechSynthesisUtterance(text);
+
+utterance.lang="en-US";
+utterance.rate=0.82;
+utterance.pitch=1;
+
+document.getElementById("listenStatus").textContent=
+"🔊 Reproduzindo...";
+
+utterance.onend=()=>{
+
+document.getElementById("listenStatus").textContent=
+"Clique novamente para ouvir.";
+
+};
+
+speechSynthesis.speak(utterance);
+
+}
+
+function startListening(){
+
+if(evaluated)return;
+
+const SpeechRecognition=
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+if(!SpeechRecognition){
+
+document.getElementById("speakStatus").textContent=
+"⚠️ Reconhecimento de voz não disponível neste navegador. Use Chrome ou Edge.";
+
+return;
+
+}
+
+if(listening){
+
+recognition.stop();
+return;
+
+}
+
+recognition=new SpeechRecognition();
+
+recognition.lang="en-US";
+recognition.continuous=false;
+recognition.interimResults=false;
+recognition.maxAlternatives=3;
+
+recognition.onstart=()=>{
+
+listening=true;
+
+const button=document.getElementById("micButton");
+
+button.classList.add("listening");
+button.textContent="⏹️";
+
+document.getElementById("speakStatus").textContent=
+"🎙️ Listening... Speak now!";
+
+};
+
+recognition.onresult=(event)=>{
+
+const result=event.results[0][0].transcript;
+
+document.getElementById("recognized").textContent=
+`"${result}"`;
+
+evaluateSpeech(result);
+
+};
+
+recognition.onerror=(event)=>{
+
+document.getElementById("speakStatus").textContent=
+"⚠️ Não consegui reconhecer sua fala. Tente novamente.";
+
+};
+
+recognition.onend=()=>{
+
+listening=false;
+
+const button=document.getElementById("micButton");
+
+button.classList.remove("listening");
+button.textContent="🎙️";
+
+if(!evaluated){
+
+document.getElementById("speakStatus").textContent=
+"Microfone aguardando...";
+
+}
+
+};
+
+recognition.start();
+
+}
+
+function normalize(text){
+
+return text
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/[?!.,']/g,"")
+.replace(/\s+/g," ")
+.trim();
+
+}
+
+function similarity(a,b){
+
+a=normalize(a);
+b=normalize(b);
+
+if(a===b)return 100;
+
+const wordsA=a.split(" ");
+const wordsB=b.split(" ");
+
+let matches=0;
+
+wordsA.forEach(word=>{
+
+if(wordsB.includes(word)){
+matches++;
+
+}
+
+});
+
+return Math.round((matches/Math.max(wordsA.length,wordsB.length))*100);
+
+}
+
+function evaluateSpeech(spoken){
+
+if(evaluated)return;
+
+evaluated=true;
+
+const target=questions[current].word;
+
+const percentage=similarity(spoken,target);
+
+let points=0;
+let message="";
+let type="";
+
+if(percentage>=90){
+
+points=10;
+correct++;
+
+message="Excellent pronunciation! 🎉";
+type="good";
+
+}else if(percentage>=60){
+
+points=5;
+
+message="Almost! You're getting there. 👍";
+type="mid";
+
+}else{
+
+points=0;
+
+message="Let's practice this one again. 💪";
+type="bad";
+
+}
+
+score+=points;
+
+document.getElementById("scoreDisplay").textContent=score;
+document.getElementById("correctDisplay").textContent=correct;
+
+const feedback=document.getElementById("feedback");
+
+feedback.className=`feedback show ${type}`;
+
+feedback.innerHTML=`
+<strong>${message}</strong>
+<div class="accuracy">${percentage}%</div>
+<div>Target: <strong>${target}</strong></div>
+<div>Você ganhou <strong>${points}</strong> pontos.</div>
+`;
+
+document.getElementById("speakStatus").textContent=
+"Pronunciation evaluated.";
+
+document.getElementById("nextButton").style.display="inline-block";
+
+}
+
+function nextQuestion(){
+
+current++;
+
+if(current>=questions.length){
+
+finishGame();
+
+return;
+
+}
+
+loadQuestion();
+
+}
+
+function finishGame(){
+
+document.getElementById("progressBar").style.width="100%";
+
+document.getElementById("finalScore").textContent=
+`${score} pontos`;
+
+let message="";
+
+const percentage=Math.round((correct/questions.length)*100);
+
+if(percentage>=90){
+
+message="🏆 Outstanding! Sua pronúncia está excelente!";
+
+}else if(percentage>=70){
+
+message="👏 Great job! Você está desenvolvendo uma ótima pronúncia.";
+
+}else if(percentage>=50){
+
+message="👍 Good work! Continue praticando todos os dias.";
+
+}else{
+
+message="💪 Keep practicing! A repetição vai melhorar sua pronúncia.";
+
+}
+
+document.getElementById("finalMessage").textContent=
+`${message} Você acertou ${correct} de ${questions.length} palavras ou frases.`;
+
+showScreen("endScreen");
+
+}
+
+</script>
+
+</body>
+</html>

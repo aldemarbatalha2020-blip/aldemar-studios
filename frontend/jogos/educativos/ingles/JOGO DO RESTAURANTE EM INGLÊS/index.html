@@ -1,0 +1,3280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>English Restaurant — Co-Op 5</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    overflow:hidden;
+    background:#070504;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 35%,#38251b,#120b08 65%,#050303);
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+#topbar{
+    position:absolute;
+    z-index:100;
+    top:0;
+    left:0;
+    right:0;
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    background:rgba(13,8,5,.97);
+    border-bottom:1px solid #69452c;
+}
+
+.logo{
+    color:#ffbd58;
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.phaseBox{
+    text-align:center;
+}
+
+.phaseTitle{
+    font-size:14px;
+    font-weight:900;
+}
+
+.phaseObjective{
+    margin-top:4px;
+    color:#ad9682;
+    font-size:9px;
+}
+
+#scoreBox{
+    text-align:right;
+}
+
+#score{
+    color:#ffd166;
+    font-size:18px;
+    font-weight:900;
+}
+
+#tips{
+    color:#9f8b7b;
+    font-size:9px;
+}
+
+/* =========================================================
+   RESTAURANT
+========================================================= */
+
+#restaurant{
+    position:absolute;
+    top:70px;
+    bottom:0;
+    left:0;
+    right:0;
+
+    background:
+        linear-gradient(
+            rgba(20,12,8,.55),
+            rgba(7,4,3,.8)
+        ),
+        repeating-linear-gradient(
+            0deg,
+            #21140d 0,
+            #21140d 38px,
+            #28180f 39px,
+            #28180f 40px
+        );
+
+    overflow:hidden;
+}
+
+/* kitchen */
+
+#kitchen{
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:30%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #18120e,
+            #2b1b12
+        );
+
+    border-right:4px solid #805436;
+}
+
+.kitchenTitle{
+    position:absolute;
+    left:15px;
+    top:12px;
+
+    color:#ffbd58;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+/* dining */
+
+#dining{
+    position:absolute;
+    left:30%;
+    top:0;
+    right:0;
+    bottom:0;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(125,73,38,.18),
+            transparent 55%
+        );
+}
+
+/* =========================================================
+   KITCHEN OBJECTS
+========================================================= */
+
+.counter{
+    position:absolute;
+
+    background:
+        linear-gradient(
+            #69452d,
+            #392216
+        );
+
+    border:2px solid #9c6840;
+    border-radius:8px;
+
+    box-shadow:
+        inset 0 0 15px rgba(0,0,0,.5),
+        0 5px 15px rgba(0,0,0,.4);
+}
+
+.stove{
+    position:absolute;
+
+    width:85px;
+    height:58px;
+
+    background:#252525;
+    border:3px solid #575757;
+    border-radius:8px;
+}
+
+.stove::before,
+.stove::after{
+    content:"";
+
+    position:absolute;
+
+    width:22px;
+    height:22px;
+
+    border-radius:50%;
+
+    background:#111;
+    border:4px solid #8c4d29;
+}
+
+.stove::before{
+    left:10px;
+    top:15px;
+}
+
+.stove::after{
+    right:10px;
+    top:15px;
+}
+
+.sink{
+    position:absolute;
+
+    width:75px;
+    height:55px;
+
+    border-radius:7px;
+
+    background:#63717a;
+    border:3px solid #a9b4ba;
+}
+
+.sink::after{
+    content:"";
+
+    position:absolute;
+
+    width:35px;
+    height:12px;
+
+    border:3px solid #bac5ca;
+    border-bottom:0;
+
+    border-radius:20px 20px 0 0;
+
+    left:17px;
+    top:-15px;
+}
+
+.fridge{
+    position:absolute;
+
+    width:65px;
+    height:110px;
+
+    border-radius:7px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #62666a,
+            #b4b6b6,
+            #666a6d
+        );
+
+    border:3px solid #c4c8ca;
+}
+
+.fridge::after{
+    content:"";
+
+    position:absolute;
+
+    right:7px;
+    top:48%;
+
+    width:4px;
+    height:20px;
+
+    background:#333;
+}
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+.table{
+    position:absolute;
+
+    width:105px;
+    height:75px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #855536,
+            #4a2b1b
+        );
+
+    border:4px solid #9d6741;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,.45);
+}
+
+.table::before{
+    content:"";
+
+    position:absolute;
+
+    width:14px;
+    height:40px;
+
+    left:50%;
+    top:100%;
+
+    transform:translateX(-50%);
+
+    background:#3b2114;
+}
+
+.tableNumber{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:25px;
+    height:25px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#1b100a;
+    border:1px solid #d59a61;
+
+    color:#ffd28c;
+    font-size:10px;
+    font-weight:900;
+}
+
+/* =========================================================
+   CUSTOMERS
+========================================================= */
+
+.customer{
+    position:absolute;
+    z-index:15;
+
+    width:26px;
+    height:26px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffe1c3,
+            #c97d54 65%,
+            #60321f
+        );
+
+    border:2px solid #f2b37e;
+
+    box-shadow:
+        0 0 12px rgba(255,174,104,.35);
+}
+
+.customer::before,
+.customer::after{
+    content:"";
+
+    position:absolute;
+
+    width:3px;
+    height:3px;
+
+    top:9px;
+
+    border-radius:50%;
+    background:#24120b;
+}
+
+.customer::before{
+    left:6px;
+}
+
+.customer::after{
+    right:6px;
+}
+
+/* =========================================================
+   ORDERS
+========================================================= */
+
+.orderBubble{
+    position:absolute;
+    z-index:30;
+
+    min-width:90px;
+
+    padding:6px 8px;
+
+    border-radius:7px;
+
+    background:rgba(20,11,7,.95);
+    border:1px solid #d2965d;
+
+    color:#ffe0ad;
+
+    font-size:8px;
+    font-weight:900;
+
+    text-align:center;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.5);
+}
+
+.orderBubble::after{
+    content:"";
+
+    position:absolute;
+
+    bottom:-6px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-top:6px solid #d2965d;
+}
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+.player{
+    position:absolute;
+    z-index:70;
+
+    width:32px;
+    height:32px;
+
+    border-radius:9px;
+
+    border:2px solid #fff;
+
+    transition:
+        left .03s linear,
+        top .03s linear;
+}
+
+.player::after{
+    content:attr(data-name);
+
+    position:absolute;
+
+    left:50%;
+    top:-18px;
+
+    transform:translateX(-50%);
+
+    white-space:nowrap;
+
+    font-size:8px;
+    font-weight:900;
+
+    text-shadow:0 2px 4px #000;
+}
+
+.p1{
+    background:#ff594d;
+    box-shadow:0 0 16px #ff594d;
+}
+
+.p2{
+    background:#43d77c;
+    box-shadow:0 0 16px #43d77c;
+}
+
+.p3{
+    background:#4db7ff;
+    box-shadow:0 0 16px #4db7ff;
+}
+
+.p4{
+    background:#b965ed;
+    box-shadow:0 0 16px #b965ed;
+}
+
+.p5{
+    background:#ffbf4d;
+    box-shadow:0 0 16px #ffbf4d;
+}
+
+/* chef */
+
+.chefHat{
+    position:absolute;
+
+    width:20px;
+    height:12px;
+
+    left:4px;
+    top:-9px;
+
+    background:#fff;
+    border-radius:7px 7px 2px 2px;
+}
+
+/* =========================================================
+   ORDER PANEL
+========================================================= */
+
+#orderPanel{
+    position:absolute;
+    z-index:90;
+
+    right:15px;
+    top:15px;
+
+    width:230px;
+
+    padding:12px;
+
+    border-radius:11px;
+
+    background:rgba(18,10,6,.94);
+    border:1px solid #805637;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.45);
+}
+
+.panelTitle{
+    color:#ffc46c;
+    font-size:10px;
+    font-weight:900;
+    margin-bottom:7px;
+}
+
+#activeOrders{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.orderCard{
+    padding:7px;
+
+    border-radius:7px;
+
+    background:#27170e;
+    border:1px solid #563722;
+
+    font-size:9px;
+}
+
+.orderCard strong{
+    color:#ffcf8a;
+}
+
+.orderCard.ready{
+    border-color:#53df92;
+    background:#10251a;
+}
+
+.orderCard.done{
+    opacity:.35;
+}
+
+/* =========================================================
+   OBJECTIVE
+========================================================= */
+
+#objective{
+    position:absolute;
+    z-index:110;
+
+    left:50%;
+    top:82px;
+
+    transform:translateX(-50%);
+
+    padding:7px 14px;
+
+    border-radius:8px;
+
+    background:rgba(12,7,4,.92);
+    border:1px solid #704a2e;
+
+    color:#e6c39b;
+
+    font-size:9px;
+    font-weight:900;
+
+    text-align:center;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+#message{
+    position:absolute;
+    z-index:500;
+
+    left:50%;
+    bottom:15px;
+
+    transform:translateX(-50%);
+
+    min-width:390px;
+    max-width:85vw;
+
+    padding:10px 16px;
+
+    border-radius:9px;
+
+    background:rgba(15,8,5,.97);
+    border:1px solid #97633c;
+
+    color:#ffe2ba;
+
+    font-size:10px;
+    font-weight:900;
+
+    text-align:center;
+
+    opacity:0;
+    transition:.2s;
+}
+
+#message.show{
+    opacity:1;
+}
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.overlay{
+    position:absolute;
+    z-index:1000;
+
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(8,4,2,.94);
+    backdrop-filter:blur(8px);
+}
+
+#questionOverlay,
+#finishScreen{
+    display:none;
+}
+
+#questionOverlay.show,
+#finishScreen.show{
+    display:flex;
+}
+
+.questionBox{
+    width:min(650px,92vw);
+
+    padding:28px;
+
+    border-radius:18px;
+
+    background:#1a0e08;
+
+    border:2px solid #ffbd58;
+
+    box-shadow:
+        0 0 80px rgba(255,171,60,.15);
+
+    text-align:center;
+}
+
+.questionBox h2{
+    color:#ffc66f;
+    margin-bottom:5px;
+}
+
+#questionPlayer{
+    color:#aa927c;
+    font-size:10px;
+    margin-bottom:16px;
+}
+
+#questionText{
+    font-size:18px;
+    font-weight:900;
+    line-height:1.45;
+
+    margin-bottom:16px;
+}
+
+#answerInput{
+    width:100%;
+    height:45px;
+
+    padding:0 13px;
+
+    border-radius:8px;
+
+    background:#0d0704;
+
+    border:1px solid #69452c;
+
+    color:#fff;
+
+    outline:none;
+
+    font-size:14px;
+}
+
+#answerInput:focus{
+    border-color:#ffbd58;
+}
+
+#answerButton{
+    width:100%;
+    height:43px;
+
+    margin-top:9px;
+
+    border:0;
+    border-radius:8px;
+
+    background:#b96d25;
+
+    color:#fff;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+#questionFeedback{
+    min-height:20px;
+
+    margin-top:8px;
+
+    font-size:10px;
+    font-weight:900;
+}
+
+/* =========================================================
+   START
+========================================================= */
+
+#startScreen{
+    position:absolute;
+    z-index:2000;
+
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle,
+            #432719,
+            #110906 70%
+        );
+}
+
+.startModal{
+    width:min(850px,94vw);
+
+    padding:30px;
+
+    border-radius:22px;
+
+    background:#160c07;
+
+    border:1px solid #805536;
+
+    box-shadow:0 30px 100px rgba(0,0,0,.8);
+
+    text-align:center;
+}
+
+.startModal h1{
+    color:#ffc15c;
+
+    font-size:36px;
+
+    letter-spacing:2px;
+
+    margin-bottom:8px;
+}
+
+.startModal p{
+    color:#ad9784;
+
+    font-size:11px;
+
+    line-height:1.7;
+}
+
+.roles{
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:8px;
+
+    margin:20px 0;
+}
+
+.role{
+    padding:13px 7px;
+
+    background:#21120b;
+
+    border:1px solid #573822;
+
+    border-radius:10px;
+}
+
+.roleIcon{
+    font-size:22px;
+    margin-bottom:6px;
+}
+
+.role strong{
+    display:block;
+
+    font-size:10px;
+
+    margin-bottom:4px;
+}
+
+.role span{
+    color:#897464;
+
+    font-size:8px;
+
+    line-height:1.45;
+}
+
+.controls{
+    color:#9b8878;
+
+    font-size:9px;
+
+    line-height:2;
+}
+
+.key{
+    padding:3px 5px;
+
+    border-radius:4px;
+
+    background:#29180e;
+
+    border:1px solid #67462e;
+
+    color:#fff;
+
+    font-weight:900;
+}
+
+.startButton{
+    margin-top:18px;
+
+    padding:13px 32px;
+
+    border:0;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #bd6d24,
+            #e19a3c
+        );
+
+    color:#fff;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.startButton:hover{
+    transform:scale(1.04);
+}
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+.finishTitle{
+    color:#ffd166!important;
+}
+
+.finishStats{
+    margin-top:18px;
+
+    color:#a99584;
+
+    font-size:11px;
+
+    line-height:2;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+    .roles{
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    #kitchen{
+        width:35%;
+    }
+
+    #dining{
+        left:35%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<div id="topbar">
+
+    <div class="logo">
+        🍽️ ENGLISH RESTAURANT
+    </div>
+
+    <div class="phaseBox">
+
+        <div class="phaseTitle">
+            FASE <span id="phaseNumber">1</span>
+            —
+            <span id="phaseName">
+                OPENING DAY
+            </span>
+        </div>
+
+        <div
+            id="phaseObjective"
+            class="phaseObjective">
+            OBJETIVO
+        </div>
+
+    </div>
+
+    <div id="scoreBox">
+
+        <div>
+            ⭐
+            <span id="score">
+                0
+            </span>
+        </div>
+
+        <div id="tips">
+            TEAM SCORE
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RESTAURANT
+===================================================== -->
+
+<div id="restaurant">
+
+    <!-- KITCHEN -->
+
+    <div id="kitchen">
+
+        <div class="kitchenTitle">
+            👨‍🍳 KITCHEN — P1 CHEF
+        </div>
+
+        <div
+            class="counter"
+            style="
+                left:20px;
+                top:70px;
+                width:130px;
+                height:45px;
+            ">
+        </div>
+
+        <div
+            class="counter"
+            style="
+                left:170px;
+                top:70px;
+                width:120px;
+                height:45px;
+            ">
+        </div>
+
+        <div
+            class="stove"
+            style="
+                left:35px;
+                top:150px;
+            ">
+        </div>
+
+        <div
+            class="sink"
+            style="
+                left:150px;
+                top:155px;
+            ">
+        </div>
+
+        <div
+            class="fridge"
+            style="
+                left:45px;
+                top:270px;
+            ">
+        </div>
+
+        <div
+            class="counter"
+            style="
+                left:140px;
+                top:285px;
+                width:140px;
+                height:55px;
+            ">
+        </div>
+
+        <div
+            class="counter"
+            style="
+                left:25px;
+                top:400px;
+                width:255px;
+                height:45px;
+            ">
+        </div>
+
+    </div>
+
+
+    <!-- DINING ROOM -->
+
+    <div id="dining">
+
+        <div
+            class="table"
+            style="
+                left:10%;
+                top:20%;
+            ">
+
+            <div class="tableNumber">
+                1
+            </div>
+
+        </div>
+
+
+        <div
+            class="table"
+            style="
+                left:38%;
+                top:20%;
+            ">
+
+            <div class="tableNumber">
+                2
+            </div>
+
+        </div>
+
+
+        <div
+            class="table"
+            style="
+                left:66%;
+                top:20%;
+            ">
+
+            <div class="tableNumber">
+                3
+            </div>
+
+        </div>
+
+
+        <div
+            class="table"
+            style="
+                left:10%;
+                top:60%;
+            ">
+
+            <div class="tableNumber">
+                4
+            </div>
+
+        </div>
+
+
+        <div
+            class="table"
+            style="
+                left:38%;
+                top:60%;
+            ">
+
+            <div class="tableNumber">
+                5
+            </div>
+
+        </div>
+
+
+        <div
+            class="table"
+            style="
+                left:66%;
+                top:60%;
+            ">
+
+            <div class="tableNumber">
+                6
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ORDER PANEL -->
+
+    <div id="orderPanel">
+
+        <div class="panelTitle">
+            📋 ACTIVE ORDERS
+        </div>
+
+        <div id="activeOrders">
+            <div class="orderCard">
+                No orders yet.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="objective">
+    🎯 Atendam os clientes!
+</div>
+
+<div id="message"></div>
+
+
+<!-- =====================================================
+     QUESTION OVERLAY
+===================================================== -->
+
+<div
+    id="questionOverlay"
+    class="overlay">
+
+    <div class="questionBox">
+
+        <h2>
+            🍽️ RESTAURANT ENGLISH
+        </h2>
+
+        <div id="questionPlayer">
+            PLAYER
+        </div>
+
+        <div id="questionText">
+            Question
+        </div>
+
+        <input
+            id="answerInput"
+            autocomplete="off"
+            placeholder="Responda em inglês..."
+        >
+
+        <button id="answerButton">
+            RESPONDER
+        </button>
+
+        <div id="questionFeedback"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
+
+<div id="startScreen">
+
+    <div class="startModal">
+
+        <h1>
+            🍔 ENGLISH RESTAURANT
+        </h1>
+
+        <p>
+            Um restaurante cooperativo para
+            <strong>5 jogadores</strong>.
+            <br>
+            O Chef precisa dos garçons,
+            e os garçons precisam do Chef!
+            <br>
+            Toda a equipe deverá usar
+            <strong>vocabulário de restaurante em inglês.</strong>
+        </p>
+
+
+        <div class="roles">
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    👨‍🍳
+                </div>
+
+                <strong style="color:#ff594d">
+                    P1 — CHEF
+                </strong>
+
+                <span>
+                    Prepara os pedidos
+                    na cozinha.
+                </span>
+
+            </div>
+
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    🧑‍🍽️
+                </div>
+
+                <strong style="color:#43d77c">
+                    P2 — WAITER
+                </strong>
+
+                <span>
+                    Atende as mesas
+                    1 e 2.
+                </span>
+
+            </div>
+
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    🧑‍🍽️
+                </div>
+
+                <strong style="color:#4db7ff">
+                    P3 — WAITER
+                </strong>
+
+                <span>
+                    Atende as mesas
+                    3 e 4.
+                </span>
+
+            </div>
+
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    🧑‍🍽️
+                </div>
+
+                <strong style="color:#b965ed">
+                    P4 — WAITER
+                </strong>
+
+                <span>
+                    Atende as mesas
+                    5 e 6.
+                </span>
+
+            </div>
+
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    🧑‍🍽️
+                </div>
+
+                <strong style="color:#ffbf4d">
+                    P5 — WAITER
+                </strong>
+
+                <span>
+                    Auxilia todas as
+                    mesas.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="controls">
+
+            👨‍🍳 P1:
+            <span class="key">W A S D</span>
+
+            &nbsp;&nbsp;
+
+            P2:
+            <span class="key">↑ ← ↓ →</span>
+
+            &nbsp;&nbsp;
+
+            P3:
+            <span class="key">I J K L</span>
+
+            <br>
+
+            P4:
+            <span class="key">T F G H</span>
+
+            &nbsp;&nbsp;
+
+            P5:
+            <span class="key">8 4 5 6</span>
+
+            <br>
+
+            <strong>
+                Interagir:
+            </strong>
+
+            <span class="key">Q</span>
+            P1
+
+            <span class="key">ENTER</span>
+            P2
+
+            <span class="key">O</span>
+            P3
+
+            <span class="key">R</span>
+            P4
+
+            <span class="key">U</span>
+            P5
+
+        </div>
+
+
+        <button
+            id="startButton"
+            class="startButton">
+
+            🍽️ OPEN RESTAURANT
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FINISH
+===================================================== -->
+
+<div
+    id="finishScreen"
+    class="overlay">
+
+    <div class="startModal">
+
+        <h1 class="finishTitle">
+            🏆 RESTAURANT CLOSED!
+        </h1>
+
+        <p>
+            Parabéns! A equipe conseguiu
+            atender todos os clientes.
+        </p>
+
+        <div
+            id="finishStats"
+            class="finishStats">
+        </div>
+
+        <button
+            id="restartButton"
+            class="startButton">
+
+            🔄 NOVO TURNO
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const questionOverlay =
+    document.getElementById("questionOverlay");
+
+const finishScreen =
+    document.getElementById("finishScreen");
+
+const questionPlayer =
+    document.getElementById("questionPlayer");
+
+const questionText =
+    document.getElementById("questionText");
+
+const answerInput =
+    document.getElementById("answerInput");
+
+const answerButton =
+    document.getElementById("answerButton");
+
+const questionFeedback =
+    document.getElementById("questionFeedback");
+
+const message =
+    document.getElementById("message");
+
+const objective =
+    document.getElementById("objective");
+
+const activeOrders =
+    document.getElementById("activeOrders");
+
+const scoreEl =
+    document.getElementById("score");
+
+const phaseNumber =
+    document.getElementById("phaseNumber");
+
+const phaseName =
+    document.getElementById("phaseName");
+
+const phaseObjective =
+    document.getElementById("phaseObjective");
+
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+const players={
+
+    1:{
+        x:90,
+        y:370,
+        speed:2.7,
+        color:"#ff594d",
+
+        keys:{
+            up:"w",
+            down:"s",
+            left:"a",
+            right:"d",
+            action:"q"
+        }
+    },
+
+    2:{
+        x:100,
+        y:100,
+        speed:2.7,
+        color:"#43d77c",
+
+        keys:{
+            up:"ArrowUp",
+            down:"ArrowDown",
+            left:"ArrowLeft",
+            right:"ArrowRight",
+            action:"Enter"
+        }
+    },
+
+    3:{
+        x:260,
+        y:100,
+        speed:2.7,
+        color:"#4db7ff",
+
+        keys:{
+            up:"i",
+            down:"k",
+            left:"j",
+            right:"l",
+            action:"o"
+        }
+    },
+
+    4:{
+        x:420,
+        y:100,
+        speed:2.7,
+        color:"#b965ed",
+
+        keys:{
+            up:"t",
+            down:"g",
+            left:"f",
+            right:"h",
+            action:"r"
+        }
+    },
+
+    5:{
+        x:560,
+        y:100,
+        speed:2.9,
+        color:"#ffbf4d",
+
+        keys:{
+            up:"8",
+            down:"5",
+            left:"4",
+            right:"6",
+            action:"u"
+        }
+    }
+
+};
+
+
+/* =========================================================
+   PHASES
+========================================================= */
+
+const phases=[
+
+    {
+        name:"OPENING DAY",
+        objective:
+        "Aprendam o funcionamento: recebam, preparem e entreguem os primeiros pedidos."
+    },
+
+    {
+        name:"LUNCH RUSH",
+        objective:
+        "Mais clientes e pedidos simultâneos."
+    },
+
+    {
+        name:"BUSY RESTAURANT",
+        objective:
+        "A equipe precisa trabalhar rapidamente."
+    },
+
+    {
+        name:"DINNER RUSH",
+        objective:
+        "Pedidos mais complexos e mais mesas."
+    },
+
+    {
+        name:"FIVE-STAR RESTAURANT",
+        objective:
+        "Atendam todos os clientes e alcancem a pontuação máxima."
+    }
+
+];
+
+
+/* =========================================================
+   VOCABULARY
+========================================================= */
+
+const vocabulary=[
+
+    {
+        q:"What is 'garçom' in English?",
+        a:["waiter"]
+    },
+
+    {
+        q:"What is 'cozinheiro' in English?",
+        a:["chef","cook"]
+    },
+
+    {
+        q:"What is 'cardápio' in English?",
+        a:["menu"]
+    },
+
+    {
+        q:"What is 'pedido' in English?",
+        a:["order"]
+    },
+
+    {
+        q:"What is 'mesa' in English?",
+        a:["table"]
+    },
+
+    {
+        q:"What is 'cliente' in English?",
+        a:["customer"]
+    },
+
+    {
+        q:"What is 'conta' in English?",
+        a:["bill"]
+    },
+
+    {
+        q:"What is 'garfo' in English?",
+        a:["fork"]
+    },
+
+    {
+        q:"What is 'faca' in English?",
+        a:["knife"]
+    },
+
+    {
+        q:"What is 'colher' in English?",
+        a:["spoon"]
+    },
+
+    {
+        q:"What is 'prato' in English?",
+        a:["plate"]
+    },
+
+    {
+        q:"What is 'copo' in English?",
+        a:["glass"]
+    },
+
+    {
+        q:"What is 'água' in English?",
+        a:["water"]
+    },
+
+    {
+        q:"What is 'suco' in English?",
+        a:["juice"]
+    },
+
+    {
+        q:"What is 'café' in English?",
+        a:["coffee"]
+    },
+
+    {
+        q:"What is 'refrigerante' in English?",
+        a:["soda"]
+    },
+
+    {
+        q:"What is 'hambúrguer' in English?",
+        a:["hamburger","burger"]
+    },
+
+    {
+        q:"What is 'batata frita' in English?",
+        a:["fries","french fries"]
+    },
+
+    {
+        q:"What is 'salada' in English?",
+        a:["salad"]
+    },
+
+    {
+        q:"What is 'frango' in English?",
+        a:["chicken"]
+    },
+
+    {
+        q:"What is 'peixe' in English?",
+        a:["fish"]
+    },
+
+    {
+        q:"What is 'pizza' in English?",
+        a:["pizza"]
+    },
+
+    {
+        q:"What is 'sanduíche' in English?",
+        a:["sandwich"]
+    },
+
+    {
+        q:"What is 'sobremesa' in English?",
+        a:["dessert"]
+    },
+
+    {
+        q:"What is 'açúcar' in English?",
+        a:["sugar"]
+    },
+
+    {
+        q:"What is 'sal' in English?",
+        a:["salt"]
+    },
+
+    {
+        q:"Translate: 'I would like water.'",
+        a:["i would like water"]
+    },
+
+    {
+        q:"Translate: 'Can I have the menu?'",
+        a:["can i have the menu"]
+    },
+
+    {
+        q:"Complete: 'Can I have a ___ of water?'",
+        a:["glass"]
+    },
+
+    {
+        q:"Complete: 'I would like a ___, please.'",
+        a:["burger","pizza","sandwich","salad"]
+    }
+
+];
+
+
+/* =========================================================
+   FOODS
+========================================================= */
+
+const foods=[
+
+    {
+        name:"BURGER",
+        emoji:"🍔"
+    },
+
+    {
+        name:"PIZZA",
+        emoji:"🍕"
+    },
+
+    {
+        name:"SALAD",
+        emoji:"🥗"
+    },
+
+    {
+        name:"CHICKEN",
+        emoji:"🍗"
+    },
+
+    {
+        name:"FISH",
+        emoji:"🐟"
+    },
+
+    {
+        name:"SANDWICH",
+        emoji:"🥪"
+    },
+
+    {
+        name:"FRIES",
+        emoji:"🍟"
+    },
+
+    {
+        name:"COFFEE",
+        emoji:"☕"
+    },
+
+    {
+        name:"JUICE",
+        emoji:"🧃"
+    },
+
+    {
+        name:"WATER",
+        emoji:"💧"
+    },
+
+    {
+        name:"DESSERT",
+        emoji:"🍰"
+    }
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let gameRunning=false;
+
+let phase=1;
+
+let keys={};
+
+let score=0;
+
+let completedOrders=0;
+
+let totalOrders=0;
+
+let correctAnswers=0;
+
+let totalQuestions=0;
+
+let currentQuestion=null;
+
+let currentPlayer=null;
+
+let currentCallback=null;
+
+let orders=[];
+
+let customers=[];
+
+let orderCounter=0;
+
+let messageTimer=null;
+
+
+/* =========================================================
+   UTILS
+========================================================= */
+
+function normalize(text){
+
+    return text
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[.,!?']/g,"");
+
+}
+
+
+function randomItem(array){
+
+    return array[
+        Math.floor(
+            Math.random()*array.length
+        )
+    ];
+
+}
+
+
+function showMessage(text){
+
+    message.textContent=text;
+
+    message.classList.add("show");
+
+    clearTimeout(messageTimer);
+
+    messageTimer=setTimeout(
+        ()=>{
+            message.classList.remove("show");
+        },
+        2300
+    );
+
+}
+
+
+function setObjective(text){
+
+    objective.textContent=
+        "🎯 "+text;
+
+}
+
+
+/* =========================================================
+   CREATE PLAYERS
+========================================================= */
+
+function createPlayers(){
+
+    document
+        .querySelectorAll(".player")
+        .forEach(
+            el=>el.remove()
+        );
+
+
+    for(let id=1;id<=5;id++){
+
+        const p=players[id];
+
+        const el=
+            document.createElement("div");
+
+        el.className=
+            "player p"+id;
+
+        el.id=
+            "player"+id;
+
+        el.dataset.name=
+            id===1
+            ?
+            "P1 CHEF"
+            :
+            "P"+id+" WAITER";
+
+
+        if(id===1){
+
+            const hat=
+                document.createElement("div");
+
+            hat.className="chefHat";
+
+            el.appendChild(hat);
+
+        }
+
+
+        el.style.left=
+            p.x+"px";
+
+        el.style.top=
+            p.y+"px";
+
+
+        document
+            .getElementById(
+                id===1
+                ?
+                "kitchen"
+                :
+                "dining"
+            )
+            .appendChild(el);
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLE COORDINATES
+========================================================= */
+
+function getTables(){
+
+    const dining=
+        document.getElementById(
+            "dining"
+        );
+
+    const tables=
+        dining.querySelectorAll(
+            ".table"
+        );
+
+    return [...tables];
+
+}
+
+
+/* =========================================================
+   CUSTOMER
+========================================================= */
+
+function createCustomer(
+    tableIndex,
+    order
+){
+
+    const table=
+        getTables()[tableIndex];
+
+
+    if(!table)
+        return;
+
+
+    const customer=
+        document.createElement("div");
+
+    customer.className=
+        "customer";
+
+
+    const x=
+        table.offsetLeft+
+        38;
+
+    const y=
+        table.offsetTop+
+        20;
+
+
+    customer.style.left=
+        x+"px";
+
+    customer.style.top=
+        y+"px";
+
+
+    const bubble=
+        document.createElement("div");
+
+    bubble.className=
+        "orderBubble";
+
+    bubble.innerHTML=
+        `🗣️ ${order.food.emoji}
+        ${order.food.name}`;
+
+
+    bubble.style.left=
+        "-30px";
+
+    bubble.style.top=
+        "-38px";
+
+
+    customer.appendChild(
+        bubble
+    );
+
+
+    document
+        .getElementById("dining")
+        .appendChild(
+            customer
+        );
+
+
+    customers.push({
+        element:customer,
+        tableIndex,
+        order
+    });
+
+}
+
+
+/* =========================================================
+   CREATE ORDER
+========================================================= */
+
+function createOrder(){
+
+    const tableIndex=
+        Math.floor(
+            Math.random()*6
+        );
+
+
+    const food=
+        randomItem(
+            foods
+        );
+
+
+    orderCounter++;
+
+    const order={
+
+        id:orderCounter,
+
+        table:tableIndex+1,
+
+        food,
+
+        status:"waiting",
+
+        waiter:null,
+
+        prepared:false,
+
+        delivered:false
+
+    };
+
+
+    orders.push(order);
+
+    totalOrders++;
+
+
+    createCustomer(
+        tableIndex,
+        order
+    );
+
+
+    renderOrders();
+
+
+    showMessage(
+        `🔔 NOVO PEDIDO — TABLE ${order.table}: ${food.emoji} ${food.name}`
+    );
+
+}
+
+
+/* =========================================================
+   RENDER ORDERS
+========================================================= */
+
+function renderOrders(){
+
+    activeOrders.innerHTML="";
+
+
+    if(!orders.length){
+
+        activeOrders.innerHTML=
+            `<div class="orderCard">
+                No orders yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    orders.forEach(
+        order=>{
+
+            const card=
+                document.createElement("div");
+
+            card.className=
+                "orderCard";
+
+
+            if(order.prepared)
+                card.classList.add(
+                    "ready"
+                );
+
+
+            if(order.delivered)
+                card.classList.add(
+                    "done"
+                );
+
+
+            let status=
+                "🟡 WAITING";
+
+
+            if(order.status==="taken")
+                status="🟠 TAKEN";
+
+
+            if(order.prepared)
+                status="🟢 READY";
+
+
+            if(order.delivered)
+                status="✓ SERVED";
+
+
+            card.innerHTML=`
+
+                <strong>
+                    TABLE ${order.table}
+                </strong>
+
+                —
+                ${order.food.emoji}
+                ${order.food.name}
+
+                <br>
+
+                ${status}
+
+            `;
+
+
+            activeOrders.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   NEAR OBJECT
+========================================================= */
+
+function nearestOrderForWaiter(
+    id
+){
+
+    const p=
+        players[id];
+
+
+    let nearest=null;
+
+    let shortest=Infinity;
+
+
+    for(const customer of customers){
+
+        const order=
+            customer.order;
+
+
+        if(
+            order.delivered ||
+            order.status==="taken"
+        )
+            continue;
+
+
+        const x=
+            customer.element.offsetLeft;
+
+        const y=
+            customer.element.offsetTop;
+
+
+        const distance=
+            Math.hypot(
+                p.x-x,
+                p.y-y
+            );
+
+
+        if(
+            distance<shortest &&
+            distance<75
+        ){
+
+            shortest=distance;
+            nearest=order;
+
+        }
+
+    }
+
+
+    return nearest;
+
+}
+
+
+/* =========================================================
+   WAITER ACTION
+========================================================= */
+
+function waiterAction(
+    id
+){
+
+    const p=
+        players[id];
+
+
+    /* -----------------------------------------------------
+       Primeiro: procurar pedido do cliente
+    ----------------------------------------------------- */
+
+    let order=
+        nearestOrderForWaiter(id);
+
+
+    if(order){
+
+        askQuestion(
+            id,
+            `CUSTOMER — TABLE ${order.table}`,
+            ()=>{
+
+                order.status="taken";
+
+                order.waiter=id;
+
+                showMessage(
+                    `📝 P${id} PEGOU O PEDIDO DA TABLE ${order.table}! LEVE-O PARA O CHEF.`
+                );
+
+
+                setObjective(
+                    `P${id} leve o pedido para P1 na cozinha.`
+                );
+
+
+                renderOrders();
+
+            }
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       Segundo: procurar pedido pronto
+    ----------------------------------------------------- */
+
+    for(const customer of customers){
+
+        const readyOrder=
+            customer.order;
+
+
+        if(
+            !readyOrder.prepared ||
+            readyOrder.delivered
+        )
+            continue;
+
+
+        const x=
+            customer.element.offsetLeft;
+
+        const y=
+            customer.element.offsetTop;
+
+
+        const distance=
+            Math.hypot(
+                p.x-x,
+                p.y-y
+            );
+
+
+        if(distance<75){
+
+            askQuestion(
+                id,
+                `DELIVER — TABLE ${readyOrder.table}`,
+                ()=>{
+
+                    readyOrder.delivered=true;
+
+                    completedOrders++;
+
+                    score+=100;
+
+                    scoreEl.textContent=
+                        score;
+
+
+                    customer.element.remove();
+
+
+                    showMessage(
+                        `🍽️ P${id} ENTREGOU ${readyOrder.food.name}! +100`
+                    );
+
+
+                    renderOrders();
+
+                    checkPhaseComplete();
+
+                }
+            );
+
+
+            return;
+
+        }
+
+    }
+
+
+    /* -----------------------------------------------------
+       Terceiro: procurar comida pronta na cozinha
+    ----------------------------------------------------- */
+
+    if(id!==1){
+
+        const chef=
+            players[1];
+
+
+        const distance=
+            Math.hypot(
+                p.x-chef.x,
+                p.y-chef.y
+            );
+
+
+        if(distance<100){
+
+            const ready=
+                orders.find(
+                    o=>
+                        o.prepared &&
+                        !o.delivered
+                );
+
+
+            if(ready){
+
+                askQuestion(
+                    id,
+                    `PICK UP — ${ready.food.name}`,
+                    ()=>{
+
+                        ready.waiter=id;
+
+                        showMessage(
+                            `🍽️ P${id} PEGOU O PEDIDO! AGORA LEVE À TABLE ${ready.table}.`
+                        );
+
+                    }
+                );
+
+
+                return;
+
+            }
+
+        }
+
+    }
+
+
+    showMessage(
+        `P${id}: aproxime-se de um cliente ou pedido.`
+    );
+
+}
+
+
+/* =========================================================
+   CHEF ACTION
+========================================================= */
+
+function chefAction(){
+
+    const chef=
+        players[1];
+
+
+    const order=
+        orders.find(
+            o=>
+                o.status==="taken" &&
+                !o.prepared
+        );
+
+
+    if(!order){
+
+        showMessage(
+            "👨‍🍳 Nenhum pedido aguardando na cozinha."
+        );
+
+        return;
+
+    }
+
+
+    askQuestion(
+        1,
+        `CHEF — PREPARE ${order.food.name}`,
+        ()=>{
+
+            order.prepared=true;
+
+            order.status="prepared";
+
+            score+=50;
+
+            scoreEl.textContent=
+                score;
+
+
+            showMessage(
+                `👨‍🍳 P1 PREPAROU ${order.food.emoji} ${order.food.name}! +50`
+            );
+
+
+            setObjective(
+                `Um garçom deve pegar ${order.food.name} e levar à Table ${order.table}.`
+            );
+
+
+            renderOrders();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ACTION
+========================================================= */
+
+function actionPlayer(
+    id
+){
+
+    if(id===1){
+
+        chefAction();
+
+    }
+
+    else{
+
+        waiterAction(id);
+
+    }
+
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+function askQuestion(
+    playerId,
+    context,
+    callback
+){
+
+    if(currentPlayer)
+        return;
+
+
+    currentPlayer=
+        playerId;
+
+    currentCallback=
+        callback;
+
+
+    currentQuestion=
+        randomItem(
+            vocabulary
+        );
+
+
+    totalQuestions++;
+
+
+    questionPlayer.textContent=
+        `P${playerId} — ${context}`;
+
+
+    questionText.textContent=
+        currentQuestion.q;
+
+
+    answerInput.value="";
+
+    questionFeedback.textContent="";
+
+
+    questionOverlay.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        ()=>{
+            answerInput.focus();
+        },
+        50
+    );
+
+}
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+function submitAnswer(){
+
+    if(
+        !currentQuestion ||
+        !currentPlayer
+    )
+        return;
+
+
+    const answer=
+        normalize(
+            answerInput.value
+        );
+
+
+    const correct=
+        currentQuestion.a.some(
+            a=>
+                normalize(a)===answer
+        );
+
+
+    if(correct){
+
+        correctAnswers++;
+
+
+        questionFeedback.textContent=
+            "✓ CORRECT!";
+
+        questionFeedback.style.color=
+            "#57e68e";
+
+
+        const callback=
+            currentCallback;
+
+
+        setTimeout(
+            ()=>{
+
+                questionOverlay.classList.remove(
+                    "show"
+                );
+
+
+                currentQuestion=null;
+                currentPlayer=null;
+                currentCallback=null;
+
+
+                if(callback)
+                    callback();
+
+            },
+            350
+        );
+
+    }
+
+    else{
+
+        questionFeedback.textContent=
+            "✗ INCORRECT — TRY AGAIN!";
+
+        questionFeedback.style.color=
+            "#ff6d61";
+
+    }
+
+}
+
+
+/* =========================================================
+   MOVEMENT
+========================================================= */
+
+function updateMovement(){
+
+    if(!gameRunning)
+        return;
+
+
+    for(let id=1;id<=5;id++){
+
+        const p=
+            players[id];
+
+
+        let dx=0;
+        let dy=0;
+
+
+        if(keys[p.keys.up])
+            dy-=p.speed;
+
+        if(keys[p.keys.down])
+            dy+=p.speed;
+
+        if(keys[p.keys.left])
+            dx-=p.speed;
+
+        if(keys[p.keys.right])
+            dx+=p.speed;
+
+
+        if(dx && dy){
+
+            dx*=.707;
+            dy*=.707;
+
+        }
+
+
+        p.x+=dx;
+        p.y+=dy;
+
+
+        const parent=
+            document.getElementById(
+                id===1
+                ?
+                "kitchen"
+                :
+                "dining"
+            );
+
+
+        p.x=
+            Math.max(
+                5,
+                Math.min(
+                    parent.clientWidth-38,
+                    p.x
+                )
+            );
+
+
+        p.y=
+            Math.max(
+                40,
+                Math.min(
+                    parent.clientHeight-40,
+                    p.y
+                )
+            );
+
+
+        const el=
+            document.getElementById(
+                "player"+id
+            );
+
+
+        el.style.left=
+            p.x+"px";
+
+        el.style.top=
+            p.y+"px";
+
+    }
+
+}
+
+
+/* =========================================================
+   CHECK PHASE
+========================================================= */
+
+function checkPhaseComplete(){
+
+    const target=
+        phase===1
+        ?3
+        :phase===2
+        ?5
+        :phase===3
+        ?7
+        :phase===4
+        ?9
+        :11;
+
+
+    if(completedOrders>=target){
+
+        nextPhase();
+
+    }
+
+}
+
+
+/* =========================================================
+   NEXT PHASE
+========================================================= */
+
+function nextPhase(){
+
+    if(phase>=5){
+
+        finishGame();
+
+        return;
+
+    }
+
+
+    phase++;
+
+
+    showMessage(
+        `🎉 FASE ${phase-1} CONCLUÍDA!`
+    );
+
+
+    setTimeout(
+        ()=>{
+
+            phaseNumber.textContent=
+                phase;
+
+            phaseName.textContent=
+                phases[phase-1].name;
+
+            phaseObjective.textContent=
+                phases[phase-1].objective;
+
+
+            createMoreOrders();
+
+            setObjective(
+                phases[phase-1].objective
+            );
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================================================
+   CREATE MORE ORDERS
+========================================================= */
+
+function createMoreOrders(){
+
+    const count=
+        phase===2
+        ?3
+        :
+        phase===3
+        ?4
+        :
+        phase===4
+        ?5
+        :
+        6;
+
+
+    for(let i=0;i<count;i++){
+
+        setTimeout(
+            createOrder,
+            i*900
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+function finishGame(){
+
+    gameRunning=false;
+
+
+    questionOverlay.classList.remove(
+        "show"
+    );
+
+
+    const accuracy=
+        totalQuestions
+        ?
+        Math.round(
+            correctAnswers/
+            totalQuestions*
+            100
+        )
+        :
+        0;
+
+
+    document.getElementById(
+        "finishStats"
+    ).innerHTML=`
+
+        ⭐ SCORE FINAL:
+        <strong>
+            ${score}
+        </strong>
+
+        <br>
+
+        🍽️ PEDIDOS ENTREGUES:
+        <strong>
+            ${completedOrders}
+        </strong>
+
+        <br>
+
+        🧠 PERGUNTAS:
+        <strong>
+            ${totalQuestions}
+        </strong>
+
+        <br>
+
+        ✓ ACERTOS:
+        <strong>
+            ${correctAnswers}
+        </strong>
+
+        <br>
+
+        🎯 PRECISÃO:
+        <strong>
+            ${accuracy}%
+        </strong>
+
+        <br><br>
+
+        👨‍🍳 + 🧑‍🍽️ + 🧑‍🍽️ + 🧑‍🍽️ + 🧑‍🍽️
+        <br>
+        <strong>
+            TEAMWORK MAKES THE DREAM WORK!
+        </strong>
+
+    `;
+
+
+    finishScreen.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        const gameKeys=[
+
+            "w","a","s","d",
+
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+
+            "i","j","k","l",
+
+            "t","f","g","h",
+
+            "8","4","5","6",
+
+            "q",
+            "Enter",
+            "o",
+            "r",
+            "u"
+
+        ];
+
+
+        if(
+            gameKeys.includes(
+                event.key
+            )
+        ){
+
+            event.preventDefault();
+
+        }
+
+
+        keys[event.key]=true;
+
+
+        if(event.repeat)
+            return;
+
+
+        for(let id=1;id<=5;id++){
+
+            if(
+                event.key===
+                players[id].keys.action
+            ){
+
+                actionPlayer(id);
+
+            }
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    event=>{
+
+        keys[event.key]=false;
+
+    }
+);
+
+
+/* =========================================================
+   QUESTION ENTER
+========================================================= */
+
+answerButton.addEventListener(
+    "click",
+    submitAnswer
+);
+
+
+answerInput.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key==="Enter"){
+
+            event.preventDefault();
+
+            submitAnswer();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document
+    .getElementById(
+        "startButton"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            startScreen.style.display=
+                "none";
+
+            finishScreen.classList.remove(
+                "show"
+            );
+
+
+            phase=1;
+
+            score=0;
+
+            completedOrders=0;
+
+            totalOrders=0;
+
+            correctAnswers=0;
+
+            totalQuestions=0;
+
+            orders=[];
+
+            customers=[];
+
+            orderCounter=0;
+
+
+            scoreEl.textContent=
+                "0";
+
+
+            phaseNumber.textContent=
+                "1";
+
+            phaseName.textContent=
+                phases[0].name;
+
+            phaseObjective.textContent=
+                phases[0].objective;
+
+
+            document
+                .querySelectorAll(
+                    ".customer"
+                )
+                .forEach(
+                    el=>el.remove()
+                );
+
+
+            gameRunning=true;
+
+
+            createPlayers();
+
+            renderOrders();
+
+            setObjective(
+                phases[0].objective
+            );
+
+
+            createMoreOrders();
+
+        }
+    );
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+document
+    .getElementById(
+        "restartButton"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            finishScreen.classList.remove(
+                "show"
+            );
+
+
+            document
+                .querySelectorAll(
+                    ".customer"
+                )
+                .forEach(
+                    el=>el.remove()
+                );
+
+
+            phase=1;
+
+            score=0;
+
+            completedOrders=0;
+
+            totalOrders=0;
+
+            correctAnswers=0;
+
+            totalQuestions=0;
+
+            orders=[];
+
+            customers=[];
+
+            orderCounter=0;
+
+
+            scoreEl.textContent=
+                "0";
+
+
+            gameRunning=true;
+
+
+            createPlayers();
+
+            renderOrders();
+
+            setObjective(
+                phases[0].objective
+            );
+
+
+            createMoreOrders();
+
+        }
+    );
+
+
+/* =========================================================
+   LOOP
+========================================================= */
+
+function loop(){
+
+    if(gameRunning){
+
+        updateMovement();
+
+    }
+
+
+    requestAnimationFrame(
+        loop
+    );
+
+}
+
+
+createPlayers();
+
+loop();
+
+</script>
+
+</div>
+
+</body>
+</html>

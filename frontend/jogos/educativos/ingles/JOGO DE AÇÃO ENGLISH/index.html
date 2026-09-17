@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Battle</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#070b14;
+    color:white;
+    overflow:hidden;
+}
+
+button,
+input{
+    font-family:inherit;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 30%, #24375a 0%, #111a2d 35%, #070b14 75%);
+}
+
+/* =========================================================
+   FUNDO
+========================================================= */
+
+.arena{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.sky-glow{
+    position:absolute;
+    width:700px;
+    height:700px;
+    border-radius:50%;
+    background:rgba(0,180,255,.08);
+    left:50%;
+    top:-350px;
+    transform:translateX(-50%);
+    filter:blur(30px);
+}
+
+.moon{
+    position:absolute;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:#dceeff;
+    box-shadow:0 0 50px rgba(190,230,255,.4);
+    right:10%;
+    top:10%;
+    opacity:.8;
+}
+
+.stars{
+    position:absolute;
+    inset:0;
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1px);
+    background-size:90px 90px, 140px 140px;
+    background-position:10px 20px, 50px 80px;
+    opacity:.25;
+}
+
+.floor{
+    position:absolute;
+    left:-10%;
+    bottom:-18%;
+    width:120%;
+    height:52%;
+    background:
+        linear-gradient(135deg, rgba(0,0,0,.15) 25%, transparent 25%) 0 0/70px 70px,
+        linear-gradient(225deg, rgba(0,0,0,.15) 25%, transparent 25%) 0 0/70px 70px,
+        linear-gradient(#252c3c,#111622);
+    transform:perspective(500px) rotateX(55deg);
+    transform-origin:center top;
+    border-top:3px solid #374157;
+}
+
+.floor::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,.55) 80%);
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+.hud{
+    position:absolute;
+    z-index:30;
+    left:0;
+    top:0;
+    width:100%;
+    padding:20px 28px;
+    display:flex;
+    justify-content:space-between;
+    pointer-events:none;
+}
+
+.status{
+    width:330px;
+}
+
+.name{
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    margin-bottom:7px;
+    font-size:14px;
+}
+
+.bar{
+    height:20px;
+    background:#151b29;
+    border:2px solid #414b62;
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 0 12px rgba(0,0,0,.4);
+}
+
+.bar-inner{
+    height:100%;
+    transition:width .25s ease;
+}
+
+.player-hp{
+    background:linear-gradient(90deg,#16d889,#43ffb0);
+    width:100%;
+}
+
+.enemy-hp{
+    background:linear-gradient(90deg,#ff3131,#ff7a43);
+    width:100%;
+}
+
+.hud-center{
+    text-align:center;
+}
+
+.title-mini{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:3px;
+    color:#61d9ff;
+    text-shadow:0 0 15px rgba(97,217,255,.5);
+}
+
+.level{
+    font-size:13px;
+    color:#aab5c9;
+    margin-top:4px;
+}
+
+.combo{
+    margin-top:12px;
+    padding:7px 15px;
+    border-radius:20px;
+    background:rgba(255,190,50,.1);
+    border:1px solid rgba(255,190,50,.35);
+    color:#ffd15c;
+    font-weight:bold;
+}
+
+/* =========================================================
+   PERSONAGENS
+========================================================= */
+
+.character{
+    position:absolute;
+    z-index:10;
+    bottom:27%;
+    width:180px;
+    height:240px;
+}
+
+.player{
+    left:16%;
+}
+
+.enemy{
+    right:16%;
+}
+
+/* personagem */
+.body{
+    position:absolute;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%);
+    width:75px;
+    height:105px;
+    background:linear-gradient(90deg,#28344f,#4c648b,#26324b);
+    border-radius:25px 25px 15px 15px;
+    border:2px solid #6d82a6;
+}
+
+.head{
+    position:absolute;
+    left:50%;
+    top:-48px;
+    transform:translateX(-50%);
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:#d79b73;
+    border:3px solid #6d82a6;
+}
+
+.hair{
+    position:absolute;
+    left:50%;
+    top:-5px;
+    transform:translateX(-50%);
+    width:65px;
+    height:28px;
+    border-radius:35px 35px 10px 10px;
+    background:#182033;
+}
+
+.eye{
+    position:absolute;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#10151f;
+    top:28px;
+}
+
+.eye.left{
+    left:16px;
+}
+
+.eye.right{
+    right:16px;
+}
+
+.arm{
+    position:absolute;
+    width:24px;
+    height:80px;
+    background:#34425f;
+    border-radius:15px;
+    top:20px;
+}
+
+.arm.left{
+    left:-18px;
+    transform:rotate(15deg);
+}
+
+.arm.right{
+    right:-18px;
+    transform:rotate(-20deg);
+}
+
+.leg{
+    position:absolute;
+    width:28px;
+    height:75px;
+    background:#1a2438;
+    border-radius:10px;
+    bottom:-58px;
+}
+
+.leg.left{
+    left:10px;
+}
+
+.leg.right{
+    right:10px;
+}
+
+.sword{
+    position:absolute;
+    width:15px;
+    height:125px;
+    background:linear-gradient(90deg,#b9d8ff,#ffffff,#7da9df);
+    border-radius:8px;
+    right:-72px;
+    top:5px;
+    transform:rotate(30deg);
+    box-shadow:0 0 15px rgba(150,210,255,.5);
+}
+
+.sword::after{
+    content:"";
+    position:absolute;
+    width:45px;
+    height:10px;
+    background:#c79344;
+    left:-15px;
+    bottom:15px;
+    border-radius:5px;
+}
+
+.enemy .body{
+    background:linear-gradient(90deg,#481d31,#8d2d3f,#3d1729);
+    border-color:#c84b62;
+}
+
+.enemy .head{
+    background:#b96e62;
+    border-color:#c84b62;
+}
+
+.enemy .hair{
+    background:#24111a;
+}
+
+.enemy .arm{
+    background:#552236;
+}
+
+.enemy .leg{
+    background:#2d1626;
+}
+
+.enemy .sword{
+    left:-70px;
+    right:auto;
+    transform:rotate(-30deg);
+    background:linear-gradient(90deg,#ff6c6c,#fff,#bd3434);
+}
+
+/* sombras */
+
+.shadow{
+    position:absolute;
+    bottom:0;
+    left:50%;
+    width:160px;
+    height:35px;
+    background:rgba(0,0,0,.5);
+    border-radius:50%;
+    transform:translateX(-50%);
+    filter:blur(7px);
+}
+
+/* =========================================================
+   COMBATE
+========================================================= */
+
+.attack-player{
+    animation:attackPlayer .35s ease;
+}
+
+.attack-enemy{
+    animation:attackEnemy .35s ease;
+}
+
+@keyframes attackPlayer{
+    0%{transform:translateX(0)}
+    45%{transform:translateX(130px)}
+    100%{transform:translateX(0)}
+}
+
+@keyframes attackEnemy{
+    0%{transform:translateX(0)}
+    45%{transform:translateX(-130px)}
+    100%{transform:translateX(0)}
+}
+
+.hit{
+    animation:hit .35s ease;
+}
+
+@keyframes hit{
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-12px)}
+    40%{transform:translateX(12px)}
+    60%{transform:translateX(-8px)}
+    80%{transform:translateX(8px)}
+}
+
+.damage{
+    position:absolute;
+    z-index:50;
+    font-size:32px;
+    font-weight:900;
+    color:#fff;
+    text-shadow:
+        0 0 5px #ff5b4d,
+        0 0 15px #ff2727;
+    animation:damageFloat 1s forwards;
+    pointer-events:none;
+}
+
+@keyframes damageFloat{
+    0%{
+        opacity:1;
+        transform:translateY(0) scale(.7);
+    }
+    100%{
+        opacity:0;
+        transform:translateY(-90px) scale(1.25);
+    }
+}
+
+.critical{
+    color:#ffe66d;
+    font-size:42px;
+}
+
+/* =========================================================
+   PAINEL DA PERGUNTA
+========================================================= */
+
+.question-panel{
+    position:absolute;
+    z-index:40;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(720px,92vw);
+    background:rgba(11,17,30,.94);
+    border:2px solid #3d526f;
+    border-radius:20px;
+    padding:18px 20px 20px;
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.55),
+        0 0 30px rgba(0,170,255,.08);
+}
+
+.question-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.category{
+    color:#65d9ff;
+    font-weight:bold;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.timer{
+    font-weight:900;
+    font-size:18px;
+    color:#ffd45c;
+}
+
+.timer-bar{
+    width:100%;
+    height:6px;
+    background:#20283a;
+    border-radius:5px;
+    margin-bottom:15px;
+    overflow:hidden;
+}
+
+.timer-progress{
+    height:100%;
+    width:100%;
+    background:#52dfff;
+    transition:width .05s linear;
+}
+
+.question{
+    font-size:24px;
+    font-weight:800;
+    text-align:center;
+    line-height:1.3;
+    margin-bottom:15px;
+}
+
+.answer-row{
+    display:flex;
+    gap:10px;
+}
+
+.answer{
+    flex:1;
+    height:52px;
+    border-radius:12px;
+    border:2px solid #3c4d68;
+    outline:none;
+    background:#080d18;
+    color:white;
+    padding:0 16px;
+    font-size:18px;
+    transition:.2s;
+}
+
+.answer:focus{
+    border-color:#59d8ff;
+    box-shadow:0 0 15px rgba(89,216,255,.15);
+}
+
+.attack-btn{
+    width:150px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#008dff,#00c6ff);
+    color:white;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 5px 20px rgba(0,150,255,.25);
+    transition:.15s;
+}
+
+.attack-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+.attack-btn:active{
+    transform:scale(.96);
+}
+
+.feedback{
+    min-height:24px;
+    text-align:center;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.feedback.correct{
+    color:#48f0a1;
+}
+
+.feedback.wrong{
+    color:#ff6565;
+}
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    z-index:100;
+    background:rgba(3,6,12,.88);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    backdrop-filter:blur(7px);
+}
+
+.modal{
+    width:min(600px,90vw);
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    background:linear-gradient(145deg,#111b2f,#080d18);
+    border:1px solid #38506e;
+    box-shadow:0 20px 80px rgba(0,0,0,.7);
+}
+
+.modal h1{
+    font-size:48px;
+    margin-bottom:10px;
+    color:#62dcff;
+    text-shadow:0 0 25px rgba(98,220,255,.3);
+}
+
+.modal h2{
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.modal p{
+    color:#aab5c8;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.start-btn{
+    padding:15px 35px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00a8ff,#00e0ff);
+    color:white;
+    font-size:18px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.start-btn:hover{
+    transform:scale(1.04);
+}
+
+.instructions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:25px 0;
+}
+
+.info{
+    padding:12px;
+    border-radius:10px;
+    background:#0d1422;
+    border:1px solid #28364c;
+}
+
+.info strong{
+    display:block;
+    color:#61d9ff;
+    margin-bottom:5px;
+}
+
+.info span{
+    font-size:12px;
+    color:#94a2b9;
+}
+
+/* =========================================================
+   RESULTADOS
+========================================================= */
+
+.result{
+    display:none;
+}
+
+.result.show{
+    display:block;
+}
+
+.gameover{
+    display:none;
+}
+
+.gameover.show{
+    display:block;
+}
+
+#battleUI.hidden{
+    display:none;
+}
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width:800px){
+
+    .status{
+        width:220px;
+    }
+
+    .character{
+        transform:scale(.75);
+        bottom:30%;
+    }
+
+    .player{
+        left:5%;
+    }
+
+    .enemy{
+        right:5%;
+    }
+
+    .question{
+        font-size:18px;
+    }
+
+    .instructions{
+        grid-template-columns:1fr;
+    }
+
+    .modal h1{
+        font-size:35px;
+    }
+}
+
+@media(max-width:550px){
+
+    .hud{
+        padding:10px;
+    }
+
+    .status{
+        width:150px;
+    }
+
+    .hud-center{
+        display:none;
+    }
+
+    .question-panel{
+        bottom:8px;
+        padding:12px;
+    }
+
+    .answer-row{
+        flex-direction:column;
+    }
+
+    .attack-btn{
+        width:100%;
+        height:48px;
+    }
+
+    .character{
+        bottom:34%;
+        transform:scale(.55);
+    }
+
+    .player{
+        left:-5%;
+    }
+
+    .enemy{
+        right:-5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div class="arena">
+        <div class="sky-glow"></div>
+        <div class="moon"></div>
+        <div class="stars"></div>
+        <div class="floor"></div>
+    </div>
+
+    <!-- =====================================================
+         HUD
+    ====================================================== -->
+
+    <div class="hud" id="battleUI">
+
+        <div class="status">
+
+            <div class="name">
+                <span>⚔️ HERO</span>
+                <span id="playerHPText">100 / 100</span>
+            </div>
+
+            <div class="bar">
+                <div
+                    class="bar-inner player-hp"
+                    id="playerHP"
+                ></div>
+            </div>
+
+        </div>
+
+        <div class="hud-center">
+
+            <div class="title-mini">
+                ENGLISH BATTLE
+            </div>
+
+            <div class="level">
+                COMBATE • NÍVEL <span id="level">1</span>
+            </div>
+
+            <div class="combo">
+                🔥 COMBO x<span id="combo">0</span>
+            </div>
+
+        </div>
+
+        <div class="status">
+
+            <div class="name">
+                <span>👹 SHADOW</span>
+                <span id="enemyHPText">100 / 100</span>
+            </div>
+
+            <div class="bar">
+                <div
+                    class="bar-inner enemy-hp"
+                    id="enemyHP"
+                ></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         PERSONAGEM
+    ====================================================== -->
+
+    <div
+        class="character player"
+        id="player"
+    >
+
+        <div class="shadow"></div>
+
+        <div class="body">
+
+            <div class="head">
+                <div class="hair"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+            </div>
+
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+
+            <div class="sword"></div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         INIMIGO
+    ====================================================== -->
+
+    <div
+        class="character enemy"
+        id="enemy"
+    >
+
+        <div class="shadow"></div>
+
+        <div class="body">
+
+            <div class="head">
+                <div class="hair"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+            </div>
+
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+
+            <div class="sword"></div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         PAINEL
+    ====================================================== -->
+
+    <div
+        class="question-panel"
+        id="questionPanel"
+    >
+
+        <div class="question-top">
+
+            <span
+                class="category"
+                id="category"
+            >
+                VOCABULARY
+            </span>
+
+            <span
+                class="timer"
+                id="timer"
+            >
+                10.0s
+            </span>
+
+        </div>
+
+        <div class="timer-bar">
+            <div
+                class="timer-progress"
+                id="timerProgress"
+            ></div>
+        </div>
+
+        <div
+            class="question"
+            id="question"
+        >
+            Loading...
+        </div>
+
+        <div class="answer-row">
+
+            <input
+                type="text"
+                class="answer"
+                id="answer"
+                autocomplete="off"
+                placeholder="Digite sua resposta em inglês..."
+            >
+
+            <button
+                class="attack-btn"
+                id="attackBtn"
+            >
+                ⚔️ ATACAR
+            </button>
+
+        </div>
+
+        <div
+            class="feedback"
+            id="feedback"
+        ></div>
+
+    </div>
+
+    <!-- =====================================================
+         TELA INICIAL
+    ====================================================== -->
+
+    <div
+        class="overlay"
+        id="startScreen"
+    >
+
+        <div class="modal">
+
+            <h1>⚔️ ENGLISH BATTLE</h1>
+
+            <p>
+                Você está diante de um inimigo poderoso.
+                Para atacá-lo, você precisa dominar o inglês.
+                <strong>Quanto mais rápido responder,
+                maior será o dano!</strong>
+            </p>
+
+            <div class="instructions">
+
+                <div class="info">
+                    <strong>⚡ VELOCIDADE</strong>
+                    <span>Responda rapidamente para causar mais dano.</span>
+                </div>
+
+                <div class="info">
+                    <strong>🔥 COMBO</strong>
+                    <span>Acertos consecutivos aumentam seu poder.</span>
+                </div>
+
+                <div class="info">
+                    <strong>💀 ERRO</strong>
+                    <span>Uma resposta errada permite que o inimigo ataque.</span>
+                </div>
+
+            </div>
+
+            <button
+                class="start-btn"
+                id="startBtn"
+            >
+                ⚔️ INICIAR BATALHA
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         GAME OVER
+    ====================================================== -->
+
+    <div
+        class="overlay gameover"
+        id="gameOverScreen"
+    >
+
+        <div class="modal">
+
+            <div id="gameOverContent">
+
+                <h1 id="resultTitle">
+                    VITÓRIA!
+                </h1>
+
+                <h2 id="resultMessage">
+                    Enemy defeated!
+                </h2>
+
+                <p id="resultStats"></p>
+
+                <button
+                    class="start-btn"
+                    id="restartBtn"
+                >
+                    🔄 JOGAR NOVAMENTE
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   ENGLISH BATTLE
+   SISTEMA PRINCIPAL
+========================================================= */
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const player = document.getElementById("player");
+const enemy = document.getElementById("enemy");
+
+const playerHPBar = document.getElementById("playerHP");
+const enemyHPBar = document.getElementById("enemyHP");
+
+const playerHPText = document.getElementById("playerHPText");
+const enemyHPText = document.getElementById("enemyHPText");
+
+const question = document.getElementById("question");
+const category = document.getElementById("category");
+
+const answer = document.getElementById("answer");
+const attackBtn = document.getElementById("attackBtn");
+
+const feedback = document.getElementById("feedback");
+
+const timerElement = document.getElementById("timer");
+const timerProgress = document.getElementById("timerProgress");
+
+const comboElement = document.getElementById("combo");
+const levelElement = document.getElementById("level");
+
+const startScreen = document.getElementById("startScreen");
+const gameOverScreen = document.getElementById("gameOverScreen");
+
+const startBtn = document.getElementById("startBtn");
+const restartBtn = document.getElementById("restartBtn");
+
+const resultTitle = document.getElementById("resultTitle");
+const resultMessage = document.getElementById("resultMessage");
+const resultStats = document.getElementById("resultStats");
+
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+const MAX_PLAYER_HP = 100;
+
+let playerHP = MAX_PLAYER_HP;
+let enemyHP = 100;
+
+let combo = 0;
+let level = 1;
+
+let questionIndex = 0;
+
+let totalQuestions = 0;
+let correctAnswers = 0;
+let wrongAnswers = 0;
+
+let currentQuestion = null;
+
+let timer = null;
+
+let timeLimit = 10;
+let timeLeft = 10;
+
+let gameRunning = false;
+
+
+/* =========================================================
+   BANCO DE PERGUNTAS
+========================================================= */
+
+const questions = [
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'casa'?",
+        answers:["house"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'água'?",
+        answers:["water"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'livro'?",
+        answers:["book"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'cachorro'?",
+        answers:["dog"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'amigo'?",
+        answers:["friend"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'escola'?",
+        answers:["school"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'comida'?",
+        answers:["food"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the English word for 'família'?",
+        answers:["family"],
+        difficulty:1
+    },
+
+    {
+        category:"Translation",
+        question:"Translate: 'I am happy.'",
+        answers:["eu estou feliz","eu sou feliz"],
+        difficulty:2
+    },
+
+    {
+        category:"Translation",
+        question:"Translate: 'She is my sister.'",
+        answers:["ela é minha irmã"],
+        difficulty:2
+    },
+
+    {
+        category:"Translation",
+        question:"Translate: 'They are students.'",
+        answers:["eles são estudantes","elas são estudantes"],
+        difficulty:2
+    },
+
+    {
+        category:"Translation",
+        question:"Translate: 'I like English.'",
+        answers:["eu gosto de inglês","eu gosto de ingles"],
+        difficulty:2
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'I ___ a student.'",
+        answers:["am"],
+        difficulty:1
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'She ___ my friend.'",
+        answers:["is"],
+        difficulty:1
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'They ___ happy.'",
+        answers:["are"],
+        difficulty:1
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'He ___ football every day.'",
+        answers:["plays"],
+        difficulty:2
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'I ___ to school every morning.'",
+        answers:["go"],
+        difficulty:1
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'She ___ English.'",
+        answers:["speaks"],
+        difficulty:2
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the opposite of 'big'?",
+        answers:["small"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the opposite of 'hot'?",
+        answers:["cold"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the opposite of 'fast'?",
+        answers:["slow"],
+        difficulty:1
+    },
+
+    {
+        category:"Vocabulary",
+        question:"What is the opposite of 'happy'?",
+        answers:["sad"],
+        difficulty:1
+    },
+
+    {
+        category:"Grammar",
+        question:"Choose the correct word: 'There ___ a book on the table.'",
+        answers:["is"],
+        difficulty:1
+    },
+
+    {
+        category:"Grammar",
+        question:"Choose the correct word: 'There ___ two students here.'",
+        answers:["are"],
+        difficulty:1
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'Yesterday I ___ football.'",
+        answers:["played"],
+        difficulty:2
+    },
+
+    {
+        category:"Grammar",
+        question:"Complete: 'She ___ to the park yesterday.'",
+        answers:["went"],
+        difficulty:2
+    }
+
+];
+
+
+/* =========================================================
+   NORMALIZAÇÃO
+========================================================= */
+
+function normalize(text){
+
+    return text
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[.,!?']/g,"");
+
+}
+
+
+/* =========================================================
+   NOVA PERGUNTA
+========================================================= */
+
+function nextQuestion(){
+
+    if(!gameRunning) return;
+
+    clearInterval(timer);
+
+    let availableQuestions =
+        questions.filter((q,index)=>index !== questionIndex);
+
+    if(availableQuestions.length === 0){
+
+        questionIndex = -1;
+
+    }
+
+    let randomIndex =
+        Math.floor(Math.random() * questions.length);
+
+    currentQuestion = questions[randomIndex];
+
+    questionIndex = randomIndex;
+
+    category.textContent =
+        currentQuestion.category;
+
+    question.textContent =
+        currentQuestion.question;
+
+    answer.value = "";
+
+    feedback.textContent = "";
+    feedback.className = "feedback";
+
+    startTimer();
+
+    setTimeout(()=>{
+        answer.focus();
+    },50);
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    clearInterval(timer);
+
+    timeLimit =
+        Math.max(
+            5,
+            10 - ((level - 1) * 0.5)
+        );
+
+    timeLeft = timeLimit;
+
+    updateTimerUI();
+
+    const startTime = performance.now();
+
+    timer = setInterval(()=>{
+
+        if(!gameRunning){
+
+            clearInterval(timer);
+            return;
+
+        }
+
+        const elapsed =
+            (performance.now() - startTime) / 1000;
+
+        timeLeft =
+            Math.max(0,timeLimit - elapsed);
+
+        updateTimerUI();
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            timeoutAnswer();
+
+        }
+
+    },50);
+
+}
+
+
+/* =========================================================
+   TIMER UI
+========================================================= */
+
+function updateTimerUI(){
+
+    timerElement.textContent =
+        timeLeft.toFixed(1) + "s";
+
+    const percent =
+        (timeLeft / timeLimit) * 100;
+
+    timerProgress.style.width =
+        percent + "%";
+
+    if(percent <= 30){
+
+        timerProgress.style.background =
+            "#ff4d5f";
+
+        timerElement.style.color =
+            "#ff6a78";
+
+    }else{
+
+        timerProgress.style.background =
+            "#52dfff";
+
+        timerElement.style.color =
+            "#ffd45c";
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPOSTA
+========================================================= */
+
+function submitAnswer(){
+
+    if(!gameRunning) return;
+
+    clearInterval(timer);
+
+    const userAnswer =
+        normalize(answer.value);
+
+    if(!userAnswer){
+
+        feedback.textContent =
+            "Digite uma resposta!";
+
+        feedback.className =
+            "feedback wrong";
+
+        startTimer();
+
+        return;
+
+    }
+
+    const correct =
+        currentQuestion.answers.some(
+            possible =>
+                normalize(possible) === userAnswer
+        );
+
+    totalQuestions++;
+
+    if(correct){
+
+        correctAnswer();
+
+    }else{
+
+        wrongAnswer();
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPOSTA CORRETA
+========================================================= */
+
+function correctAnswer(){
+
+    correctAnswers++;
+
+    combo++;
+
+    comboElement.textContent =
+        combo;
+
+    /* =====================================
+       CÁLCULO DO DANO
+    ===================================== */
+
+    const speedRatio =
+        timeLeft / timeLimit;
+
+    let baseDamage =
+        10 + (currentQuestion.difficulty * 3);
+
+    let speedBonus =
+        Math.round(speedRatio * 20);
+
+    let comboBonus =
+        Math.min(combo * 2,20);
+
+    let damage =
+        baseDamage +
+        speedBonus +
+        comboBonus;
+
+    let critical = false;
+
+    /*
+       Se responder muito rápido,
+       pode causar crítico.
+    */
+
+    if(speedRatio >= .8){
+
+        damage += 10;
+        critical = true;
+
+    }
+
+    damage =
+        Math.max(1,Math.round(damage));
+
+    enemyHP =
+        Math.max(0,enemyHP - damage);
+
+    updateBars();
+
+    feedback.textContent =
+        critical
+        ? "⚡ CRITICAL HIT! Excelente!"
+        : "✓ CORRETO! Ataque realizado!";
+
+    feedback.className =
+        "feedback correct";
+
+    playerAttack();
+
+    showDamage(
+        damage,
+        critical
+    );
+
+    if(enemyHP <= 0){
+
+        setTimeout(()=>{
+            victory();
+        },650);
+
+        return;
+
+    }
+
+    /*
+       A cada 4 acertos,
+       aumenta o nível.
+    */
+
+    if(correctAnswers % 4 === 0){
+
+        level++;
+
+        levelElement.textContent =
+            level;
+
+    }
+
+    setTimeout(()=>{
+        nextQuestion();
+    },700);
+
+}
+
+
+/* =========================================================
+   RESPOSTA ERRADA
+========================================================= */
+
+function wrongAnswer(){
+
+    wrongAnswers++;
+
+    combo = 0;
+
+    comboElement.textContent =
+        combo;
+
+    feedback.textContent =
+        "✗ ERRADO! A resposta era: " +
+        currentQuestion.answers[0];
+
+    feedback.className =
+        "feedback wrong";
+
+    enemyAttack();
+
+    setTimeout(()=>{
+
+        playerHP =
+            Math.max(
+                0,
+                playerHP - (8 + level * 2)
+            );
+
+        updateBars();
+
+        if(playerHP <= 0){
+
+            defeat();
+
+        }else{
+
+            setTimeout(()=>{
+                nextQuestion();
+            },500);
+
+        }
+
+    },350);
+
+}
+
+
+/* =========================================================
+   TEMPO ESGOTADO
+========================================================= */
+
+function timeoutAnswer(){
+
+    if(!gameRunning) return;
+
+    totalQuestions++;
+
+    wrongAnswers++;
+
+    combo = 0;
+
+    comboElement.textContent =
+        combo;
+
+    feedback.textContent =
+        "⌛ TEMPO ESGOTADO!";
+
+    feedback.className =
+        "feedback wrong";
+
+    enemyAttack();
+
+    setTimeout(()=>{
+
+        const damage =
+            10 + level * 2;
+
+        playerHP =
+            Math.max(
+                0,
+                playerHP - damage
+            );
+
+        updateBars();
+
+        if(playerHP <= 0){
+
+            defeat();
+
+        }else{
+
+            setTimeout(()=>{
+                nextQuestion();
+            },500);
+
+        }
+
+    },400);
+
+}
+
+
+/* =========================================================
+   ATAQUE DO PLAYER
+========================================================= */
+
+function playerAttack(){
+
+    player.classList.remove(
+        "attack-player"
+    );
+
+    void player.offsetWidth;
+
+    player.classList.add(
+        "attack-player"
+    );
+
+    enemy.classList.remove("hit");
+
+    void enemy.offsetWidth;
+
+    enemy.classList.add("hit");
+
+}
+
+
+/* =========================================================
+   ATAQUE DO INIMIGO
+========================================================= */
+
+function enemyAttack(){
+
+    enemy.classList.remove(
+        "attack-enemy"
+    );
+
+    void enemy.offsetWidth;
+
+    enemy.classList.add(
+        "attack-enemy"
+    );
+
+    player.classList.remove("hit");
+
+    void player.offsetWidth;
+
+    player.classList.add("hit");
+
+}
+
+
+/* =========================================================
+   NÚMERO DE DANO
+========================================================= */
+
+function showDamage(
+    damage,
+    critical=false
+){
+
+    const element =
+        document.createElement("div");
+
+    element.className =
+        "damage" +
+        (critical ? " critical" : "");
+
+    element.textContent =
+        critical
+        ? "CRIT! -" + damage
+        : "-" + damage;
+
+    const rect =
+        enemy.getBoundingClientRect();
+
+    element.style.left =
+        (rect.left + rect.width / 2) + "px";
+
+    element.style.top =
+        (rect.top + 30) + "px";
+
+    document.body.appendChild(element);
+
+    setTimeout(()=>{
+        element.remove();
+    },1000);
+
+}
+
+
+/* =========================================================
+   BARRAS
+========================================================= */
+
+function updateBars(){
+
+    const playerPercent =
+        (playerHP / MAX_PLAYER_HP) * 100;
+
+    const enemyPercent =
+        enemyHP;
+
+    playerHPBar.style.width =
+        playerPercent + "%";
+
+    enemyHPBar.style.width =
+        enemyPercent + "%";
+
+    playerHPText.textContent =
+        playerHP + " / " + MAX_PLAYER_HP;
+
+    enemyHPText.textContent =
+        enemyHP + " / 100";
+
+}
+
+
+/* =========================================================
+   VITÓRIA
+========================================================= */
+
+function victory(){
+
+    gameRunning = false;
+
+    clearInterval(timer);
+
+    resultTitle.textContent =
+        "🏆 VITÓRIA!";
+
+    resultTitle.style.color =
+        "#55f2a4";
+
+    resultMessage.textContent =
+        "Você derrotou o Shadow!";
+
+    const accuracy =
+        totalQuestions > 0
+        ? Math.round(
+            (correctAnswers / totalQuestions) * 100
+          )
+        : 0;
+
+    resultStats.innerHTML = `
+        <strong>📊 RESULTADO DA BATALHA</strong><br><br>
+
+        ⚔️ Perguntas: ${totalQuestions}<br>
+        ✓ Acertos: ${correctAnswers}<br>
+        ✗ Erros: ${wrongAnswers}<br>
+        🎯 Precisão: ${accuracy}%<br>
+        🔥 Melhor combo: ${combo}<br>
+        ⭐ Nível alcançado: ${level}
+    `;
+
+    gameOverScreen.classList.add("show");
+
+}
+
+
+/* =========================================================
+   DERROTA
+========================================================= */
+
+function defeat(){
+
+    gameRunning = false;
+
+    clearInterval(timer);
+
+    resultTitle.textContent =
+        "💀 DERROTA";
+
+    resultTitle.style.color =
+        "#ff5668";
+
+    resultMessage.textContent =
+        "O Shadow venceu desta vez...";
+
+    const accuracy =
+        totalQuestions > 0
+        ? Math.round(
+            (correctAnswers / totalQuestions) * 100
+          )
+        : 0;
+
+    resultStats.innerHTML = `
+        <strong>📊 RESULTADO DA BATALHA</strong><br><br>
+
+        ⚔️ Perguntas: ${totalQuestions}<br>
+        ✓ Acertos: ${correctAnswers}<br>
+        ✗ Erros: ${wrongAnswers}<br>
+        🎯 Precisão: ${accuracy}%<br>
+        🔥 Combo final: ${combo}<br>
+        ⭐ Nível alcançado: ${level}
+    `;
+
+    gameOverScreen.classList.add("show");
+
+}
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+function startGame(){
+
+    playerHP =
+        MAX_PLAYER_HP;
+
+    enemyHP =
+        100;
+
+    combo =
+        0;
+
+    level =
+        1;
+
+    questionIndex =
+        -1;
+
+    totalQuestions =
+        0;
+
+    correctAnswers =
+        0;
+
+    wrongAnswers =
+        0;
+
+    gameRunning =
+        true;
+
+    levelElement.textContent =
+        level;
+
+    comboElement.textContent =
+        combo;
+
+    updateBars();
+
+    startScreen.style.display =
+        "none";
+
+    gameOverScreen.classList.remove(
+        "show"
+    );
+
+    nextQuestion();
+
+}
+
+
+/* =========================================================
+   EVENTOS
+========================================================= */
+
+startBtn.addEventListener(
+    "click",
+    startGame
+);
+
+restartBtn.addEventListener(
+    "click",
+    startGame
+);
+
+attackBtn.addEventListener(
+    "click",
+    submitAnswer
+);
+
+
+/* =========================================================
+   ENTER = ATACAR
+========================================================= */
+
+answer.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            submitAnswer();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+updateBars();
+
+</script>
+
+</body>
+</html>

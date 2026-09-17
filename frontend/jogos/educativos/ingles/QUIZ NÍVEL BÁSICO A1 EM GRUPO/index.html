@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ENGLISH BATTLE QUIZ</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top, #172554 0%, #020617 45%, #000 100%);
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button{
+    font-family:inherit;
+}
+
+.screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+/* =========================
+   MENU
+========================= */
+
+#menu{
+    text-align:center;
+}
+
+.logo{
+    font-size:clamp(42px,8vw,90px);
+    font-weight:900;
+    letter-spacing:4px;
+    color:#38bdf8;
+    text-shadow:
+        0 0 10px #38bdf8,
+        0 0 30px #0ea5e9;
+}
+
+.logo span{
+    color:white;
+}
+
+.subtitle{
+    margin-top:10px;
+    color:#94a3b8;
+    font-size:18px;
+    letter-spacing:4px;
+}
+
+.menu-box{
+    width:min(600px,95vw);
+    margin:40px auto 0;
+    background:rgba(15,23,42,.92);
+    border:1px solid #334155;
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+.team-inputs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.team-input{
+    background:#020617;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:18px;
+}
+
+.team-input label{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:8px;
+    font-size:13px;
+    text-transform:uppercase;
+}
+
+.team-input input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #475569;
+    background:#0f172a;
+    color:white;
+    font-size:17px;
+    outline:none;
+}
+
+.team-input input:focus{
+    border-color:#38bdf8;
+}
+
+.info{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.info div{
+    background:#0f172a;
+    border-radius:12px;
+    padding:15px 8px;
+}
+
+.info strong{
+    display:block;
+    color:#38bdf8;
+    font-size:22px;
+}
+
+.info small{
+    color:#94a3b8;
+}
+
+.start-btn{
+    width:100%;
+    padding:18px;
+    border:0;
+    border-radius:14px;
+    background:linear-gradient(135deg,#0ea5e9,#2563eb);
+    color:white;
+    font-size:20px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.start-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(14,165,233,.35);
+}
+
+/* =========================
+   GAME
+========================= */
+
+#game{
+    display:none;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:20px;
+}
+
+.topbar{
+    width:min(1100px,100%);
+    margin:auto;
+}
+
+.scoreboard{
+    display:grid;
+    grid-template-columns:1fr 100px 1fr;
+    gap:12px;
+    align-items:center;
+}
+
+.team-score{
+    background:#0f172a;
+    border:2px solid #334155;
+    border-radius:18px;
+    padding:15px;
+    text-align:center;
+    transition:.3s;
+}
+
+.team-score.active{
+    border-color:#38bdf8;
+    box-shadow:0 0 25px rgba(56,189,248,.25);
+    transform:scale(1.02);
+}
+
+.team-score .name{
+    color:#cbd5e1;
+    font-weight:bold;
+    font-size:16px;
+}
+
+.team-score .points{
+    font-size:38px;
+    font-weight:900;
+    color:#38bdf8;
+}
+
+.vs{
+    text-align:center;
+    font-weight:900;
+    color:#64748b;
+    font-size:20px;
+}
+
+.progress-area{
+    margin-top:15px;
+}
+
+.progress-text{
+    display:flex;
+    justify-content:space-between;
+    color:#94a3b8;
+    font-size:14px;
+    margin-bottom:7px;
+}
+
+.progress{
+    height:8px;
+    background:#1e293b;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#38bdf8,#2563eb);
+    transition:.3s;
+}
+
+/* =========================
+   QUESTION
+========================= */
+
+.question-card{
+    width:min(1000px,100%);
+    margin:35px auto 0;
+    background:rgba(15,23,42,.97);
+    border:1px solid #334155;
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 20px 70px rgba(0,0,0,.4);
+}
+
+.turn{
+    text-align:center;
+    color:#38bdf8;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:14px;
+}
+
+.category{
+    text-align:center;
+    color:#64748b;
+    margin-top:8px;
+    font-size:13px;
+}
+
+.question{
+    text-align:center;
+    font-size:clamp(25px,4vw,42px);
+    font-weight:900;
+    margin:35px 10px;
+    line-height:1.2;
+}
+
+.translation{
+    text-align:center;
+    color:#94a3b8;
+    font-size:16px;
+    margin-top:-20px;
+    margin-bottom:25px;
+}
+
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.answer{
+    min-height:75px;
+    border:2px solid #334155;
+    border-radius:15px;
+    background:#020617;
+    color:white;
+    padding:15px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.answer:hover:not(:disabled){
+    border-color:#38bdf8;
+    background:#0f172a;
+    transform:translateY(-2px);
+}
+
+.answer.correct{
+    background:#14532d;
+    border-color:#22c55e;
+}
+
+.answer.wrong{
+    background:#7f1d1d;
+    border-color:#ef4444;
+}
+
+.answer:disabled{
+    cursor:default;
+}
+
+.timer-box{
+    margin:25px auto 0;
+    width:min(400px,90%);
+}
+
+.timer-text{
+    text-align:center;
+    font-weight:900;
+    color:#facc15;
+    font-size:18px;
+    margin-bottom:7px;
+}
+
+.timer{
+    height:8px;
+    background:#1e293b;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.timer-bar{
+    height:100%;
+    width:100%;
+    background:#22c55e;
+    transition:width 1s linear;
+}
+
+/* =========================
+   FEEDBACK
+========================= */
+
+.feedback{
+    min-height:45px;
+    text-align:center;
+    margin-top:20px;
+    font-weight:bold;
+    font-size:19px;
+}
+
+.next-btn{
+    display:none;
+    margin:10px auto 0;
+    padding:14px 30px;
+    border:0;
+    border-radius:12px;
+    background:#38bdf8;
+    color:#020617;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+#result{
+    display:none;
+    text-align:center;
+}
+
+.result-box{
+    width:min(700px,95vw);
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:25px;
+    padding:40px 25px;
+    box-shadow:0 20px 70px rgba(0,0,0,.5);
+}
+
+.trophy{
+    font-size:70px;
+}
+
+.winner{
+    font-size:42px;
+    font-weight:900;
+    color:#38bdf8;
+    margin:15px 0;
+}
+
+.final-scores{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin:30px 0;
+}
+
+.final-team{
+    background:#020617;
+    border-radius:15px;
+    padding:20px;
+}
+
+.final-team h3{
+    color:#cbd5e1;
+}
+
+.final-points{
+    font-size:45px;
+    font-weight:900;
+    color:#38bdf8;
+    margin-top:5px;
+}
+
+.restart{
+    width:100%;
+    padding:17px;
+    background:#2563eb;
+    color:white;
+    border:0;
+    border-radius:13px;
+    font-weight:900;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:650px){
+
+    .team-inputs{
+        grid-template-columns:1fr;
+    }
+
+    .info{
+        grid-template-columns:1fr;
+    }
+
+    .scoreboard{
+        grid-template-columns:1fr 50px 1fr;
+    }
+
+    .team-score .points{
+        font-size:28px;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    .question-card{
+        padding:20px;
+        margin-top:20px;
+    }
+
+    .question{
+        margin:25px 5px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     MENU
+========================= -->
+
+<section id="menu" class="screen">
+
+    <div>
+
+        <div class="logo">
+            ENGLISH <span>BATTLE</span>
+        </div>
+
+        <div class="subtitle">
+            BASIC QUIZ • 2 GROUPS • 50 QUESTIONS
+        </div>
+
+        <div class="menu-box">
+
+            <div class="team-inputs">
+
+                <div class="team-input">
+                    <label>Grupo 1</label>
+                    <input id="team1Input" value="GRUPO 1">
+                </div>
+
+                <div class="team-input">
+                    <label>Grupo 2</label>
+                    <input id="team2Input" value="GRUPO 2">
+                </div>
+
+            </div>
+
+            <div class="info">
+
+                <div>
+                    <strong>50</strong>
+                    <small>Questões</small>
+                </div>
+
+                <div>
+                    <strong>2</strong>
+                    <small>Grupos</small>
+                </div>
+
+                <div>
+                    <strong>🎲</strong>
+                    <small>Aleatório</small>
+                </div>
+
+            </div>
+
+            <button class="start-btn" onclick="startGame()">
+                🚀 COMEÇAR BATALHA
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     GAME
+========================= -->
+
+<section id="game" class="screen">
+
+    <div class="topbar">
+
+        <div class="scoreboard">
+
+            <div id="score1" class="team-score">
+                <div class="name" id="name1">GRUPO 1</div>
+                <div class="points" id="points1">0</div>
+            </div>
+
+            <div class="vs">
+                VS
+            </div>
+
+            <div id="score2" class="team-score">
+                <div class="name" id="name2">GRUPO 2</div>
+                <div class="points" id="points2">0</div>
+            </div>
+
+        </div>
+
+        <div class="progress-area">
+
+            <div class="progress-text">
+                <span id="questionCounter">Questão 1 de 50</span>
+                <span id="currentTurn">Vez do Grupo 1</span>
+            </div>
+
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <div id="turnLabel" class="turn">
+            VEZ DO GRUPO 1
+        </div>
+
+        <div id="category" class="category">
+            SIMPLE PRESENT
+        </div>
+
+        <div id="question" class="question">
+            I like pizza.
+        </div>
+
+        <div id="translation" class="translation">
+            Escolha a tradução correta.
+        </div>
+
+        <div id="answers" class="answers"></div>
+
+        <div class="timer-box">
+
+            <div id="timerText" class="timer-text">
+                15 segundos
+            </div>
+
+            <div class="timer">
+                <div id="timerBar" class="timer-bar"></div>
+            </div>
+
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">
+            PRÓXIMA QUESTÃO →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     RESULT
+========================= -->
+
+<section id="result" class="screen">
+
+    <div class="result-box">
+
+        <div class="trophy">🏆</div>
+
+        <div>
+            BATALHA ENCERRADA
+        </div>
+
+        <div id="winner" class="winner">
+            VENCEDOR
+        </div>
+
+        <div class="final-scores">
+
+            <div class="final-team">
+                <h3 id="finalName1">GRUPO 1</h3>
+                <div id="finalScore1" class="final-points">0</div>
+                <small>pontos</small>
+            </div>
+
+            <div class="final-team">
+                <h3 id="finalName2">GRUPO 2</h3>
+                <div id="finalScore2" class="final-points">0</div>
+                <small>pontos</small>
+            </div>
+
+        </div>
+
+        <button class="restart" onclick="location.reload()">
+            🔄 NOVA BATALHA
+        </button>
+
+    </div>
+
+</section>
+
+
+<script>
+
+/* ============================================================
+   BANCO DE QUESTÕES
+   NÍVEL: MUITO BÁSICO / INICIANTE
+============================================================ */
+
+const questionBank = [
+
+/* =========================
+   SIMPLE PRESENT
+========================= */
+
+{
+q:"I like pizza.",
+a:["Eu gosto de pizza.","Eu faço pizza.","Eu compro pizza.","Eu vejo pizza."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I play soccer.",
+a:["Eu jogo futebol.","Eu assisto futebol.","Eu compro futebol.","Eu gosto de futebol."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I like music.",
+a:["Eu gosto de música.","Eu canto música.","Eu ouço rádio.","Eu escrevo música."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I like dogs.",
+a:["Eu gosto de cachorros.","Eu tenho cachorros.","Eu vejo cachorros.","Eu compro cachorros."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I like chocolate.",
+a:["Eu gosto de chocolate.","Eu faço chocolate.","Eu compro chocolate.","Eu como chocolate."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I play basketball.",
+a:["Eu jogo basquete.","Eu assisto basquete.","Eu gosto de basquete.","Eu compro uma bola."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I watch TV.",
+a:["Eu assisto TV.","Eu compro uma TV.","Eu conserto a TV.","Eu gosto da TV."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I eat rice.",
+a:["Eu como arroz.","Eu faço arroz.","Eu compro arroz.","Eu gosto de arroz."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I drink water.",
+a:["Eu bebo água.","Eu compro água.","Eu gosto de água.","Eu vejo água."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I study English.",
+a:["Eu estudo inglês.","Eu ensino inglês.","Eu falo inglês.","Eu leio inglês."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I work at school.",
+a:["Eu trabalho na escola.","Eu estudo na escola.","Eu moro na escola.","Eu vou para casa."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I live in Brazil.",
+a:["Eu moro no Brasil.","Eu viajo para o Brasil.","Eu estudo no Brasil.","Eu gosto do Brasil."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I want water.",
+a:["Eu quero água.","Eu bebo água.","Eu compro água.","Eu vejo água."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I have a dog.",
+a:["Eu tenho um cachorro.","Eu gosto de cachorro.","Eu vejo um cachorro.","Eu quero um cachorro."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I have a book.",
+a:["Eu tenho um livro.","Eu leio um livro.","Eu compro um livro.","Eu quero um livro."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I go to school.",
+a:["Eu vou para a escola.","Eu estudo na escola.","Eu moro na escola.","Eu trabalho na escola."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I eat bread.",
+a:["Eu como pão.","Eu compro pão.","Eu faço pão.","Eu gosto de pão."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I watch movies.",
+a:["Eu assisto filmes.","Eu faço filmes.","Eu compro filmes.","Eu gosto de filmes."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I read books.",
+a:["Eu leio livros.","Eu compro livros.","Eu escrevo livros.","Eu tenho livros."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I speak English.",
+a:["Eu falo inglês.","Eu estudo inglês.","Eu escrevo inglês.","Eu ensino inglês."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+/* =========================
+   HE / SHE
+========================= */
+
+{
+q:"She likes pizza.",
+a:["Ela gosta de pizza.","Ela faz pizza.","Ela compra pizza.","Ela come pizza."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He likes soccer.",
+a:["Ele gosta de futebol.","Ele joga futebol.","Ele assiste futebol.","Ele compra futebol."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She plays soccer.",
+a:["Ela joga futebol.","Ela gosta de futebol.","Ela assiste futebol.","Ela compra uma bola."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He plays basketball.",
+a:["Ele joga basquete.","Ele gosta de basquete.","Ele assiste basquete.","Ele compra uma bola."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She likes music.",
+a:["Ela gosta de música.","Ela toca música.","Ela compra música.","Ela escreve música."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He watches TV.",
+a:["Ele assiste TV.","Ele compra TV.","Ele conserta TV.","Ele gosta da TV."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She eats rice.",
+a:["Ela come arroz.","Ela compra arroz.","Ela faz arroz.","Ela gosta de arroz."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He drinks water.",
+a:["Ele bebe água.","Ele compra água.","Ele gosta de água.","Ele vê água."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She studies English.",
+a:["Ela estuda inglês.","Ela fala inglês.","Ela ensina inglês.","Ela escreve inglês."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He works at school.",
+a:["Ele trabalha na escola.","Ele estuda na escola.","Ele mora na escola.","Ele vai para casa."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She has a cat.",
+a:["Ela tem um gato.","Ela gosta de um gato.","Ela vê um gato.","Ela quer um gato."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He has a car.",
+a:["Ele tem um carro.","Ele compra um carro.","Ele dirige um carro.","Ele quer um carro."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+/* =========================
+   VOCABULARY
+========================= */
+
+{
+q:"What is 'book'?",
+a:["Livro","Caneta","Mesa","Casa"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'school'?",
+a:["Escola","Casa","Igreja","Mercado"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'dog'?",
+a:["Cachorro","Gato","Pássaro","Peixe"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'cat'?",
+a:["Gato","Cachorro","Cavalo","Peixe"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'house'?",
+a:["Casa","Escola","Carro","Rua"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'car'?",
+a:["Carro","Casa","Bicicleta","Ônibus"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'water'?",
+a:["Água","Leite","Suco","Café"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'milk'?",
+a:["Leite","Água","Suco","Café"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'food'?",
+a:["Comida","Bebida","Casa","Escola"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'friend'?",
+a:["Amigo","Professor","Irmão","Pai"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'teacher'?",
+a:["Professor","Aluno","Médico","Amigo"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'student'?",
+a:["Aluno","Professor","Médico","Amigo"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'mother'?",
+a:["Mãe","Irmã","Tia","Avó"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'father'?",
+a:["Pai","Irmão","Tio","Avô"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'brother'?",
+a:["Irmão","Pai","Amigo","Primo"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'sister'?",
+a:["Irmã","Mãe","Amiga","Prima"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'red'?",
+a:["Vermelho","Azul","Verde","Amarelo"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'blue'?",
+a:["Azul","Vermelho","Verde","Preto"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'green'?",
+a:["Verde","Azul","Amarelo","Branco"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'black'?",
+a:["Preto","Branco","Azul","Verde"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'white'?",
+a:["Branco","Preto","Amarelo","Vermelho"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'one'?",
+a:["Um","Dois","Três","Quatro"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'two'?",
+a:["Dois","Um","Três","Cinco"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'three'?",
+a:["Três","Dois","Quatro","Cinco"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'five'?",
+a:["Cinco","Quatro","Seis","Sete"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'Monday'?",
+a:["Segunda-feira","Terça-feira","Quarta-feira","Domingo"],
+c:0,
+cat:"VOCABULARY"
+},
+
+{
+q:"What is 'Sunday'?",
+a:["Domingo","Sábado","Segunda-feira","Sexta-feira"],
+c:0,
+cat:"VOCABULARY"
+},
+
+/* =========================
+   VERBOS
+========================= */
+
+{
+q:"What does 'eat' mean?",
+a:["Comer","Beber","Dormir","Correr"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'drink' mean?",
+a:["Beber","Comer","Dormir","Jogar"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'play' mean?",
+a:["Jogar","Comer","Trabalhar","Dormir"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'like' mean?",
+a:["Gostar","Querer","Ter","Ir"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'want' mean?",
+a:["Querer","Gostar","Comer","Ver"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'go' mean?",
+a:["Ir","Ter","Comer","Jogar"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'have' mean?",
+a:["Ter","Ir","Fazer","Comer"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'watch' mean?",
+a:["Assistir","Ler","Escrever","Falar"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'read' mean?",
+a:["Ler","Escrever","Falar","Ouvir"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'write' mean?",
+a:["Escrever","Ler","Falar","Comer"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'work' mean?",
+a:["Trabalhar","Estudar","Jogar","Dormir"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'study' mean?",
+a:["Estudar","Trabalhar","Jogar","Comer"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'sleep' mean?",
+a:["Dormir","Comer","Correr","Ler"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'run' mean?",
+a:["Correr","Andar","Dormir","Jogar"],
+c:0,
+cat:"VERBS"
+},
+
+{
+q:"What does 'walk' mean?",
+a:["Caminhar","Correr","Comer","Nadar"],
+c:0,
+cat:"VERBS"
+},
+
+/* =========================
+   FRASES SIMPLES
+========================= */
+
+{
+q:"Choose the correct sentence:",
+a:["I like pizza.","I likes pizza.","I liking pizza.","I am like pizza."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["I play soccer.","I plays soccer.","I playing soccer.","I am play soccer."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["She likes music.","She like music.","She liking music.","She is like music."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["He plays soccer.","He play soccer.","He playing soccer.","He is play soccer."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["I have a dog.","I has a dog.","I having a dog.","I am have a dog."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["She has a cat.","She have a cat.","She having a cat.","She is have a cat."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["I want water.","I wants water.","I wanting water.","I am want water."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["He wants water.","He want water.","He wanting water.","He is want water."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["I watch TV.","I watches TV.","I watching TV.","I am watch TV."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"Choose the correct sentence:",
+a:["She watches TV.","She watch TV.","She watching TV.","She is watch TV."],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+/* =========================
+   TO BE
+========================= */
+
+{
+q:"I ___ a student.",
+a:["am","is","are","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"She ___ my friend.",
+a:["is","am","are","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"He ___ a teacher.",
+a:["is","am","are","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"We ___ students.",
+a:["are","is","am","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"They ___ friends.",
+a:["are","is","am","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"I ___ happy.",
+a:["am","is","are","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"You ___ my friend.",
+a:["are","is","am","be"],
+c:0,
+cat:"TO BE"
+},
+
+/* =========================
+   ARTICLES
+========================= */
+
+{
+q:"I have ___ book.",
+a:["a","an","the","are"],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"She has ___ apple.",
+a:["an","a","the","is"],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"He has ___ dog.",
+a:["a","an","are","am"],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"I eat ___ orange.",
+a:["an","a","is","are"],
+c:0,
+cat:"ARTICLES"
+},
+
+{
+q:"She has ___ cat.",
+a:["a","an","am","are"],
+c:0,
+cat:"ARTICLES"
+},
+
+/* =========================
+   QUESTIONS
+========================= */
+
+{
+q:"Do you like pizza?",
+a:["Yes, I do.","Yes, I am.","Yes, I is.","Yes, I does."],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Do you play soccer?",
+a:["Yes, I do.","Yes, I am.","Yes, I does.","Yes, I is."],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Do you like music?",
+a:["Yes, I do.","Yes, I am.","Yes, I does.","Yes, I is."],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Does she like pizza?",
+a:["Yes, she does.","Yes, she do.","Yes, she is.","Yes, she are."],
+c:0,
+cat:"QUESTIONS"
+},
+
+{
+q:"Does he play soccer?",
+a:["Yes, he does.","Yes, he do.","Yes, he is.","Yes, he are."],
+c:0,
+cat:"QUESTIONS"
+},
+
+/* =========================
+   MORE EASY SENTENCES
+========================= */
+
+{
+q:"I ___ pizza.",
+a:["like","likes","liking","am like"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ pizza.",
+a:["likes","like","liking","is like"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ soccer.",
+a:["play","plays","playing","am play"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ soccer.",
+a:["plays","play","playing","is play"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ English.",
+a:["study","studies","studying","am study"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ English.",
+a:["studies","study","studying","is study"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ TV.",
+a:["watch","watches","watching","am watch"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ TV.",
+a:["watches","watch","watching","is watch"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ water.",
+a:["drink","drinks","drinking","am drink"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ water.",
+a:["drinks","drink","drinking","is drink"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ to school.",
+a:["go","goes","going","am go"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"He ___ to school.",
+a:["goes","go","going","is go"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ a book.",
+a:["have","has","having","am have"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"She ___ a book.",
+a:["has","have","having","is have"],
+c:0,
+cat:"SIMPLE PRESENT"
+},
+
+{
+q:"I ___ happy.",
+a:["am","is","are","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"They ___ happy.",
+a:["are","is","am","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"He ___ happy.",
+a:["is","are","am","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"We ___ friends.",
+a:["are","is","am","be"],
+c:0,
+cat:"TO BE"
+},
+
+{
+q:"You ___ a student.",
+a:["are","is","am","be"],
+c:0,
+cat:"TO BE"
+}
+
+];
+
+
+/* ============================================================
+   VARIÁVEIS DO JOGO
+============================================================ */
+
+let questions = [];
+let currentQuestion = 0;
+
+let scores = [0,0];
+
+let currentTeam = 0;
+
+let teamNames = ["GRUPO 1","GRUPO 2"];
+
+let timer;
+let timeLeft = 15;
+
+let answered = false;
+
+
+/* ============================================================
+   EMBARALHAR
+============================================================ */
+
+function shuffle(array){
+
+    let arr = [...array];
+
+    for(let i = arr.length - 1; i > 0; i--){
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+
+    }
+
+    return arr;
+}
+
+
+/* ============================================================
+   INICIAR
+============================================================ */
+
+function startGame(){
+
+    teamNames[0] =
+        document.getElementById("team1Input").value.trim()
+        || "GRUPO 1";
+
+    teamNames[1] =
+        document.getElementById("team2Input").value.trim()
+        || "GRUPO 2";
+
+
+    /*
+       Seleciona exatamente 50 questões aleatórias
+       do banco.
+    */
+
+    questions = shuffle(questionBank).slice(0,50);
+
+
+    scores = [0,0];
+
+    currentQuestion = 0;
+
+    currentTeam = 0;
+
+
+    document.getElementById("name1").textContent = teamNames[0];
+    document.getElementById("name2").textContent = teamNames[1];
+
+
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("result").style.display = "none";
+
+    document.getElementById("game").style.display = "flex";
+
+
+    updateScores();
+
+    showQuestion();
+
+}
+
+
+/* ============================================================
+   MOSTRAR QUESTÃO
+============================================================ */
+
+function showQuestion(){
+
+    clearInterval(timer);
+
+    answered = false;
+
+    timeLeft = 15;
+
+
+    const q = questions[currentQuestion];
+
+
+    document.getElementById("questionCounter").textContent =
+        `Questão ${currentQuestion + 1} de 50`;
+
+
+    document.getElementById("currentTurn").textContent =
+        `Vez do ${teamNames[currentTeam]}`;
+
+
+    document.getElementById("turnLabel").textContent =
+        `VEZ DO ${teamNames[currentTeam]}`;
+
+
+    document.getElementById("category").textContent =
+        q.cat;
+
+
+    document.getElementById("question").textContent =
+        q.q;
+
+
+    document.getElementById("translation").textContent =
+        getInstruction(q.cat);
+
+
+    const answers =
+        document.getElementById("answers");
+
+    answers.innerHTML = "";
+
+
+    /*
+       Também embaralhamos as alternativas.
+    */
+
+    const options = q.a.map((text,index)=>({
+        text:text,
+        correct:index === q.c
+    }));
+
+    const shuffledOptions = shuffle(options);
+
+
+    shuffledOptions.forEach(option=>{
+
+        const btn = document.createElement("button");
+
+        btn.className = "answer";
+
+        btn.textContent = option.text;
+
+        btn.dataset.correct =
+            option.correct ? "true" : "false";
+
+        btn.onclick = ()=>checkAnswer(btn);
+
+        answers.appendChild(btn);
+
+    });
+
+
+    document.getElementById("feedback").textContent = "";
+
+    document.getElementById("nextBtn").style.display = "none";
+
+
+    updateScores();
+
+    updateProgress();
+
+    startTimer();
+
+}
+
+
+/* ============================================================
+   INSTRUÇÕES
+============================================================ */
+
+function getInstruction(category){
+
+    if(category === "VOCABULARY"){
+        return "Escolha o significado correto.";
+    }
+
+    if(category === "VERBS"){
+        return "Escolha a tradução correta do verbo.";
+    }
+
+    if(category === "TO BE"){
+        return "Complete a frase corretamente.";
+    }
+
+    if(category === "ARTICLES"){
+        return "Escolha a alternativa correta.";
+    }
+
+    if(category === "QUESTIONS"){
+        return "Escolha a resposta correta.";
+    }
+
+    return "Escolha a alternativa correta.";
+}
+
+
+/* ============================================================
+   TIMER
+============================================================ */
+
+function startTimer(){
+
+    const bar =
+        document.getElementById("timerBar");
+
+    const text =
+        document.getElementById("timerText");
+
+
+    bar.style.width = "100%";
+
+    text.textContent = "15 segundos";
+
+
+    timer = setInterval(()=>{
+
+        timeLeft--;
+
+        text.textContent =
+            `${timeLeft} segundo${timeLeft === 1 ? "" : "s"}`;
+
+
+        bar.style.width =
+            `${(timeLeft / 15) * 100}%`;
+
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            timeExpired();
+
+        }
+
+    },1000);
+
+}
+
+
+/* ============================================================
+   TEMPO ESGOTADO
+============================================================ */
+
+function timeExpired(){
+
+    if(answered) return;
+
+    answered = true;
+
+
+    const buttons =
+        document.querySelectorAll(".answer");
+
+
+    buttons.forEach(btn=>{
+
+        btn.disabled = true;
+
+        if(btn.dataset.correct === "true"){
+            btn.classList.add("correct");
+        }
+
+    });
+
+
+    document.getElementById("feedback").innerHTML =
+        "⏰ <span style='color:#facc15'>TEMPO ESGOTADO!</span>";
+
+
+    document.getElementById("nextBtn").style.display =
+        "block";
+
+}
+
+
+/* ============================================================
+   RESPOSTA
+============================================================ */
+
+function checkAnswer(button){
+
+    if(answered) return;
+
+    answered = true;
+
+    clearInterval(timer);
+
+
+    const correct =
+        button.dataset.correct === "true";
+
+
+    const buttons =
+        document.querySelectorAll(".answer");
+
+
+    buttons.forEach(btn=>{
+
+        btn.disabled = true;
+
+        if(btn.dataset.correct === "true"){
+            btn.classList.add("correct");
+        }
+
+    });
+
+
+    if(correct){
+
+        button.classList.add("correct");
+
+        scores[currentTeam]++;
+
+        document.getElementById("feedback").innerHTML =
+            `🎉 CORRETO! <span style="color:#22c55e">${teamNames[currentTeam]} +1 ponto!</span>`;
+
+    }else{
+
+        button.classList.add("wrong");
+
+        document.getElementById("feedback").innerHTML =
+            `❌ ERRADO! A resposta correta está destacada em verde.`;
+
+    }
+
+
+    updateScores();
+
+
+    document.getElementById("nextBtn").style.display =
+        "block";
+
+}
+
+
+/* ============================================================
+   PRÓXIMA QUESTÃO
+============================================================ */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+
+    if(currentQuestion >= 50){
+
+        finishGame();
+
+        return;
+
+    }
+
+
+    /*
+       Alterna o grupo a cada questão.
+    */
+
+    currentTeam =
+        currentTeam === 0 ? 1 : 0;
+
+
+    showQuestion();
+
+}
+
+
+/* ============================================================
+   PLACAR
+============================================================ */
+
+function updateScores(){
+
+    document.getElementById("points1").textContent =
+        scores[0];
+
+    document.getElementById("points2").textContent =
+        scores[1];
+
+
+    document.getElementById("score1")
+        .classList.toggle("active", currentTeam === 0);
+
+    document.getElementById("score2")
+        .classList.toggle("active", currentTeam === 1);
+
+}
+
+
+/* ============================================================
+   PROGRESSO
+============================================================ */
+
+function updateProgress(){
+
+    const percent =
+        ((currentQuestion + 1) / 50) * 100;
+
+    document.getElementById("progressBar")
+        .style.width = percent + "%";
+
+}
+
+
+/* ============================================================
+   FINAL
+============================================================ */
+
+function finishGame(){
+
+    clearInterval(timer);
+
+
+    document.getElementById("game").style.display =
+        "none";
+
+    document.getElementById("result").style.display =
+        "flex";
+
+
+    document.getElementById("finalName1").textContent =
+        teamNames[0];
+
+    document.getElementById("finalName2").textContent =
+        teamNames[1];
+
+
+    document.getElementById("finalScore1").textContent =
+        scores[0];
+
+    document.getElementById("finalScore2").textContent =
+        scores[1];
+
+
+    let winner;
+
+
+    if(scores[0] > scores[1]){
+
+        winner =
+            `🏆 ${teamNames[0]} VENCEU!`;
+
+    }else if(scores[1] > scores[0]){
+
+        winner =
+            `🏆 ${teamNames[1]} VENCEU!`;
+
+    }else{
+
+        winner =
+            "🤝 EMPATE!";
+
+    }
+
+
+    document.getElementById("winner").textContent =
+        winner;
+
+}
+
+</script>
+
+</body>
+</html>

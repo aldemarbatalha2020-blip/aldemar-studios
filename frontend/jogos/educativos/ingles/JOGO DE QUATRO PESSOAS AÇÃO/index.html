@@ -1,0 +1,4115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Quest — Co-Op 4</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    overflow:hidden;
+    background:#03060c;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:#040811;
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+#topbar{
+    position:absolute;
+    z-index:100;
+    top:0;
+    left:0;
+    right:0;
+    height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    background:rgba(4,9,17,.97);
+    border-bottom:1px solid #263852;
+}
+
+.logo{
+    color:#65ddff;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.phaseBox{
+    text-align:center;
+}
+
+.phaseTitle{
+    font-size:15px;
+    font-weight:900;
+}
+
+.phaseObjective{
+    color:#8797ad;
+    font-size:10px;
+    margin-top:4px;
+}
+
+#teamStatus{
+    display:flex;
+    gap:7px;
+}
+
+.mini{
+    width:80px;
+    padding:5px 7px;
+    border:1px solid #2c3e57;
+    border-radius:7px;
+    background:#0b1320;
+}
+
+.miniName{
+    font-size:9px;
+    font-weight:900;
+    margin-bottom:4px;
+}
+
+.hpBar{
+    width:100%;
+    height:5px;
+    border-radius:5px;
+    overflow:hidden;
+    background:#202c3c;
+}
+
+.hpFill{
+    width:100%;
+    height:100%;
+    transition:.2s;
+}
+
+#hp1{background:#39cfff}
+#hp2{background:#64e28b}
+#hp3{background:#d76cff}
+#hp4{background:#ffbd4a}
+
+/* =========================================================
+   WORLD
+========================================================= */
+
+#world{
+    position:absolute;
+    top:72px;
+    bottom:0;
+    left:0;
+    right:0;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+
+    gap:3px;
+    background:#000;
+}
+
+.viewport{
+    position:relative;
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            #18283e,
+            #09111d 60%,
+            #030711
+        );
+
+    border:1px solid #263a54;
+}
+
+.viewport::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    opacity:.12;
+
+    background-image:
+        linear-gradient(#6c86a3 1px,transparent 1px),
+        linear-gradient(90deg,#6c86a3 1px,transparent 1px);
+
+    background-size:40px 40px;
+}
+
+.playerLabel{
+    position:absolute;
+    z-index:90;
+    top:7px;
+    left:8px;
+
+    padding:5px 8px;
+
+    border-radius:6px;
+    background:rgba(2,5,10,.82);
+    border:1px solid #334760;
+
+    font-size:9px;
+    font-weight:900;
+}
+
+/* =========================================================
+   MAP OBJECTS
+========================================================= */
+
+.wall{
+    position:absolute;
+    z-index:10;
+
+    background:
+        linear-gradient(135deg,#34465e,#111b2a);
+
+    border:2px solid #4c6380;
+    box-shadow:inset 0 0 15px rgba(0,0,0,.5);
+}
+
+.door{
+    position:absolute;
+    z-index:12;
+
+    background:
+        linear-gradient(90deg,#652637,#d84862,#652637);
+
+    border:2px solid #ff7287;
+    box-shadow:0 0 15px rgba(255,50,80,.35);
+
+    transition:.35s;
+}
+
+.door.open{
+    opacity:.15;
+    transform:scale(.25);
+    pointer-events:none;
+}
+
+.switch{
+    position:absolute;
+    z-index:15;
+
+    width:27px;
+    height:27px;
+
+    border-radius:6px;
+
+    background:#3a4b61;
+    border:2px solid #91a5bc;
+}
+
+.switch.active{
+    background:#4ce9a1;
+    border-color:#c4ffe3;
+    box-shadow:0 0 20px #4ce9a1;
+}
+
+.pressure{
+    position:absolute;
+    z-index:15;
+
+    width:45px;
+    height:45px;
+
+    border-radius:8px;
+
+    border:2px dashed #8194aa;
+    background:rgba(80,100,125,.12);
+}
+
+.pressure.active{
+    background:rgba(255,191,50,.3);
+    border-color:#ffd05b;
+    box-shadow:0 0 20px rgba(255,190,50,.6);
+}
+
+.crystal{
+    position:absolute;
+    z-index:15;
+
+    width:28px;
+    height:40px;
+
+    background:
+        linear-gradient(135deg,#d6fbff,#35c8f5,#874cff);
+
+    clip-path:
+        polygon(
+            50% 0,
+            100% 35%,
+            72% 100%,
+            25% 100%,
+            0 35%
+        );
+
+    filter:drop-shadow(0 0 10px #59dfff);
+}
+
+.crystal.active{
+    filter:
+        brightness(1.8)
+        drop-shadow(0 0 20px #59dfff);
+}
+
+.portal{
+    position:absolute;
+    z-index:16;
+
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    border:5px solid #5c6c81;
+    opacity:.35;
+}
+
+.portal.ready{
+    opacity:1;
+    border-color:#69f5ff;
+
+    box-shadow:
+        0 0 20px #69f5ff,
+        0 0 50px rgba(60,220,255,.6);
+
+    animation:portalPulse .8s infinite alternate;
+}
+
+@keyframes portalPulse{
+    from{transform:scale(1)}
+    to{transform:scale(1.12)}
+}
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+.player{
+    position:absolute;
+    z-index:50;
+
+    width:31px;
+    height:31px;
+
+    border-radius:9px;
+
+    border:2px solid #fff;
+}
+
+.player::after{
+    content:attr(data-name);
+
+    position:absolute;
+    top:-18px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:9px;
+    font-weight:900;
+    white-space:nowrap;
+
+    text-shadow:0 2px 4px #000;
+}
+
+.p1{
+    background:#18bde9;
+    box-shadow:0 0 18px #18bde9;
+}
+
+.p2{
+    background:#4bd87a;
+    box-shadow:0 0 18px #4bd87a;
+}
+
+.p3{
+    background:#b955ed;
+    box-shadow:0 0 18px #b955ed;
+}
+
+.p4{
+    background:#ffad31;
+    box-shadow:0 0 18px #ffad31;
+}
+
+/* =========================================================
+   ENEMIES
+========================================================= */
+
+.enemy{
+    position:absolute;
+    z-index:40;
+
+    width:29px;
+    height:29px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ff7c8e,
+            #c51d42 60%,
+            #5b1023
+        );
+
+    border:2px solid #ff6179;
+
+    box-shadow:
+        0 0 18px rgba(255,45,80,.75);
+
+    transition:.15s;
+}
+
+.enemy::before,
+.enemy::after{
+    content:"";
+
+    position:absolute;
+    top:7px;
+
+    width:5px;
+    height:5px;
+
+    border-radius:50%;
+    background:#fff;
+}
+
+.enemy::before{left:5px}
+.enemy::after{right:5px}
+
+.enemyHp{
+    position:absolute;
+    width:40px;
+    height:4px;
+    top:-9px;
+    left:-7px;
+
+    background:#260912;
+    border-radius:5px;
+    overflow:hidden;
+}
+
+.enemyHp div{
+    width:100%;
+    height:100%;
+    background:#ff425e;
+}
+
+/* =========================================================
+   ATTACK
+========================================================= */
+
+.attackEffect{
+    position:absolute;
+    z-index:100;
+
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    border:3px solid currentColor;
+
+    pointer-events:none;
+
+    animation:attack .45s forwards;
+}
+
+@keyframes attack{
+    0%{
+        opacity:1;
+        transform:translate(-15px,-15px) scale(.4);
+    }
+
+    100%{
+        opacity:0;
+        transform:translate(-15px,-15px) scale(2);
+    }
+}
+
+/* =========================================================
+   BOSS
+========================================================= */
+
+.boss{
+    width:75px!important;
+    height:75px!important;
+
+    border-radius:18px!important;
+
+    background:
+        radial-gradient(
+            circle,
+            #ff4e68,
+            #68152a 65%,
+            #230712
+        )!important;
+
+    border:3px solid #ff7286!important;
+
+    box-shadow:
+        0 0 25px #ff3155,
+        0 0 70px rgba(255,40,70,.5)!important;
+
+    animation:bossFloat 1.3s infinite alternate;
+}
+
+@keyframes bossFloat{
+    from{transform:translateY(0)}
+    to{transform:translateY(-8px)}
+}
+
+.bossHp{
+    position:absolute;
+    width:150px;
+    height:9px;
+
+    left:-38px;
+    top:-18px;
+
+    background:#280813;
+    border:1px solid #ff6076;
+    border-radius:8px;
+    overflow:hidden;
+}
+
+#bossHpFill{
+    width:100%;
+    height:100%;
+    background:#ff3656;
+    transition:.2s;
+}
+
+/* =========================================================
+   OBJECTIVE
+========================================================= */
+
+#objective{
+    position:absolute;
+    z-index:120;
+
+    left:50%;
+    top:82px;
+
+    transform:translateX(-50%);
+
+    padding:7px 14px;
+
+    max-width:80vw;
+
+    background:rgba(3,8,15,.9);
+    border:1px solid #30445f;
+    border-radius:8px;
+
+    font-size:10px;
+    font-weight:900;
+
+    color:#cbd7e6;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+#message{
+    position:absolute;
+    z-index:300;
+
+    left:50%;
+    bottom:14px;
+
+    transform:translateX(-50%);
+
+    min-width:420px;
+    max-width:85vw;
+
+    padding:10px 17px;
+
+    border-radius:9px;
+
+    text-align:center;
+
+    background:rgba(3,7,14,.95);
+    border:1px solid #40546e;
+
+    font-size:11px;
+    font-weight:900;
+
+    opacity:0;
+    transition:.2s;
+}
+
+#message.show{
+    opacity:1;
+}
+
+/* =========================================================
+   OVERLAYS
+========================================================= */
+
+.overlay{
+    position:absolute;
+    z-index:1000;
+
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(20,40,66,.97),
+            rgba(2,5,10,.99)
+        );
+
+    backdrop-filter:blur(8px);
+}
+
+.modal{
+    width:min(850px,94vw);
+
+    padding:30px;
+
+    border-radius:22px;
+
+    background:#09111e;
+    border:1px solid #344a66;
+
+    text-align:center;
+
+    box-shadow:0 30px 100px rgba(0,0,0,.8);
+}
+
+.modal h1{
+    color:#67dfff;
+    font-size:36px;
+    letter-spacing:2px;
+    margin-bottom:8px;
+}
+
+.modal p{
+    color:#9baabd;
+    font-size:12px;
+    line-height:1.7;
+}
+
+.roles{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+
+    margin:22px 0;
+}
+
+.role{
+    padding:14px 9px;
+
+    background:#0d1725;
+    border:1px solid #2c405a;
+    border-radius:11px;
+}
+
+.roleIcon{
+    font-size:23px;
+    margin-bottom:7px;
+}
+
+.role strong{
+    display:block;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+.role span{
+    color:#8190a4;
+    font-size:9px;
+    line-height:1.5;
+}
+
+.controls{
+    color:#8796aa;
+    font-size:10px;
+    line-height:2;
+}
+
+.key{
+    padding:3px 6px;
+    border-radius:4px;
+
+    background:#172438;
+    border:1px solid #40546d;
+
+    color:#fff;
+    font-weight:900;
+}
+
+.start{
+    margin-top:20px;
+
+    border:0;
+    border-radius:10px;
+
+    padding:14px 34px;
+
+    color:#fff;
+    background:linear-gradient(135deg,#009edb,#674ce7);
+
+    font-weight:900;
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.start:hover{
+    transform:scale(1.04);
+}
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+#questionOverlay,
+#finishScreen{
+    display:none;
+}
+
+#questionOverlay.show,
+#finishScreen.show{
+    display:flex;
+}
+
+.questionBox{
+    width:min(620px,90vw);
+
+    padding:28px;
+
+    border-radius:19px;
+
+    background:#09111e;
+    border:2px solid #55dcff;
+
+    text-align:center;
+
+    box-shadow:0 0 70px rgba(40,210,255,.2);
+}
+
+.questionBox h2{
+    color:#64dfff;
+    margin-bottom:7px;
+}
+
+#questionPlayer{
+    color:#8999ae;
+    font-size:10px;
+    margin-bottom:15px;
+}
+
+#questionText{
+    font-size:19px;
+    font-weight:900;
+    line-height:1.45;
+    margin-bottom:17px;
+}
+
+#answerInput{
+    width:100%;
+    height:46px;
+
+    padding:0 13px;
+
+    border-radius:9px;
+
+    border:1px solid #41546d;
+    outline:none;
+
+    background:#040913;
+    color:#fff;
+
+    font-size:15px;
+}
+
+#answerInput:focus{
+    border-color:#5ee4ff;
+}
+
+#answerButton{
+    width:100%;
+    height:43px;
+
+    margin-top:10px;
+
+    border:0;
+    border-radius:9px;
+
+    background:#079fdc;
+    color:#fff;
+
+    font-weight:900;
+    cursor:pointer;
+}
+
+#questionFeedback{
+    min-height:20px;
+    margin-top:9px;
+
+    font-size:11px;
+    font-weight:900;
+}
+
+/* =========================================================
+   BOSS WARNING
+========================================================= */
+
+#bossWarning{
+    position:absolute;
+    z-index:500;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    display:none;
+
+    padding:20px 35px;
+
+    border:2px solid #ff526c;
+    border-radius:14px;
+
+    background:rgba(40,4,13,.95);
+
+    color:#ff7184;
+
+    font-size:28px;
+    font-weight:900;
+
+    text-align:center;
+}
+
+#bossWarning.show{
+    display:block;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:800px){
+
+    #topbar{
+        height:55px;
+    }
+
+    #world{
+        top:55px;
+    }
+
+    .logo{
+        font-size:11px;
+    }
+
+    .phaseBox{
+        display:none;
+    }
+
+    .mini{
+        width:45px;
+    }
+
+    .roles{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .modal{
+        padding:18px;
+    }
+
+    #objective{
+        top:64px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<!-- =====================================================
+     HUD
+===================================================== -->
+
+<div id="topbar">
+
+    <div class="logo">
+        ⚔ ENGLISH QUEST
+    </div>
+
+    <div class="phaseBox">
+
+        <div class="phaseTitle">
+            FASE <span id="phaseNumber">1</span>
+            —
+            <span id="phaseName">A PORTA</span>
+        </div>
+
+        <div
+            id="phaseObjective"
+            class="phaseObjective">
+            OBJETIVO
+        </div>
+
+    </div>
+
+    <div id="teamStatus">
+
+        <div class="mini">
+            <div
+                class="miniName"
+                style="color:#39cfff">
+                P1
+            </div>
+
+            <div class="hpBar">
+                <div
+                    id="hp1"
+                    class="hpFill">
+                </div>
+            </div>
+        </div>
+
+        <div class="mini">
+            <div
+                class="miniName"
+                style="color:#64e28b">
+                P2
+            </div>
+
+            <div class="hpBar">
+                <div
+                    id="hp2"
+                    class="hpFill">
+                </div>
+            </div>
+        </div>
+
+        <div class="mini">
+            <div
+                class="miniName"
+                style="color:#d76cff">
+                P3
+            </div>
+
+            <div class="hpBar">
+                <div
+                    id="hp3"
+                    class="hpFill">
+                </div>
+            </div>
+        </div>
+
+        <div class="mini">
+            <div
+                class="miniName"
+                style="color:#ffbd4a">
+                P4
+            </div>
+
+            <div class="hpBar">
+                <div
+                    id="hp4"
+                    class="hpFill">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     4 PLAYERS
+===================================================== -->
+
+<div id="world">
+
+    <div
+        id="viewport1"
+        class="viewport">
+
+        <div
+            class="playerLabel"
+            style="color:#39cfff">
+            🔵 P1 — WASD + Q
+        </div>
+
+    </div>
+
+
+    <div
+        id="viewport2"
+        class="viewport">
+
+        <div
+            class="playerLabel"
+            style="color:#64e28b">
+            🟢 P2 — SETAS + ENTER
+        </div>
+
+    </div>
+
+
+    <div
+        id="viewport3"
+        class="viewport">
+
+        <div
+            class="playerLabel"
+            style="color:#d76cff">
+            🟣 P3 — IJKL + O
+        </div>
+
+    </div>
+
+
+    <div
+        id="viewport4"
+        class="viewport">
+
+        <div
+            class="playerLabel"
+            style="color:#ffbd4a">
+            🟠 P4 — TFGH + R
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="objective">
+    OBJETIVO
+</div>
+
+<div id="message"></div>
+
+<div id="bossWarning">
+    ⚠ THE DARK GUARDIAN ⚠
+</div>
+
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
+
+<div
+    id="startScreen"
+    class="overlay">
+
+    <div class="modal">
+
+        <h1>
+            ⚔️ ENGLISH QUEST
+        </h1>
+
+        <p>
+            Uma aventura cooperativa para
+            <strong>4 alunos</strong>.
+            <br>
+            Cada jogador possui uma habilidade diferente.
+            <br>
+            <strong>
+                Resolvam os puzzles, enfrentem inimigos
+                e avancem juntos.
+            </strong>
+        </p>
+
+
+        <div class="roles">
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    🛡️
+                </div>
+
+                <strong style="color:#39cfff">
+                    P1 — WARRIOR
+                </strong>
+
+                <span>
+                    Quebra barreiras e causa
+                    dano pesado.
+                </span>
+
+            </div>
+
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    ⚙️
+                </div>
+
+                <strong style="color:#64e28b">
+                    P2 — ENGINEER
+                </strong>
+
+                <span>
+                    Repara mecanismos e
+                    auxilia a equipe.
+                </span>
+
+            </div>
+
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    🔮
+                </div>
+
+                <strong style="color:#d76cff">
+                    P3 — MAGE
+                </strong>
+
+                <span>
+                    Ativa cristais e causa
+                    dano mágico.
+                </span>
+
+            </div>
+
+
+            <div class="role">
+
+                <div class="roleIcon">
+                    🏃
+                </div>
+
+                <strong style="color:#ffbd4a">
+                    P4 — EXPLORER
+                </strong>
+
+                <span>
+                    Atravessa áreas perigosas
+                    e causa dano rápido.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="controls">
+
+            🔵 P1:
+            <span class="key">W A S D</span>
+            +
+            <span class="key">Q</span>
+
+            &nbsp;&nbsp;
+
+            🟢 P2:
+            <span class="key">↑ ← ↓ →</span>
+            +
+            <span class="key">ENTER</span>
+
+            <br>
+
+            🟣 P3:
+            <span class="key">I J K L</span>
+            +
+            <span class="key">O</span>
+
+            &nbsp;&nbsp;
+
+            🟠 P4:
+            <span class="key">T F G H</span>
+            +
+            <span class="key">R</span>
+
+            <br><br>
+
+            ⚔️ Habilidade →
+            pergunta de inglês →
+            resposta correta →
+            ação liberada.
+
+        </div>
+
+
+        <button
+            id="startButton"
+            class="start">
+
+            🚀 COMEÇAR MISSÃO
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     QUESTION
+===================================================== -->
+
+<div
+    id="questionOverlay"
+    class="overlay">
+
+    <div class="questionBox">
+
+        <h2>
+            🧠 DESAFIO DE INGLÊS
+        </h2>
+
+        <p id="questionPlayer">
+            PLAYER
+        </p>
+
+        <div id="questionText">
+            Question
+        </div>
+
+        <input
+            id="answerInput"
+            autocomplete="off"
+            placeholder="Responda em inglês..."
+        >
+
+        <button id="answerButton">
+            RESPONDER
+        </button>
+
+        <div id="questionFeedback"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FINISH
+===================================================== -->
+
+<div
+    id="finishScreen"
+    class="overlay">
+
+    <div class="modal">
+
+        <h1>
+            🏆 VITÓRIA!
+        </h1>
+
+        <p>
+            A equipe derrotou o Dark Guardian
+            e completou as cinco fases.
+        </p>
+
+        <div
+            id="finishStats"
+            style="
+                margin-top:20px;
+                color:#9aaabd;
+                line-height:1.9;
+                font-size:12px;
+            ">
+        </div>
+
+        <button
+            id="restartButton"
+            class="start">
+
+            🔄 JOGAR NOVAMENTE
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const questionOverlay =
+    document.getElementById("questionOverlay");
+
+const finishScreen =
+    document.getElementById("finishScreen");
+
+const questionPlayer =
+    document.getElementById("questionPlayer");
+
+const questionText =
+    document.getElementById("questionText");
+
+const answerInput =
+    document.getElementById("answerInput");
+
+const answerButton =
+    document.getElementById("answerButton");
+
+const questionFeedback =
+    document.getElementById("questionFeedback");
+
+const message =
+    document.getElementById("message");
+
+const objective =
+    document.getElementById("objective");
+
+const phaseNumber =
+    document.getElementById("phaseNumber");
+
+const phaseName =
+    document.getElementById("phaseName");
+
+const phaseObjective =
+    document.getElementById("phaseObjective");
+
+const bossWarning =
+    document.getElementById("bossWarning");
+
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+const players = {
+
+    1:{
+        x:40,
+        y:110,
+        hp:100,
+        maxHp:100,
+        speed:2.8,
+        color:"#39cfff",
+
+        keys:{
+            up:"w",
+            down:"s",
+            left:"a",
+            right:"d",
+            skill:"q"
+        },
+
+        damage:45
+    },
+
+    2:{
+        x:40,
+        y:110,
+        hp:100,
+        maxHp:100,
+        speed:2.7,
+        color:"#64e28b",
+
+        keys:{
+            up:"ArrowUp",
+            down:"ArrowDown",
+            left:"ArrowLeft",
+            right:"ArrowRight",
+            skill:"Enter"
+        },
+
+        damage:25
+    },
+
+    3:{
+        x:40,
+        y:110,
+        hp:100,
+        maxHp:100,
+        speed:2.7,
+        color:"#d76cff",
+
+        keys:{
+            up:"i",
+            down:"k",
+            left:"j",
+            right:"l",
+            skill:"o"
+        },
+
+        damage:40
+    },
+
+    4:{
+        x:40,
+        y:110,
+        hp:100,
+        maxHp:100,
+        speed:3,
+        color:"#ffbd4a",
+
+        keys:{
+            up:"t",
+            down:"g",
+            left:"f",
+            right:"h",
+            skill:"r"
+        },
+
+        damage:30
+    }
+
+};
+
+
+/* =========================================================
+   FASES
+========================================================= */
+
+const phases = [
+
+    {
+        name:"A PORTA DA FORTALEZA",
+        objective:
+        "P1 → P2 → P3 → P4 → DERROTAR OS INIMIGOS → PORTAL"
+    },
+
+    {
+        name:"A PONTE QUEBRADA",
+        objective:
+        "P1 SEGURA A PLACA → P2 REPARA → P3 ATIVA CRISTAIS → P4 ATRAVESSA → COMBATE"
+    },
+
+    {
+        name:"O LABIRINTO",
+        objective:
+        "P4 ENCONTRA O MECANISMO → P1 ABRE → P2 REPARA → P3 ABRE O PORTAL"
+    },
+
+    {
+        name:"A FORTALEZA",
+        objective:
+        "ATIVEM OS 4 MECANISMOS E DERROTEM TODOS OS INIMIGOS"
+    },
+
+    {
+        name:"A CÂMARA FINAL",
+        objective:
+        "DERROTEM O DARK GUARDIAN"
+    }
+
+];
+
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+const questions = [
+
+    {
+        q:"What is the opposite of 'hot'?",
+        a:["cold"]
+    },
+
+    {
+        q:"Complete: I ___ a student.",
+        a:["am"]
+    },
+
+    {
+        q:"Complete: She ___ happy.",
+        a:["is"]
+    },
+
+    {
+        q:"Complete: They ___ friends.",
+        a:["are"]
+    },
+
+    {
+        q:"What is the English word for 'casa'?",
+        a:["house"]
+    },
+
+    {
+        q:"What is the English word for 'água'?",
+        a:["water"]
+    },
+
+    {
+        q:"What is the English word for 'livro'?",
+        a:["book"]
+    },
+
+    {
+        q:"What is the English word for 'escola'?",
+        a:["school"]
+    },
+
+    {
+        q:"Translate: 'Eu estou feliz.'",
+        a:["i am happy"]
+    },
+
+    {
+        q:"Translate: 'Ela é minha amiga.'",
+        a:["she is my friend"]
+    },
+
+    {
+        q:"Complete: He ___ football every day.",
+        a:["plays"]
+    },
+
+    {
+        q:"Complete: I ___ to school.",
+        a:["go"]
+    },
+
+    {
+        q:"What is the opposite of 'big'?",
+        a:["small"]
+    },
+
+    {
+        q:"What is the opposite of 'fast'?",
+        a:["slow"]
+    },
+
+    {
+        q:"Translate: 'Eu gosto de inglês.'",
+        a:["i like english"]
+    },
+
+    {
+        q:"Complete: We ___ students.",
+        a:["are"]
+    },
+
+    {
+        q:"What is the past of 'go'?",
+        a:["went"]
+    },
+
+    {
+        q:"What is the past of 'play'?",
+        a:["played"]
+    },
+
+    {
+        q:"Complete: Yesterday I ___ football.",
+        a:["played"]
+    },
+
+    {
+        q:"Translate: 'Ele tem um cachorro.'",
+        a:["he has a dog"]
+    }
+
+];
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let gameRunning = false;
+
+let currentPhase = 1;
+
+let keys = {};
+
+let objects = [];
+
+let enemies = [];
+
+let boss = null;
+
+let currentQuestion = null;
+
+let currentPlayer = null;
+
+let questionCallback = null;
+
+let totalQuestions = 0;
+
+let correctQuestions = 0;
+
+let phaseState = {};
+
+let messageTimer = null;
+
+
+/* =========================================================
+   UTILS
+========================================================= */
+
+function normalize(text){
+
+    return text
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[.,!?']/g,"");
+
+}
+
+
+function showMessage(text){
+
+    message.textContent = text;
+
+    message.classList.add("show");
+
+    clearTimeout(messageTimer);
+
+    messageTimer =
+        setTimeout(()=>{
+            message.classList.remove("show");
+        },2500);
+
+}
+
+
+function setObjective(text){
+
+    objective.textContent =
+        "🎯 "+text;
+
+}
+
+
+/* =========================================================
+   CREATE PLAYERS
+========================================================= */
+
+function createPlayers(){
+
+    document
+        .querySelectorAll(".player")
+        .forEach(el=>el.remove());
+
+
+    for(let id=1;id<=4;id++){
+
+        const p = players[id];
+
+        const el =
+            document.createElement("div");
+
+        el.className =
+            "player p"+id;
+
+        el.id =
+            "player"+id;
+
+        el.dataset.name =
+            "P"+id;
+
+        el.style.left =
+            p.x+"px";
+
+        el.style.top =
+            p.y+"px";
+
+        document
+            .getElementById("viewport"+id)
+            .appendChild(el);
+
+    }
+
+}
+
+
+/* =========================================================
+   CREATE OBJECT
+========================================================= */
+
+function createObject(
+    viewportId,
+    type,
+    id,
+    x,
+    y,
+    width,
+    height
+){
+
+    const el =
+        document.createElement("div");
+
+    el.className = type;
+
+    el.id = id;
+
+    el.style.left =
+        x+"px";
+
+    el.style.top =
+        y+"px";
+
+    if(width)
+        el.style.width =
+            width+"px";
+
+    if(height)
+        el.style.height =
+            height+"px";
+
+
+    document
+        .getElementById("viewport"+viewportId)
+        .appendChild(el);
+
+
+    const object = {
+
+        id,
+        type,
+        viewport:viewportId,
+
+        x,
+        y,
+
+        width:
+            width ||
+            el.offsetWidth,
+
+        height:
+            height ||
+            el.offsetHeight,
+
+        active:false,
+
+        element:el
+
+    };
+
+
+    objects.push(object);
+
+    return object;
+
+}
+
+
+/* =========================================================
+   ENEMY
+========================================================= */
+
+function createEnemy(
+    viewportId,
+    id,
+    x,
+    y,
+    hp=100
+){
+
+    const el =
+        document.createElement("div");
+
+    el.className =
+        "enemy";
+
+    el.style.left =
+        x+"px";
+
+    el.style.top =
+        y+"px";
+
+
+    const hpBar =
+        document.createElement("div");
+
+    hpBar.className =
+        "enemyHp";
+
+
+    const hpFill =
+        document.createElement("div");
+
+    hpBar.appendChild(
+        hpFill
+    );
+
+    el.appendChild(
+        hpBar
+    );
+
+
+    document
+        .getElementById("viewport"+viewportId)
+        .appendChild(el);
+
+
+    const enemy = {
+
+        id,
+
+        viewport:viewportId,
+
+        x,
+        y,
+
+        hp,
+        maxHp:hp,
+
+        alive:true,
+
+        element:el,
+
+        hpFill
+
+    };
+
+
+    enemies.push(enemy);
+
+    return enemy;
+
+}
+
+
+/* =========================================================
+   CLEAR WORLD
+========================================================= */
+
+function clearWorld(){
+
+    document
+        .querySelectorAll(
+            ".wall,.door,.switch,.pressure,.crystal,.portal,.enemy,.boss"
+        )
+        .forEach(el=>el.remove());
+
+
+    objects = [];
+
+    enemies = [];
+
+    boss = null;
+
+}
+
+
+/* =========================================================
+   PHASE 1
+========================================================= */
+
+function buildPhase1(){
+
+    clearWorld();
+
+    phaseState = {
+
+        barrier:false,
+        generator:false,
+        crystal:false,
+        enemiesDefeated:false,
+        portal:false
+
+    };
+
+
+    createObject(
+        1,
+        "wall",
+        "p1Barrier",
+        160,
+        105,
+        130,
+        35
+    );
+
+
+    createObject(
+        2,
+        "switch",
+        "p2Generator",
+        200,
+        120
+    );
+
+
+    createObject(
+        3,
+        "crystal",
+        "p3Crystal",
+        210,
+        110
+    );
+
+
+    createObject(
+        4,
+        "door",
+        "p4Gate",
+        190,
+        100,
+        35,
+        100
+    );
+
+
+    createEnemy(1,"f1e1",300,100,80);
+    createEnemy(2,"f1e2",290,180,80);
+    createEnemy(3,"f1e3",310,90,80);
+    createEnemy(4,"f1e4",300,160,80);
+
+
+    setObjective(
+        "P1 destrua a barreira."
+    );
+
+}
+
+
+/* =========================================================
+   PHASE 2
+========================================================= */
+
+function buildPhase2(){
+
+    clearWorld();
+
+    phaseState = {
+
+        plate:false,
+        bridge:false,
+        repair:false,
+        crystal1:false,
+        crystal2:false,
+        enemiesDefeated:false,
+        exit:false
+
+    };
+
+
+    createObject(
+        1,
+        "pressure",
+        "p2Plate",
+        200,
+        130
+    );
+
+
+    createObject(
+        2,
+        "door",
+        "p2Bridge",
+        190,
+        110,
+        120,
+        30
+    );
+
+
+    createObject(
+        3,
+        "crystal",
+        "p2Crystal1",
+        170,
+        100
+    );
+
+
+    createObject(
+        3,
+        "crystal",
+        "p2Crystal2",
+        270,
+        170
+    );
+
+
+    createObject(
+        4,
+        "portal",
+        "p2Exit",
+        300,
+        120
+    );
+
+
+    createEnemy(1,"f2e1",300,100,90);
+    createEnemy(2,"f2e2",300,180,90);
+    createEnemy(3,"f2e3",310,80,90);
+    createEnemy(4,"f2e4",250,190,90);
+
+
+    setObjective(
+        "P1 permaneça sobre a placa."
+    );
+
+}
+
+
+/* =========================================================
+   PHASE 3
+========================================================= */
+
+function buildPhase3(){
+
+    clearWorld();
+
+    phaseState = {
+
+        mechanism:false,
+        wall:false,
+        panel:false,
+        portal:false,
+        enemiesDefeated:false
+
+    };
+
+
+    createObject(
+        4,
+        "switch",
+        "p3Mechanism",
+        250,
+        90
+    );
+
+
+    createObject(
+        1,
+        "wall",
+        "p3Wall",
+        180,
+        110,
+        120,
+        35
+    );
+
+
+    createObject(
+        2,
+        "switch",
+        "p3Panel",
+        210,
+        150
+    );
+
+
+    createObject(
+        3,
+        "portal",
+        "p3Portal",
+        290,
+        140
+    );
+
+
+    createEnemy(1,"f3e1",300,90,100);
+    createEnemy(2,"f3e2",300,180,100);
+    createEnemy(3,"f3e3",210,80,100);
+    createEnemy(4,"f3e4",310,180,100);
+
+
+    setObjective(
+        "P4 encontre e ative o mecanismo."
+    );
+
+}
+
+
+/* =========================================================
+   PHASE 4
+========================================================= */
+
+function buildPhase4(){
+
+    clearWorld();
+
+    phaseState = {
+
+        p1:false,
+        p2:false,
+        p3:false,
+        p4:false,
+        enemiesDefeated:false
+
+    };
+
+
+    createObject(1,"pressure","f4p1",220,120);
+    createObject(2,"pressure","f4p2",220,120);
+    createObject(3,"pressure","f4p3",220,120);
+    createObject(4,"pressure","f4p4",220,120);
+
+
+    createEnemy(1,"f4e1",300,90,120);
+    createEnemy(1,"f4e2",300,170,120);
+
+    createEnemy(2,"f4e3",300,100,120);
+    createEnemy(2,"f4e4",300,180,120);
+
+    createEnemy(3,"f4e5",300,90,120);
+
+    createEnemy(4,"f4e6",300,170,120);
+
+
+    setObjective(
+        "Os quatro jogadores devem ativar suas placas."
+    );
+
+}
+
+
+/* =========================================================
+   PHASE 5
+========================================================= */
+
+function buildPhase5(){
+
+    clearWorld();
+
+    phaseState = {
+        bossActive:true,
+        bossDefeated:false
+    };
+
+
+    createObject(1,"crystal","finalCrystal1",210,120);
+    createObject(2,"crystal","finalCrystal2",210,120);
+    createObject(3,"crystal","finalCrystal3",210,120);
+    createObject(4,"crystal","finalCrystal4",210,120);
+
+
+    createEnemy(
+        1,
+        "bossGuard",
+        270,
+        110,
+        600
+    );
+
+
+    boss =
+        enemies[enemies.length-1];
+
+
+    boss.element.classList.add("boss");
+
+    boss.element.innerHTML = `
+        <div class="bossHp">
+            <div id="bossHpFill"></div>
+        </div>
+    `;
+
+
+    createEnemy(2,"bossMinion1",300,170,100);
+    createEnemy(3,"bossMinion2",300,90,100);
+    createEnemy(4,"bossMinion3",300,170,100);
+
+
+    setObjective(
+        "DERROTEM O DARK GUARDIAN!"
+    );
+
+
+    setTimeout(()=>{
+
+        bossWarning.classList.add("show");
+
+        setTimeout(()=>{
+            bossWarning.classList.remove("show");
+        },1800);
+
+    },300);
+
+}
+
+
+/* =========================================================
+   BUILD PHASE
+========================================================= */
+
+function buildPhase(){
+
+    phaseNumber.textContent =
+        currentPhase;
+
+    phaseName.textContent =
+        phases[currentPhase-1].name;
+
+    phaseObjective.textContent =
+        phases[currentPhase-1].objective;
+
+
+    for(let id=1;id<=4;id++){
+
+        players[id].x=40;
+        players[id].y=110;
+        players[id].hp=100;
+
+    }
+
+
+    switch(currentPhase){
+
+        case 1:
+            buildPhase1();
+            break;
+
+        case 2:
+            buildPhase2();
+            break;
+
+        case 3:
+            buildPhase3();
+            break;
+
+        case 4:
+            buildPhase4();
+            break;
+
+        case 5:
+            buildPhase5();
+            break;
+
+    }
+
+
+    createPlayers();
+
+    updateHP();
+
+}
+
+
+/* =========================================================
+   COLLISION
+========================================================= */
+
+function collides(
+    playerId,
+    x,
+    y
+){
+
+    const viewport =
+        document.getElementById(
+            "viewport"+playerId
+        );
+
+
+    const blocks =
+        viewport.querySelectorAll(
+            ".wall,.door"
+        );
+
+
+    for(const block of blocks){
+
+        if(
+            block.classList.contains("open") ||
+            block.style.opacity === ".15"
+        )
+            continue;
+
+
+        const bx =
+            parseFloat(
+                block.style.left
+            );
+
+        const by =
+            parseFloat(
+                block.style.top
+            );
+
+        const bw =
+            block.offsetWidth;
+
+        const bh =
+            block.offsetHeight;
+
+
+        if(
+            x < bx+bw &&
+            x+31 > bx &&
+            y < by+bh &&
+            y+31 > by
+        ){
+
+            return true;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   MOVEMENT
+========================================================= */
+
+function updateMovement(){
+
+    if(!gameRunning)
+        return;
+
+
+    for(let id=1;id<=4;id++){
+
+        const p=players[id];
+
+        let dx=0;
+        let dy=0;
+
+
+        if(keys[p.keys.up]) dy-=p.speed;
+        if(keys[p.keys.down]) dy+=p.speed;
+        if(keys[p.keys.left]) dx-=p.speed;
+        if(keys[p.keys.right]) dx+=p.speed;
+
+
+        if(dx && dy){
+
+            dx*=.707;
+            dy*=.707;
+
+        }
+
+
+        let nx=p.x+dx;
+        let ny=p.y+dy;
+
+
+        const viewport =
+            document.getElementById(
+                "viewport"+id
+            );
+
+
+        nx=Math.max(
+            5,
+            Math.min(
+                viewport.clientWidth-35,
+                nx
+            )
+        );
+
+
+        ny=Math.max(
+            35,
+            Math.min(
+                viewport.clientHeight-35,
+                ny
+            )
+        );
+
+
+        if(!collides(id,nx,ny)){
+
+            p.x=nx;
+            p.y=ny;
+
+        }
+
+
+        const el =
+            document.getElementById(
+                "player"+id
+            );
+
+
+        if(el){
+
+            el.style.left=p.x+"px";
+            el.style.top=p.y+"px";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PRESSURE
+========================================================= */
+
+function checkPressure(){
+
+    for(const object of objects){
+
+        if(object.type!=="pressure")
+            continue;
+
+
+        const p =
+            players[object.viewport];
+
+
+        const distance =
+            Math.hypot(
+                p.x-object.x,
+                p.y-object.y
+            );
+
+
+        if(distance<55){
+
+            if(!object.active){
+
+                object.active=true;
+
+                object.element.classList.add(
+                    "active"
+                );
+
+                handlePressure(object);
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PRESSURE ACTION
+========================================================= */
+
+function handlePressure(object){
+
+    if(currentPhase===2){
+
+        if(object.id==="p2Plate"){
+
+            phaseState.plate=true;
+
+            const bridge =
+                objects.find(
+                    o=>o.id==="p2Bridge"
+                );
+
+
+            if(bridge){
+
+                bridge.element.classList.add(
+                    "open"
+                );
+
+            }
+
+
+            phaseState.bridge=true;
+
+
+            setObjective(
+                "P2 repare o sistema."
+            );
+
+
+            showMessage(
+                "🟡 P1 MANTEVE A PLACA! P2 PODE AVANÇAR!"
+            );
+
+        }
+
+    }
+
+
+    if(currentPhase===4){
+
+        const id =
+            object.id.replace(
+                "f4p",
+                ""
+            );
+
+
+        phaseState["p"+id]=true;
+
+        checkPhase4();
+
+    }
+
+}
+
+
+/* =========================================================
+   SKILL — CORRIGIDO
+========================================================= */
+
+function useSkill(id){
+
+    if(
+        !gameRunning ||
+        currentPlayer
+    )
+        return;
+
+
+    /* =====================================================
+       FASE 1
+    ===================================================== */
+
+    if(currentPhase===1){
+
+        if(
+            id===1 &&
+            !phaseState.barrier
+        ){
+
+            askQuestion(id,()=>{
+
+                phaseState.barrier=true;
+
+                const wall =
+                    document.getElementById(
+                        "p1Barrier"
+                    );
+
+                wall.style.opacity=".15";
+                wall.style.pointerEvents="none";
+
+                setObjective(
+                    "P2 chegue ao gerador."
+                );
+
+                showMessage(
+                    "🛡️ P1 DESTRUIU A BARREIRA!"
+                );
+
+            });
+
+            return;
+
+        }
+
+
+        if(
+            id===2 &&
+            phaseState.barrier &&
+            !phaseState.generator
+        ){
+
+            askQuestion(id,()=>{
+
+                phaseState.generator=true;
+
+                const generator =
+                    document.getElementById(
+                        "p2Generator"
+                    );
+
+                generator.classList.add("active");
+
+                setObjective(
+                    "P3 chegue ao cristal."
+                );
+
+                showMessage(
+                    "⚙️ P2 CONSERTOU O GERADOR!"
+                );
+
+            });
+
+            return;
+
+        }
+
+
+        if(
+            id===3 &&
+            phaseState.generator &&
+            !phaseState.crystal
+        ){
+
+            askQuestion(id,()=>{
+
+                phaseState.crystal=true;
+
+                document
+                    .getElementById(
+                        "p3Crystal"
+                    )
+                    .classList.add("active");
+
+
+                document
+                    .getElementById(
+                        "p4Gate"
+                    )
+                    .classList.add("open");
+
+
+                setObjective(
+                    "P4 atravesse. Depois DERROTEM OS INIMIGOS!"
+                );
+
+
+                showMessage(
+                    "🔮 P3 ATIVOU O CRISTAL!"
+                );
+
+            });
+
+            return;
+
+        }
+
+
+        if(phaseState.crystal){
+
+            combatAttack(id);
+
+            return;
+
+        }
+
+
+        showMessage(
+            `P${id}: essa ação ainda não está liberada.`
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       FASE 2 — TODOS COMBATEM
+    ===================================================== */
+
+    if(currentPhase===2){
+
+        /* P1 */
+
+        if(id===1){
+
+            if(!phaseState.plate){
+
+                showMessage(
+                    "🟡 P1 precisa ativar a placa primeiro."
+                );
+
+                return;
+
+            }
+
+            combatAttack(id);
+
+            return;
+
+        }
+
+
+        /* P2 */
+
+        if(id===2){
+
+            /*
+             * P2 primeiro faz o reparo.
+             */
+
+            if(
+                phaseState.bridge &&
+                !phaseState.repair
+            ){
+
+                askQuestion(id,()=>{
+
+                    phaseState.repair=true;
+
+
+                    const generator =
+                        document.getElementById(
+                            "p2Bridge"
+                        );
+
+
+                    if(generator){
+
+                        generator.classList.add(
+                            "open"
+                        );
+
+                    }
+
+
+                    setObjective(
+                        "P3 ative os dois cristais."
+                    );
+
+
+                    showMessage(
+                        "⚙️ P2 CONSERTOU O SISTEMA!"
+                    );
+
+                });
+
+                return;
+
+            }
+
+
+            /*
+             * CORREÇÃO:
+             * depois do reparo P2 ATACA.
+             */
+
+            if(phaseState.repair){
+
+                combatAttack(id);
+
+                return;
+
+            }
+
+
+            showMessage(
+                "P2 precisa reparar o sistema primeiro."
+            );
+
+            return;
+
+        }
+
+
+        /* P3 */
+
+        if(id===3){
+
+            /*
+             * Primeiro cristal.
+             */
+
+            if(
+                phaseState.repair &&
+                !phaseState.crystal1
+            ){
+
+                askQuestion(id,()=>{
+
+                    phaseState.crystal1=true;
+
+
+                    const crystal =
+                        document.getElementById(
+                            "p2Crystal1"
+                        );
+
+
+                    if(crystal){
+
+                        crystal.classList.add(
+                            "active"
+                        );
+
+                    }
+
+
+                    setObjective(
+                        "P3 ative o segundo cristal."
+                    );
+
+
+                    showMessage(
+                        "🔮 PRIMEIRO CRISTAL ATIVADO!"
+                    );
+
+                });
+
+                return;
+
+            }
+
+
+            /*
+             * Segundo cristal.
+             */
+
+            if(
+                phaseState.crystal1 &&
+                !phaseState.crystal2
+            ){
+
+                askQuestion(id,()=>{
+
+                    phaseState.crystal2=true;
+
+
+                    const crystal =
+                        document.getElementById(
+                            "p2Crystal2"
+                        );
+
+
+                    if(crystal){
+
+                        crystal.classList.add(
+                            "active"
+                        );
+
+                    }
+
+
+                    const portal =
+                        document.getElementById(
+                            "p2Exit"
+                        );
+
+
+                    if(portal){
+
+                        portal.classList.add(
+                            "ready"
+                        );
+
+                    }
+
+
+                    setObjective(
+                        "P4 atravesse o portal. DERROTEM OS INIMIGOS!"
+                    );
+
+
+                    showMessage(
+                        "🔮 OS DOIS CRISTAIS FORAM ATIVADOS!"
+                    );
+
+                });
+
+                return;
+
+            }
+
+
+            /*
+             * CORREÇÃO:
+             * depois dos cristais P3 também ataca.
+             */
+
+            if(
+                phaseState.crystal1 &&
+                phaseState.crystal2
+            ){
+
+                combatAttack(id);
+
+                return;
+
+            }
+
+
+            showMessage(
+                "P3 ainda precisa ativar os cristais."
+            );
+
+            return;
+
+        }
+
+
+        /* P4 */
+
+        if(id===4){
+
+            if(
+                phaseState.crystal1 &&
+                phaseState.crystal2
+            ){
+
+                combatAttack(id);
+
+                return;
+
+            }
+
+
+            showMessage(
+                "🟠 P4: espere os cristais serem ativados."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FASE 3
+    ===================================================== */
+
+    if(currentPhase===3){
+
+        if(
+            id===4 &&
+            !phaseState.mechanism
+        ){
+
+            askQuestion(id,()=>{
+
+                phaseState.mechanism=true;
+
+                document
+                    .getElementById(
+                        "p3Mechanism"
+                    )
+                    .classList.add("active");
+
+
+                setObjective(
+                    "P1 destrua a parede."
+                );
+
+
+                showMessage(
+                    "🟠 P4 ATIVOU O MECANISMO!"
+                );
+
+            });
+
+            return;
+
+        }
+
+
+        if(
+            id===1 &&
+            phaseState.mechanism &&
+            !phaseState.wall
+        ){
+
+            askQuestion(id,()=>{
+
+                phaseState.wall=true;
+
+                document
+                    .getElementById(
+                        "p3Wall"
+                    )
+                    .style.opacity=".15";
+
+
+                setObjective(
+                    "P2 repare o painel."
+                );
+
+
+                showMessage(
+                    "🛡️ P1 ABRIU O LABIRINTO!"
+                );
+
+            });
+
+            return;
+
+        }
+
+
+        if(
+            id===2 &&
+            phaseState.wall &&
+            !phaseState.panel
+        ){
+
+            askQuestion(id,()=>{
+
+                phaseState.panel=true;
+
+                document
+                    .getElementById(
+                        "p3Panel"
+                    )
+                    .classList.add("active");
+
+
+                setObjective(
+                    "P3 ative o portal."
+                );
+
+
+                showMessage(
+                    "⚙️ P2 REPAROU O PAINEL!"
+                );
+
+            });
+
+            return;
+
+        }
+
+
+        if(
+            id===3 &&
+            phaseState.panel &&
+            !phaseState.portal
+        ){
+
+            askQuestion(id,()=>{
+
+                phaseState.portal=true;
+
+                document
+                    .getElementById(
+                        "p3Portal"
+                    )
+                    .classList.add("ready");
+
+
+                setObjective(
+                    "DERROTEM OS INIMIGOS!"
+                );
+
+
+                showMessage(
+                    "🔮 P3 ABRIU O PORTAL!"
+                );
+
+            });
+
+            return;
+
+        }
+
+
+        combatAttack(id);
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       FASE 4
+    ===================================================== */
+
+    if(currentPhase===4){
+
+        combatAttack(id);
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       FASE 5
+    ===================================================== */
+
+    if(currentPhase===5){
+
+        combatAttack(id);
+
+        return;
+
+    }
+
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+function askQuestion(
+    playerId,
+    callback
+){
+
+    if(currentPlayer)
+        return;
+
+
+    currentPlayer=playerId;
+
+    questionCallback=callback;
+
+
+    currentQuestion =
+        questions[
+            Math.floor(
+                Math.random()*
+                questions.length
+            )
+        ];
+
+
+    totalQuestions++;
+
+
+    questionPlayer.textContent =
+        `P${playerId} — responda corretamente`;
+
+
+    questionText.textContent =
+        currentQuestion.q;
+
+
+    answerInput.value="";
+
+    questionFeedback.textContent="";
+
+
+    questionOverlay.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        ()=>{
+            answerInput.focus();
+        },
+        50
+    );
+
+}
+
+
+/* =========================================================
+   ANSWER
+========================================================= */
+
+function submitAnswer(){
+
+    if(
+        !currentQuestion ||
+        !currentPlayer
+    )
+        return;
+
+
+    const answer =
+        normalize(
+            answerInput.value
+        );
+
+
+    const correct =
+        currentQuestion.a.some(
+            a =>
+                normalize(a)===answer
+        );
+
+
+    if(correct){
+
+        correctQuestions++;
+
+
+        questionFeedback.textContent =
+            "✓ CORRETO!";
+
+        questionFeedback.style.color =
+            "#54f0a0";
+
+
+        const callback =
+            questionCallback;
+
+
+        setTimeout(()=>{
+
+            questionOverlay.classList.remove(
+                "show"
+            );
+
+
+            currentQuestion=null;
+            currentPlayer=null;
+            questionCallback=null;
+
+
+            if(callback)
+                callback();
+
+        },400);
+
+    }
+
+    else{
+
+        questionFeedback.textContent =
+            "✗ INCORRETO! TENTE NOVAMENTE.";
+
+        questionFeedback.style.color =
+            "#ff6075";
+
+    }
+
+}
+
+
+/* =========================================================
+   COMBAT ATTACK
+========================================================= */
+
+function combatAttack(playerId){
+
+    const p =
+        players[playerId];
+
+
+    /*
+     * IMPORTANTE:
+     * procura inimigo no viewport correto
+     * daquele jogador.
+     */
+
+    const possible =
+        enemies.filter(
+            enemy =>
+                enemy.alive &&
+                enemy.viewport===playerId &&
+                enemy!==boss
+        );
+
+
+    /*
+     * Se for Fase 5, o Boss pode ser atacado
+     * pelo P1. Os outros atacam seus próprios
+     * inimigos primeiro.
+     */
+
+    let enemy =
+        possible[0];
+
+
+    if(
+        currentPhase===5 &&
+        !enemy &&
+        boss &&
+        boss.alive
+    ){
+
+        enemy=boss;
+
+    }
+
+
+    if(!enemy){
+
+        showMessage(
+            `P${playerId}: nenhum inimigo disponível aqui.`
+        );
+
+        checkCombatComplete();
+
+        return;
+
+    }
+
+
+    askQuestion(
+        playerId,
+        ()=>{
+
+            let damage =
+                p.damage;
+
+
+            /*
+             * P1 é o mais forte.
+             * P2 é suporte.
+             * P3 é magia.
+             * P4 é ataque rápido.
+             */
+
+            if(playerId===1)
+                damage=45;
+
+            if(playerId===2)
+                damage=25;
+
+            if(playerId===3)
+                damage=40;
+
+            if(playerId===4)
+                damage=30;
+
+
+            enemy.hp =
+                Math.max(
+                    0,
+                    enemy.hp-damage
+                );
+
+
+            if(enemy.hpFill){
+
+                enemy.hpFill.style.width =
+                    (
+                        enemy.hp /
+                        enemy.maxHp *
+                        100
+                    )+"%";
+
+            }
+
+
+            if(enemy===boss){
+
+                const bossFill =
+                    document.getElementById(
+                        "bossHpFill"
+                    );
+
+                if(bossFill){
+
+                    bossFill.style.width =
+                        (
+                            boss.hp /
+                            boss.maxHp *
+                            100
+                        )+"%";
+
+                }
+
+            }
+
+
+            createAttackEffect(
+                playerId
+            );
+
+
+            showMessage(
+                `⚔️ P${playerId} causou ${damage} de dano!`
+            );
+
+
+            if(enemy.hp<=0){
+
+                enemy.alive=false;
+
+                enemy.element.style.opacity=".25";
+
+                enemy.element.style.transform=
+                    "scale(.15)";
+
+
+                if(enemy===boss){
+
+                    phaseState.bossDefeated=true;
+
+                    showMessage(
+                        "👑 DARK GUARDIAN DERROTADO!"
+                    );
+
+
+                    setTimeout(
+                        finishGame,
+                        1000
+                    );
+
+                    return;
+
+                }
+
+
+                showMessage(
+                    `💥 P${playerId} DERROTOU UM INIMIGO!`
+                );
+
+            }
+
+
+            checkCombatComplete();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ATTACK EFFECT
+========================================================= */
+
+function createAttackEffect(
+    playerId
+){
+
+    const p =
+        players[playerId];
+
+
+    const viewport =
+        document.getElementById(
+            "viewport"+playerId
+        );
+
+
+    const effect =
+        document.createElement(
+            "div"
+        );
+
+
+    effect.className =
+        "attackEffect";
+
+    effect.style.color =
+        p.color;
+
+    effect.style.left =
+        p.x+"px";
+
+    effect.style.top =
+        p.y+"px";
+
+
+    viewport.appendChild(
+        effect
+    );
+
+
+    setTimeout(
+        ()=>effect.remove(),
+        500
+    );
+
+}
+
+
+/* =========================================================
+   COMBAT COMPLETE
+========================================================= */
+
+function checkCombatComplete(){
+
+    if(currentPhase===5)
+        return;
+
+
+    const normalEnemies =
+        enemies.filter(
+            e =>
+                !e.id.includes("boss")
+        );
+
+
+    if(
+        normalEnemies.length &&
+        normalEnemies.every(
+            e=>!e.alive
+        )
+    ){
+
+        phaseState.enemiesDefeated=true;
+
+
+        if(currentPhase===1){
+
+            const portal =
+                createObject(
+                    4,
+                    "portal",
+                    "phase1Portal",
+                    300,
+                    120
+                );
+
+
+            portal.element.classList.add(
+                "ready"
+            );
+
+
+            setObjective(
+                "P4 entre no portal."
+            );
+
+
+            showMessage(
+                "🏆 ÁREA LIMPA! PORTAL ABERTO!"
+            );
+
+
+            watchPortal(
+                4,
+                portal
+            );
+
+        }
+
+
+        else if(currentPhase===2){
+
+            setObjective(
+                "P4 entre no portal para avançar."
+            );
+
+
+            showMessage(
+                "🏆 TODOS OS INIMIGOS FORAM DERROTADOS!"
+            );
+
+
+            watchPortal(
+                4,
+                objects.find(
+                    o=>o.id==="p2Exit"
+                )
+            );
+
+        }
+
+
+        else if(currentPhase===3){
+
+            setObjective(
+                "ENTREM NO PORTAL!"
+            );
+
+
+            showMessage(
+                "🏆 ÁREA LIMPA!"
+            );
+
+
+            watchPortal(
+                3,
+                objects.find(
+                    o=>o.id==="p3Portal"
+                )
+            );
+
+        }
+
+
+        else if(currentPhase===4){
+
+            nextPhase();
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PORTAL
+========================================================= */
+
+function watchPortal(
+    playerId,
+    portal
+){
+
+    if(!portal)
+        return;
+
+
+    const timer =
+        setInterval(()=>{
+
+            if(!gameRunning){
+
+                clearInterval(timer);
+                return;
+
+            }
+
+
+            const p =
+                players[playerId];
+
+
+            const distance =
+                Math.hypot(
+                    p.x-portal.x,
+                    p.y-portal.y
+                );
+
+
+            if(distance<70){
+
+                clearInterval(timer);
+
+                nextPhase();
+
+            }
+
+        },100);
+
+}
+
+
+/* =========================================================
+   PHASE 4
+========================================================= */
+
+function checkPhase4(){
+
+    if(
+        phaseState.p1 &&
+        phaseState.p2 &&
+        phaseState.p3 &&
+        phaseState.p4
+    ){
+
+        setObjective(
+            "TODOS OS MECANISMOS ATIVADOS! DERROTEM OS INIMIGOS!"
+        );
+
+
+        showMessage(
+            "🔥 OS QUATRO MECANISMOS FORAM ATIVADOS!"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   BOSS AI
+========================================================= */
+
+function updateBoss(){
+
+    if(
+        !boss ||
+        !boss.alive
+    )
+        return;
+
+
+    let targetId=1;
+    let shortest=Infinity;
+
+
+    for(let id=1;id<=4;id++){
+
+        const p =
+            players[id];
+
+
+        const distance =
+            Math.hypot(
+                p.x-boss.x,
+                p.y-boss.y
+            );
+
+
+        if(distance<shortest){
+
+            shortest=distance;
+            targetId=id;
+
+        }
+
+    }
+
+
+    const target =
+        players[targetId];
+
+
+    if(shortest<170){
+
+        const dx =
+            target.x-boss.x;
+
+        const dy =
+            target.y-boss.y;
+
+        const len =
+            Math.hypot(dx,dy);
+
+
+        if(len>70){
+
+            boss.x +=
+                dx/len*.35;
+
+            boss.y +=
+                dy/len*.35;
+
+        }
+
+        else{
+
+            target.hp =
+                Math.max(
+                    0,
+                    target.hp-.12
+                );
+
+            updateHP();
+
+        }
+
+    }
+
+
+    boss.element.style.left =
+        boss.x+"px";
+
+    boss.element.style.top =
+        boss.y+"px";
+
+
+    const bossFill =
+        document.getElementById(
+            "bossHpFill"
+        );
+
+
+    if(bossFill){
+
+        bossFill.style.width =
+            (
+                boss.hp /
+                boss.maxHp *
+                100
+            )+"%";
+
+    }
+
+}
+
+
+/* =========================================================
+   ENEMY AI
+========================================================= */
+
+function updateEnemies(){
+
+    for(const enemy of enemies){
+
+        if(
+            !enemy.alive ||
+            enemy===boss
+        )
+            continue;
+
+
+        const target =
+            players[
+                enemy.viewport
+            ];
+
+
+        if(!target)
+            continue;
+
+
+        const dx =
+            target.x-enemy.x;
+
+        const dy =
+            target.y-enemy.y;
+
+        const distance =
+            Math.hypot(dx,dy);
+
+
+        if(
+            distance<180 &&
+            distance>32
+        ){
+
+            enemy.x +=
+                dx/distance*.3;
+
+            enemy.y +=
+                dy/distance*.3;
+
+        }
+
+
+        else if(
+            distance<=32
+        ){
+
+            target.hp =
+                Math.max(
+                    0,
+                    target.hp-.08
+                );
+
+            updateHP();
+
+        }
+
+
+        enemy.element.style.left =
+            enemy.x+"px";
+
+        enemy.element.style.top =
+            enemy.y+"px";
+
+    }
+
+}
+
+
+/* =========================================================
+   HP
+========================================================= */
+
+function updateHP(){
+
+    for(let id=1;id<=4;id++){
+
+        const p =
+            players[id];
+
+
+        document
+            .getElementById(
+                "hp"+id
+            )
+            .style.width =
+                (
+                    p.hp /
+                    p.maxHp *
+                    100
+                )+"%";
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME LOOP
+========================================================= */
+
+function gameLoop(){
+
+    if(gameRunning){
+
+        updateMovement();
+
+        checkPressure();
+
+        updateEnemies();
+
+        if(currentPhase===5)
+            updateBoss();
+
+    }
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+/* =========================================================
+   NEXT PHASE
+========================================================= */
+
+function nextPhase(){
+
+    if(!gameRunning)
+        return;
+
+
+    currentPhase++;
+
+
+    if(currentPhase>5){
+
+        finishGame();
+
+        return;
+
+    }
+
+
+    showMessage(
+        `🎉 FASE ${currentPhase-1} CONCLUÍDA!`
+    );
+
+
+    setTimeout(
+        buildPhase,
+        900
+    );
+
+}
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+function finishGame(){
+
+    gameRunning=false;
+
+
+    questionOverlay.classList.remove(
+        "show"
+    );
+
+
+    const accuracy =
+        totalQuestions>0
+        ?
+        Math.round(
+            correctQuestions/
+            totalQuestions*
+            100
+        )
+        :
+        0;
+
+
+    document.getElementById(
+        "finishStats"
+    ).innerHTML = `
+
+        ⭐ <strong>5 FASES CONCLUÍDAS</strong>
+
+        <br>
+
+        🧠 Perguntas:
+        ${totalQuestions}
+
+        <br>
+
+        ✓ Acertos:
+        ${correctQuestions}
+
+        <br>
+
+        🎯 Precisão:
+        ${accuracy}%
+
+        <br><br>
+
+        🤝 A equipe venceu trabalhando
+        em conjunto!
+
+    `;
+
+
+    finishScreen.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+const allGameKeys = [
+
+    "w","a","s","d",
+
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+
+    "i","j","k","l",
+
+    "t","f","g","h",
+
+    "q","o","r",
+
+    "Enter"
+
+];
+
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            allGameKeys.includes(
+                event.key
+            )
+        ){
+
+            event.preventDefault();
+
+        }
+
+
+        keys[event.key]=true;
+
+
+        if(event.repeat)
+            return;
+
+
+        for(let id=1;id<=4;id++){
+
+            if(
+                event.key===
+                players[id].keys.skill
+            ){
+
+                useSkill(id);
+
+            }
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    event=>{
+
+        keys[event.key]=false;
+
+    }
+);
+
+
+/* =========================================================
+   QUESTION INPUT
+========================================================= */
+
+answerButton.addEventListener(
+    "click",
+    submitAnswer
+);
+
+
+answerInput.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key==="Enter"){
+
+            event.preventDefault();
+
+            submitAnswer();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document
+    .getElementById("startButton")
+    .addEventListener(
+        "click",
+        ()=>{
+
+            startScreen.style.display="none";
+
+            finishScreen.classList.remove(
+                "show"
+            );
+
+            currentPhase=1;
+
+            totalQuestions=0;
+
+            correctQuestions=0;
+
+            gameRunning=true;
+
+            buildPhase();
+
+        }
+    );
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+document
+    .getElementById("restartButton")
+    .addEventListener(
+        "click",
+        ()=>{
+
+            finishScreen.classList.remove(
+                "show"
+            );
+
+            currentPhase=1;
+
+            totalQuestions=0;
+
+            correctQuestions=0;
+
+            gameRunning=true;
+
+            buildPhase();
+
+        }
+    );
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+updateHP();
+
+gameLoop();
+
+</script>
+
+</div>
+
+</body>
+</html>

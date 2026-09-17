@@ -1,0 +1,1927 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+
+<title>English Runner | Aldemar Studios</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+}
+
+:root{
+    --bg:#06101d;
+    --bg2:#0b1d31;
+    --panel:rgba(10,27,47,.92);
+    --border:rgba(100,190,255,.20);
+    --blue:#4db8ff;
+    --cyan:#62e6ff;
+    --text:#edf8ff;
+    --muted:#8ea9bd;
+    --success:#62e6a5;
+    --danger:#ff6f91;
+    --gold:#ffd166;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+        radial-gradient(
+            circle at 50% 10%,
+            rgba(48,150,230,.18),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            var(--bg2),
+            var(--bg)
+        );
+}
+
+button{
+    font:inherit;
+}
+
+.game{
+    width:100%;
+    height:100dvh;
+
+    min-height:420px;
+
+    display:flex;
+    flex-direction:column;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header{
+    min-height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:
+        max(10px, env(safe-area-inset-top))
+        max(14px, env(safe-area-inset-right))
+        10px
+        max(14px, env(safe-area-inset-left));
+
+    background:rgba(5,16,29,.88);
+
+    border-bottom:1px solid var(--border);
+
+    backdrop-filter:blur(18px);
+
+    z-index:20;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    min-width:0;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+
+    flex:none;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(77,184,255,.22),
+            rgba(98,230,255,.06)
+        );
+
+    border:1px solid var(--border);
+
+    font-size:21px;
+
+    box-shadow:
+        0 0 20px rgba(77,184,255,.08);
+}
+
+.logo strong{
+    display:block;
+
+    font-size:15px;
+    letter-spacing:.4px;
+}
+
+.logo span{
+    display:block;
+
+    margin-top:2px;
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+}
+
+.stats{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.stat{
+    min-width:68px;
+
+    padding:7px 9px;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.025);
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+}
+
+.stat small{
+    display:block;
+
+    color:var(--muted);
+
+    font-size:8px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+}
+
+.stat strong{
+    display:block;
+
+    margin-top:2px;
+
+    font-size:13px;
+}
+
+/* =====================================================
+   GAME AREA
+===================================================== */
+
+#gameArea{
+    position:relative;
+
+    flex:1;
+
+    min-height:0;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(9,34,55,.78),
+            rgba(3,12,22,.96)
+        );
+}
+
+/* estrada */
+
+.grid{
+    position:absolute;
+
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0 32.8%,
+            rgba(98,230,255,.08) 33%,
+            transparent 33.2% 66.5%,
+            rgba(98,230,255,.08) 66.7%,
+            transparent 66.9%
+        ),
+        repeating-linear-gradient(
+            180deg,
+            rgba(255,255,255,.025) 0,
+            rgba(255,255,255,.025) 2px,
+            transparent 2px,
+            transparent 48px
+        );
+
+    animation:
+        roadMove .65s linear infinite;
+}
+
+@keyframes roadMove{
+    from{
+        background-position:0 0,0 0;
+    }
+
+    to{
+        background-position:0 0,0 48px;
+    }
+}
+
+.lane{
+    position:absolute;
+
+    top:0;
+    bottom:0;
+
+    width:2px;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(98,230,255,.22),
+            transparent
+        );
+}
+
+.lane:nth-child(2){
+    left:33.33%;
+}
+
+.lane:nth-child(3){
+    left:66.66%;
+}
+
+.lane:nth-child(4){
+    display:none;
+}
+
+/* =====================================================
+   QUESTION
+===================================================== */
+
+.question{
+    position:absolute;
+
+    top:15px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:min(680px,calc(100% - 24px));
+
+    padding:13px 18px;
+
+    text-align:center;
+
+    background:rgba(4,15,27,.82);
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    backdrop-filter:blur(14px);
+
+    z-index:10;
+}
+
+.question small{
+    color:var(--cyan);
+
+    font-size:9px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+
+    letter-spacing:1.4px;
+}
+
+.question h2{
+    margin-top:5px;
+
+    font-size:17px;
+
+    line-height:1.3;
+}
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+.player{
+    position:absolute;
+
+    left:50%;
+    bottom:26px;
+
+    transform:
+        translateX(-50%);
+
+    width:70px;
+    height:70px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:43px;
+
+    filter:
+        drop-shadow(
+            0 0 14px
+            rgba(77,184,255,.30)
+        );
+
+    z-index:8;
+
+    transition:left .14s ease;
+}
+
+/* =====================================================
+   ANSWERS
+===================================================== */
+
+.object{
+    position:absolute;
+
+    width:min(110px,24vw);
+
+    min-height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:7px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,55,82,.98),
+            rgba(7,27,45,.98)
+        );
+
+    border:1px solid rgba(98,230,255,.30);
+
+    border-radius:14px;
+
+    color:#fff;
+
+    font-size:12px;
+    font-weight:800;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,.28),
+        0 0 15px rgba(77,184,255,.06);
+
+    z-index:7;
+}
+
+/* =====================================================
+   CONTROLES
+===================================================== */
+
+.controls{
+    min-height:82px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:12px;
+
+    padding:
+        10px
+        max(14px, env(safe-area-inset-right))
+        max(10px, env(safe-area-inset-bottom))
+        max(14px, env(safe-area-inset-left));
+
+    background:rgba(5,16,29,.94);
+
+    border-top:1px solid var(--border);
+
+    backdrop-filter:blur(18px);
+
+    z-index:20;
+}
+
+.control{
+    width:62px;
+    height:52px;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.035);
+
+    color:var(--text);
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    touch-action:manipulation;
+
+    transition:
+        transform .12s ease,
+        background .12s ease,
+        border-color .12s ease;
+}
+
+.control:hover{
+    background:rgba(77,184,255,.10);
+
+    border-color:rgba(77,184,255,.4);
+}
+
+.control:active{
+    transform:scale(.92);
+
+    background:rgba(77,184,255,.18);
+}
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+.feedback{
+    position:absolute;
+
+    left:50%;
+    bottom:25%;
+
+    transform:
+        translate(-50%,20px);
+
+    opacity:0;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    background:rgba(4,15,27,.94);
+
+    border:1px solid var(--border);
+
+    color:var(--text);
+
+    font-size:11px;
+    font-weight:800;
+
+    pointer-events:none;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+
+    z-index:50;
+}
+
+.feedback.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+.feedback.success{
+    border-color:rgba(98,230,165,.4);
+    color:var(--success);
+}
+
+.feedback.error{
+    border-color:rgba(255,111,145,.4);
+    color:var(--danger);
+}
+
+/* =====================================================
+   TELAS
+===================================================== */
+
+.start-screen,
+.end-screen{
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(39,125,190,.13),
+            rgba(3,12,22,.96)
+        );
+
+    z-index:100;
+}
+
+.modal{
+    width:min(520px,100%);
+
+    padding:35px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14,37,61,.97),
+            rgba(7,21,37,.97)
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.45),
+        0 0 40px rgba(77,184,255,.07);
+}
+
+.modal-icon{
+    font-size:58px;
+
+    margin-bottom:12px;
+}
+
+.modal h1{
+    font-size:28px;
+}
+
+.modal p{
+    margin:12px auto 25px;
+
+    max-width:430px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+.start-button{
+    min-width:190px;
+
+    padding:13px 24px;
+
+    border:1px solid rgba(98,230,255,.35);
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(77,184,255,.18),
+            rgba(98,230,255,.07)
+        );
+
+    color:var(--text);
+
+    font-size:12px;
+    font-weight:850;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 20px rgba(77,184,255,.07);
+
+    transition:
+        transform .15s ease,
+        background .15s ease;
+}
+
+.start-button:hover{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(77,184,255,.25),
+            rgba(98,230,255,.12)
+        );
+}
+
+.start-button:active{
+    transform:scale(.96);
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =====================================================
+   CELULAR
+===================================================== */
+
+@media(max-width:700px){
+
+    header{
+        min-height:64px;
+
+        padding:8px 10px;
+    }
+
+    .logo-icon{
+        width:36px;
+        height:36px;
+
+        font-size:18px;
+    }
+
+    .logo strong{
+        font-size:11px;
+    }
+
+    .logo span{
+        font-size:7px;
+    }
+
+    .stats{
+        gap:4px;
+    }
+
+    .stat{
+        min-width:50px;
+
+        padding:5px 6px;
+    }
+
+    .stat small{
+        font-size:7px;
+    }
+
+    .stat strong{
+        font-size:11px;
+    }
+
+    .question{
+        top:10px;
+
+        padding:11px 12px;
+    }
+
+    .question h2{
+        font-size:14px;
+    }
+
+    .object{
+        width:78px;
+
+        min-height:54px;
+
+        font-size:10px;
+    }
+
+    .player{
+        width:58px;
+        height:58px;
+
+        bottom:20px;
+
+        font-size:34px;
+    }
+
+    .controls{
+        min-height:72px;
+
+        gap:7px;
+    }
+
+    .control{
+        width:55px;
+        height:46px;
+
+        font-size:20px;
+    }
+
+    .modal{
+        padding:27px 20px;
+    }
+
+    .modal h1{
+        font-size:23px;
+    }
+
+    .modal p{
+        font-size:12px;
+    }
+}
+
+/* =====================================================
+   CELULAR PEQUENO
+===================================================== */
+
+@media(max-width:400px){
+
+    .logo span{
+        display:none;
+    }
+
+    .stat{
+        min-width:45px;
+    }
+
+    .question{
+        width:calc(100% - 16px);
+    }
+
+    .object{
+        width:70px;
+
+        min-height:52px;
+
+        font-size:9px;
+    }
+
+    .control{
+        width:50px;
+        height:44px;
+    }
+}
+
+/* =====================================================
+   MODO PAISAGEM
+===================================================== */
+
+@media(max-height:520px) and (orientation:landscape){
+
+    header{
+        min-height:55px;
+
+        padding:5px 10px;
+    }
+
+    .logo-icon{
+        width:32px;
+        height:32px;
+
+        font-size:16px;
+    }
+
+    .logo strong{
+        font-size:10px;
+    }
+
+    .logo span{
+        display:none;
+    }
+
+    .stat{
+        min-width:52px;
+
+        padding:4px 6px;
+    }
+
+    .question{
+        top:7px;
+
+        width:min(520px,60%);
+
+        padding:7px 10px;
+    }
+
+    .question small{
+        font-size:7px;
+    }
+
+    .question h2{
+        font-size:12px;
+    }
+
+    .player{
+        bottom:12px;
+
+        font-size:30px;
+    }
+
+    .controls{
+        min-height:58px;
+
+        padding:5px 10px;
+    }
+
+    .control{
+        width:46px;
+        height:40px;
+
+        font-size:17px;
+    }
+
+    .modal{
+        padding:16px 22px;
+
+        max-height:90vh;
+        overflow:auto;
+    }
+
+    .modal-icon{
+        font-size:36px;
+        margin-bottom:4px;
+    }
+
+    .modal h1{
+        font-size:20px;
+    }
+
+    .modal p{
+        margin:7px auto 13px;
+
+        font-size:10px;
+    }
+
+    .start-button{
+        padding:9px 20px;
+    }
+}
+
+/* =====================================================
+   ACESSIBILIDADE
+===================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">⚡</div>
+
+        <div>
+            <strong>ENGLISH RUNNER</strong>
+            <span>Aldemar Studios</span>
+        </div>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <small>Pontos</small>
+            <strong id="score">0</strong>
+        </div>
+
+        <div class="stat">
+            <small>Vidas</small>
+            <strong id="lives">❤️❤️❤️</strong>
+        </div>
+
+        <div class="stat">
+            <small>Tempo</small>
+            <strong id="time">60</strong>
+        </div>
+
+    </div>
+
+</header>
+
+<div id="gameArea">
+
+    <div class="grid"></div>
+
+    <div class="lane"></div>
+    <div class="lane"></div>
+    <div class="lane"></div>
+
+    <div class="question">
+
+        <small>Escolha a tradução correta</small>
+
+        <h2 id="questionText">
+            Pressione iniciar para começar
+        </h2>
+
+    </div>
+
+    <div class="player" id="player">
+        🏃
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+</div>
+
+<div class="controls">
+
+    <button
+        class="control"
+        id="left"
+        aria-label="Mover para esquerda"
+    >←</button>
+
+    <button
+        class="control"
+        id="up"
+        aria-label="Ação para cima"
+    >↑</button>
+
+    <button
+        class="control"
+        id="down"
+        aria-label="Ação para baixo"
+    >↓</button>
+
+    <button
+        class="control"
+        id="right"
+        aria-label="Mover para direita"
+    >→</button>
+
+</div>
+
+<div class="start-screen" id="startScreen">
+
+    <div class="modal">
+
+        <div class="modal-icon">🏃‍♂️</div>
+
+        <h1>English Runner</h1>
+
+        <p>
+            Corra pelas três pistas e escolha a palavra
+            que corresponde à tradução apresentada.
+            Acerte para ganhar pontos e evite as respostas erradas.
+            Use o teclado no computador ou os controles de toque
+            no celular e tablet.
+        </p>
+
+        <button
+            class="start-button"
+            id="startButton"
+        >
+            INICIAR JOGO
+        </button>
+
+    </div>
+
+</div>
+
+<div class="end-screen hidden" id="endScreen">
+
+    <div class="modal">
+
+        <div class="modal-icon">🏆</div>
+
+        <h1>Fim de jogo!</h1>
+
+        <p id="finalMessage">
+            Você terminou a partida.
+        </p>
+
+        <button
+            class="start-button"
+            id="restartButton"
+        >
+            JOGAR NOVAMENTE
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =====================================================
+   BANCO DE QUESTÕES
+===================================================== */
+
+const questions = [
+
+    {
+        question:"Casa",
+        answers:["House","School","Car"],
+        correct:"House"
+    },
+
+    {
+        question:"Livro",
+        answers:["Pen","Book","Table"],
+        correct:"Book"
+    },
+
+    {
+        question:"Escola",
+        answers:["School","Hospital","Market"],
+        correct:"School"
+    },
+
+    {
+        question:"Água",
+        answers:["Food","Water","Juice"],
+        correct:"Water"
+    },
+
+    {
+        question:"Professor",
+        answers:["Student","Teacher","Doctor"],
+        correct:"Teacher"
+    },
+
+    {
+        question:"Amigo",
+        answers:["Friend","Brother","Father"],
+        correct:"Friend"
+    },
+
+    {
+        question:"Carro",
+        answers:["Bike","Bus","Car"],
+        correct:"Car"
+    },
+
+    {
+        question:"Cachorro",
+        answers:["Cat","Dog","Bird"],
+        correct:"Dog"
+    },
+
+    {
+        question:"Comida",
+        answers:["Food","Room","Street"],
+        correct:"Food"
+    },
+
+    {
+        question:"Família",
+        answers:["Family","Friend","School"],
+        correct:"Family"
+    },
+
+    {
+        question:"Professor",
+        answers:["Teacher","Driver","Farmer"],
+        correct:"Teacher"
+    },
+
+    {
+        question:"Janela",
+        answers:["Door","Window","Wall"],
+        correct:"Window"
+    },
+
+    {
+        question:"Mesa",
+        answers:["Chair","Table","Bed"],
+        correct:"Table"
+    },
+
+    {
+        question:"Livro",
+        answers:["Book","Notebook","Pencil"],
+        correct:"Book"
+    },
+
+    {
+        question:"Árvore",
+        answers:["Flower","Tree","Grass"],
+        correct:"Tree"
+    },
+
+    {
+        question:"Sol",
+        answers:["Moon","Sun","Star"],
+        correct:"Sun"
+    },
+
+    {
+        question:"Lua",
+        answers:["Moon","Cloud","Sky"],
+        correct:"Moon"
+    },
+
+    {
+        question:"Água",
+        answers:["Milk","Water","Coffee"],
+        correct:"Water"
+    },
+
+    {
+        question:"Gato",
+        answers:["Dog","Cat","Horse"],
+        correct:"Cat"
+    },
+
+    {
+        question:"Pássaro",
+        answers:["Bird","Fish","Mouse"],
+        correct:"Bird"
+    }
+
+];
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const gameArea =
+    document.getElementById("gameArea");
+
+const player =
+    document.getElementById("player");
+
+const questionText =
+    document.getElementById("questionText");
+
+const scoreElement =
+    document.getElementById("score");
+
+const livesElement =
+    document.getElementById("lives");
+
+const timeElement =
+    document.getElementById("time");
+
+const feedback =
+    document.getElementById("feedback");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const endScreen =
+    document.getElementById("endScreen");
+
+const finalMessage =
+    document.getElementById("finalMessage");
+
+const startButton =
+    document.getElementById("startButton");
+
+const restartButton =
+    document.getElementById("restartButton");
+
+const leftButton =
+    document.getElementById("left");
+
+const rightButton =
+    document.getElementById("right");
+
+const upButton =
+    document.getElementById("up");
+
+const downButton =
+    document.getElementById("down");
+
+/* =====================================================
+   ESTADO
+===================================================== */
+
+const lanes = [16.66,50,83.33];
+
+let lane = 1;
+
+let score = 0;
+
+let lives = 3;
+
+let time = 60;
+
+let running = false;
+
+let timer = null;
+
+let spawnTimer = null;
+
+let animationFrame = null;
+
+let currentQuestion = null;
+
+let objects = [];
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+function updatePlayer(){
+
+    player.style.left =
+        lanes[lane] + "%";
+
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function updateStats(){
+
+    scoreElement.textContent =
+        score;
+
+    livesElement.textContent =
+        "❤️".repeat(lives);
+
+    timeElement.textContent =
+        time;
+
+}
+
+/* =====================================================
+   QUESTÃO
+===================================================== */
+
+function nextQuestion(){
+
+    currentQuestion =
+        questions[
+            Math.floor(
+                Math.random() *
+                questions.length
+            )
+        ];
+
+    questionText.textContent =
+        "Traduza: " +
+        currentQuestion.question;
+
+}
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+function showFeedback(
+    text,
+    type
+){
+
+    feedback.textContent =
+        text;
+
+    feedback.className =
+        "feedback show " +
+        type;
+
+    setTimeout(() => {
+
+        feedback.className =
+            "feedback";
+
+    },700);
+
+}
+
+/* =====================================================
+   CRIAR RESPOSTA
+===================================================== */
+
+function createObject(){
+
+    if(!running)
+        return;
+
+    if(!currentQuestion)
+        return;
+
+    const answer =
+        currentQuestion.answers[
+            Math.floor(
+                Math.random() *
+                currentQuestion.answers.length
+            )
+        ];
+
+    const object =
+        document.createElement("div");
+
+    object.className =
+        "object";
+
+    object.textContent =
+        answer;
+
+    const objectLane =
+        Math.floor(
+            Math.random() * 3
+        );
+
+    object.dataset.answer =
+        answer;
+
+    object.dataset.lane =
+        objectLane;
+
+    object.style.left =
+        `calc(${lanes[objectLane]}% - 55px)`;
+
+    object.style.top =
+        "-70px";
+
+    gameArea.appendChild(
+        object
+    );
+
+    objects.push({
+
+        element:object,
+
+        y:-70,
+
+        lane:objectLane,
+
+        answer
+
+    });
+
+}
+
+/* =====================================================
+   COLISÃO
+===================================================== */
+
+function checkCollision(obj){
+
+    if(
+        obj.lane !== lane
+    ){
+
+        return false;
+
+    }
+
+    const playerBottom =
+        gameArea.clientHeight - 95;
+
+    return (
+        obj.y >
+        playerBottom - 70 &&
+        obj.y <
+        playerBottom + 45
+    );
+
+}
+
+/* =====================================================
+   ATINGIR RESPOSTA
+===================================================== */
+
+function hitObject(obj){
+
+    if(
+        obj.answer ===
+        currentQuestion.correct
+    ){
+
+        score += 10;
+
+        showFeedback(
+            "✓ CORRETO! +10",
+            "success"
+        );
+
+    }else{
+
+        lives--;
+
+        showFeedback(
+            "✕ ERRADO!",
+            "error"
+        );
+
+    }
+
+    obj.element.remove();
+
+    objects =
+        objects.filter(
+            item => item !== obj
+        );
+
+    updateStats();
+
+    if(
+        lives <= 0
+    ){
+
+        endGame();
+
+        return;
+
+    }
+
+    nextQuestion();
+
+}
+
+/* =====================================================
+   LOOP
+===================================================== */
+
+function gameLoop(){
+
+    if(!running)
+        return;
+
+    for(
+        let i = objects.length - 1;
+        i >= 0;
+        i--
+    ){
+
+        const obj =
+            objects[i];
+
+        obj.y += 4;
+
+        obj.element.style.top =
+            obj.y + "px";
+
+        if(
+            checkCollision(obj)
+        ){
+
+            hitObject(obj);
+
+            continue;
+
+        }
+
+        if(
+            obj.y >
+            gameArea.clientHeight
+        ){
+
+            obj.element.remove();
+
+            objects.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
+
+}
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+function startGame(){
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+    objects.forEach(
+        obj => obj.element.remove()
+    );
+
+    objects = [];
+
+    running = true;
+
+    score = 0;
+
+    lives = 3;
+
+    time = 60;
+
+    lane = 1;
+
+    updatePlayer();
+
+    updateStats();
+
+    nextQuestion();
+
+    startScreen.classList.add(
+        "hidden"
+    );
+
+    endScreen.classList.add(
+        "hidden"
+    );
+
+    clearInterval(timer);
+
+    clearInterval(spawnTimer);
+
+    timer =
+        setInterval(() => {
+
+            if(!running)
+                return;
+
+            time--;
+
+            updateStats();
+
+            if(time <= 0){
+
+                endGame();
+
+            }
+
+        },1000);
+
+    spawnTimer =
+        setInterval(
+            createObject,
+            900
+        );
+
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
+
+}
+
+/* =====================================================
+   FINALIZAR
+===================================================== */
+
+function endGame(){
+
+    if(!running)
+        return;
+
+    running = false;
+
+    clearInterval(timer);
+
+    clearInterval(spawnTimer);
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+    objects.forEach(
+        obj => obj.element.remove()
+    );
+
+    objects = [];
+
+    finalMessage.textContent =
+        `Sua pontuação foi ${score} pontos.`;
+
+    endScreen.classList.remove(
+        "hidden"
+    );
+
+}
+
+/* =====================================================
+   MOVIMENTO
+===================================================== */
+
+function moveLeft(){
+
+    if(!running)
+        return;
+
+    if(lane > 0){
+
+        lane--;
+
+        updatePlayer();
+
+    }
+
+}
+
+function moveRight(){
+
+    if(!running)
+        return;
+
+    if(lane < 2){
+
+        lane++;
+
+        updatePlayer();
+
+    }
+
+}
+
+function moveUp(){
+
+    if(!running)
+        return;
+
+    score += 2;
+
+    updateStats();
+
+}
+
+function moveDown(){
+
+    if(!running)
+        return;
+
+    time =
+        Math.max(
+            0,
+            time - 1
+        );
+
+    updateStats();
+
+}
+
+/* =====================================================
+   BOTÕES TOUCH
+===================================================== */
+
+leftButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        moveLeft();
+
+    }
+);
+
+rightButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        moveRight();
+
+    }
+);
+
+upButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        moveUp();
+
+    }
+);
+
+downButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        moveDown();
+
+    }
+);
+
+/* =====================================================
+   TECLADO
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "ArrowLeft" ||
+            event.key.toLowerCase() === "a"
+        ){
+
+            event.preventDefault();
+
+            moveLeft();
+
+        }
+
+        if(
+            event.key === "ArrowRight" ||
+            event.key.toLowerCase() === "d"
+        ){
+
+            event.preventDefault();
+
+            moveRight();
+
+        }
+
+        if(
+            event.key === "ArrowUp" ||
+            event.key.toLowerCase() === "w"
+        ){
+
+            event.preventDefault();
+
+            moveUp();
+
+        }
+
+        if(
+            event.key === "ArrowDown" ||
+            event.key.toLowerCase() === "s"
+        ){
+
+            event.preventDefault();
+
+            moveDown();
+
+        }
+
+    }
+);
+
+/* =====================================================
+   SWIPE NO CELULAR
+===================================================== */
+
+let touchStartX = 0;
+
+let touchStartY = 0;
+
+gameArea.addEventListener(
+    "touchstart",
+    event => {
+
+        const touch =
+            event.changedTouches[0];
+
+        touchStartX =
+            touch.clientX;
+
+        touchStartY =
+            touch.clientY;
+
+    },
+    {passive:true}
+);
+
+gameArea.addEventListener(
+    "touchend",
+    event => {
+
+        if(!running)
+            return;
+
+        const touch =
+            event.changedTouches[0];
+
+        const dx =
+            touch.clientX -
+            touchStartX;
+
+        const dy =
+            touch.clientY -
+            touchStartY;
+
+        const threshold = 35;
+
+        if(
+            Math.abs(dx) >
+            Math.abs(dy)
+        ){
+
+            if(
+                Math.abs(dx) >
+                threshold
+            ){
+
+                if(dx > 0)
+                    moveRight();
+                else
+                    moveLeft();
+
+            }
+
+        }else{
+
+            if(
+                Math.abs(dy) >
+                threshold
+            ){
+
+                if(dy < 0)
+                    moveUp();
+                else
+                    moveDown();
+
+            }
+
+        }
+
+    },
+    {passive:true}
+);
+
+/* =====================================================
+   BOTÕES DE JOGO
+===================================================== */
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+restartButton.addEventListener(
+    "click",
+    startGame
+);
+
+/* =====================================================
+   ORIENTAÇÃO
+===================================================== */
+
+function updateOrientationHint(){
+
+    const landscape =
+        window.matchMedia(
+            "(orientation: landscape)"
+        ).matches;
+
+    document.body.dataset.orientation =
+        landscape
+            ? "landscape"
+            : "portrait";
+
+}
+
+window.addEventListener(
+    "resize",
+    updateOrientationHint
+);
+
+window.addEventListener(
+    "orientationchange",
+    updateOrientationHint
+);
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
+updatePlayer();
+
+updateStats();
+
+updateOrientationHint();
+
+</script>
+
+</body>
+</html>

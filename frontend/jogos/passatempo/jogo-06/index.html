@@ -1,0 +1,3697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Kingdom of English</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#111827;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    touch-action:none;
+}
+
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:#16251b;
+}
+
+canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+/* =====================================================
+   HUD
+===================================================== */
+
+#hud{
+    position:absolute;
+    top:12px;
+    left:12px;
+    right:12px;
+    z-index:20;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    pointer-events:none;
+}
+
+.hudBox{
+    padding:9px 13px;
+
+    min-width:125px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:12px;
+
+    background:
+        rgba(10,15,12,.82);
+
+    color:white;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.3);
+
+    backdrop-filter:blur(8px);
+}
+
+.hudTitle{
+    display:block;
+
+    color:#d4a72c;
+
+    font-size:9px;
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    margin-bottom:3px;
+}
+
+.hudValue{
+    font-size:15px;
+    font-weight:900;
+}
+
+#levelHud{
+    text-align:center;
+}
+
+#wordHud{
+    text-align:right;
+}
+
+#wordValue{
+    color:#7dd3fc;
+}
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+#backButton{
+    position:absolute;
+
+    top:72px;
+    left:15px;
+
+    z-index:30;
+
+    border:
+        1px solid
+        rgba(255,255,255,.2);
+
+    border-radius:9px;
+
+    padding:8px 13px;
+
+    background:
+        rgba(10,15,12,.82);
+
+    color:white;
+
+    font-size:10px;
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+#backButton:hover{
+    background:#8b5e34;
+    transform:translateY(-1px);
+}
+
+/* =====================================================
+   QUEST
+===================================================== */
+
+#quest{
+    position:absolute;
+
+    left:50%;
+    bottom:18px;
+
+    transform:translateX(-50%);
+
+    z-index:25;
+
+    width:min(560px,88vw);
+
+    padding:10px 15px;
+
+    border:
+        1px solid
+        rgba(212,167,44,.3);
+
+    border-radius:12px;
+
+    background:
+        rgba(10,15,12,.86);
+
+    color:white;
+
+    text-align:center;
+
+    font-size:11px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.3);
+
+    pointer-events:none;
+}
+
+#quest strong{
+    color:#facc15;
+}
+
+/* =====================================================
+   START / WIN / GAME OVER
+===================================================== */
+
+.screen{
+    position:absolute;
+
+    inset:0;
+
+    z-index:100;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(74,58,25,.3),
+            rgba(5,10,7,.97) 75%
+        );
+}
+
+.panel{
+    width:min(650px,94vw);
+
+    padding:35px 28px;
+
+    border:
+        1px solid
+        rgba(212,167,44,.25);
+
+    border-radius:22px;
+
+    background:
+        rgba(16,23,18,.96);
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.55);
+}
+
+.emblem{
+    width:78px;
+    height:78px;
+
+    margin:0 auto 18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5e34,
+            #d4a72c
+        );
+
+    font-size:40px;
+
+    box-shadow:
+        0 15px 35px rgba(212,167,44,.18);
+}
+
+.panel h1{
+    margin-bottom:10px;
+
+    font-size:
+        clamp(26px,5vw,44px);
+
+    font-weight:950;
+}
+
+.panel h1 span{
+    color:#d4a72c;
+}
+
+.panel p{
+    color:#aab6ac;
+
+    font-size:13px;
+
+    line-height:1.7;
+
+    margin-bottom:22px;
+}
+
+.info{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:9px;
+
+    margin-bottom:22px;
+}
+
+.infoCard{
+    padding:12px 7px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.infoCard strong{
+    display:block;
+
+    color:#facc15;
+
+    font-size:17px;
+
+    margin-bottom:4px;
+}
+
+.infoCard span{
+    color:#7f8b81;
+
+    font-size:8px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+}
+
+.mainButton{
+    width:100%;
+
+    min-height:50px;
+
+    border:none;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5e34,
+            #b8860b
+        );
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:950;
+
+    letter-spacing:.5px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.mainButton:hover{
+    transform:translateY(-2px);
+
+    filter:brightness(1.12);
+}
+
+/* =====================================================
+   QUESTION
+===================================================== */
+
+#questionBox{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    z-index:80;
+
+    width:min(520px,92vw);
+
+    padding:24px;
+
+    border:
+        1px solid
+        rgba(212,167,44,.3);
+
+    border-radius:18px;
+
+    background:
+        rgba(12,18,14,.97);
+
+    color:white;
+
+    text-align:center;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.65);
+
+    display:none;
+}
+
+#questionBox.show{
+    display:block;
+}
+
+.questionTitle{
+    color:#d4a72c;
+
+    font-size:9px;
+    font-weight:950;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    margin-bottom:9px;
+}
+
+#questionText{
+    font-size:18px;
+    font-weight:900;
+
+    margin-bottom:16px;
+}
+
+.answers{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:8px;
+}
+
+.answer{
+    min-height:44px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:9px;
+
+    background:
+        #1d2a21;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:11px;
+    font-weight:800;
+
+    transition:.2s;
+}
+
+.answer:hover{
+    background:#344b39;
+}
+
+.answer.correct{
+    background:#166534;
+    border-color:#4ade80;
+}
+
+.answer.wrong{
+    background:#7f1d1d;
+    border-color:#fb7185;
+}
+
+/* =====================================================
+   MOBILE CONTROLS
+===================================================== */
+
+#mobileControls{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:18px;
+
+    z-index:35;
+
+    display:none;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    pointer-events:none;
+}
+
+.controlGroup{
+    display:flex;
+    gap:9px;
+}
+
+.control{
+    width:58px;
+    height:58px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:16px;
+
+    background:
+        rgba(10,15,12,.82);
+
+    color:white;
+
+    font-size:21px;
+
+    pointer-events:auto;
+
+    user-select:none;
+    -webkit-user-select:none;
+}
+
+.control:active{
+    transform:scale(.93);
+    background:#6b4628;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:850px){
+
+    #mobileControls{
+        display:flex;
+    }
+
+    #quest{
+        bottom:91px;
+    }
+
+    #wordHud{
+        display:none;
+    }
+
+    .hudBox{
+        min-width:auto;
+        padding:8px 10px;
+    }
+}
+
+@media(max-width:600px){
+
+    .info{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        padding:27px 20px;
+    }
+
+    .emblem{
+        width:62px;
+        height:62px;
+        font-size:31px;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    #backButton{
+        top:64px;
+        left:8px;
+    }
+
+    #hud{
+        top:7px;
+        left:7px;
+        right:7px;
+    }
+
+    .control{
+        width:53px;
+        height:53px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<canvas id="canvas"></canvas>
+
+<!-- HUD -->
+
+<div id="hud">
+
+    <div class="hudBox">
+
+        <span class="hudTitle">
+            Vida
+        </span>
+
+        <span
+            class="hudValue"
+            id="lives"
+        >
+            ❤️❤️❤️
+        </span>
+
+    </div>
+
+    <div
+        class="hudBox"
+        id="levelHud"
+    >
+
+        <span class="hudTitle">
+            Reino
+        </span>
+
+        <span
+            class="hudValue"
+            id="levelValue"
+        >
+            1 / 10
+        </span>
+
+    </div>
+
+    <div
+        class="hudBox"
+        id="wordHud"
+    >
+
+        <span class="hudTitle">
+            English
+        </span>
+
+        <span
+            class="hudValue"
+            id="wordValue"
+        >
+            KING
+        </span>
+
+    </div>
+
+</div>
+
+
+<button id="backButton">
+    ← VOLTAR
+</button>
+
+
+<div id="quest">
+    Missão: <strong>Explore o reino.</strong>
+</div>
+
+
+<!-- MOBILE -->
+
+<div id="mobileControls">
+
+    <div class="controlGroup">
+
+        <button
+            class="control"
+            id="left"
+        >
+            ◀
+        </button>
+
+        <button
+            class="control"
+            id="right"
+        >
+            ▶
+        </button>
+
+    </div>
+
+    <div class="controlGroup">
+
+        <button
+            class="control"
+            id="attack"
+        >
+            ⚔
+        </button>
+
+        <button
+            class="control"
+            id="up"
+        >
+            ▲
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- START -->
+
+<div
+    class="screen"
+    id="startScreen"
+>
+
+<div class="panel">
+
+    <div class="emblem">
+        👑
+    </div>
+
+    <h1>
+        Kingdom of
+        <span>English</span>
+    </h1>
+
+    <p>
+        O reino está em perigo.
+        Explore terras medievais,
+        enfrente criaturas, ajude os
+        habitantes e prove seu domínio
+        do inglês para salvar o reino.
+    </p>
+
+    <div class="info">
+
+        <div class="infoCard">
+            <strong>10</strong>
+            <span>Níveis</span>
+        </div>
+
+        <div class="infoCard">
+            <strong>⚔</strong>
+            <span>Ação</span>
+        </div>
+
+        <div class="infoCard">
+            <strong>🇬🇧</strong>
+            <span>Inglês</span>
+        </div>
+
+    </div>
+
+    <button
+        class="mainButton"
+        id="startButton"
+    >
+        COMEÇAR A AVENTURA
+    </button>
+
+</div>
+
+</div>
+
+
+<!-- WIN -->
+
+<div
+    class="screen"
+    id="winScreen"
+    style="display:none;"
+>
+
+<div class="panel">
+
+    <div class="emblem">
+        🏆
+    </div>
+
+    <h1>
+        Reino
+        <span>Salvo!</span>
+    </h1>
+
+    <p>
+        Você derrotou os inimigos,
+        completou os desafios de inglês
+        e salvou o Reino de English.
+    </p>
+
+    <button
+        class="mainButton"
+        id="restartButton"
+    >
+        JOGAR NOVAMENTE
+    </button>
+
+</div>
+
+</div>
+
+
+<!-- QUESTION -->
+
+<div id="questionBox">
+
+    <div class="questionTitle">
+        Desafio do Reino
+    </div>
+
+    <div id="questionText">
+        Question
+    </div>
+
+    <div
+        class="answers"
+        id="answers"
+    ></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+const canvas =
+    document.getElementById("canvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let W = 0;
+let H = 0;
+
+function resize(){
+
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+    W =
+        window.innerWidth;
+
+    H =
+        window.innerHeight;
+
+    canvas.width =
+        W * dpr;
+
+    canvas.height =
+        H * dpr;
+
+    canvas.style.width =
+        W + "px";
+
+    canvas.style.height =
+        H + "px";
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+}
+
+resize();
+
+window.addEventListener(
+    "resize",
+    resize
+);
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const winScreen =
+    document.getElementById(
+        "winScreen"
+    );
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+const restartButton =
+    document.getElementById(
+        "restartButton"
+    );
+
+const livesHUD =
+    document.getElementById(
+        "lives"
+    );
+
+const levelHUD =
+    document.getElementById(
+        "levelValue"
+    );
+
+const wordHUD =
+    document.getElementById(
+        "wordValue"
+    );
+
+const quest =
+    document.getElementById(
+        "quest"
+    );
+
+const questionBox =
+    document.getElementById(
+        "questionBox"
+    );
+
+const questionText =
+    document.getElementById(
+        "questionText"
+    );
+
+const answers =
+    document.getElementById(
+        "answers"
+    );
+
+const backButton =
+    document.getElementById(
+        "backButton"
+    );
+
+
+/* =====================================================
+   GAME
+===================================================== */
+
+let running = false;
+
+let level = 1;
+
+let lives = 3;
+
+let score = 0;
+
+let cameraX = 0;
+
+let questionActive = false;
+
+let currentQuestion = null;
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+const keys = {};
+
+window.addEventListener(
+    "keydown",
+    e => {
+
+        keys[
+            e.key.toLowerCase()
+        ] = true;
+
+        if(
+            [
+                "arrowup",
+                "arrowdown",
+                "arrowleft",
+                "arrowright",
+                " "
+            ].includes(
+                e.key.toLowerCase()
+            )
+        ){
+
+            e.preventDefault();
+        }
+
+        if(
+            e.key === " " ||
+            e.key === "ArrowUp" ||
+            e.key.toLowerCase() === "w"
+        ){
+
+            jump();
+        }
+
+        if(
+            e.key.toLowerCase() === "x" ||
+            e.key.toLowerCase() === "j"
+        ){
+
+            attack();
+        }
+    }
+);
+
+window.addEventListener(
+    "keyup",
+    e => {
+
+        keys[
+            e.key.toLowerCase()
+        ] = false;
+    }
+);
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+function holdButton(
+    id,
+    key
+){
+
+    const button =
+        document.getElementById(id);
+
+    button.addEventListener(
+        "pointerdown",
+        e => {
+
+            e.preventDefault();
+
+            keys[key] = true;
+        }
+    );
+
+    [
+        "pointerup",
+        "pointercancel",
+        "pointerleave"
+    ].forEach(
+        type => {
+
+            button.addEventListener(
+                type,
+                e => {
+
+                    e.preventDefault();
+
+                    keys[key] = false;
+                }
+            );
+        }
+    );
+}
+
+holdButton(
+    "left",
+    "arrowleft"
+);
+
+holdButton(
+    "right",
+    "arrowright"
+);
+
+document
+    .getElementById("up")
+    .addEventListener(
+        "pointerdown",
+        e => {
+
+            e.preventDefault();
+
+            jump();
+        }
+    );
+
+document
+    .getElementById("attack")
+    .addEventListener(
+        "pointerdown",
+        e => {
+
+            e.preventDefault();
+
+            attack();
+        }
+    );
+
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+const player = {
+
+    x:120,
+
+    y:200,
+
+    width:34,
+
+    height:48,
+
+    vx:0,
+
+    vy:0,
+
+    speed:4,
+
+    jump:11.5,
+
+    gravity:.55,
+
+    grounded:false,
+
+    facing:1,
+
+    attacking:false,
+
+    attackTimer:0,
+
+    invincible:0
+};
+
+
+/* =====================================================
+   WORLD
+===================================================== */
+
+let worldWidth = 5000;
+
+let platforms = [];
+
+let enemies = [];
+
+let coins = [];
+
+let trees = [];
+
+let rocks = [];
+
+let houses = [];
+
+let npcs = [];
+
+let chests = [];
+
+let portal = null;
+
+let boss = null;
+
+
+/* =====================================================
+   ENGLISH LEVELS
+===================================================== */
+
+const levels = [
+
+{
+    word:"KING",
+    question:"What does KING mean?",
+    options:[
+        "Rei",
+        "Soldado",
+        "Camponês",
+        "Ferreiro"
+    ],
+    answer:0
+},
+
+{
+    word:"CASTLE",
+    question:"What does CASTLE mean?",
+    options:[
+        "Castelo",
+        "Floresta",
+        "Ponte",
+        "Mercado"
+    ],
+    answer:0
+},
+
+{
+    word:"SWORD",
+    question:"What does SWORD mean?",
+    options:[
+        "Espada",
+        "Escudo",
+        "Arco",
+        "Coroa"
+    ],
+    answer:0
+},
+
+{
+    word:"SHIELD",
+    question:"What does SHIELD mean?",
+    options:[
+        "Escudo",
+        "Machado",
+        "Cavalo",
+        "Porta"
+    ],
+    answer:0
+},
+
+{
+    word:"KNIGHT",
+    question:"What does KNIGHT mean?",
+    options:[
+        "Cavaleiro",
+        "Rei",
+        "Mago",
+        "Camponês"
+    ],
+    answer:0
+},
+
+{
+    word:"FOREST",
+    question:"What does FOREST mean?",
+    options:[
+        "Floresta",
+        "Castelo",
+        "Vila",
+        "Montanha"
+    ],
+    answer:0
+},
+
+{
+    word:"VILLAGE",
+    question:"What does VILLAGE mean?",
+    options:[
+        "Vila",
+        "Reino",
+        "Torre",
+        "Rio"
+    ],
+    answer:0
+},
+
+{
+    word:"TREASURE",
+    question:"What does TREASURE mean?",
+    options:[
+        "Tesouro",
+        "Perigo",
+        "Inimigo",
+        "Caminho"
+    ],
+    answer:0
+},
+
+{
+    word:"DRAGON",
+    question:"What does DRAGON mean?",
+    options:[
+        "Dragão",
+        "Gigante",
+        "Cavaleiro",
+        "Lobo"
+    ],
+    answer:0
+},
+
+{
+    word:"KINGDOM",
+    question:"What does KINGDOM mean?",
+    options:[
+        "Reino",
+        "Exército",
+        "Castelo",
+        "Cidade"
+    ],
+    answer:0
+}
+
+];
+
+
+/* =====================================================
+   CREATE WORLD
+===================================================== */
+
+function createWorld(){
+
+    platforms = [];
+    enemies = [];
+    coins = [];
+    trees = [];
+    rocks = [];
+    houses = [];
+    npcs = [];
+    chests = [];
+
+    boss = null;
+
+    worldWidth =
+        3800 +
+        level * 450;
+
+    /* chão */
+
+    platforms.push({
+
+        x:0,
+
+        y:H - 100,
+
+        width:worldWidth,
+
+        height:100
+
+    });
+
+
+    /* plataformas */
+
+    let x = 350;
+
+    while(
+        x <
+        worldWidth - 500
+    ){
+
+        const platformWidth =
+            130 +
+            Math.random()*170;
+
+        const y =
+            H -
+            180 -
+            Math.random()*180;
+
+        platforms.push({
+
+            x:x,
+
+            y:y,
+
+            width:platformWidth,
+
+            height:25
+
+        });
+
+        if(
+            Math.random() > .35
+        ){
+
+            coins.push({
+
+                x:
+                    x +
+                    platformWidth/2,
+
+                y:
+                    y - 28,
+
+                collected:false
+
+            });
+        }
+
+        x +=
+            platformWidth +
+            100 +
+            Math.random()*130;
+    }
+
+
+    /* árvores */
+
+    for(
+        let i=0;
+        i<Math.floor(worldWidth/120);
+        i++
+    ){
+
+        trees.push({
+
+            x:
+                i*120 +
+                Math.random()*50,
+
+            y:
+                H - 100
+
+        });
+    }
+
+
+    /* pedras */
+
+    for(
+        let i=0;
+        i<Math.floor(worldWidth/90);
+        i++
+    ){
+
+        rocks.push({
+
+            x:
+                i*90 +
+                30,
+
+            y:
+                H - 100
+
+        });
+    }
+
+
+    /* casas */
+
+    for(
+        let i=0;
+        i<level+2;
+        i++
+    ){
+
+        houses.push({
+
+            x:
+                500 +
+                i*650,
+
+            y:
+                H - 100
+
+        });
+    }
+
+
+    /* NPC */
+
+    npcs.push({
+
+        x:300,
+
+        y:H-148,
+
+        width:30,
+
+        height:48,
+
+        type:"elder"
+
+    });
+
+
+    if(level >= 3){
+
+        npcs.push({
+
+            x:
+                1200 +
+                level*70,
+
+            y:H-148,
+
+            width:30,
+
+            height:48,
+
+            type:"villager"
+
+        });
+    }
+
+
+    /* inimigos */
+
+    const enemyCount =
+        5 +
+        level * 2;
+
+    for(
+        let i=0;
+        i<enemyCount;
+        i++
+    ){
+
+        const ex =
+            700 +
+            i *
+            (
+                (worldWidth-1000) /
+                enemyCount
+            );
+
+        enemies.push({
+
+            x:ex,
+
+            y:H-145,
+
+            width:34,
+
+            height:45,
+
+            vx:
+                Math.random()>.5
+                    ?1
+                    :-1,
+
+            minX:
+                ex-70,
+
+            maxX:
+                ex+70,
+
+            alive:true,
+
+            hp:
+                level >= 6
+                    ? 2
+                    : 1
+        });
+    }
+
+
+    /* baús */
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        chests.push({
+
+            x:
+                900 +
+                i*950,
+
+            y:
+                H-130,
+
+            opened:false
+
+        });
+    }
+
+
+    /* boss */
+
+    if(level === 10){
+
+        boss = {
+
+            x:
+                worldWidth-800,
+
+            y:
+                H-175,
+
+            width:70,
+
+            height:75,
+
+            hp:10,
+
+            maxHp:10,
+
+            vx:1,
+
+            alive:true
+
+        };
+    }
+
+
+    portal = {
+
+        x:
+            worldWidth-180,
+
+        y:
+            H-190,
+
+        width:55,
+
+        height:90
+
+    };
+
+
+    player.x=120;
+
+    player.y=
+        H-170;
+
+    player.vx=0;
+
+    player.vy=0;
+
+    player.invincible=100;
+
+    cameraX=0;
+
+    updateHUD();
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+function updateHUD(){
+
+    levelHUD.textContent =
+        `${level} / 10`;
+
+    wordHUD.textContent =
+        levels[level-1].word;
+
+    livesHUD.textContent =
+        "❤️".repeat(
+            Math.max(0,lives)
+        );
+
+    if(level === 10){
+
+        quest.innerHTML =
+            "Missão: <strong>Derrote o Guardião do Reino!</strong>";
+
+    }else{
+
+        quest.innerHTML =
+            `Missão: <strong>Chegue ao portal e complete o desafio "${levels[level-1].word}".</strong>`;
+    }
+}
+
+
+/* =====================================================
+   COLLISION
+===================================================== */
+
+function collision(a,b){
+
+    return(
+
+        a.x <
+        b.x+b.width &&
+
+        a.x+a.width >
+        b.x &&
+
+        a.y <
+        b.y+b.height &&
+
+        a.y+a.height >
+        b.y
+
+    );
+}
+
+
+/* =====================================================
+   UPDATE PLAYER
+===================================================== */
+
+function updatePlayer(){
+
+    if(
+        !running ||
+        questionActive
+    ){
+
+        return;
+    }
+
+
+    const left =
+        keys["arrowleft"] ||
+        keys["a"];
+
+    const right =
+        keys["arrowright"] ||
+        keys["d"];
+
+
+    if(left){
+
+        player.vx =
+            -player.speed;
+
+        player.facing=-1;
+
+    }else if(right){
+
+        player.vx =
+            player.speed;
+
+        player.facing=1;
+
+    }else{
+
+        player.vx*=.78;
+    }
+
+
+    player.vy +=
+        player.gravity;
+
+
+    player.x +=
+        player.vx;
+
+    player.y +=
+        player.vy;
+
+
+    if(player.x < 0)
+        player.x=0;
+
+
+    if(
+        player.x >
+        worldWidth-player.width
+    ){
+
+        player.x =
+            worldWidth-player.width;
+    }
+
+
+    player.grounded=false;
+
+
+    for(
+        const p of platforms
+    ){
+
+        if(
+
+            player.vy >= 0 &&
+
+            player.x+player.width >
+            p.x &&
+
+            player.x <
+            p.x+p.width &&
+
+            player.y+player.height >=
+            p.y &&
+
+            player.y+player.height-
+            player.vy <=
+            p.y
+
+        ){
+
+            player.y =
+                p.y-player.height;
+
+            player.vy=0;
+
+            player.grounded=true;
+        }
+    }
+
+
+    if(
+        player.y >
+        H+200
+    ){
+
+        loseLife();
+    }
+
+
+    if(
+        player.invincible>0
+    ){
+
+        player.invincible--;
+    }
+
+
+    if(
+        player.attackTimer>0
+    ){
+
+        player.attackTimer--;
+
+    }else{
+
+        player.attacking=false;
+    }
+
+
+    updateEnemies();
+
+    updateBoss();
+
+    collectCoins();
+
+    openChests();
+
+    checkNPC();
+
+    checkPortal();
+
+
+    cameraX =
+        player.x -
+        W*.35;
+
+
+    if(cameraX<0)
+        cameraX=0;
+
+    if(
+        cameraX >
+        worldWidth-W
+    ){
+
+        cameraX =
+            worldWidth-W;
+    }
+}
+
+
+/* =====================================================
+   JUMP
+===================================================== */
+
+function jump(){
+
+    if(
+        !running ||
+        questionActive
+    )
+        return;
+
+    if(
+        player.grounded
+    ){
+
+        player.vy =
+            -player.jump;
+
+        player.grounded=false;
+    }
+}
+
+
+/* =====================================================
+   ATTACK
+===================================================== */
+
+function attack(){
+
+    if(
+        !running ||
+        questionActive ||
+        player.attacking
+    )
+        return;
+
+
+    player.attacking=true;
+
+    player.attackTimer=18;
+
+
+    const range={
+
+        x:
+            player.facing===1
+                ? player.x+player.width
+                : player.x-48,
+
+        y:
+            player.y+5,
+
+        width:48,
+
+        height:38
+
+    };
+
+
+    enemies.forEach(
+        enemy => {
+
+            if(
+                enemy.alive &&
+                collision(range,enemy)
+            ){
+
+                enemy.hp--;
+
+                if(
+                    enemy.hp<=0
+                ){
+
+                    enemy.alive=false;
+
+                    score+=100;
+                }
+            }
+        }
+    );
+
+
+    if(
+        boss &&
+        boss.alive &&
+        collision(range,boss)
+    ){
+
+        boss.hp--;
+
+        score+=50;
+
+        if(
+            boss.hp<=0
+        ){
+
+            boss.alive=false;
+
+            score+=1000;
+
+            quest.innerHTML =
+                "Missão: <strong>Guardião derrotado! Vá até o portal.</strong>";
+        }
+    }
+}
+
+
+/* =====================================================
+   ENEMIES
+===================================================== */
+
+function updateEnemies(){
+
+    enemies.forEach(
+        enemy => {
+
+            if(!enemy.alive)
+                return;
+
+
+            enemy.x +=
+                enemy.vx;
+
+
+            if(
+                enemy.x<=enemy.minX ||
+                enemy.x>=enemy.maxX
+            ){
+
+                enemy.vx*=-1;
+            }
+
+
+            if(
+                player.invincible<=0 &&
+                collision(player,enemy)
+            ){
+
+                loseLife();
+            }
+        }
+    );
+}
+
+
+/* =====================================================
+   BOSS
+===================================================== */
+
+function updateBoss(){
+
+    if(
+        !boss ||
+        !boss.alive
+    )
+        return;
+
+
+    boss.x +=
+        boss.vx;
+
+
+    if(
+        boss.x <
+        worldWidth-1050 ||
+        boss.x >
+        worldWidth-600
+    ){
+
+        boss.vx*=-1;
+    }
+
+
+    if(
+        player.invincible<=0 &&
+        collision(player,boss)
+    ){
+
+        loseLife();
+    }
+}
+
+
+/* =====================================================
+   COINS
+===================================================== */
+
+function collectCoins(){
+
+    coins.forEach(
+        coin => {
+
+            if(coin.collected)
+                return;
+
+
+            const box={
+
+                x:coin.x-12,
+
+                y:coin.y-12,
+
+                width:24,
+
+                height:24
+            };
+
+
+            if(
+                collision(player,box)
+            ){
+
+                coin.collected=true;
+
+                score+=25;
+            }
+        }
+    );
+}
+
+
+/* =====================================================
+   CHESTS
+===================================================== */
+
+function openChests(){
+
+    chests.forEach(
+        chest => {
+
+            if(
+                chest.opened
+            )
+                return;
+
+
+            const box={
+
+                x:chest.x,
+
+                y:chest.y,
+
+                width:40,
+
+                height:30
+
+            };
+
+
+            if(
+                collision(player,box)
+            ){
+
+                chest.opened=true;
+
+                score+=150;
+
+                quest.innerHTML =
+                    "Baú encontrado! <strong>+150 pontos</strong>";
+            }
+        }
+    );
+}
+
+
+/* =====================================================
+   NPC
+===================================================== */
+
+function checkNPC(){
+
+    npcs.forEach(
+        npc => {
+
+            if(
+                collision(
+                    player,
+                    {
+                        x:npc.x-20,
+                        y:npc.y-20,
+                        width:70,
+                        height:80
+                    }
+                )
+            ){
+
+                if(
+                    level === 1
+                ){
+
+                    quest.innerHTML =
+                        'Morador: <strong>"Our kingdom needs a brave hero!"</strong>';
+
+                }else{
+
+                    quest.innerHTML =
+                        'Morador: <strong>"Keep going, hero!"</strong>';
+                }
+            }
+        }
+    );
+}
+
+
+/* =====================================================
+   PORTAL
+===================================================== */
+
+function checkPortal(){
+
+    if(!portal)
+        return;
+
+
+    if(
+        collision(player,portal)
+    ){
+
+        if(
+            level===10 &&
+            boss &&
+            boss.alive
+        ){
+
+            quest.innerHTML =
+                "Você precisa derrotar o Guardião primeiro!";
+
+            return;
+        }
+
+
+        openQuestion();
+    }
+}
+
+
+/* =====================================================
+   QUESTION
+===================================================== */
+
+function openQuestion(){
+
+    if(questionActive)
+        return;
+
+
+    questionActive=true;
+
+    currentQuestion =
+        levels[level-1];
+
+
+    questionText.textContent =
+        currentQuestion.question;
+
+
+    answers.innerHTML="";
+
+
+    currentQuestion.options.forEach(
+        (
+            option,
+            index
+        ) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className="answer";
+
+            button.textContent=option;
+
+
+            button.onclick=()=>{
+
+                checkAnswer(
+                    index,
+                    button
+                );
+            };
+
+
+            answers.appendChild(
+                button
+            );
+        }
+    );
+
+
+    questionBox.classList.add(
+        "show"
+    );
+}
+
+
+/* =====================================================
+   ANSWER
+===================================================== */
+
+function checkAnswer(
+    selected,
+    button
+){
+
+    const all =
+        answers.querySelectorAll(
+            "button"
+        );
+
+
+    all.forEach(
+        b=>{
+            b.disabled=true;
+        }
+    );
+
+
+    if(
+        selected ===
+        currentQuestion.answer
+    ){
+
+        button.classList.add(
+            "correct"
+        );
+
+        score+=250;
+
+
+        setTimeout(
+            ()=>{
+
+                questionBox.classList.remove(
+                    "show"
+                );
+
+                questionActive=false;
+
+                nextLevel();
+
+            },
+            650
+        );
+
+    }else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+        lives--;
+
+        updateHUD();
+
+
+        setTimeout(
+            ()=>{
+
+                questionBox.classList.remove(
+                    "show"
+                );
+
+                questionActive=false;
+
+
+                if(
+                    lives<=0
+                ){
+
+                    gameOver();
+
+                }else{
+
+                    player.x=120;
+
+                    player.y=
+                        H-170;
+
+                    player.vx=0;
+
+                    player.vy=0;
+
+                    player.invincible=120;
+                }
+
+            },
+            900
+        );
+    }
+}
+
+
+/* =====================================================
+   LIFE
+===================================================== */
+
+function loseLife(){
+
+    if(
+        player.invincible>0
+    )
+        return;
+
+
+    lives--;
+
+    updateHUD();
+
+
+    if(
+        lives<=0
+    ){
+
+        gameOver();
+
+        return;
+    }
+
+
+    player.x=120;
+
+    player.y=
+        H-170;
+
+    player.vx=0;
+
+    player.vy=0;
+
+    player.invincible=120;
+}
+
+
+/* =====================================================
+   NEXT LEVEL
+===================================================== */
+
+function nextLevel(){
+
+    level++;
+
+
+    if(
+        level>10
+    ){
+
+        finish();
+
+        return;
+    }
+
+
+    createWorld();
+}
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+function gameOver(){
+
+    running=false;
+
+
+    setTimeout(
+        ()=>{
+
+            const again =
+                confirm(
+                    "O herói caiu! Deseja tentar novamente?"
+                );
+
+
+            if(again){
+
+                level=1;
+
+                lives=3;
+
+                score=0;
+
+                running=true;
+
+                createWorld();
+            }
+
+        },
+        100
+    );
+}
+
+
+/* =====================================================
+   FINISH
+===================================================== */
+
+function finish(){
+
+    running=false;
+
+    localStorage.setItem(
+        "kingdomEnglishCompleted",
+        "true"
+    );
+
+    winScreen.style.display=
+        "flex";
+}
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+backButton.onclick=()=>{
+
+    window.location.href=
+        "../index.html";
+};
+
+
+/* =====================================================
+   DRAW BACKGROUND
+===================================================== */
+
+function drawBackground(){
+
+    const sky =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+
+    sky.addColorStop(
+        0,
+        "#162f46"
+    );
+
+    sky.addColorStop(
+        .55,
+        "#42654a"
+    );
+
+    sky.addColorStop(
+        1,
+        "#17251a"
+    );
+
+
+    ctx.fillStyle=sky;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* lua */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        W-110,
+        100,
+        42,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        "rgba(255,240,180,.7)";
+
+    ctx.fill();
+
+
+    /* montanhas */
+
+    ctx.fillStyle=
+        "rgba(20,35,28,.55)";
+
+
+    for(
+        let i=-2;
+        i<15;
+        i++
+    ){
+
+        const x =
+            i*300 -
+            cameraX*.18;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            H-100
+        );
+
+        ctx.lineTo(
+            x+150,
+            H-310
+        );
+
+        ctx.lineTo(
+            x+300,
+            H-100
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+    }
+
+
+    /* nuvens */
+
+    ctx.fillStyle=
+        "rgba(255,255,255,.08)";
+
+
+    for(
+        let i=0;
+        i<7;
+        i++
+    ){
+
+        const x =
+            (
+                i*500 -
+                cameraX*.08
+            ) %
+            (W+500);
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            130+i%3*70,
+            35,
+            0,
+            Math.PI*2
+        );
+
+        ctx.arc(
+            x+35,
+            130+i%3*70,
+            45,
+            0,
+            Math.PI*2
+        );
+
+        ctx.arc(
+            x+75,
+            130+i%3*70,
+            30,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+    }
+}
+
+
+/* =====================================================
+   DRAW GROUND
+===================================================== */
+
+function drawGround(){
+
+    ctx.fillStyle=
+        "#293c25";
+
+    ctx.fillRect(
+        -cameraX,
+        H-100,
+        worldWidth,
+        100
+    );
+
+
+    ctx.fillStyle=
+        "#4d6b36";
+
+    ctx.fillRect(
+        -cameraX,
+        H-100,
+        worldWidth,
+        9
+    );
+
+
+    /* terra */
+
+    ctx.fillStyle=
+        "#5a432b";
+
+    ctx.fillRect(
+        -cameraX,
+        H-91,
+        worldWidth,
+        91
+    );
+
+
+    /* pequenas pedras */
+
+    for(
+        let i=0;
+        i<worldWidth/50;
+        i++
+    ){
+
+        const x =
+            i*50-cameraX;
+
+        ctx.fillStyle=
+            "rgba(0,0,0,.16)";
+
+        ctx.fillRect(
+            x,
+            H-70+(i%4)*12,
+            8,
+            4
+        );
+    }
+}
+
+
+/* =====================================================
+   DRAW TREES
+===================================================== */
+
+function drawTrees(){
+
+    trees.forEach(
+        tree=>{
+
+            const x=
+                tree.x-cameraX;
+
+
+            if(
+                x<-80 ||
+                x>W+80
+            )
+                return;
+
+
+            /* tronco */
+
+            ctx.fillStyle=
+                "#5b3a24";
+
+            ctx.fillRect(
+                x-8,
+                tree.y-65,
+                16,
+                65
+            );
+
+
+            /* copa */
+
+            ctx.fillStyle=
+                "#254d2c";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                tree.y-85,
+                36,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+
+            ctx.fillStyle=
+                "#34683b";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x-18,
+                tree.y-75,
+                23,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x+20,
+                tree.y-73,
+                25,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+        }
+    );
+}
+
+
+/* =====================================================
+   DRAW HOUSES
+===================================================== */
+
+function drawHouses(){
+
+    houses.forEach(
+        house=>{
+
+            const x =
+                house.x-cameraX;
+
+
+            if(
+                x<-200 ||
+                x>W+200
+            )
+                return;
+
+
+            /* casa */
+
+            ctx.fillStyle=
+                "#815c3c";
+
+            ctx.fillRect(
+                x,
+                house.y-90,
+                120,
+                90
+            );
+
+
+            /* telhado */
+
+            ctx.fillStyle=
+                "#4a2b22";
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x-15,
+                house.y-90
+            );
+
+            ctx.lineTo(
+                x+60,
+                house.y-145
+            );
+
+            ctx.lineTo(
+                x+135,
+                house.y-90
+            );
+
+            ctx.closePath();
+
+            ctx.fill();
+
+
+            /* porta */
+
+            ctx.fillStyle=
+                "#2a1b14";
+
+            ctx.fillRect(
+                x+48,
+                house.y-55,
+                25,
+                55
+            );
+
+
+            /* janela */
+
+            ctx.fillStyle=
+                "#facc15";
+
+            ctx.fillRect(
+                x+17,
+                house.y-68,
+                22,
+                20
+            );
+
+            ctx.fillRect(
+                x+82,
+                house.y-68,
+                22,
+                20
+            );
+        }
+    );
+}
+
+
+/* =====================================================
+   DRAW PLATFORMS
+===================================================== */
+
+function drawPlatforms(){
+
+    platforms.forEach(
+        p=>{
+
+            if(
+                p.x+p.width<cameraX ||
+                p.x>cameraX+W
+            )
+                return;
+
+
+            const x=
+                p.x-cameraX;
+
+
+            const gradient =
+                ctx.createLinearGradient(
+                    0,
+                    p.y,
+                    0,
+                    p.y+p.height
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "#58763c"
+            );
+
+            gradient.addColorStop(
+                1,
+                "#392b20"
+            );
+
+
+            ctx.fillStyle=
+                gradient;
+
+            ctx.fillRect(
+                x,
+                p.y,
+                p.width,
+                p.height
+            );
+
+
+            ctx.fillStyle=
+                "#779b4d";
+
+            ctx.fillRect(
+                x,
+                p.y,
+                p.width,
+                4
+            );
+        }
+    );
+}
+
+
+/* =====================================================
+   DRAW NPC
+===================================================== */
+
+function drawNPC(npc){
+
+    const x=
+        npc.x-cameraX;
+
+
+    /* corpo */
+
+    ctx.fillStyle=
+        npc.type==="elder"
+            ? "#7c3aed"
+            : "#2563eb";
+
+    ctx.fillRect(
+        x,
+        npc.y+12,
+        npc.width,
+        35
+    );
+
+
+    /* cabeça */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+15,
+        npc.y+7,
+        12,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        "#e8bb8a";
+
+    ctx.fill();
+
+
+    /* cabelo */
+
+    ctx.fillStyle=
+        "#39251c";
+
+    ctx.fillRect(
+        x+5,
+        npc.y-3,
+        20,
+        7
+    );
+}
+
+
+/* =====================================================
+   DRAW ENEMY
+===================================================== */
+
+function drawEnemy(enemy){
+
+    if(
+        !enemy.alive
+    )
+        return;
+
+
+    const x=
+        enemy.x-cameraX;
+
+
+    /* corpo */
+
+    ctx.fillStyle=
+        level>=6
+            ? "#581c87"
+            : "#7f1d1d";
+
+    ctx.fillRect(
+        x,
+        enemy.y+10,
+        enemy.width,
+        enemy.height-10
+    );
+
+
+    /* cabeça */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+17,
+        enemy.y+9,
+        14,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        "#9f1239";
+
+    ctx.fill();
+
+
+    /* olhos */
+
+    ctx.fillStyle=
+        "#facc15";
+
+    ctx.fillRect(
+        x+8,
+        enemy.y+6,
+        4,
+        4
+    );
+
+    ctx.fillRect(
+        x+21,
+        enemy.y+6,
+        4,
+        4
+    );
+
+
+    /* arma */
+
+    ctx.strokeStyle=
+        "#d1d5db";
+
+    ctx.lineWidth=4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x+28,
+        enemy.y+30
+    );
+
+    ctx.lineTo(
+        x+45,
+        enemy.y+13
+    );
+
+    ctx.stroke();
+
+
+    /* vida */
+
+    if(enemy.hp>1){
+
+        ctx.fillStyle=
+            "#111827";
+
+        ctx.fillRect(
+            x,
+            enemy.y-9,
+            34,
+            4
+        );
+
+        ctx.fillStyle=
+            "#ef4444";
+
+        ctx.fillRect(
+            x,
+            enemy.y-9,
+            34*(enemy.hp/2),
+            4
+        );
+    }
+}
+
+
+/* =====================================================
+   DRAW BOSS
+===================================================== */
+
+function drawBoss(){
+
+    if(
+        !boss ||
+        !boss.alive
+    )
+        return;
+
+
+    const x=
+        boss.x-cameraX;
+
+
+    ctx.fillStyle=
+        "#3b0764";
+
+    ctx.fillRect(
+        x,
+        boss.y+15,
+        boss.width,
+        boss.height-15
+    );
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+35,
+        boss.y+13,
+        24,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        "#581c87";
+
+    ctx.fill();
+
+
+    /* chifres */
+
+    ctx.fillStyle=
+        "#f8fafc";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x+15,
+        boss.y-5
+    );
+
+    ctx.lineTo(
+        x+4,
+        boss.y-30
+    );
+
+    ctx.lineTo(
+        x+25,
+        boss.y-10
+    );
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x+55,
+        boss.y-5
+    );
+
+    ctx.lineTo(
+        x+67,
+        boss.y-30
+    );
+
+    ctx.lineTo(
+        x+48,
+        boss.y-10
+    );
+
+    ctx.fill();
+
+
+    /* olhos */
+
+    ctx.fillStyle=
+        "#facc15";
+
+    ctx.fillRect(
+        x+19,
+        boss.y+7,
+        7,
+        6
+    );
+
+    ctx.fillRect(
+        x+45,
+        boss.y+7,
+        7,
+        6
+    );
+
+
+    /* barra */
+
+    ctx.fillStyle=
+        "#111827";
+
+    ctx.fillRect(
+        x,
+        boss.y-45,
+        70,
+        7
+    );
+
+    ctx.fillStyle=
+        "#ef4444";
+
+    ctx.fillRect(
+        x,
+        boss.y-45,
+        70*
+        (boss.hp/boss.maxHp),
+        7
+    );
+
+
+    ctx.fillStyle=
+        "#facc15";
+
+    ctx.font=
+        "bold 11px Arial";
+
+    ctx.textAlign=
+        "center";
+
+    ctx.fillText(
+        "GUARDIAN",
+        x+35,
+        boss.y-52
+    );
+}
+
+
+/* =====================================================
+   DRAW COINS
+===================================================== */
+
+function drawCoins(){
+
+    coins.forEach(
+        coin=>{
+
+            if(
+                coin.collected
+            )
+                return;
+
+
+            const x=
+                coin.x-cameraX;
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                coin.y,
+                11,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fillStyle=
+                "#facc15";
+
+            ctx.fill();
+
+
+            ctx.strokeStyle=
+                "#fff0a0";
+
+            ctx.lineWidth=2;
+
+            ctx.stroke();
+
+
+            ctx.fillStyle=
+                "#7c5700";
+
+            ctx.font=
+                "bold 10px Arial";
+
+            ctx.textAlign=
+                "center";
+
+            ctx.textBaseline=
+                "middle";
+
+            ctx.fillText(
+                "$",
+                x,
+                coin.y
+            );
+        }
+    );
+}
+
+
+/* =====================================================
+   DRAW CHESTS
+===================================================== */
+
+function drawChests(){
+
+    chests.forEach(
+        chest=>{
+
+            const x=
+                chest.x-cameraX;
+
+
+            ctx.fillStyle=
+                chest.opened
+                    ? "#51351e"
+                    : "#9a641e";
+
+            ctx.fillRect(
+                x,
+                chest.y,
+                40,
+                30
+            );
+
+
+            ctx.fillStyle=
+                "#facc15";
+
+            ctx.fillRect(
+                x+17,
+                chest.y+10,
+                6,
+                9
+            );
+        }
+    );
+}
+
+
+/* =====================================================
+   DRAW PORTAL
+===================================================== */
+
+function drawPortal(){
+
+    const x=
+        portal.x-cameraX;
+
+
+    const pulse=
+        Math.sin(
+            Date.now()/180
+        )*5;
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+27,
+        portal.y+45,
+        42+pulse,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        "rgba(212,167,44,.1)";
+
+    ctx.fill();
+
+
+    ctx.strokeStyle=
+        "#d4a72c";
+
+    ctx.lineWidth=4;
+
+    ctx.stroke();
+
+
+    ctx.fillStyle=
+        "#39291b";
+
+    ctx.fillRect(
+        x,
+        portal.y,
+        55,
+        90
+    );
+
+
+    ctx.fillStyle=
+        "#facc15";
+
+    ctx.font=
+        "bold 10px Arial";
+
+    ctx.textAlign=
+        "center";
+
+    ctx.fillText(
+        "EXIT",
+        x+27,
+        portal.y-10
+    );
+}
+
+
+/* =====================================================
+   DRAW PLAYER
+===================================================== */
+
+function drawPlayer(){
+
+    const x=
+        player.x-cameraX;
+
+
+    if(
+        player.invincible>0 &&
+        Math.floor(
+            player.invincible/6
+        )%2===0
+    )
+        return;
+
+
+    /* pernas */
+
+    ctx.fillStyle=
+        "#273449";
+
+    ctx.fillRect(
+        x+5,
+        player.y+35,
+        9,
+        13
+    );
+
+    ctx.fillRect(
+        x+20,
+        player.y+35,
+        9,
+        13
+    );
+
+
+    /* corpo */
+
+    ctx.fillStyle=
+        "#2563eb";
+
+    ctx.fillRect(
+        x,
+        player.y+12,
+        player.width,
+        27
+    );
+
+
+    /* capa */
+
+    ctx.fillStyle=
+        "#7f1d1d";
+
+    ctx.fillRect(
+        x-5,
+        player.y+14,
+        7,
+        28
+    );
+
+
+    /* cabeça */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x+17,
+        player.y+9,
+        13,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle=
+        "#e7bd8c";
+
+    ctx.fill();
+
+
+    /* cabelo */
+
+    ctx.fillStyle=
+        "#241b16";
+
+    ctx.fillRect(
+        x+6,
+        player.y-4,
+        22,
+        7
+    );
+
+
+    /* olho */
+
+    ctx.fillStyle=
+        "#111827";
+
+    ctx.fillRect(
+        player.facing===1
+            ? x+21
+            : x+7,
+        player.y+6,
+        4,
+        4
+    );
+
+
+    /* espada */
+
+    ctx.strokeStyle=
+        "#e5e7eb";
+
+    ctx.lineWidth=
+        player.attacking
+            ? 6
+            : 4;
+
+    ctx.beginPath();
+
+    if(
+        player.facing===1
+    ){
+
+        ctx.moveTo(
+            x+27,
+            player.y+27
+        );
+
+        ctx.lineTo(
+            player.attacking
+                ? x+65
+                : x+42,
+            player.attacking
+                ? player.y+3
+                : player.y+16
+        );
+
+    }else{
+
+        ctx.moveTo(
+            x+7,
+            player.y+27
+        );
+
+        ctx.lineTo(
+            player.attacking
+                ? x-30
+                : x-8,
+            player.attacking
+                ? player.y+3
+                : player.y+16
+        );
+    }
+
+    ctx.stroke();
+}
+
+
+/* =====================================================
+   DRAW
+===================================================== */
+
+function draw(){
+
+    drawBackground();
+
+    drawGround();
+
+    drawHouses();
+
+    drawTrees();
+
+    drawPlatforms();
+
+    drawCoins();
+
+    drawChests();
+
+
+    npcs.forEach(
+        drawNPC
+    );
+
+
+    enemies.forEach(
+        drawEnemy
+    );
+
+
+    drawBoss();
+
+    drawPortal();
+
+    drawPlayer();
+}
+
+
+/* =====================================================
+   LOOP
+===================================================== */
+
+function loop(){
+
+    updatePlayer();
+
+    draw();
+
+    requestAnimationFrame(
+        loop
+    );
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame(){
+
+    startScreen.style.display=
+        "none";
+
+    winScreen.style.display=
+        "none";
+
+    level=1;
+
+    lives=3;
+
+    score=0;
+
+    running=true;
+
+    questionActive=false;
+
+    createWorld();
+}
+
+
+startButton.onclick=
+    startGame;
+
+
+restartButton.onclick=
+    startGame;
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+loop();
+
+</script>
+
+</body>
+</html>

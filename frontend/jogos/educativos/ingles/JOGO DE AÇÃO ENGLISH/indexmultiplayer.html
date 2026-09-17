@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Battle — Turnos</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050811;
+    color:white;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 25%,
+            #283b5c 0%,
+            #121c30 35%,
+            #050811 78%
+        );
+}
+
+/* =========================================================
+   CENÁRIO
+========================================================= */
+
+.stars{
+    position:absolute;
+    inset:0;
+    opacity:.3;
+    background-image:
+        radial-gradient(circle,#fff 1px,transparent 1px),
+        radial-gradient(circle,#fff 1px,transparent 1px);
+    background-size:100px 100px,150px 150px;
+    background-position:20px 30px,70px 90px;
+}
+
+.moon{
+    position:absolute;
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    background:#e7f7ff;
+    right:10%;
+    top:10%;
+    opacity:.8;
+    box-shadow:0 0 60px rgba(150,220,255,.4);
+}
+
+.floor{
+    position:absolute;
+    left:-10%;
+    bottom:-20%;
+    width:120%;
+    height:55%;
+    transform:
+        perspective(500px)
+        rotateX(55deg);
+    transform-origin:center top;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,0,0,.2) 25%,
+            transparent 25%
+        ) 0 0/70px 70px,
+        linear-gradient(
+            225deg,
+            rgba(0,0,0,.2) 25%,
+            transparent 25%
+        ) 0 0/70px 70px,
+        linear-gradient(#292f3f,#101520);
+
+    border-top:3px solid #3b465c;
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+.hud{
+    position:absolute;
+    z-index:30;
+    top:0;
+    left:0;
+    width:100%;
+    padding:18px 25px;
+
+    display:grid;
+    grid-template-columns:1fr 220px 1fr;
+    gap:20px;
+}
+
+.player-status{
+    width:100%;
+}
+
+.player-name{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:7px;
+    font-size:14px;
+    font-weight:900;
+}
+
+.blue-text{
+    color:#55dcff;
+}
+
+.red-text{
+    color:#ff6179;
+}
+
+.hp-bar{
+    width:100%;
+    height:20px;
+    overflow:hidden;
+    border:2px solid #39465d;
+    border-radius:8px;
+    background:#111827;
+}
+
+.hp{
+    width:100%;
+    height:100%;
+    transition:width .3s ease;
+}
+
+.hp1{
+    background:linear-gradient(90deg,#008dff,#4be7ff);
+}
+
+.hp2{
+    background:linear-gradient(90deg,#ff304f,#ff8368);
+}
+
+.center-hud{
+    text-align:center;
+}
+
+.title{
+    color:#67ddff;
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:2px;
+    text-shadow:0 0 20px rgba(70,210,255,.4);
+}
+
+.round{
+    margin-top:5px;
+    color:#a9b5c8;
+    font-size:12px;
+}
+
+.turn-indicator{
+    margin-top:8px;
+    padding:6px 12px;
+    border-radius:20px;
+    background:rgba(255,255,255,.06);
+    border:1px solid #35445d;
+    font-size:12px;
+    font-weight:900;
+}
+
+/* =========================================================
+   PERSONAGENS
+========================================================= */
+
+.character{
+    position:absolute;
+    z-index:10;
+    bottom:28%;
+    width:170px;
+    height:230px;
+    transition:filter .2s;
+}
+
+.player1{
+    left:18%;
+}
+
+.player2{
+    right:18%;
+}
+
+.character.inactive{
+    filter:brightness(.45) grayscale(.25);
+}
+
+.character.active{
+    filter:brightness(1.15);
+}
+
+.body{
+    position:absolute;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+
+    width:70px;
+    height:105px;
+
+    border-radius:25px 25px 15px 15px;
+
+    border:2px solid #6c86aa;
+
+    background:
+        linear-gradient(
+            90deg,
+            #26334d,
+            #506a91,
+            #26334d
+        );
+}
+
+.player2 .body{
+    background:
+        linear-gradient(
+            90deg,
+            #451c30,
+            #87324a,
+            #451c30
+        );
+
+    border-color:#d05068;
+}
+
+.head{
+    position:absolute;
+    width:62px;
+    height:62px;
+    left:50%;
+    top:-47px;
+    transform:translateX(-50%);
+    border-radius:50%;
+    background:#d79b73;
+    border:3px solid #6c86aa;
+}
+
+.player2 .head{
+    background:#b87368;
+    border-color:#d05068;
+}
+
+.hair{
+    position:absolute;
+    top:-4px;
+    left:50%;
+    transform:translateX(-50%);
+    width:62px;
+    height:28px;
+    border-radius:35px 35px 10px 10px;
+    background:#172034;
+}
+
+.eye{
+    position:absolute;
+    top:27px;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#111;
+}
+
+.eye.left{
+    left:15px;
+}
+
+.eye.right{
+    right:15px;
+}
+
+.arm{
+    position:absolute;
+    top:20px;
+    width:23px;
+    height:78px;
+    border-radius:15px;
+    background:#34425f;
+}
+
+.player2 .arm{
+    background:#542238;
+}
+
+.arm.left{
+    left:-17px;
+    transform:rotate(15deg);
+}
+
+.arm.right{
+    right:-17px;
+    transform:rotate(-15deg);
+}
+
+.leg{
+    position:absolute;
+    bottom:-58px;
+    width:27px;
+    height:75px;
+    border-radius:10px;
+    background:#172238;
+}
+
+.player2 .leg{
+    background:#2c1625;
+}
+
+.leg.left{
+    left:9px;
+}
+
+.leg.right{
+    right:9px;
+}
+
+.sword{
+    position:absolute;
+    top:0;
+    width:13px;
+    height:125px;
+    border-radius:8px;
+    background:
+        linear-gradient(
+            90deg,
+            #a9cdf7,
+            #fff,
+            #7ba8df
+        );
+    box-shadow:0 0 15px rgba(150,210,255,.4);
+}
+
+.player1 .sword{
+    right:-68px;
+    transform:rotate(30deg);
+}
+
+.player2 .sword{
+    left:-68px;
+    transform:rotate(-30deg);
+    background:
+        linear-gradient(
+            90deg,
+            #ff6666,
+            #fff,
+            #bd3333
+        );
+}
+
+.shadow{
+    position:absolute;
+    bottom:0;
+    left:50%;
+    width:150px;
+    height:30px;
+    transform:translateX(-50%);
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    filter:blur(7px);
+}
+
+/* =========================================================
+   ATAQUES
+========================================================= */
+
+.attack-p1{
+    animation:attackP1 .4s ease;
+}
+
+.attack-p2{
+    animation:attackP2 .4s ease;
+}
+
+.hit{
+    animation:hit .35s ease;
+}
+
+@keyframes attackP1{
+    0%{transform:translateX(0)}
+    45%{transform:translateX(120px)}
+    100%{transform:translateX(0)}
+}
+
+@keyframes attackP2{
+    0%{transform:translateX(0)}
+    45%{transform:translateX(-120px)}
+    100%{transform:translateX(0)}
+}
+
+@keyframes hit{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-12px)}
+    50%{transform:translateX(12px)}
+    75%{transform:translateX(-7px)}
+}
+
+/* =========================================================
+   ÁREA CENTRAL DE TURNO
+========================================================= */
+
+.question-panel{
+    position:absolute;
+    z-index:50;
+
+    left:50%;
+    bottom:25px;
+
+    transform:translateX(-50%);
+
+    width:min(760px,92vw);
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+        rgba(7,12,23,.97);
+
+    border:2px solid #3c526f;
+
+    box-shadow:
+        0 20px 70px rgba(0,0,0,.65);
+
+    transition:border-color .2s;
+}
+
+.question-panel.p1-turn{
+    border-color:#1aa9d4;
+    box-shadow:
+        0 0 30px rgba(40,210,255,.08),
+        0 20px 70px rgba(0,0,0,.65);
+}
+
+.question-panel.p2-turn{
+    border-color:#c13a55;
+    box-shadow:
+        0 0 30px rgba(255,60,90,.08),
+        0 20px 70px rgba(0,0,0,.65);
+}
+
+.turn-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.turn-player{
+    font-weight:900;
+    font-size:14px;
+}
+
+.p1-color{
+    color:#55ddff;
+}
+
+.p2-color{
+    color:#ff6179;
+}
+
+.category{
+    color:#8e9bb0;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.timer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:7px;
+}
+
+.timer{
+    font-size:20px;
+    font-weight:900;
+    color:#ffd75b;
+}
+
+.timer-bar{
+    width:100%;
+    height:6px;
+    overflow:hidden;
+    border-radius:6px;
+    background:#20283a;
+    margin-bottom:15px;
+}
+
+.timer-progress{
+    width:100%;
+    height:100%;
+    background:#55ddff;
+    transition:width .05s linear;
+}
+
+.question-panel.p2-turn .timer-progress{
+    background:#ff6179;
+}
+
+.question{
+    min-height:55px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    font-size:23px;
+    line-height:1.3;
+    font-weight:900;
+
+    margin-bottom:15px;
+}
+
+.answer-row{
+    display:flex;
+    gap:10px;
+}
+
+.answer{
+    flex:1;
+
+    height:52px;
+
+    padding:0 15px;
+
+    border-radius:12px;
+
+    outline:none;
+
+    border:2px solid #344258;
+
+    background:#070c16;
+
+    color:#fff;
+
+    font-size:17px;
+}
+
+.answer:focus{
+    border-color:#55ddff;
+}
+
+.attack-button{
+    width:145px;
+
+    border:0;
+    border-radius:12px;
+
+    color:#fff;
+
+    font-weight:900;
+    font-size:15px;
+
+    cursor:pointer;
+
+    transition:.15s;
+}
+
+.attack-button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+.attack-p1-button{
+    background:linear-gradient(135deg,#008dff,#00c9ff);
+}
+
+.attack-p2-button{
+    background:linear-gradient(135deg,#ff3151,#ff7b63);
+}
+
+.feedback{
+    min-height:22px;
+
+    margin-top:9px;
+
+    text-align:center;
+
+    font-weight:900;
+
+    font-size:13px;
+}
+
+.correct{
+    color:#4df2a4;
+}
+
+.wrong{
+    color:#ff6576;
+}
+
+/* =========================================================
+   DANO
+========================================================= */
+
+.damage{
+    position:fixed;
+    z-index:150;
+
+    font-size:32px;
+
+    font-weight:900;
+
+    pointer-events:none;
+
+    animation:damageFloat 1s forwards;
+
+    text-shadow:
+        0 0 8px currentColor,
+        0 0 20px currentColor;
+}
+
+.damage-p1{
+    color:#58ddff;
+}
+
+.damage-p2{
+    color:#ff657c;
+}
+
+.critical{
+    color:#ffe56c!important;
+    font-size:42px;
+}
+
+@keyframes damageFloat{
+    0%{
+        opacity:1;
+        transform:translateY(0) scale(.7);
+    }
+
+    100%{
+        opacity:0;
+        transform:translateY(-90px) scale(1.25);
+    }
+}
+
+/* =========================================================
+   COMBO
+========================================================= */
+
+.combo{
+    position:absolute;
+    z-index:40;
+
+    bottom:38%;
+
+    font-size:20px;
+
+    font-weight:900;
+
+    opacity:0;
+
+    transition:.2s;
+}
+
+.combo.show{
+    opacity:1;
+}
+
+.combo-p1{
+    left:25%;
+    color:#55ddff;
+}
+
+.combo-p2{
+    right:25%;
+    color:#ff637a;
+}
+
+/* =========================================================
+   TELA INICIAL / FINAL
+========================================================= */
+
+.overlay{
+    position:absolute;
+    z-index:200;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(3,6,12,.91);
+
+    backdrop-filter:blur(8px);
+}
+
+.modal{
+    width:min(680px,92vw);
+
+    padding:40px;
+
+    text-align:center;
+
+    border-radius:25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111c30,
+            #080d17
+        );
+
+    border:1px solid #3b516d;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.7);
+}
+
+.modal h1{
+    font-size:45px;
+    color:#63dcff;
+    margin-bottom:10px;
+    text-shadow:0 0 25px rgba(80,220,255,.35);
+}
+
+.modal p{
+    color:#aab6c8;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+.rules{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:20px 0;
+}
+
+.rule{
+    padding:15px;
+    border-radius:12px;
+    background:#0d1524;
+    border:1px solid #2e3d54;
+}
+
+.rule strong{
+    display:block;
+    margin-bottom:6px;
+}
+
+.rule span{
+    color:#8997ab;
+    font-size:12px;
+}
+
+.start-button{
+    border:0;
+    border-radius:12px;
+    padding:15px 35px;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #008fff,
+            #00d0ff
+        );
+
+    font-size:17px;
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+.start-button:hover{
+    transform:scale(1.04);
+}
+
+#resultScreen{
+    display:none;
+}
+
+#resultScreen.show{
+    display:flex;
+}
+
+.result-title{
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.result-stats{
+    line-height:1.8;
+    color:#b3bfd0;
+    margin:20px 0;
+}
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width:800px){
+
+    .hud{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .center-hud{
+        display:none;
+    }
+
+    .character{
+        transform:scale(.75);
+    }
+
+    .player1{
+        left:6%;
+    }
+
+    .player2{
+        right:6%;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .question-panel{
+        width:94vw;
+        padding:13px;
+        bottom:7px;
+    }
+
+    .question{
+        font-size:17px;
+    }
+
+    .answer-row{
+        flex-direction:column;
+    }
+
+    .attack-button{
+        width:100%;
+        height:45px;
+    }
+
+    .character{
+        transform:scale(.58);
+        bottom:43%;
+    }
+
+    .player1{
+        left:-5%;
+    }
+
+    .player2{
+        right:-5%;
+    }
+
+    .rules{
+        grid-template-columns:1fr;
+    }
+
+    .modal h1{
+        font-size:32px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <!-- =====================================================
+         CENÁRIO
+    ====================================================== -->
+
+    <div class="stars"></div>
+
+    <div class="moon"></div>
+
+    <div class="floor"></div>
+
+
+    <!-- =====================================================
+         HUD
+    ====================================================== -->
+
+    <div class="hud">
+
+        <div class="player-status">
+
+            <div class="player-name blue-text">
+
+                <span>🔵 PLAYER 1</span>
+
+                <span id="hp1Text">
+                    100 / 100
+                </span>
+
+            </div>
+
+            <div class="hp-bar">
+
+                <div
+                    id="hp1"
+                    class="hp hp1">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="center-hud">
+
+            <div class="title">
+                ⚔️ ENGLISH BATTLE
+            </div>
+
+            <div class="round">
+                RODADA <span id="round">1</span>
+            </div>
+
+            <div
+                id="turnIndicator"
+                class="turn-indicator">
+
+                AGUARDANDO...
+
+            </div>
+
+        </div>
+
+
+        <div class="player-status">
+
+            <div class="player-name red-text">
+
+                <span>🔴 PLAYER 2</span>
+
+                <span id="hp2Text">
+                    100 / 100
+                </span>
+
+            </div>
+
+            <div class="hp-bar">
+
+                <div
+                    id="hp2"
+                    class="hp hp2">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PLAYER 1
+    ====================================================== -->
+
+    <div
+        id="player1"
+        class="character player1">
+
+        <div class="shadow"></div>
+
+        <div class="body">
+
+            <div class="head">
+
+                <div class="hair"></div>
+
+                <div class="eye left"></div>
+
+                <div class="eye right"></div>
+
+            </div>
+
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+
+            <div class="sword"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PLAYER 2
+    ====================================================== -->
+
+    <div
+        id="player2"
+        class="character player2">
+
+        <div class="shadow"></div>
+
+        <div class="body">
+
+            <div class="head">
+
+                <div class="hair"></div>
+
+                <div class="eye left"></div>
+
+                <div class="eye right"></div>
+
+            </div>
+
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+
+            <div class="sword"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         COMBOS
+    ====================================================== -->
+
+    <div
+        id="combo1"
+        class="combo combo-p1">
+    </div>
+
+    <div
+        id="combo2"
+        class="combo combo-p2">
+    </div>
+
+
+    <!-- =====================================================
+         PAINEL DE PERGUNTA
+    ====================================================== -->
+
+    <div
+        id="questionPanel"
+        class="question-panel">
+
+        <div class="turn-title">
+
+            <span
+                id="turnPlayer"
+                class="turn-player">
+                VEZ DO PLAYER 1
+            </span>
+
+            <span
+                id="category"
+                class="category">
+                VOCABULARY
+            </span>
+
+        </div>
+
+
+        <div class="timer-row">
+
+            <span>
+                ⏱️ TEMPO
+            </span>
+
+            <span
+                id="timer"
+                class="timer">
+                10.0s
+            </span>
+
+        </div>
+
+
+        <div class="timer-bar">
+
+            <div
+                id="timerProgress"
+                class="timer-progress">
+            </div>
+
+        </div>
+
+
+        <div
+            id="question"
+            class="question">
+
+            Clique em começar.
+
+        </div>
+
+
+        <div class="answer-row">
+
+            <input
+                id="answer"
+                class="answer"
+                autocomplete="off"
+                placeholder="Digite sua resposta..."
+            >
+
+            <button
+                id="attackButton"
+                class="attack-button attack-p1-button">
+
+                ⚔️ ATACAR
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="feedback"
+            class="feedback">
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TELA INICIAL
+    ====================================================== -->
+
+    <div
+        id="startScreen"
+        class="overlay">
+
+        <div class="modal">
+
+            <h1>
+                ⚔️ ENGLISH BATTLE
+            </h1>
+
+            <p>
+
+                Dois jogadores entram na arena.
+
+                <br><br>
+
+                <strong>
+                    Mas apenas um joga por vez!
+                </strong>
+
+                <br><br>
+
+                🔵 P1 responde → ataca → turno termina.
+
+                <br>
+
+                🔴 P2 responde → ataca → turno termina.
+
+                <br>
+
+                E o combate continua.
+
+            </p>
+
+
+            <div class="rules">
+
+                <div class="rule">
+
+                    <strong class="blue-text">
+                        🔵 PLAYER 1
+                    </strong>
+
+                    <span>
+                        Seu turno aparece no centro.
+                        Responda o mais rápido possível.
+                    </span>
+
+                </div>
+
+
+                <div class="rule">
+
+                    <strong class="red-text">
+                        🔴 PLAYER 2
+                    </strong>
+
+                    <span>
+                        Depois do P1,
+                        chega a sua vez.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="startButton"
+                class="start-button">
+
+                ⚔️ COMEÇAR BATALHA
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESULTADO
+    ====================================================== -->
+
+    <div
+        id="resultScreen"
+        class="overlay">
+
+        <div class="modal">
+
+            <div
+                id="resultTitle"
+                class="result-title">
+            </div>
+
+            <p
+                id="resultMessage">
+            </p>
+
+            <div
+                id="resultStats"
+                class="result-stats">
+            </div>
+
+            <button
+                id="restartButton"
+                class="start-button">
+
+                🔄 NOVA BATALHA
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const player1 =
+    document.getElementById("player1");
+
+const player2 =
+    document.getElementById("player2");
+
+const hp1 =
+    document.getElementById("hp1");
+
+const hp2 =
+    document.getElementById("hp2");
+
+const hp1Text =
+    document.getElementById("hp1Text");
+
+const hp2Text =
+    document.getElementById("hp2Text");
+
+const questionPanel =
+    document.getElementById("questionPanel");
+
+const turnPlayer =
+    document.getElementById("turnPlayer");
+
+const turnIndicator =
+    document.getElementById("turnIndicator");
+
+const category =
+    document.getElementById("category");
+
+const question =
+    document.getElementById("question");
+
+const answer =
+    document.getElementById("answer");
+
+const attackButton =
+    document.getElementById("attackButton");
+
+const feedback =
+    document.getElementById("feedback");
+
+const timer =
+    document.getElementById("timer");
+
+const timerProgress =
+    document.getElementById("timerProgress");
+
+const combo1Element =
+    document.getElementById("combo1");
+
+const combo2Element =
+    document.getElementById("combo2");
+
+const roundElement =
+    document.getElementById("round");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const startButton =
+    document.getElementById("startButton");
+
+const resultScreen =
+    document.getElementById("resultScreen");
+
+const restartButton =
+    document.getElementById("restartButton");
+
+const resultTitle =
+    document.getElementById("resultTitle");
+
+const resultMessage =
+    document.getElementById("resultMessage");
+
+const resultStats =
+    document.getElementById("resultStats");
+
+
+/* =========================================================
+   ESTADO DO JOGO
+========================================================= */
+
+const MAX_HP = 100;
+
+let player1HP = MAX_HP;
+let player2HP = MAX_HP;
+
+let combo1 = 0;
+let combo2 = 0;
+
+let correct1 = 0;
+let correct2 = 0;
+
+let wrong1 = 0;
+let wrong2 = 0;
+
+let total1 = 0;
+let total2 = 0;
+
+let round = 1;
+
+let currentPlayer = 1;
+
+let currentQuestion = null;
+
+let timeLimit = 10;
+let timeLeft = 10;
+
+let timerInterval = null;
+
+let gameRunning = false;
+
+let processingTurn = false;
+
+
+/* =========================================================
+   BANCO DE PERGUNTAS
+========================================================= */
+
+const questions = [
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'casa'?",
+        answers:["house"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'água'?",
+        answers:["water"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'livro'?",
+        answers:["book"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'cachorro'?",
+        answers:["dog"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'amigo'?",
+        answers:["friend"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'escola'?",
+        answers:["school"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'comida'?",
+        answers:["food"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the English word for 'família'?",
+        answers:["family"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the opposite of 'big'?",
+        answers:["small"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the opposite of 'hot'?",
+        answers:["cold"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the opposite of 'fast'?",
+        answers:["slow"]
+    },
+
+    {
+        category:"VOCABULARY",
+        question:"What is the opposite of 'happy'?",
+        answers:["sad"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"Complete: I ___ a student.",
+        answers:["am"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"Complete: She ___ my friend.",
+        answers:["is"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"Complete: They ___ happy.",
+        answers:["are"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"Complete: He ___ football every day.",
+        answers:["plays"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"Complete: I ___ to school every morning.",
+        answers:["go"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"Complete: She ___ English.",
+        answers:["speaks"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"There ___ a book on the table.",
+        answers:["is"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"There ___ two students here.",
+        answers:["are"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"Yesterday I ___ football.",
+        answers:["played"]
+    },
+
+    {
+        category:"GRAMMAR",
+        question:"She ___ to the park yesterday.",
+        answers:["went"]
+    },
+
+    {
+        category:"TRANSLATION",
+        question:"Translate: I am happy.",
+        answers:[
+            "eu estou feliz",
+            "eu sou feliz"
+        ]
+    },
+
+    {
+        category:"TRANSLATION",
+        question:"Translate: She is my sister.",
+        answers:[
+            "ela e minha irma"
+        ]
+    },
+
+    {
+        category:"TRANSLATION",
+        question:"Translate: They are students.",
+        answers:[
+            "eles sao estudantes",
+            "elas sao estudantes"
+        ]
+    },
+
+    {
+        category:"TRANSLATION",
+        question:"Translate: I like English.",
+        answers:[
+            "eu gosto de ingles"
+        ]
+    }
+
+];
+
+
+/* =========================================================
+   NORMALIZAÇÃO
+========================================================= */
+
+function normalize(text){
+
+    return text
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[.,!?']/g,"");
+
+}
+
+
+/* =========================================================
+   PERGUNTA ALEATÓRIA
+========================================================= */
+
+function getQuestion(){
+
+    return questions[
+        Math.floor(
+            Math.random() *
+            questions.length
+        )
+    ];
+
+}
+
+
+/* =========================================================
+   COMEÇAR TURNO
+========================================================= */
+
+function startTurn(player){
+
+    if(!gameRunning)return;
+
+    processingTurn = false;
+
+    currentPlayer = player;
+
+    clearInterval(timerInterval);
+
+    currentQuestion = getQuestion();
+
+    question.textContent =
+        currentQuestion.question;
+
+    category.textContent =
+        currentQuestion.category;
+
+    answer.value = "";
+
+    feedback.textContent = "";
+
+    feedback.className =
+        "feedback";
+
+    questionPanel.classList.remove(
+        "p1-turn",
+        "p2-turn"
+    );
+
+    player1.classList.remove(
+        "active",
+        "inactive"
+    );
+
+    player2.classList.remove(
+        "active",
+        "inactive"
+    );
+
+    if(player === 1){
+
+        questionPanel.classList.add(
+            "p1-turn"
+        );
+
+        turnPlayer.textContent =
+            "🔵 VEZ DO PLAYER 1";
+
+        turnPlayer.className =
+            "turn-player p1-color";
+
+        turnIndicator.textContent =
+            "🔵 PLAYER 1 ATACA";
+
+        attackButton.className =
+            "attack-button attack-p1-button";
+
+        attackButton.textContent =
+            "⚔️ ATACAR";
+
+        player1.classList.add(
+            "active"
+        );
+
+        player2.classList.add(
+            "inactive"
+        );
+
+    }else{
+
+        questionPanel.classList.add(
+            "p2-turn"
+        );
+
+        turnPlayer.textContent =
+            "🔴 VEZ DO PLAYER 2";
+
+        turnPlayer.className =
+            "turn-player p2-color";
+
+        turnIndicator.textContent =
+            "🔴 PLAYER 2 ATACA";
+
+        attackButton.className =
+            "attack-button attack-p2-button";
+
+        attackButton.textContent =
+            "⚔️ ATACAR";
+
+        player2.classList.add(
+            "active"
+        );
+
+        player1.classList.add(
+            "inactive"
+        );
+
+    }
+
+    startTimer();
+
+    setTimeout(()=>{
+        answer.focus();
+    },100);
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    clearInterval(timerInterval);
+
+    timeLimit = 10;
+
+    timeLeft = timeLimit;
+
+    timer.textContent =
+        timeLeft.toFixed(1) + "s";
+
+    timerProgress.style.width =
+        "100%";
+
+    const start =
+        performance.now();
+
+    timerInterval =
+        setInterval(()=>{
+
+            if(!gameRunning){
+
+                clearInterval(
+                    timerInterval
+                );
+
+                return;
+
+            }
+
+            const elapsed =
+                (performance.now() - start)
+                / 1000;
+
+            timeLeft =
+                Math.max(
+                    0,
+                    timeLimit - elapsed
+                );
+
+            timer.textContent =
+                timeLeft.toFixed(1) + "s";
+
+            timerProgress.style.width =
+                (timeLeft / timeLimit * 100)
+                + "%";
+
+            if(timeLeft <= 0){
+
+                clearInterval(
+                    timerInterval
+                );
+
+                processTimeout();
+
+            }
+
+        },50);
+
+}
+
+
+/* =========================================================
+   RESPOSTA
+========================================================= */
+
+function submitAnswer(){
+
+    if(!gameRunning)return;
+
+    if(processingTurn)return;
+
+    processingTurn = true;
+
+    clearInterval(timerInterval);
+
+    const userAnswer =
+        normalize(answer.value);
+
+    if(!userAnswer){
+
+        processingTurn = false;
+
+        feedback.textContent =
+            "Digite uma resposta!";
+
+        feedback.className =
+            "feedback wrong";
+
+        startTimer();
+
+        return;
+
+    }
+
+    const correct =
+        currentQuestion.answers.some(
+            correctAnswer =>
+                normalize(correctAnswer)
+                === userAnswer
+        );
+
+    if(currentPlayer === 1){
+
+        total1++;
+
+        if(correct){
+
+            correctAttack(1);
+
+        }else{
+
+            wrongAnswer(1);
+
+        }
+
+    }else{
+
+        total2++;
+
+        if(correct){
+
+            correctAttack(2);
+
+        }else{
+
+            wrongAnswer(2);
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPOSTA CORRETA
+========================================================= */
+
+function correctAttack(player){
+
+    let speedRatio =
+        timeLeft / timeLimit;
+
+    let combo;
+    let damage;
+
+    let critical =
+        speedRatio >= .8;
+
+    if(player === 1){
+
+        correct1++;
+
+        combo1++;
+
+        combo = combo1;
+
+        damage =
+            10 +
+            Math.round(
+                speedRatio * 20
+            ) +
+            Math.min(
+                combo * 2,
+                20
+            );
+
+        if(critical){
+
+            damage += 10;
+
+        }
+
+        player2HP =
+            Math.max(
+                0,
+                player2HP - damage
+            );
+
+        feedback.textContent =
+            critical
+            ? "⚡ CRITICAL HIT!"
+            : "✓ CORRETO! ATAQUE!";
+
+        feedback.className =
+            "feedback correct";
+
+        updateCombo(1);
+
+        animateAttack(1);
+
+        showDamage(
+            2,
+            damage,
+            critical
+        );
+
+    }else{
+
+        correct2++;
+
+        combo2++;
+
+        combo = combo2;
+
+        damage =
+            10 +
+            Math.round(
+                speedRatio * 20
+            ) +
+            Math.min(
+                combo * 2,
+                20
+            );
+
+        if(critical){
+
+            damage += 10;
+
+        }
+
+        player1HP =
+            Math.max(
+                0,
+                player1HP - damage
+            );
+
+        feedback.textContent =
+            critical
+            ? "⚡ CRITICAL HIT!"
+            : "✓ CORRETO! ATAQUE!";
+
+        feedback.className =
+            "feedback correct";
+
+        updateCombo(2);
+
+        animateAttack(2);
+
+        showDamage(
+            1,
+            damage,
+            critical
+        );
+
+    }
+
+    updateBars();
+
+    /* =====================================================
+       VERIFICAR VITÓRIA
+    ===================================================== */
+
+    if(player1HP <= 0){
+
+        setTimeout(
+            ()=>finishGame(2),
+            650
+        );
+
+        return;
+
+    }
+
+    if(player2HP <= 0){
+
+        setTimeout(
+            ()=>finishGame(1),
+            650
+        );
+
+        return;
+
+    }
+
+    /*
+       Depois do ataque,
+       troca o turno.
+    */
+
+    setTimeout(
+        nextTurn,
+        800
+    );
+
+}
+
+
+/* =========================================================
+   RESPOSTA ERRADA
+========================================================= */
+
+function wrongAnswer(player){
+
+    if(player === 1){
+
+        wrong1++;
+
+        combo1 = 0;
+
+        updateCombo(1);
+
+        feedback.textContent =
+            "✗ ERRADO! Ataque perdido.";
+
+        feedback.className =
+            "feedback wrong";
+
+    }else{
+
+        wrong2++;
+
+        combo2 = 0;
+
+        updateCombo(2);
+
+        feedback.textContent =
+            "✗ ERRADO! Ataque perdido.";
+
+        feedback.className =
+            "feedback wrong";
+
+    }
+
+    /*
+       Errou?
+       Não causa dano.
+       Apenas perde o turno.
+    */
+
+    setTimeout(
+        nextTurn,
+        800
+    );
+
+}
+
+
+/* =========================================================
+   TEMPO ESGOTADO
+========================================================= */
+
+function processTimeout(){
+
+    if(processingTurn)return;
+
+    processingTurn = true;
+
+    if(currentPlayer === 1){
+
+        total1++;
+        wrong1++;
+
+        combo1 = 0;
+
+        updateCombo(1);
+
+        feedback.textContent =
+            "⌛ TEMPO ESGOTADO!";
+
+    }else{
+
+        total2++;
+        wrong2++;
+
+        combo2 = 0;
+
+        updateCombo(2);
+
+        feedback.textContent =
+            "⌛ TEMPO ESGOTADO!";
+
+    }
+
+    feedback.className =
+        "feedback wrong";
+
+    setTimeout(
+        nextTurn,
+        800
+    );
+
+}
+
+
+/* =========================================================
+   PRÓXIMO TURNO
+========================================================= */
+
+function nextTurn(){
+
+    if(!gameRunning)return;
+
+    round++;
+
+    roundElement.textContent =
+        round;
+
+    if(currentPlayer === 1){
+
+        startTurn(2);
+
+    }else{
+
+        startTurn(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   ANIMAÇÃO DE ATAQUE
+========================================================= */
+
+function animateAttack(player){
+
+    if(player === 1){
+
+        player1.classList.remove(
+            "attack-p1"
+        );
+
+        player2.classList.remove(
+            "hit"
+        );
+
+        void player1.offsetWidth;
+
+        player1.classList.add(
+            "attack-p1"
+        );
+
+        player2.classList.add(
+            "hit"
+        );
+
+    }else{
+
+        player2.classList.remove(
+            "attack-p2"
+        );
+
+        player1.classList.remove(
+            "hit"
+        );
+
+        void player2.offsetWidth;
+
+        player2.classList.add(
+            "attack-p2"
+        );
+
+        player1.classList.add(
+            "hit"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DANO
+========================================================= */
+
+function showDamage(
+    target,
+    damage,
+    critical
+){
+
+    const element =
+        document.createElement("div");
+
+    element.className =
+        "damage " +
+        (
+            target === 1
+            ? "damage-p1"
+            : "damage-p2"
+        );
+
+    if(critical){
+
+        element.classList.add(
+            "critical"
+        );
+
+    }
+
+    element.textContent =
+        critical
+        ? "CRIT! -" + damage
+        : "-" + damage;
+
+    const targetElement =
+        target === 1
+        ? player1
+        : player2;
+
+    const rect =
+        targetElement.getBoundingClientRect();
+
+    element.style.left =
+        (
+            rect.left +
+            rect.width / 2
+        ) + "px";
+
+    element.style.top =
+        (
+            rect.top + 20
+        ) + "px";
+
+    document.body.appendChild(
+        element
+    );
+
+    setTimeout(
+        ()=>element.remove(),
+        1000
+    );
+
+}
+
+
+/* =========================================================
+   COMBO
+========================================================= */
+
+function updateCombo(player){
+
+    const element =
+        player === 1
+        ? combo1Element
+        : combo2Element;
+
+    const value =
+        player === 1
+        ? combo1
+        : combo2;
+
+    if(value >= 2){
+
+        element.textContent =
+            "🔥 COMBO x" + value;
+
+        element.classList.add(
+            "show"
+        );
+
+    }else{
+
+        element.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   BARRAS
+========================================================= */
+
+function updateBars(){
+
+    hp1.style.width =
+        player1HP + "%";
+
+    hp2.style.width =
+        player2HP + "%";
+
+    hp1Text.textContent =
+        player1HP + " / 100";
+
+    hp2Text.textContent =
+        player2HP + " / 100";
+
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+function finishGame(winner){
+
+    gameRunning = false;
+
+    clearInterval(timerInterval);
+
+    player1.classList.remove(
+        "active",
+        "inactive"
+    );
+
+    player2.classList.remove(
+        "active",
+        "inactive"
+    );
+
+    const winnerName =
+        winner === 1
+        ? "🔵 PLAYER 1"
+        : "🔴 PLAYER 2";
+
+    resultTitle.textContent =
+        "🏆 " + winnerName + " VENCEU!";
+
+    resultTitle.style.color =
+        winner === 1
+        ? "#55ddff"
+        : "#ff6179";
+
+    resultMessage.textContent =
+        "A batalha chegou ao fim!";
+
+    const accuracy1 =
+        total1 > 0
+        ? Math.round(
+            correct1 /
+            total1 *
+            100
+        )
+        : 0;
+
+    const accuracy2 =
+        total2 > 0
+        ? Math.round(
+            correct2 /
+            total2 *
+            100
+        )
+        : 0;
+
+    resultStats.innerHTML = `
+
+        <strong>⚔️ ESTATÍSTICAS DA BATALHA</strong>
+
+        <br><br>
+
+        🔵 <strong>PLAYER 1</strong>
+
+        <br>
+        ✓ Acertos: ${correct1}
+
+        <br>
+        ✗ Erros: ${wrong1}
+
+        <br>
+        🎯 Precisão: ${accuracy1}%
+
+        <br>
+        🔥 Combo: ${combo1}
+
+        <br><br>
+
+        🔴 <strong>PLAYER 2</strong>
+
+        <br>
+        ✓ Acertos: ${correct2}
+
+        <br>
+        ✗ Erros: ${wrong2}
+
+        <br>
+        🎯 Precisão: ${accuracy2}%
+
+        <br>
+        🔥 Combo: ${combo2}
+
+    `;
+
+    resultScreen.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   INICIAR JOGO
+========================================================= */
+
+function startGame(){
+
+    clearInterval(timerInterval);
+
+    player1HP = MAX_HP;
+    player2HP = MAX_HP;
+
+    combo1 = 0;
+    combo2 = 0;
+
+    correct1 = 0;
+    correct2 = 0;
+
+    wrong1 = 0;
+    wrong2 = 0;
+
+    total1 = 0;
+    total2 = 0;
+
+    round = 1;
+
+    currentPlayer = 1;
+
+    processingTurn = false;
+
+    gameRunning = true;
+
+    updateBars();
+
+    roundElement.textContent =
+        round;
+
+    combo1Element.classList.remove(
+        "show"
+    );
+
+    combo2Element.classList.remove(
+        "show"
+    );
+
+    startScreen.style.display =
+        "none";
+
+    resultScreen.classList.remove(
+        "show"
+    );
+
+    /*
+       IMPORTANTE:
+       SEMPRE COMEÇA COM P1.
+    */
+
+    startTurn(1);
+
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+restartButton.addEventListener(
+    "click",
+    startGame
+);
+
+attackButton.addEventListener(
+    "click",
+    submitAnswer
+);
+
+
+/* =========================================================
+   ENTER
+========================================================= */
+
+answer.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            submitAnswer();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TECLAS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(!gameRunning)return;
+
+        /*
+           ENTER também pode atacar.
+        */
+
+        if(
+            event.key === "Enter" &&
+            document.activeElement === answer
+        ){
+
+            return;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+updateBars();
+
+</script>
+
+</body>
+</html>

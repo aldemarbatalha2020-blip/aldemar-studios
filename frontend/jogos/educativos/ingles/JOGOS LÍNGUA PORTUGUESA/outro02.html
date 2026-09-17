@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operação Sala de Aula</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at 20% 10%,#334d91 0%,transparent 35%),
+        radial-gradient(circle at 80% 90%,#493080 0%,transparent 35%),
+        #080c1d;
+    min-height:100vh;
+    color:white;
+    overflow-x:hidden;
+}
+
+button{
+    font-family:inherit;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.game{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.screen{
+    width:min(1200px,100%);
+    min-height:720px;
+    background:rgba(10,16,39,.96);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+
+/* =========================
+   TELA INICIAL
+========================= */
+
+#startScreen{
+    min-height:720px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+}
+
+.startBox{
+    max-width:850px;
+}
+
+.bigIcon{
+    font-size:90px;
+    animation:float 2.5s infinite ease-in-out;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-12px)}
+}
+
+.startBox h1{
+    font-size:clamp(38px,6vw,72px);
+    margin:10px 0;
+}
+
+.startBox h2{
+    color:#82dfff;
+    margin-bottom:20px;
+}
+
+.startDescription{
+    color:#ccd4f7;
+    font-size:20px;
+    line-height:1.6;
+    margin-bottom:30px;
+}
+
+.startButton{
+    border:0;
+    padding:20px 48px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#557fff,#7958ff);
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 15px 35px rgba(86,100,255,.3);
+    transition:.2s;
+}
+
+.startButton:hover{
+    transform:translateY(-4px) scale(1.02);
+}
+
+.startInfo{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:35px;
+}
+
+.info{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    padding:12px 18px;
+    border-radius:14px;
+    color:#d9dfff;
+}
+
+/* =========================
+   HUD
+========================= */
+
+#gameScreen{
+    display:none;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 25px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.035);
+}
+
+.gameLogo{
+    font-weight:bold;
+    font-size:22px;
+}
+
+.stats{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.stat{
+    background:rgba(255,255,255,.08);
+    padding:10px 14px;
+    border-radius:12px;
+    font-weight:bold;
+}
+
+.progressContainer{
+    padding:18px 28px 0;
+}
+
+.progressTop{
+    display:flex;
+    justify-content:space-between;
+    color:#c5cdef;
+    margin-bottom:8px;
+}
+
+.progress{
+    width:100%;
+    height:10px;
+    background:#20284b;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progressFill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#50d6ff,#795cff);
+    transition:.4s;
+}
+
+/* =========================
+   GAME
+========================= */
+
+.gameArea{
+    padding:28px;
+}
+
+.missionHeader{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.missionHeader small{
+    color:#7bdcff;
+    font-weight:bold;
+    letter-spacing:1.5px;
+}
+
+.missionHeader h2{
+    font-size:32px;
+    margin-top:7px;
+}
+
+.room{
+    width:100%;
+    min-height:310px;
+    background:
+        linear-gradient(rgba(255,255,255,.02),rgba(255,255,255,.02)),
+        #20294a;
+    border-radius:24px;
+    border:2px solid rgba(255,255,255,.08);
+    position:relative;
+    overflow:hidden;
+    padding:25px;
+}
+
+/* janela */
+
+.window{
+    position:absolute;
+    top:30px;
+    left:35px;
+    width:120px;
+    height:85px;
+    border:8px solid #75563f;
+    background:linear-gradient(#75c7ff,#d4efff);
+    box-shadow:inset 0 0 0 5px #9d744d;
+}
+
+.window:before,
+.window:after{
+    content:"";
+    position:absolute;
+    background:#75563f;
+}
+
+.window:before{
+    width:100%;
+    height:6px;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.window:after{
+    height:100%;
+    width:6px;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+/* quadro */
+
+.board{
+    position:absolute;
+    top:28px;
+    right:35px;
+    width:260px;
+    height:100px;
+    border-radius:8px;
+    border:8px solid #65462f;
+    background:#163b3d;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:18px;
+    color:#bff7e7;
+    text-align:center;
+}
+
+/* chão */
+
+.floor{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:95px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #7b604a 0,
+            #7b604a 70px,
+            #715640 70px,
+            #715640 72px
+        );
+}
+
+/* carteiras */
+
+.desks{
+    position:absolute;
+    bottom:48px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:28px;
+}
+
+.desk{
+    width:100px;
+    height:55px;
+    background:#9b704c;
+    border-radius:8px;
+    border:5px solid #66462f;
+    position:relative;
+}
+
+.desk:before,
+.desk:after{
+    content:"";
+    position:absolute;
+    width:7px;
+    height:45px;
+    bottom:-42px;
+    background:#523a2a;
+}
+
+.desk:before{left:10px}
+.desk:after{right:10px}
+
+/* personagem */
+
+.player{
+    position:absolute;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:64px;
+    z-index:5;
+    transition:.5s;
+    filter:drop-shadow(0 8px 5px rgba(0,0,0,.35));
+}
+
+.player.moveLeft{
+    left:25%;
+}
+
+.player.moveRight{
+    left:75%;
+}
+
+/* =========================
+   SITUAÇÃO
+========================= */
+
+.situationBox{
+    background:linear-gradient(135deg,#252f58,#171d3e);
+    border:2px solid rgba(255,255,255,.08);
+    padding:25px;
+    border-radius:20px;
+    margin-top:20px;
+    text-align:center;
+}
+
+.situationIcon{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.situationText{
+    font-size:23px;
+    line-height:1.45;
+    font-weight:bold;
+}
+
+.instruction{
+    color:#bac5ec;
+    margin-top:10px;
+    font-size:16px;
+}
+
+/* =========================
+   ESCOLHAS
+========================= */
+
+.choices{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:18px;
+}
+
+.choice{
+    border:none;
+    padding:20px 15px;
+    border-radius:17px;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.35;
+    transition:.2s;
+}
+
+.choice:hover{
+    transform:translateY(-4px);
+}
+
+.choice1{
+    background:linear-gradient(135deg,#218b62,#126447);
+}
+
+.choice2{
+    background:linear-gradient(135deg,#347ac8,#244f91);
+}
+
+.choice3{
+    background:linear-gradient(135deg,#c04c52,#8e2d35);
+}
+
+.choice:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+    transform:none;
+}
+
+/* =========================
+   FEEDBACK
+========================= */
+
+.feedback{
+    margin-top:18px;
+    padding:18px;
+    border-radius:16px;
+    display:none;
+    font-size:18px;
+    line-height:1.5;
+}
+
+.feedback.correct{
+    display:block;
+    background:rgba(31,190,128,.12);
+    border:1px solid #26c889;
+    color:#9cf4d1;
+}
+
+.feedback.wrong{
+    display:block;
+    background:rgba(239,68,68,.12);
+    border:1px solid #ef5555;
+    color:#ffadad;
+}
+
+.nextButton{
+    display:none;
+    margin:18px auto 0;
+    border:none;
+    padding:15px 32px;
+    border-radius:15px;
+    background:#f1f4ff;
+    color:#111733;
+    font-weight:bold;
+    font-size:17px;
+    cursor:pointer;
+}
+
+/* =========================
+   RESULTADO
+========================= */
+
+#resultScreen{
+    display:none;
+    min-height:720px;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+}
+
+.resultIcon{
+    font-size:90px;
+}
+
+.resultTitle{
+    font-size:42px;
+    margin:12px 0;
+}
+
+.resultDescription{
+    color:#c5ccef;
+    font-size:19px;
+    max-width:700px;
+    line-height:1.5;
+    margin:auto;
+}
+
+.score{
+    margin:30px auto;
+    width:220px;
+    padding:22px;
+    border-radius:22px;
+    background:rgba(255,255,255,.06);
+}
+
+.scoreNumber{
+    font-size:52px;
+    font-weight:bold;
+}
+
+.scoreLabel{
+    color:#aeb8df;
+}
+
+.resultStats{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:30px;
+}
+
+.resultStat{
+    padding:15px 20px;
+    background:#1b2345;
+    border-radius:15px;
+}
+
+.restartButton{
+    border:none;
+    padding:17px 40px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#557fff,#7958ff);
+    color:white;
+    font-size:19px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:800px){
+
+    .screen{
+        border-radius:0;
+        min-height:100vh;
+    }
+
+    .game{
+        padding:0;
+    }
+
+    .choices{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
+    }
+
+    .board{
+        width:170px;
+        height:75px;
+        font-size:13px;
+    }
+
+    .window{
+        width:85px;
+        height:65px;
+    }
+
+    .desks{
+        gap:10px;
+    }
+
+    .desk{
+        width:65px;
+    }
+
+    .situationText{
+        font-size:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<div class="screen">
+
+<!-- =========================
+     INÍCIO
+========================= -->
+
+<section id="startScreen">
+
+<div class="startBox">
+
+<div class="bigIcon">🏫</div>
+
+<h1>OPERAÇÃO SALA DE AULA</h1>
+
+<h2>MISSÃO: CIDADANIA NA PRÁTICA</h2>
+
+<p class="startDescription">
+Sua missão é ajudar a transformar a sala de aula em um
+ambiente melhor para todos.
+<br><br>
+Você encontrará situações reais do cotidiano escolar.
+<strong>Escolha o que você faria!</strong>
+</p>
+
+<button class="startButton" onclick="startGame()">
+🚀 INICIAR MISSÃO
+</button>
+
+<div class="startInfo">
+<div class="info">🎯 10 situações</div>
+<div class="info">❤️ 3 vidas</div>
+<div class="info">⭐ Até 1.000 pontos</div>
+<div class="info">🧠 Decisões práticas</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     JOGO
+========================= -->
+
+<section id="gameScreen">
+
+<div class="topbar">
+
+<div class="gameLogo">
+🏫 OPERAÇÃO SALA DE AULA
+</div>
+
+<div class="stats">
+<div class="stat">⭐ <span id="score">0</span></div>
+<div class="stat">❤️ <span id="lives">3</span></div>
+</div>
+
+</div>
+
+
+<div class="progressContainer">
+
+<div class="progressTop">
+<span>Missão</span>
+<span id="progressText">1 / 10</span>
+</div>
+
+<div class="progress">
+<div class="progressFill" id="progressFill"></div>
+</div>
+
+</div>
+
+
+<div class="gameArea">
+
+<div class="missionHeader">
+
+<small>🎯 OBJETIVO DA MISSÃO</small>
+
+<h2 id="missionTitle">
+Observe e tome uma decisão!
+</h2>
+
+</div>
+
+
+<div class="room">
+
+<div class="window"></div>
+
+<div class="board">
+RESPEITO<br>
+RESPONSABILIDADE<br>
+PARTICIPAÇÃO
+</div>
+
+<div class="floor"></div>
+
+<div class="desks">
+<div class="desk"></div>
+<div class="desk"></div>
+<div class="desk"></div>
+</div>
+
+<div class="player" id="player">
+🧑‍🎓
+</div>
+
+</div>
+
+
+<div class="situationBox">
+
+<div class="situationIcon" id="situationIcon">
+🚨
+</div>
+
+<div class="situationText" id="situationText">
+Carregando...
+</div>
+
+<div class="instruction">
+O que você faria nessa situação?
+</div>
+
+</div>
+
+
+<div class="choices">
+
+<button class="choice choice1" onclick="choose(0)">
+A
+</button>
+
+<button class="choice choice2" onclick="choose(1)">
+B
+</button>
+
+<button class="choice choice3" onclick="choose(2)">
+C
+</button>
+
+</div>
+
+
+<div class="feedback" id="feedback"></div>
+
+<button class="nextButton" id="nextButton" onclick="nextQuestion()">
+PRÓXIMA MISSÃO ➜
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     RESULTADO
+========================= -->
+
+<section id="resultScreen">
+
+<div>
+
+<div class="resultIcon" id="resultIcon">
+🏆
+</div>
+
+<h2 class="resultTitle" id="resultTitle">
+Missão concluída!
+</h2>
+
+<p class="resultDescription" id="resultDescription">
+Você terminou a missão.
+</p>
+
+<div class="score">
+
+<div class="scoreNumber" id="finalScore">
+0
+</div>
+
+<div class="scoreLabel">
+PONTOS
+</div>
+
+</div>
+
+<div class="resultStats">
+
+<div class="resultStat">
+🎯 Acertos: <strong id="finalCorrect">0</strong>
+</div>
+
+<div class="resultStat">
+❌ Erros: <strong id="finalWrong">0</strong>
+</div>
+
+<div class="resultStat">
+❤️ Vidas: <strong id="finalLives">0</strong>
+</div>
+
+</div>
+
+<button class="restartButton" onclick="startGame()">
+🔄 NOVA MISSÃO
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ============================================
+   SITUAÇÕES
+============================================ */
+
+const missions = [
+
+{
+    icon:"🧹",
+    text:"A sala está cheia de papéis no chão depois de uma atividade.",
+    options:[
+        "Eu ajudo a recolher os papéis e coloco no lixo.",
+        "Eu ignoro porque não fui eu quem sujou.",
+        "Eu jogo mais um papel no chão."
+    ],
+    correct:0,
+    concept:"DEVER",
+    explanation:
+    "Muito bem! Cuidar do espaço coletivo é um DEVER. A sala pertence a todos e todos podem ajudar a mantê-la organizada."
+},
+
+{
+    icon:"🗣️",
+    text:"Seu colega está apresentando um trabalho e algumas pessoas começam a conversar.",
+    options:[
+        "Eu começo a conversar também.",
+        "Eu respeito a apresentação e presto atenção.",
+        "Eu faço piada para chamar atenção."
+    ],
+    correct:1,
+    concept:"DEVER",
+    explanation:
+    "Correto! Respeitar quem está falando é um DEVER de convivência. Todos têm o direito de serem ouvidos."
+},
+
+{
+    icon:"🙋",
+    text:"Você quer dar sua opinião durante uma discussão em sala.",
+    options:[
+        "Eu grito para obrigar todos a me ouvirem.",
+        "Eu fico em silêncio mesmo querendo falar.",
+        "Eu peço a palavra e apresento minha opinião com respeito."
+    ],
+    correct:2,
+    concept:"DIREITO",
+    explanation:
+    "Muito bem! Você possui o DIREITO de expressar sua opinião. Mas esse direito deve ser exercido respeitando os demais."
+},
+
+{
+    icon:"📚",
+    text:"Você pegou o caderno de um colega sem pedir e percebe que ele precisa do material.",
+    options:[
+        "Eu escondo o caderno.",
+        "Eu devolvo o material e peço desculpas por ter pegado sem autorização.",
+        "Eu continuo usando porque preciso dele."
+    ],
+    correct:1,
+    concept:"DEVER",
+    explanation:
+    "Isso! Respeitar os materiais e os pertences dos colegas é um DEVER."
+},
+
+{
+    icon:"🪑",
+    text:"Você percebe que alguém está riscando uma carteira da escola.",
+    options:[
+        "Eu incentivo a pessoa.",
+        "Eu também risco outra carteira.",
+        "Eu explico que o patrimônio da escola deve ser preservado."
+    ],
+    correct:2,
+    concept:"DEVER",
+    explanation:
+    "Correto! Cuidar do patrimônio público é um DEVER de todos."
+},
+
+{
+    icon:"⏰",
+    text:"O sinal toca e a aula começa.",
+    options:[
+        "Eu continuo conversando e ignoro o professor.",
+        "Eu procuro me organizar e cumprir as regras da aula.",
+        "Eu saio da sala sem autorização."
+    ],
+    correct:1,
+    concept:"OBRIGAÇÃO",
+    explanation:
+    "Muito bem! Cumprir as regras estabelecidas para o funcionamento da escola pode ser uma OBRIGAÇÃO."
+},
+
+{
+    icon:"🤝",
+    text:"Um colega está com dificuldade para entender uma atividade.",
+    options:[
+        "Eu ajudo se puder ou incentivo o colega a pedir ajuda.",
+        "Eu digo que não é problema meu.",
+        "Eu escondo o material dele."
+    ],
+    correct:0,
+    concept:"DEVER",
+    explanation:
+    "Excelente! A cooperação e o respeito ajudam a construir uma boa convivência. É uma atitude de responsabilidade com o coletivo."
+},
+
+{
+    icon:"🚫",
+    text:"Você sabe que existe uma regra da escola proibindo correr dentro da sala.",
+    options:[
+        "Eu corro mesmo assim.",
+        "Eu respeito a regra e evito correr dentro da sala.",
+        "Eu corro somente quando ninguém estiver olhando."
+    ],
+    correct:1,
+    concept:"OBRIGAÇÃO",
+    explanation:
+    "Isso! Quando uma regra precisa ser cumprida, respeitá-la é uma OBRIGAÇÃO."
+},
+
+{
+    icon:"🗳️",
+    text:"A turma precisa escolher entre duas ideias para uma atividade coletiva.",
+    options:[
+        "Eu escuto as opiniões dos colegas e participo da decisão.",
+        "Eu decido sozinho por todos.",
+        "Eu não deixo ninguém falar."
+    ],
+    correct:0,
+    concept:"DIREITO + DEVER",
+    explanation:
+    "Excelente! Participar e expressar sua opinião envolve um DIREITO. Escutar e respeitar os outros também faz parte dos DEVERES de convivência."
+},
+
+{
+    icon:"❤️",
+    text:"Um colega cometeu um erro durante uma atividade e algumas pessoas começaram a rir.",
+    options:[
+        "Eu rio junto.",
+        "Eu faço uma piada sobre o erro.",
+        "Eu respeito o colega e incentivo que ele tente novamente."
+    ],
+    correct:2,
+    concept:"DEVER",
+    explanation:
+    "Muito bem! Respeitar a dignidade dos colegas é essencial. Uma sala cidadã é um espaço onde todos podem aprender sem humilhação."
+}
+
+];
+
+
+/* ============================================
+   VARIÁVEIS
+============================================ */
+
+let current=0;
+let score=0;
+let lives=3;
+let correct=0;
+let wrong=0;
+let answered=false;
+
+
+/* ============================================
+   INICIAR
+============================================ */
+
+function startGame(){
+
+    current=0;
+    score=0;
+    lives=3;
+    correct=0;
+    wrong=0;
+    answered=false;
+
+    document.getElementById("startScreen").style.display="none";
+    document.getElementById("resultScreen").style.display="none";
+    document.getElementById("gameScreen").style.display="block";
+
+    updateHUD();
+    loadMission();
+}
+
+
+/* ============================================
+   CARREGAR MISSÃO
+============================================ */
+
+function loadMission(){
+
+    answered=false;
+
+    const mission=missions[current];
+
+    document.getElementById("situationIcon").textContent=mission.icon;
+
+    document.getElementById("situationText").textContent=mission.text;
+
+    document.getElementById("missionTitle").textContent=
+        "Situação " + (current+1) + ": tome uma decisão";
+
+    document.getElementById("progressText").textContent=
+        (current+1)+" / "+missions.length;
+
+    document.getElementById("progressFill").style.width=
+        ((current)/missions.length*100)+"%";
+
+    const buttons=document.querySelectorAll(".choice");
+
+    buttons.forEach((button,index)=>{
+
+        button.disabled=false;
+
+        button.textContent=
+            String.fromCharCode(65+index)+") "+mission.options[index];
+
+    });
+
+    const feedback=document.getElementById("feedback");
+
+    feedback.className="feedback";
+    feedback.innerHTML="";
+
+    document.getElementById("nextButton").style.display="none";
+
+    const player=document.getElementById("player");
+
+    player.classList.remove("moveLeft","moveRight");
+
+    if(current%2===0){
+        player.classList.add("moveLeft");
+    }else{
+        player.classList.add("moveRight");
+    }
+}
+
+
+/* ============================================
+   ESCOLHA
+============================================ */
+
+function choose(index){
+
+    if(answered) return;
+
+    answered=true;
+
+    const mission=missions[current];
+
+    const feedback=document.getElementById("feedback");
+
+    document.querySelectorAll(".choice").forEach(button=>{
+        button.disabled=true;
+    });
+
+
+    if(index===mission.correct){
+
+        correct++;
+        score+=100;
+
+        feedback.className="feedback correct";
+
+        feedback.innerHTML=
+            "✅ <strong>ATITUDE CIDADÃ!</strong><br><br>"+
+            mission.explanation+
+            "<br><br>🏷️ Nesta situação: <strong>"+
+            mission.concept+
+            "</strong>";
+
+    }else{
+
+        wrong++;
+        lives--;
+        score=Math.max(0,score-50);
+
+        feedback.className="feedback wrong";
+
+        feedback.innerHTML=
+            "❌ <strong>PENSE NOVAMENTE!</strong><br><br>"+
+            "Uma atitude mais adequada seria:<br><br>"+
+            "<strong>“"+mission.options[mission.correct]+"”</strong>"+
+            "<br><br>"+
+            "🏷️ Nesta situação: <strong>"+
+            mission.concept+
+            "</strong>"+
+            "<br><br>"+
+            mission.explanation;
+    }
+
+    updateHUD();
+
+    document.getElementById("nextButton").style.display="block";
+}
+
+
+/* ============================================
+   PRÓXIMA
+============================================ */
+
+function nextQuestion(){
+
+    current++;
+
+    if(current>=missions.length || lives<=0){
+
+        finishGame();
+        return;
+    }
+
+    loadMission();
+}
+
+
+/* ============================================
+   HUD
+============================================ */
+
+function updateHUD(){
+
+    document.getElementById("score").textContent=score;
+
+    document.getElementById("lives").textContent=
+        "❤️".repeat(lives)+"🖤".repeat(3-lives);
+
+    document.getElementById("progressFill").style.width=
+        ((current)/missions.length*100)+"%";
+}
+
+
+/* ============================================
+   RESULTADO
+============================================ */
+
+function finishGame(){
+
+    document.getElementById("gameScreen").style.display="none";
+    document.getElementById("resultScreen").style.display="flex";
+
+    document.getElementById("finalScore").textContent=score;
+
+    document.getElementById("finalCorrect").textContent=correct;
+
+    document.getElementById("finalWrong").textContent=wrong;
+
+    document.getElementById("finalLives").textContent=lives;
+
+
+    let icon;
+    let title;
+    let description;
+
+
+    if(lives===0){
+
+        icon="💥";
+
+        title="MISSÃO INTERROMPIDA!";
+
+        description=
+        "Suas vidas acabaram, mas a missão ainda pode ser cumprida na vida real. Revise suas escolhas e tente novamente.";
+
+    }
+
+    else if(correct===10){
+
+        icon="🏆";
+
+        title="AGENTE DA CIDADANIA!";
+
+        description=
+        "Perfeito! Você demonstrou que sabe transformar direitos, deveres e obrigações em atitudes concretas.";
+
+    }
+
+    else if(correct>=8){
+
+        icon="🥇";
+
+        title="MISSÃO QUASE PERFEITA!";
+
+        description=
+        "Excelente! Você mostrou responsabilidade e respeito nas situações apresentadas.";
+
+    }
+
+    else if(correct>=6){
+
+        icon="🥈";
+
+        title="BOA MISSÃO!";
+
+        description=
+        "Você está aprendendo a transformar regras em atitudes. Continue praticando.";
+
+    }
+
+    else{
+
+        icon="📚";
+
+        title="TREINAMENTO CONCLUÍDO!";
+
+        description=
+        "Agora é hora de levar a missão para a sala de aula e colocar as regras em prática.";
+
+    }
+
+
+    document.getElementById("resultIcon").textContent=icon;
+
+    document.getElementById("resultTitle").textContent=title;
+
+    document.getElementById("resultDescription").textContent=description;
+}
+
+</script>
+
+</body>
+</html>

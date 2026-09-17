@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>English Memory</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <div class="game-container">
+
+
+        <!-- =========================================
+             TOPO
+        ========================================== -->
+
+        <header class="topbar">
+
+
+            <div class="logo-area">
+
+                <div class="logo-icon">
+                    🧠
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        English Memory
+                    </h1>
+
+                    <span>
+                        WORD MATCH
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="stats">
+
+
+                <div class="stat">
+
+                    <span>
+                        ⭐
+                    </span>
+
+                    <strong id="score">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span>
+                        🔥
+                    </span>
+
+                    <strong id="combo">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span>
+                        ❤️
+                    </span>
+
+                    <strong id="lives">
+                        3
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =========================================
+             INFORMAÇÕES
+        ========================================== -->
+
+        <section class="game-info">
+
+
+            <div>
+
+                <span>
+                    Pairs
+                </span>
+
+                <strong>
+                    <span id="pairsFound">
+                        0
+                    </span>
+                    / 10
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Attempts
+                </span>
+
+                <strong id="attempts">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Time
+                </span>
+
+                <strong id="timer">
+                    00:00
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================================
+             TABULEIRO
+        ========================================== -->
+
+        <main class="game-content">
+
+
+            <div class="instruction">
+
+                <span>
+                    🧠
+                </span>
+
+                <div>
+
+                    <strong>
+                        Find the pairs!
+                    </strong>
+
+                    <p>
+                        Encontre a palavra em inglês
+                        e seu significado em português.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                id="memoryBoard"
+                class="memory-board"
+            ></div>
+
+
+
+            <button
+                id="restartButton"
+                class="restart-button"
+            >
+
+                🔄
+                Restart Game
+
+            </button>
+
+
+        </main>
+
+
+
+        <!-- =========================================
+             TELA FINAL
+        ========================================== -->
+
+        <section
+            id="resultScreen"
+            class="result-screen hidden"
+        >
+
+
+            <div class="result-icon">
+                🏆
+            </div>
+
+
+            <h2>
+                Memory Complete!
+            </h2>
+
+
+            <p>
+                Excellent! You found all the pairs.
+            </p>
+
+
+
+            <div class="final-score">
+
+
+                <span>
+                    FINAL SCORE
+                </span>
+
+
+                <strong id="finalScore">
+                    0
+                </strong>
+
+
+                <small>
+                    points
+                </small>
+
+
+            </div>
+
+
+
+            <div class="result-stats">
+
+
+                <div>
+
+                    <strong id="finalPairs">
+                        10
+                    </strong>
+
+                    <span>
+                        Pairs
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong id="finalAttempts">
+                        0
+                    </strong>
+
+                    <span>
+                        Attempts
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong id="finalTime">
+                        00:00
+                    </strong>
+
+                    <span>
+                        Time
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <button
+                id="playAgainButton"
+                class="play-again-button"
+            >
+
+                🎮
+                Play Again
+
+            </button>
+
+
+        </section>
+
+
+    </div>
+
+
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>

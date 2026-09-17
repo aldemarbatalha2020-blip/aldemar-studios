@@ -1,0 +1,3406 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b1220"
+    >
+
+    <title>Aldemar Studios | Painel</title>
+
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+
+</head>
+
+
+<body>
+
+<div class="dashboard">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                AS
+            </div>
+
+            <div class="brand-text">
+
+                <strong>
+                    Aldemar
+                </strong>
+
+                <span>
+                    Studios
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu" aria-label="Menu principal">
+
+
+            <button
+                type="button"
+                class="menu-item active"
+                data-section="inicio"
+            >
+
+                <span class="menu-icon">🏠</span>
+
+                <span class="menu-label">
+                    Início
+                </span>
+
+            </button>
+
+
+            <!-- =================================================
+                 AMBIENTE DO ALUNO
+            ================================================== -->
+
+            <a href="/ambiente-aluno/" class="menu-item">
+
+                <span class="menu-icon">🎓</span>
+
+                <span class="menu-label">
+                    Ambiente do Aluno
+                </span>
+
+            </a>
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="jogos"
+            >
+
+                <span class="menu-icon">🎮</span>
+
+                <span class="menu-label">
+                    Jogos
+                </span>
+
+            </button>
+
+
+            <!-- =================================================
+                 MINI CURSO
+            ================================================== -->
+
+            <a href="/cursos/ingles-gratis/" class="menu-item">
+
+                <span class="menu-icon">🇺🇸</span>
+
+                <span class="menu-label">
+                    Mini Curso
+                </span>
+
+            </a>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="musica"
+            >
+
+                <span class="menu-icon">🎵</span>
+
+                <span class="menu-label">
+                    Música
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="inclusivos"
+            >
+
+                <span class="menu-icon">♿</span>
+
+                <span class="menu-label">
+                    Inclusivos
+                </span>
+
+            </button>
+
+
+            <div class="menu-title">
+                EDUCAÇÃO
+            </div>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="materiais"
+            >
+
+                <span class="menu-icon">📂</span>
+
+                <span class="menu-label">
+                    Materiais
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="simulados"
+            >
+
+                <span class="menu-icon">📝</span>
+
+                <span class="menu-label">
+                    Simulados
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="planos"
+            >
+
+                <span class="menu-icon">⭐</span>
+
+                <span class="menu-label">
+                    Planos
+                </span>
+
+                <span class="lock">
+                </span>
+
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="feedback"
+            >
+
+                <span class="menu-icon">💬</span>
+
+                <span class="menu-label">
+                    Feedback
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="menu-item"
+                data-section="perfil"
+            >
+
+                <span class="menu-icon">👤</span>
+
+                <span class="menu-label">
+                    Meu Perfil
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">🚪</span>
+
+                <span class="menu-label">
+                    Sair
+                </span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+
+            <button
+                type="button"
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                aria-label="Abrir menu"
+                aria-controls="sidebar"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <span class="topbar-small">
+                    ALDEMAR STUDIOS
+                </span>
+
+                <h1 id="pageTitle">
+                    Bem-vindo ao Aldemar Studios
+                </h1>
+
+            </div>
+
+
+            <div class="user-area">
+
+                <div class="user-info">
+
+                    <strong id="userName">
+                        Usuário
+                    </strong>
+
+                    <span id="userPlan">
+                        GRATUITO
+                    </span>
+
+                </div>
+
+
+                <button type="button" class="user-avatar user-avatar-button" id="userAvatar" aria-label="Abrir meu perfil">AS</button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             INÍCIO
+        ====================================================== -->
+
+        <section
+            id="inicio"
+            class="content-section active"
+        >
+
+
+            <div class="welcome-card">
+
+                <div>
+
+                    <span class="welcome-label">
+                        BEM-VINDO AO ALDEMAR STUDIOS
+                    </span>
+
+                    <h2>
+
+                        Olá,
+
+                        <span id="welcomeName">
+                            usuário
+                        </span>!
+
+                        👋
+
+                    </h2>
+
+                    <p>
+                        Explore jogos, cursos, conteúdos
+                        educativos e muito mais.
+                    </p>
+
+                </div>
+
+
+                <div class="welcome-icon">
+                    🎓
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    Acesso rápido
+                </h2>
+
+                <p>
+                    Comece por onde quiser.
+                </p>
+
+            </div>
+
+
+            <div class="cards-grid">
+
+
+                
+
+
+                <!-- =================================================
+                     MINI CURSO NO ACESSO RÁPIDO
+                ================================================== -->
+
+                <article
+                    class="access-card"
+                    onclick="window.location.href='/cursos/ingles-gratis/'"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        🇺🇸
+                    </div>
+
+                    <h3>
+                        Mini Curso
+                    </h3>
+
+                    <p>
+                        Mini curso de inglês para
+                        iniciantes.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="musica"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        🎵
+                    </div>
+
+                    <h3>
+                        Música
+                    </h3>
+
+                    <p>
+                        Teoria, prática e conteúdos
+                        musicais.
+                    </p>
+
+                    <span class="card-link">
+                        Explorar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="inclusivos"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        ♿
+                    </div>
+
+                    <h3>
+                        Inclusivos
+                    </h3>
+
+                    <p>
+                        Conteúdos pensados para
+                        diferentes necessidades.
+                    </p>
+
+                    <span class="card-link">
+                        Explorar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="materiais"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        📂
+                    </div>
+
+                    <h3>
+                        Materiais
+                    </h3>
+
+                    <p>
+                        Acesse materiais e recursos
+                        educacionais.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </article>
+
+
+                <article
+                    class="access-card"
+                    data-section-link="simulados"
+                    tabindex="0"
+                >
+
+                    <div class="card-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Simulados
+                    </h3>
+
+                    <p>
+                        Pratique seus conhecimentos
+                        com avaliações.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </article>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    ⭐ Planos
+                </h2>
+
+                <p>
+                    Novos recursos e planos estão
+                    sendo preparados.
+                </p>
+
+            </div>
+
+
+            <div class="coming-grid">
+
+                <div
+                    class="coming-card"
+                    data-locked-card="true"
+                    data-section="planos"
+                >
+
+                    <span>
+                        ⭐
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Planos Premium
+                        </strong>
+
+                        <p>
+                            Recursos exclusivos em desenvolvimento.
+                        </p>
+
+                    </div>
+
+                    <b>
+                    </b>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             JOGOS
+        ====================================================== -->
+
+        <section
+            id="jogos"
+            class="content-section"
+        >
+
+
+            <button type="button" class="back-button" data-games-central-back>
+                ← VOLTAR
+            </button>
+
+
+            <div id="gamesCategories">
+
+                <div class="section-title">
+
+                    <span class="welcome-label">
+                        ALDEMAR STUDIOS
+                    </span>
+
+                    <h2>
+                        🎮 Central de Jogos
+                    </h2>
+
+                    <p>
+                        Diversão, desafios e aprendizado
+                        em um só lugar.
+                    </p>
+
+                </div>
+
+
+                <div class="category-grid">
+
+
+                    <div
+                        class="category-card game-category-card"
+                        data-game-category="passatempo"
+                        data-game-category-open="passatempoArea"
+                        tabindex="0"
+                        role="button"
+                    >
+
+                        <span class="category-big-icon">
+                            🎮
+                        </span>
+
+                        <h3>
+                            Jogos de Passatempo
+                        </h3>
+
+                        <p>
+                            Jogos para diversão,
+                            desafios e entretenimento.
+                        </p>
+
+                        <span class="card-link">
+                            Explorar →
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="category-card game-category-card"
+                        data-game-category="educativos"
+                        data-game-category-open="educativosArea"
+                        tabindex="0"
+                        role="button"
+                    >
+
+                        <span class="category-big-icon">
+                            📚
+                        </span>
+
+                        <h3>
+                            Jogos Educativos
+                        </h3>
+
+                        <p>
+                            Aprenda enquanto joga com
+                            conteúdos de diversas áreas.
+                        </p>
+
+                        <span class="card-link">
+                            Explorar →
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="passatempoArea"
+                class="games-area"
+                hidden
+            >
+
+                <button
+                    type="button"
+                    class="back-button"
+                    data-games-back
+                >
+                    ← VOLTAR
+                </button>
+
+
+                <div class="section-title">
+
+                    <span class="welcome-label">
+                        ENTRETENIMENTO
+                    </span>
+
+                    <h2>
+                        🎮 Jogos de Passatempo
+                    </h2>
+
+                    <p>
+                        Escolha um jogo e divirta-se.
+                    </p>
+
+                </div>
+
+
+                <div class="games-grid">
+
+
+                    <article class="game-card">
+
+                        <div class="game-cover">
+                            🎮
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <span class="game-tag">
+                                PASSATEMPO
+                            </span>
+
+                            <h3>
+                                Jogo em breve
+                            </h3>
+
+                            <p>
+                                Nosso primeiro jogo será
+                                disponibilizado aqui.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="game-card">
+
+                        <div class="game-cover">
+                            🧩
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <span class="game-tag">
+                                PASSATEMPO
+                            </span>
+
+                            <h3>
+                                Mais jogos chegando
+                            </h3>
+
+                            <p>
+                                Novos jogos serão adicionados
+                                ao Aldemar Studios.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-small"
+                                disabled
+                            >
+                                EM BREVE
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+
+            
+            <div
+    id="educativosArea"
+    class="games-area"
+    hidden
+>
+
+
+<!-- =====================================================
+     ALDEMAR STUDIOS
+     CATÁLOGO DE JOGOS EDUCATIVOS
+====================================================== -->
+
+<button
+    type="button"
+    class="back-button"
+    data-games-back
+>
+    ← VOLTAR
+</button>
+
+<div class="section-title">
+
+    <span class="welcome-label">
+        APRENDIZAGEM
+    </span>
+
+    <h2>
+        📚 Jogos Educativos de Inglês
+    </h2>
+
+    <p>
+        Escolha um jogo e desenvolva suas habilidades
+        enquanto aprende de forma divertida.
+    </p>
+
+</div>
+
+<div class="game-filters">
+
+    <button
+        type="button"
+        class="game-filter active"
+        data-game-filter="todos"
+        onclick="filterGames('todos')"
+    >
+        TODOS
+    </button>
+
+    <button
+        type="button"
+        class="game-filter"
+        data-game-filter="Iniciante"
+        onclick="filterGames('Iniciante')"
+    >
+        INICIANTE
+    </button>
+
+    <button
+        type="button"
+        class="game-filter"
+        data-game-filter="Intermediário"
+        onclick="filterGames('Intermediário')"
+    >
+        INTERMEDIÁRIO
+    </button>
+
+    <button
+        type="button"
+        class="game-filter"
+        data-game-filter="Avançado"
+        onclick="filterGames('Avançado')"
+    >
+        AVANÇADO
+    </button>
+
+    <button
+        type="button"
+        class="game-filter"
+        data-game-filter="A1"
+        onclick="filterGames('A1')"
+    >
+        A1
+    </button>
+
+</div>
+
+<div class="educational-games-grid">
+
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Vocabulário"
+    data-game-name="English Kids"
+>
+
+    <div class="game-card-icon">
+        🧒
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Kids
+        </h3>
+
+        <p>
+            Aprenda inglês brincando com desafios interativos.
+        </p>
+
+        <span class="game-category">
+            Vocabulário
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/EDUCATIVO%20INFANTIL/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Desafio"
+    data-game-name="English Detective"
+>
+
+    <div class="game-card-icon">
+        🕵️
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Detective
+        </h3>
+
+        <p>
+            Investigue pistas e descubra as respostas em inglês.
+        </p>
+
+        <span class="game-category">
+            Desafio
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/ENGLISH%20DETECTIVE/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Ação"
+    data-game-name="English Runner"
+>
+
+    <div class="game-card-icon">
+        🏃
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Runner
+        </h3>
+
+        <p>
+            Corra, desvie dos obstáculos e pratique inglês.
+        </p>
+
+        <span class="game-category">
+            Ação
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/ENGLISH%20RUNNER/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Conversação"
+    data-game-name="English Conversation"
+>
+
+    <div class="game-card-icon">
+        💬
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Conversation
+        </h3>
+
+        <p>
+            Pratique situações de comunicação em inglês.
+        </p>
+
+        <span class="game-category">
+            Conversação
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/english-conversation/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Desafio"
+    data-game-name="Detective Challenge"
+>
+
+    <div class="game-card-icon">
+        🔎
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            Detective Challenge
+        </h3>
+
+        <p>
+            Resolva desafios e descubra as respostas corretas.
+        </p>
+
+        <span class="game-category">
+            Desafio
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/english-detective/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Conhecimentos"
+    data-game-name="English Master"
+>
+
+    <div class="game-card-icon">
+        🏆
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Master
+        </h3>
+
+        <p>
+            Teste seus conhecimentos e avance pelos desafios.
+        </p>
+
+        <span class="game-category">
+            Conhecimentos
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/english-master/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Escrita"
+    data-game-name="English Writer"
+>
+
+    <div class="game-card-icon">
+        ✍️
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Writer
+        </h3>
+
+        <p>
+            Pratique escrita e construção de frases em inglês.
+        </p>
+
+        <span class="game-category">
+            Escrita
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/english-writer/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Gramática"
+    data-game-name="Grammar Battle"
+>
+
+    <div class="game-card-icon">
+        ⚔️
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            Grammar Battle
+        </h3>
+
+        <p>
+            Enfrente desafios de gramática e conquiste pontos.
+        </p>
+
+        <span class="game-category">
+            Gramática
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/grammar-battle/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Leitura"
+    data-game-name="English Reading Challenge"
+>
+
+    <div class="game-card-icon">
+        📚
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Reading Challenge
+        </h3>
+
+        <p>
+            Desenvolva leitura e interpretação em inglês.
+        </p>
+
+        <span class="game-category">
+            Leitura
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/INTERPRETA%C3%87%C3%83O%20TEXTUAL%20ENGLISH/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Estratégia"
+    data-game-name="English Checkers"
+>
+
+    <div class="game-card-icon">
+        ♟️
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Checkers
+        </h3>
+
+        <p>
+            Jogue damas enquanto responde aos desafios de inglês.
+        </p>
+
+        <span class="game-category">
+            Estratégia
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DA%20DAMA%20INGL%C3%8AS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Vocabulário"
+    data-game-name="English Hangman"
+>
+
+    <div class="game-card-icon">
+        🔤
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Hangman
+        </h3>
+
+        <p>
+            Descubra as palavras antes que o desafio termine.
+        </p>
+
+        <span class="game-category">
+            Vocabulário
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DA%20FORCA%20INGL%C3%8AS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Interpretação"
+    data-game-name="English Interpretation"
+>
+
+    <div class="game-card-icon">
+        🧠
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Interpretation
+        </h3>
+
+        <p>
+            Teste sua compreensão de textos em inglês.
+        </p>
+
+        <span class="game-category">
+            Interpretação
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DA%20INTERPRETA%C3%87%C3%83O%20ENGLISH/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Memória"
+    data-game-name="English Memory"
+>
+
+    <div class="game-card-icon">
+        🧩
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Memory
+        </h3>
+
+        <p>
+            Encontre os pares e memorize palavras em inglês.
+        </p>
+
+        <span class="game-category">
+            Memória
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DA%20MEM%C3%93RIA%20EM%20INGL%C3%8AS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Quiz"
+    data-game-name="English Quiz"
+>
+
+    <div class="game-card-icon">
+        ❓
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Quiz
+        </h3>
+
+        <p>
+            Responda perguntas e teste seus conhecimentos.
+        </p>
+
+        <span class="game-category">
+            Quiz
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DAS%20PERGUNTAS%20EM%20INGL%C3%8AS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Ação"
+    data-game-name="English Action"
+>
+
+    <div class="game-card-icon">
+        🎯
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Action
+        </h3>
+
+        <p>
+            Ação, velocidade e desafios de inglês.
+        </p>
+
+        <span class="game-category">
+            Ação
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DE%20A%C3%87%C3%83O%20ENGLISH/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Corrida"
+    data-game-name="English Racing"
+>
+
+    <div class="game-card-icon">
+        🏎️
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Racing
+        </h3>
+
+        <p>
+            Acelere e responda corretamente para vencer.
+        </p>
+
+        <span class="game-category">
+            Corrida
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DE%20CORRIDA%20INGL%C3%8AS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Puzzle"
+    data-game-name="English Puzzle"
+>
+
+    <div class="game-card-icon">
+        🧩
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Puzzle
+        </h3>
+
+        <p>
+            Monte desafios e exercite seu inglês.
+        </p>
+
+        <span class="game-category">
+            Puzzle
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DE%20PUZZLE/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Batalha"
+    data-game-name="English Battle"
+>
+
+    <div class="game-card-icon">
+        ⚡
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            English Battle
+        </h3>
+
+        <p>
+            Dispute desafios de inglês em uma batalha divertida.
+        </p>
+
+        <span class="game-category">
+            Batalha
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DE%20QUATRO%20PESSOAS%20A%C3%87%C3%83O/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Ação"
+    data-game-name="Alien English"
+>
+
+    <div class="game-card-icon">
+        👽
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            Alien English
+        </h3>
+
+        <p>
+            Enfrente alienígenas enquanto pratica inglês.
+        </p>
+
+        <span class="game-category">
+            Ação
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DO%20ALIEN/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Vocabulário"
+    data-game-name="English Restaurant"
+>
+
+    <div class="game-card-icon">
+        🍽️
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Restaurant
+        </h3>
+
+        <p>
+            Aprenda palavras e expressões usadas em restaurantes.
+        </p>
+
+        <span class="game-category">
+            Vocabulário
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGO%20DO%20RESTAURANTE%20EM%20INGL%C3%8AS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Avançado"
+    data-game-category="Desafio"
+    data-game-name="English Challenge"
+>
+
+    <div class="game-card-icon">
+        🔥
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Avançado
+        </span>
+
+        <h3>
+            English Challenge
+        </h3>
+
+        <p>
+            Um desafio completo para testar seu inglês.
+        </p>
+
+        <span class="game-category">
+            Desafio
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGOS%209%20ANO%20ATUALIZADOS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Português"
+    data-game-name="Portuguese Challenge"
+>
+
+    <div class="game-card-icon">
+        📕
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            Portuguese Challenge
+        </h3>
+
+        <p>
+            Desafios de língua portuguesa dentro da central educativa.
+        </p>
+
+        <span class="game-category">
+            Português
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/JOGOS%20L%C3%8DNGUA%20PORTUGUESA/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="A1"
+    data-game-category="Quiz"
+    data-game-name="English Quiz A1"
+>
+
+    <div class="game-card-icon">
+        🌱
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            A1
+        </span>
+
+        <h3>
+            English Quiz A1
+        </h3>
+
+        <p>
+            Quiz especial para quem está começando a aprender inglês.
+        </p>
+
+        <span class="game-category">
+            Quiz
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/QUIZ%20N%C3%8DVEL%20B%C3%81SICO%20A1%20EM%20GRUPO/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Pronúncia"
+    data-game-name="English Word Sounds"
+>
+
+    <div class="game-card-icon">
+        🔊
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            English Word Sounds
+        </h3>
+
+        <p>
+            Treine os sons e a pronúncia das palavras em inglês.
+        </p>
+
+        <span class="game-category">
+            Pronúncia
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/SONS%20DAS%20PALAVRAS%20EM%20INGL%C3%8AS/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Listening"
+    data-game-name="Listening Mission"
+>
+
+    <div class="game-card-icon">
+        🎧
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            Listening Mission
+        </h3>
+
+        <p>
+            Ouça, compreenda e complete as missões.
+        </p>
+
+        <span class="game-category">
+            Listening
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/listening-mission/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Leitura"
+    data-game-name="Reading Challenge"
+>
+
+    <div class="game-card-icon">
+        📖
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            Reading Challenge
+        </h3>
+
+        <p>
+            Leia, interprete e responda aos desafios.
+        </p>
+
+        <span class="game-category">
+            Leitura
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/reading-challenge/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Speaking"
+    data-game-name="Speak English"
+>
+
+    <div class="game-card-icon">
+        🎙️
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            Speak English
+        </h3>
+
+        <p>
+            Pratique expressões e comunicação em inglês.
+        </p>
+
+        <span class="game-category">
+            Speaking
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/speak-english/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Iniciante"
+    data-game-category="Spelling"
+    data-game-name="Spell It"
+>
+
+    <div class="game-card-icon">
+        🔡
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Iniciante
+        </span>
+
+        <h3>
+            Spell It
+        </h3>
+
+        <p>
+            Desafie sua habilidade de soletrar palavras em inglês.
+        </p>
+
+        <span class="game-category">
+            Spelling
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/spell-it/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+<article
+    class="educational-game"
+    data-game-level="Intermediário"
+    data-game-category="Vocabulário"
+    data-game-name="Vocabulary Master"
+>
+
+    <div class="game-card-icon">
+        📘
+    </div>
+
+    <div class="game-card-content">
+
+        <span class="game-level">
+            Intermediário
+        </span>
+
+        <h3>
+            Vocabulary Master
+        </h3>
+
+        <p>
+            Expanda seu vocabulário através de desafios.
+        </p>
+
+        <span class="game-category">
+            Vocabulário
+        </span>
+
+        <button
+            type="button"
+            class="game-play-button"
+            data-game-url="./jogos/educativos/ingles/vocabulary-master/index.html"
+        >
+            ▶ JOGAR
+        </button>
+
+    </div>
+
+</article>
+
+</div>
+
+
+</div></section>
+
+
+        <!-- =====================================================
+             MINI CURSO DE INGLÊS
+        ====================================================== -->
+
+        <section
+            id="ingles"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    MINI CURSO
+                </span>
+
+                <h2>
+                    🇺🇸 Mini Curso de Inglês
+                </h2>
+
+                <p>
+                    Aprenda inglês desde o início através
+                    de uma sequência organizada de módulos.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 ÍNDICE DOS MÓDULOS
+            ================================================== -->
+
+            <div class="category-grid">
+
+
+                <div
+                    class="category-card"
+                    onclick="window.location.href='/cursos/ingles-gratis/'"
+                    tabindex="0"
+                >
+
+                    <span class="category-big-icon">
+                        📚
+                    </span>
+
+                    <h3>
+                        Mini Curso de Inglês
+                    </h3>
+
+                    <p>
+                        Acesse o índice do mini curso e
+                        acompanhe todos os módulos disponíveis.
+                    </p>
+
+                    <a
+                        href="/cursos/ingles-gratis/"
+                        class="primary-small"
+                    >
+                        ABRIR MINI CURSO →
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="category-card"
+                    data-section-link="jogos"
+                    tabindex="0"
+                >
+
+                    <span class="category-big-icon">
+                        🎮
+                    </span>
+
+                    <h3>
+                        Jogos de Inglês
+                    </h3>
+
+                    <p>
+                        Aprenda inglês de maneira
+                        divertida através dos jogos.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar jogos →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CURSOS
+             NÃO ALTERADO
+        ====================================================== -->
+
+        <section
+            id="cursos"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    FORMAÇÃO
+                </span>
+
+                <h2>
+                    📚 Cursos
+                </h2>
+
+                <p>
+                    Aprenda no seu ritmo através dos
+                    cursos do Aldemar Studios.
+                </p>
+
+            </div>
+
+
+            <div class="section-title">
+
+                <h2>
+                    🎓 Cursos Gratuitos
+                </h2>
+
+                <p>
+                    Cursos gratuitos, completos e
+                    acessíveis para todos.
+                </p>
+
+            </div>
+
+
+            <div class="course-grid">
+
+
+                <article class="course-card">
+
+                    <div class="course-icon">
+                        🇺🇸
+                    </div>
+
+
+                    <div class="course-info">
+
+                        <span class="game-tag">
+                            CURSO GRATUITO
+                        </span>
+
+                        <h3>
+                            Inglês para Iniciantes
+                        </h3>
+
+                        <p>
+                            Aprenda os fundamentos da língua
+                            inglesa desde o início.
+                        </p>
+
+
+                        <div class="course-details">
+
+                            <span>
+                                📚 10 módulos
+                            </span>
+
+                            <span>
+                                📝 10 aulas por módulo
+                            </span>
+
+                            <span>
+                                🎓 100 aulas no total
+                            </span>
+
+                            <span>
+                                🆓 Gratuito
+                            </span>
+
+                            <span>
+                                🚫 Sem certificado
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:0%"
+                            ></div>
+
+                        </div>
+
+
+                        <small>
+                            0% concluído
+                        </small>
+
+                    </div>
+
+
+                    <a
+                        href="/cursos/ingles-gratis/"
+                        class="primary-small"
+                    >
+                        COMEÇAR →
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             MÚSICA
+        ====================================================== -->
+
+        <section
+            id="musica"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    CONTEÚDOS
+                </span>
+
+                <h2>
+                    🎵 Música
+                </h2>
+
+                <p>
+                    Conhecimento musical para todas as idades.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🧒
+                    </span>
+
+                    <h3>
+                        Música Infantil
+                    </h3>
+
+                    <p>
+                        Conteúdos musicais para crianças.
+                    </p>
+
+                </div>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🎸
+                    </span>
+
+                    <h3>
+                        Teoria e Prática
+                    </h3>
+
+                    <p>
+                        Aprenda música na prática.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             INCLUSIVOS
+        ====================================================== -->
+
+        <section
+            id="inclusivos"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    ACESSIBILIDADE
+                </span>
+
+                <h2>
+                    ♿ Conteúdos Inclusivos
+                </h2>
+
+                <p>
+                    Materiais pensados para diferentes perfis.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🧩
+                    </span>
+
+                    <h3>
+                        Atividades Adaptadas
+                    </h3>
+
+                    <p>
+                        Conteúdos visuais e adaptados.
+                    </p>
+
+                </div>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🧠
+                    </span>
+
+                    <h3>
+                        Aprendizagem
+                    </h3>
+
+                    <p>
+                        Estratégias para diferentes formas
+                        de aprender.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             MATERIAIS
+        ====================================================== -->
+
+        <section
+            id="materiais"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    BIBLIOTECA
+                </span>
+
+                <h2>
+                    📂 Materiais
+                </h2>
+
+                <p>
+                    Acesse materiais e recursos
+                    educacionais do Aldemar Studios.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <a href="/materiais/ingles/" class="category-card">
+
+                    <span class="category-big-icon">
+                        📘
+                    </span>
+
+                    <h3>
+                        Materiais de Inglês
+                    </h3>
+
+                    <p>
+                        Atividades, textos e recursos
+                        para o aprendizado de inglês.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </a>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        📖
+                    </span>
+
+                    <h3>
+                        Materiais de Português
+                    </h3>
+
+                    <p>
+                        Conteúdos de leitura, escrita
+                        e interpretação.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </div>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🎓
+                    </span>
+
+                    <h3>
+                        Materiais Educacionais
+                    </h3>
+
+                    <p>
+                        Recursos complementares para
+                        estudos e aprendizagem.
+                    </p>
+
+                    <span class="card-link">
+                        Explorar →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SIMULADOS
+        ====================================================== -->
+
+        <section
+            id="simulados"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    AVALIAÇÃO
+                </span>
+
+                <h2>
+                    📝 Simulados
+                </h2>
+
+                <p>
+                    Pratique seus conhecimentos através
+                    de avaliações e exercícios.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        🇺🇸
+                    </span>
+
+                    <h3>
+                        Simulados de Inglês
+                    </h3>
+
+                    <p>
+                        Exercite seus conhecimentos
+                        da língua inglesa.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </div>
+
+
+                <div class="category-card">
+
+                    <span class="category-big-icon">
+                        📚
+                    </span>
+
+                    <h3>
+                        Simulados Gerais
+                    </h3>
+
+                    <p>
+                        Avaliações de diferentes
+                        áreas do conhecimento.
+                    </p>
+
+                    <span class="card-link">
+                        Acessar →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PLANOS
+        ====================================================== -->
+
+        <section
+            id="planos"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    PREMIUM
+                </span>
+
+                <h2>
+                    ⭐ Planos
+                </h2>
+
+                <p>
+                    Escolha o plano que combina com você.
+                    Tenha acesso a conteúdos, jogos e recursos exclusivos.
+                </p>
+
+            </div>
+
+            <div class="plans-period-selector">
+
+                <button type="button" class="plan-period active" data-period="mensal">
+                    MENSAL
+                </button>
+
+                <button type="button" class="plan-period" data-period="diario">
+                    DIÁRIO
+                </button>
+
+                <button type="button" class="plan-period" data-period="anual">
+                    ANUAL
+                </button>
+
+            </div>
+
+            <div class="plans-grid">
+
+                <article class="plan-card plan-free">
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🆓</span>
+                        <span class="plan-label">GRATUITO</span>
+                    </div>
+
+                    <h3>Gratuito</h3>
+
+                    <p class="plan-description">
+                        Comece sua jornada gratuitamente.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong>0</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        acesso gratuito
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Conteúdos gratuitos</div>
+                        <div>✓ Jogos gratuitos</div>
+                        <div>✓ Acesso ao dashboard</div>
+                    </div>
+
+                    <button type="button" class="plan-button plan-button-secondary" disabled>
+                        PLANO ATUAL
+                    </button>
+
+                </article>
+
+                <article
+                    class="plan-card plan-bronze"
+                    data-plan="bronze"
+                    data-daily="5"
+                    data-monthly="30"
+                    data-annual="300"
+                >
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🥉</span>
+                        <span class="plan-label">PREMIUM</span>
+                    </div>
+
+                    <h3>Bronze</h3>
+
+                    <p class="plan-description">
+                        O essencial para ampliar sua experiência.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong class="plan-price-value">30</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        por mês
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Jogos Premium</div>
+                        <div>✓ Materiais Premium</div>
+                        <div>✓ Conteúdos de Inglês Premium</div>
+                        <div>✓ Novos conteúdos Premium</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="plan-button"
+                        data-plan-action="assinar"
+                        data-plan="bronze"
+                    >
+                        QUERO ASSINAR
+                    </button>
+
+                </article>
+
+                <article
+                    class="plan-card plan-silver featured"
+                    data-plan="prata"
+                    data-daily="8"
+                    data-monthly="50"
+                    data-annual="500"
+                >
+
+                    <div class="plan-popular">
+                        MAIS ESCOLHIDO
+                    </div>
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🥈</span>
+                        <span class="plan-label">PREMIUM</span>
+                    </div>
+
+                    <h3>Prata</h3>
+
+                    <p class="plan-description">
+                        Mais recursos para uma experiência completa.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong class="plan-price-value">50</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        por mês
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Tudo do plano Bronze</div>
+                        <div>✓ Simulados Premium</div>
+                        <div>✓ Cursos Premium selecionados</div>
+                        <div>✓ Conteúdos educacionais adicionais</div>
+                        <div>✓ Novos conteúdos Premium</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="plan-button"
+                        data-plan-action="assinar"
+                        data-plan="prata"
+                    >
+                        QUERO ASSINAR
+                    </button>
+
+                </article>
+
+                <article
+                    class="plan-card plan-gold"
+                    data-plan="ouro"
+                    data-daily="12"
+                    data-monthly="80"
+                    data-annual="800"
+                >
+
+                    <div class="plan-card-top">
+                        <span class="plan-icon">🥇</span>
+                        <span class="plan-label">PREMIUM</span>
+                    </div>
+
+                    <h3>Ouro</h3>
+
+                    <p class="plan-description">
+                        A experiência completa do Aldemar Studios.
+                    </p>
+
+                    <div class="plan-price">
+                        <span class="plan-currency">R$</span>
+                        <strong class="plan-price-value">80</strong>
+                    </div>
+
+                    <div class="plan-period-label">
+                        por mês
+                    </div>
+
+                    <div class="plan-benefits">
+                        <div>✓ Tudo do plano Prata</div>
+                        <div>✓ Todos os jogos Premium</div>
+                        <div>✓ Todos os materiais Premium</div>
+                        <div>✓ Todos os cursos</div>
+                        <div>✓ Conteúdos exclusivos</div>
+                        <div>✓ Novidades Premium</div>
+                        <div>✓ Acesso completo à plataforma</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="plan-button"
+                        data-plan-action="assinar"
+                        data-plan="ouro"
+                    >
+                        QUERO ASSINAR
+                    </button>
+
+                </article>
+
+            </div>
+
+            <div class="plans-contact-info">
+
+                <span>🔐</span>
+
+                <div>
+
+                    <strong>
+                        Pagamento seguro e atendimento direto
+                    </strong>
+
+                    <p>
+                        Ao escolher um plano, você poderá entrar em contato
+                        diretamente com Aldemar para combinar o pagamento.
+                        Após a confirmação, seu plano será ativado no sistema.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FEEDBACK
+        ====================================================== -->
+
+        <section
+            id="feedback"
+            class="content-section"
+        >
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    SUA OPINIÃO
+                </span>
+
+                <h2>
+                    💬 Feedback
+                </h2>
+
+                <p>
+                    Ajude a melhorar o Aldemar Studios.
+                </p>
+
+            </div>
+
+
+            <div class="feedback-card">
+
+                <h3>
+                    O que podemos melhorar?
+                </h3>
+
+                <p>
+                    Sua opinião é muito importante para
+                    continuarmos desenvolvendo a plataforma.
+                </p>
+
+
+                <div
+                    class="stars"
+                    aria-label="Avaliação de 1 a 5 estrelas"
+                >
+
+                    <button
+                        type="button"
+                        data-rating="1"
+                        aria-label="1 estrela"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="2"
+                        aria-label="2 estrelas"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="3"
+                        aria-label="3 estrelas"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="4"
+                        aria-label="4 estrelas"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="5"
+                        aria-label="5 estrelas"
+                    >
+                        ★
+                    </button>
+
+                </div>
+
+
+                <textarea
+                    id="feedbackText"
+                    placeholder="Escreva sua sugestão..."
+                    maxlength="2000"
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    class="primary-small"
+                    id="sendFeedbackButton"
+                >
+                    ENVIAR FEEDBACK
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PERFIL
+        ====================================================== -->
+
+        <section
+            id="perfil"
+            class="content-section"
+        >
+
+
+            <button
+                type="button"
+                class="back-button"
+                data-back-section="inicio"
+            >
+                ← VOLTAR
+            </button>
+
+
+            <div class="section-title">
+
+                <span class="welcome-label">
+                    CONTA
+                </span>
+
+                <h2>
+                    👤 Meu Perfil
+                </h2>
+
+                <p>
+                    Gerencie suas informações pessoais
+                    e configurações da sua conta.
+                </p>
+
+            </div>
+
+
+            <div class="profile-edit-card">
+
+
+                <div class="profile-photo-area">
+
+                    <div
+                        class="profile-avatar large"
+                        id="profileAvatar"
+                    >
+                        AS
+                    </div>
+
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/jpeg,image/png,image/webp"
+                        hidden
+                    >
+
+
+                    <button
+                        type="button"
+                        class="secondary-small"
+                        id="changeProfilePhoto"
+                    >
+                        📷 ALTERAR FOTO
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="text-button"
+                        id="removeProfilePhoto"
+                    >
+                        Remover foto
+                    </button>
+
+
+                    <p class="profile-photo-info">
+                        JPG, PNG ou WEBP.
+                        Tamanho máximo: 5 MB.
+                        A foto somente será salva ao clicar
+                        em <strong>Salvar Alterações</strong>.
+                    </p>
+
+                </div>
+
+
+                <form
+                    class="profile-edit-form"
+                    id="profileEditForm"
+                >
+
+
+                    <div class="input-group">
+
+                        <label for="profileNameInput">
+                            Nome completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileNameInput"
+                            placeholder="Digite seu nome completo"
+                            autocomplete="name"
+                            maxlength="120"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="profileNickInput">
+                            Nick / nome de usuário
+                        </label>
+
+                        <div class="input-with-prefix">
+
+                            <span>
+                                @
+                            </span>
+
+                            <input
+                                type="text"
+                                id="profileNickInput"
+                                placeholder="seu.nick"
+                                autocomplete="username"
+                                maxlength="30"
+                            >
+
+                        </div>
+
+                        <small>
+                            Seu nick poderá ser usado para
+                            identificar você dentro do Aldemar Studios.
+                        </small>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="profileEmailInput">
+                            E-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="profileEmailInput"
+                            placeholder="Digite seu e-mail"
+                            autocomplete="email"
+                            maxlength="150"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Plano atual
+                        </label>
+
+                        <div class="profile-plan-display">
+
+                            <span>
+                                🆓
+                            </span>
+
+                            <strong id="profilePlan">
+                                GRATUITO
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-actions">
+
+                        <button
+                            type="button"
+                            class="secondary-button"
+                            id="cancelProfileEdit"
+                        >
+                            CANCELAR
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            id="saveProfileButton"
+                            class="primary-button"
+                        >
+                            💾 SALVAR ALTERAÇÕES
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="profile-security-card">
+
+
+                <div class="security-header">
+
+                    <div class="security-icon">
+                        🔒
+                    </div>
+
+                    <div>
+
+                        <span class="welcome-label">
+                            SEGURANÇA
+                        </span>
+
+                        <h3>
+                            Alterar senha
+                        </h3>
+
+                        <p>
+                            Mantenha sua conta protegida
+                            utilizando uma senha forte.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    class="password-form"
+                    id="changePasswordForm"
+                >
+
+
+                    <div class="input-group">
+
+                        <label for="currentPassword">
+                            Senha atual
+                        </label>
+
+                        <input
+                            type="password"
+                            id="currentPassword"
+                            placeholder="Digite sua senha atual"
+                            autocomplete="current-password"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="newPassword">
+                            Nova senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Digite sua nova senha"
+                            autocomplete="new-password"
+                            minlength="8"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="confirmPassword">
+                            Confirmar nova senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Digite novamente sua nova senha"
+                            autocomplete="new-password"
+                            minlength="8"
+                        >
+
+                    </div>
+
+
+                    <div class="password-info">
+                        A nova senha deve possuir pelo menos
+                        8 caracteres.
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-small"
+                    >
+                        🔐 ALTERAR SENHA
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="account-info-card">
+
+
+                <div>
+
+                    <span>
+                        Status da conta
+                    </span>
+
+                    <strong>
+                        🟢 ATIVA
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Plano
+                    </span>
+
+                    <strong id="profilePlanBottom">
+                        GRATUITO
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Recursos
+                    </span>
+
+                    <strong>
+                        Acesso gratuito
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     OVERLAY MOBILE
+========================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    hidden
+></div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script src="js/dashboard.js?v=20260905-2"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const avatar = document.getElementById("userAvatar");
+
+    if (avatar) {
+        avatar.addEventListener("click", function () {
+            const perfil = document.querySelector('[data-section="perfil"]');
+
+            if (perfil) {
+                perfil.click();
+            }
+        });
+    }
+});
+</script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

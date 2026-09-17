@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verificar código - Aldemar Studios</title>
+<link rel="stylesheet" href="/css/recuperacao.css">
+</head>
+<body>
+
+<div class="recuperacao-container">
+    <div class="recuperacao-card">
+
+        <div class="logo">ALDEMAR <span>STUDIOS</span></div>
+
+        <div class="etapas">
+            <div class="etapa ativa"><b>✓</b><span>Enviar código</span></div>
+            <div class="linha"></div>
+            <div class="etapa ativa"><b>2</b><span>Verificar</span></div>
+            <div class="linha"></div>
+            <div class="etapa"><b>3</b><span>Nova senha</span></div>
+        </div>
+
+        <div class="icone">📩</div>
+
+        <h1>Digite o código</h1>
+
+        <p class="descricao">
+            Enviamos um código de 6 dígitos para o seu e-mail.
+        </p>
+
+        <form id="verificarForm">
+
+            <label for="codigo">Código de recuperação</label>
+
+            <input
+                type="text"
+                id="codigo"
+                placeholder="000000"
+                inputmode="numeric"
+                maxlength="6"
+                autocomplete="one-time-code"
+                required
+                style="text-align:center; font-size:25px; letter-spacing:8px; font-weight:bold;"
+            >
+
+            <div id="mensagem"></div>
+
+            <button type="submit" id="btnVerificar">
+                VERIFICAR CÓDIGO
+            </button>
+
+        </form>
+
+        <a href="/recuperar-senha.html" class="voltar">
+            ← Enviar outro código
+        </a>
+
+    </div>
+</div>
+
+<script src="/js/verificar-codigo.js"></script>
+</body>
+</html>

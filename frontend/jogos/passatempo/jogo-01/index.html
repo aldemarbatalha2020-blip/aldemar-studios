@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta name="theme-color" content="#07111f">
+
+    <title>Aldemar Studios | Desafio do Alvo</title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(37, 99, 235, 0.18),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 90%,
+                    rgba(56, 189, 248, 0.12),
+                    transparent 30%
+                ),
+                #07111f;
+
+            color: #e8f2ff;
+
+            overflow-x: hidden;
+
+            -webkit-font-smoothing: antialiased;
+
+            touch-action: manipulation;
+        }
+
+
+        /* =====================================================
+           APP
+        ===================================================== */
+
+        .game-app {
+            width: 100%;
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            width: 100%;
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding:
+                10px
+                clamp(13px, 4vw, 40px);
+
+            background:
+                rgba(7, 17, 31, 0.90);
+
+            border-bottom:
+                1px solid
+                rgba(96, 165, 250, 0.14);
+
+            backdrop-filter: blur(15px);
+
+            position: sticky;
+            top: 0;
+
+            z-index: 100;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            min-width: 0;
+        }
+
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #0ea5e9
+                );
+
+            color: #fff;
+
+            font-size: 14px;
+            font-weight: 900;
+
+            box-shadow:
+                0 7px 22px
+                rgba(37, 99, 235, 0.22);
+        }
+
+
+        .brand-text strong {
+            display: block;
+
+            font-size: 13px;
+            font-weight: 850;
+
+            white-space: nowrap;
+        }
+
+
+        .brand-text span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #7f95ad;
+
+            font-size: 8px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .back-button {
+            flex-shrink: 0;
+
+            min-height: 38px;
+
+            padding:
+                0
+                13px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 6px;
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.20);
+
+            border-radius: 9px;
+
+            background:
+                rgba(13, 30, 49, 0.90);
+
+            color: #b8c9dc;
+
+            font-family: inherit;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .back-button:hover {
+            background:
+                rgba(37, 99, 235, 0.14);
+
+            border-color:
+                rgba(96, 165, 250, 0.35);
+
+            color: #fff;
+
+            transform: translateX(-2px);
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .game-container {
+            width: min(100%, 1000px);
+
+            margin: 0 auto;
+
+            padding:
+                28px
+                clamp(13px, 4vw, 30px)
+                40px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .game-header {
+            text-align: center;
+
+            margin-bottom: 22px;
+        }
+
+
+        .game-label {
+            display: inline-block;
+
+            margin-bottom: 7px;
+
+            color: #38bdf8;
+
+            font-size: 9px;
+            font-weight: 850;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .game-header h1 {
+            margin-bottom: 7px;
+
+            font-size:
+                clamp(25px, 6vw, 40px);
+
+            font-weight: 950;
+
+            letter-spacing: -1px;
+        }
+
+
+        .game-header p {
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #7f95ad;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 9px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .status-card {
+            padding: 12px 7px;
+
+            text-align: center;
+
+            background:
+                rgba(13, 30, 49, 0.82);
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.12);
+
+            border-radius: 11px;
+        }
+
+
+        .status-card span {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #7f95ad;
+
+            font-size: 7px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .status-card strong {
+            color: #e8f2ff;
+
+            font-size: 18px;
+            font-weight: 950;
+        }
+
+
+        /* =====================================================
+           TIMER
+        ===================================================== */
+
+        .timer-area {
+            margin-bottom: 15px;
+        }
+
+
+        .timer-info {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 6px;
+
+            color: #7f95ad;
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        .timer-track {
+            width: 100%;
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                rgba(96, 165, 250, 0.08);
+        }
+
+
+        .timer-bar {
+            width: 100%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #38bdf8
+                );
+
+            transition:
+                width 0.1s linear;
+        }
+
+
+        /* =====================================================
+           GAME AREA
+        ===================================================== */
+
+        .game-card {
+            padding:
+                clamp(12px, 3vw, 20px);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(14, 31, 51, 0.98),
+                    rgba(9, 23, 39, 0.98)
+                );
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.15);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 18px 50px
+                rgba(0, 0, 0, 0.24);
+        }
+
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 10px;
+
+            color: #7f95ad;
+
+            font-size: 9px;
+            font-weight: 750;
+        }
+
+
+        .game-info strong {
+            color: #60a5fa;
+        }
+
+
+        /* =====================================================
+           TARGET BOARD
+        ===================================================== */
+
+        .target-board {
+            position: relative;
+
+            width: 100%;
+
+            height:
+                clamp(340px, 60vh, 540px);
+
+            min-height: 320px;
+
+            overflow: hidden;
+
+            border-radius: 14px;
+
+            background:
+                radial-gradient(
+                    circle at 50% 50%,
+                    rgba(56, 189, 248, 0.08),
+                    transparent 35%
+                ),
+                #06101d;
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.12);
+
+            cursor: crosshair;
+
+            user-select: none;
+
+            touch-action: none;
+        }
+
+
+        /* =====================================================
+           ESTRELAS
+        ===================================================== */
+
+        .star {
+            position: absolute;
+
+            width: 2px;
+            height: 2px;
+
+            border-radius: 50%;
+
+            background: #8db7d9;
+
+            opacity: 0.55;
+        }
+
+
+        /* =====================================================
+           ALVO
+        ===================================================== */
+
+        .target {
+            position: absolute;
+
+            width: 70px;
+            height: 70px;
+
+            transform:
+                translate(-50%, -50%);
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #fff 0 9%,
+                    #ef4444 10% 28%,
+                    #fff 29% 46%,
+                    #ef4444 47% 65%,
+                    #991b1b 66% 100%
+                );
+
+            border:
+                3px solid
+                rgba(255,255,255,0.75);
+
+            box-shadow:
+                0 0 25px
+                rgba(239, 68, 68, 0.55);
+
+            cursor: pointer;
+
+            animation:
+                targetAppear
+                0.18s
+                ease-out;
+
+            z-index: 10;
+        }
+
+
+        @keyframes targetAppear {
+
+            from {
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.2);
+
+                opacity: 0;
+            }
+
+            to {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1);
+
+                opacity: 1;
+            }
+
+        }
+
+
+        .target:hover {
+            filter: brightness(1.15);
+        }
+
+
+        /* =====================================================
+           PONTUAÇÃO FLUTUANTE
+        ===================================================== */
+
+        .floating-score {
+            position: absolute;
+
+            pointer-events: none;
+
+            z-index: 30;
+
+            color: #6ee7b7;
+
+            font-size: 22px;
+            font-weight: 950;
+
+            animation:
+                scoreFloat
+                0.7s
+                ease-out
+                forwards;
+        }
+
+
+        @keyframes scoreFloat {
+
+            0% {
+                transform:
+                    translate(-50%, 0)
+                    scale(0.8);
+
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform:
+                    translate(-50%, -55px)
+                    scale(1.1);
+
+                opacity: 0;
+            }
+
+        }
+
+
+        /* =====================================================
+           MENSAGEM CENTRAL
+        ===================================================== */
+
+        .game-message {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            width: min(90%, 400px);
+
+            padding: 20px;
+
+            text-align: center;
+
+            pointer-events: none;
+
+            z-index: 40;
+        }
+
+
+        .game-message h2 {
+            margin-bottom: 7px;
+
+            font-size:
+                clamp(25px, 7vw, 40px);
+
+            font-weight: 950;
+        }
+
+
+        .game-message p {
+            color: #8fa5bd;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        .start-button {
+            pointer-events: auto;
+
+            margin-top: 16px;
+
+            min-height: 48px;
+
+            padding:
+                0
+                25px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #0ea5e9
+                );
+
+            color: #fff;
+
+            font-family: inherit;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 25px
+                rgba(37, 99, 235, 0.25);
+
+            transition: 0.2s ease;
+        }
+
+
+        .start-button:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+
+        /* =====================================================
+           COMBO
+        ===================================================== */
+
+        .combo {
+            position: absolute;
+
+            right: 14px;
+            top: 14px;
+
+            padding:
+                7px
+                10px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(37, 99, 235, 0.12);
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.18);
+
+            color: #60a5fa;
+
+            font-size: 9px;
+            font-weight: 900;
+
+            opacity: 0;
+
+            transform: translateY(-5px);
+
+            transition:
+                0.2s ease;
+
+            z-index: 20;
+        }
+
+
+        .combo.active {
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           RESULTADO
+        ===================================================== */
+
+        .result-screen {
+            display: none;
+
+            text-align: center;
+
+            padding:
+                35px
+                15px;
+        }
+
+
+        .result-screen.active {
+            display: block;
+        }
+
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin:
+                0 auto
+                17px;
+
+            border-radius: 22px;
+
+            background:
+                rgba(37, 99, 235, 0.10);
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.18);
+
+            color: #38bdf8;
+
+            font-size: 35px;
+        }
+
+
+        .result-screen h2 {
+            margin-bottom: 7px;
+
+            font-size: 27px;
+            font-weight: 950;
+        }
+
+
+        .result-screen p {
+            color: #7f95ad;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .final-score {
+            margin:
+                22px
+                0;
+
+            color: #60a5fa;
+
+            font-size: 48px;
+            font-weight: 950;
+        }
+
+
+        .record {
+            margin-bottom: 20px;
+
+            color: #b8c9dc;
+
+            font-size: 11px;
+            font-weight: 750;
+        }
+
+
+        .restart-button {
+            min-height: 47px;
+
+            padding:
+                0
+                23px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: #fff;
+
+            font-family: inherit;
+
+            font-size: 10px;
+            font-weight: 900;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .restart-button:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            padding:
+                0
+                20px
+                24px;
+
+            color: #536a82;
+
+            font-size: 8px;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .topbar {
+                min-height: 64px;
+            }
+
+            .brand-icon {
+                width: 37px;
+                height: 37px;
+
+                border-radius: 10px;
+
+                font-size: 12px;
+            }
+
+            .brand-text strong {
+                font-size: 11px;
+            }
+
+            .brand-text span {
+                font-size: 7px;
+            }
+
+            .back-button {
+                min-height: 35px;
+
+                padding:
+                    0
+                    10px;
+
+                font-size: 8px;
+            }
+
+            .game-container {
+                padding-top: 20px;
+            }
+
+            .game-header {
+                margin-bottom: 17px;
+            }
+
+            .game-header h1 {
+                font-size: 26px;
+            }
+
+            .game-header p {
+                font-size: 10px;
+            }
+
+            .status-grid {
+                gap: 6px;
+            }
+
+            .status-card {
+                padding:
+                    9px
+                    4px;
+            }
+
+            .status-card span {
+                font-size: 6px;
+            }
+
+            .status-card strong {
+                font-size: 15px;
+            }
+
+            .game-card {
+                padding: 9px;
+
+                border-radius: 14px;
+            }
+
+            .target-board {
+                height: 62vh;
+
+                min-height: 350px;
+
+                border-radius: 11px;
+            }
+
+            .target {
+                width: 62px;
+                height: 62px;
+            }
+
+            .game-info {
+                font-size: 8px;
+            }
+
+        }
+
+
+        /* =====================================================
+           TELAS MUITO PEQUENAS
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            .status-card span {
+                font-size: 5px;
+            }
+
+            .status-card strong {
+                font-size: 14px;
+            }
+
+            .target-board {
+                min-height: 330px;
+            }
+
+        }
+
+
+        /* =====================================================
+           ACESSIBILIDADE
+        ===================================================== */
+
+        button:focus-visible {
+            outline:
+                2px solid
+                #60a5fa;
+
+            outline-offset: 3px;
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+
+                transition: none !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="game-app">
+
+
+    <!-- =====================================================
+         TOPO
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                AS
+            </div>
+
+            <div class="brand-text">
+
+                <strong>
+                    Aldemar Studios
+                </strong>
+
+                <span>
+                    Passatempo • Jogo 01
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="back-button"
+            id="backButton"
+            type="button"
+        >
+            ← Voltar
+        </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="game-container">
+
+
+        <!-- CABEÇALHO -->
+
+        <section class="game-header">
+
+            <span class="game-label">
+                PASSATEMPO
+            </span>
+
+            <h1>
+                🎯 Desafio do Alvo
+            </h1>
+
+            <p>
+                Acerte o alvo o máximo que conseguir
+                antes que o tempo acabe!
+            </p>
+
+        </section>
+
+
+        <!-- STATUS -->
+
+        <section class="status-grid">
+
+            <div class="status-card">
+
+                <span>
+                    Pontos
+                </span>
+
+                <strong id="score">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <span>
+                    Alvos
+                </span>
+
+                <strong id="hits">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <span>
+                    Combo
+                </span>
+
+                <strong id="comboValue">
+                    x0
+                </strong>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <span>
+                    Recorde
+                </span>
+
+                <strong id="highScore">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- TIMER -->
+
+        <section class="timer-area">
+
+            <div class="timer-info">
+
+                <span>
+                    TEMPO
+                </span>
+
+                <span id="timerText">
+                    30s
+                </span>
+
+            </div>
+
+
+            <div class="timer-track">
+
+                <div
+                    class="timer-bar"
+                    id="timerBar"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- JOGO -->
+
+        <section class="game-card">
+
+            <div class="game-info">
+
+                <span>
+                    Clique ou toque nos alvos!
+                </span>
+
+                <strong id="difficulty">
+                    NÍVEL 1
+                </strong>
+
+            </div>
+
+
+            <div
+                class="target-board"
+                id="targetBoard"
+            >
+
+                <div
+                    class="combo"
+                    id="combo"
+                >
+                    COMBO x0
+                </div>
+
+
+                <div
+                    class="game-message"
+                    id="gameMessage"
+                >
+
+                    <h2>
+                        🎯
+                    </h2>
+
+                    <p>
+                        Sua missão é simples:
+                        acerte o máximo de alvos
+                        possível.
+                    </p>
+
+                    <button
+                        class="start-button"
+                        id="startButton"
+                        type="button"
+                    >
+                        COMEÇAR JOGO
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULTADO -->
+
+        <section
+            class="game-card result-screen"
+            id="resultScreen"
+        >
+
+            <div class="result-icon">
+                🏆
+            </div>
+
+
+            <h2>
+                Fim de jogo!
+            </h2>
+
+
+            <p>
+                Você conseguiu acertar:
+            </p>
+
+
+            <div
+                class="final-score"
+                id="finalScore"
+            >
+                0 pontos
+            </div>
+
+
+            <div
+                class="record"
+                id="recordMessage"
+            >
+                Seu recorde continua sendo 0.
+            </div>
+
+
+            <button
+                class="restart-button"
+                id="restartButton"
+                type="button"
+            >
+                JOGAR NOVAMENTE
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- RODAPÉ -->
+
+    <footer class="footer">
+
+        Aldemar Studios •
+        Passatempo
+
+    </footer>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
+
+    const targetBoard =
+        document.getElementById(
+            "targetBoard"
+        );
+
+
+    const startButton =
+        document.getElementById(
+            "startButton"
+        );
+
+
+    const restartButton =
+        document.getElementById(
+            "restartButton"
+        );
+
+
+    const gameMessage =
+        document.getElementById(
+            "gameMessage"
+        );
+
+
+    const resultScreen =
+        document.getElementById(
+            "resultScreen"
+        );
+
+
+    const scoreElement =
+        document.getElementById(
+            "score"
+        );
+
+
+    const hitsElement =
+        document.getElementById(
+            "hits"
+        );
+
+
+    const comboValue =
+        document.getElementById(
+            "comboValue"
+        );
+
+
+    const highScoreElement =
+        document.getElementById(
+            "highScore"
+        );
+
+
+    const timerText =
+        document.getElementById(
+            "timerText"
+        );
+
+
+    const timerBar =
+        document.getElementById(
+            "timerBar"
+        );
+
+
+    const difficultyElement =
+        document.getElementById(
+            "difficulty"
+        );
+
+
+    const comboElement =
+        document.getElementById(
+            "combo"
+        );
+
+
+    const finalScore =
+        document.getElementById(
+            "finalScore"
+        );
+
+
+    const recordMessage =
+        document.getElementById(
+            "recordMessage"
+        );
+
+
+    const backButton =
+        document.getElementById(
+            "backButton"
+        );
+
+
+    /* =====================================================
+       CONFIGURAÇÕES
+    ===================================================== */
+
+    const GAME_TIME = 30;
+
+
+    let score = 0;
+
+    let hits = 0;
+
+    let combo = 0;
+
+    let timeLeft = GAME_TIME;
+
+    let gameRunning = false;
+
+    let timerInterval = null;
+
+    let targetTimeout = null;
+
+    let highScore =
+        Number(
+            localStorage.getItem(
+                "aldemar_target_highscore"
+            )
+        ) || 0;
+
+
+    highScoreElement.textContent =
+        highScore;
+
+
+    /* =====================================================
+       ESTRELAS
+    ===================================================== */
+
+    function createStars() {
+
+        for (
+            let i = 0;
+            i < 55;
+            i++
+        ) {
+
+            const star =
+                document.createElement(
+                    "span"
+                );
+
+            star.className =
+                "star";
+
+            star.style.left =
+                `${Math.random() * 100}%`;
+
+            star.style.top =
+                `${Math.random() * 100}%`;
+
+            star.style.opacity =
+                (
+                    0.2 +
+                    Math.random() * 0.6
+                ).toFixed(2);
+
+            star.style.transform =
+                `scale(${
+                    0.5 +
+                    Math.random()
+                })`;
+
+            targetBoard.appendChild(
+                star
+            );
+
+        }
+
+    }
+
+
+    createStars();
+
+
+    /* =====================================================
+       POSIÇÃO DO ALVO
+    ===================================================== */
+
+    function moveTarget() {
+
+        if (!gameRunning) {
+            return;
+        }
+
+
+        const oldTarget =
+            document.querySelector(
+                ".target"
+            );
+
+
+        if (oldTarget) {
+
+            oldTarget.remove();
+
+        }
+
+
+        const target =
+            document.createElement(
+                "div"
+            );
+
+
+        target.className =
+            "target";
+
+
+        /*
+         * O tamanho diminui conforme
+         * o jogador avança.
+         */
+
+        const level =
+            Math.min(
+                6,
+                Math.floor(
+                    hits / 5
+                ) + 1
+            );
+
+
+        const size =
+            Math.max(
+                42,
+                72 - (
+                    level * 4
+                )
+            );
+
+
+        target.style.width =
+            `${size}px`;
+
+
+        target.style.height =
+            `${size}px`;
+
+
+        const boardRect =
+            targetBoard.getBoundingClientRect();
+
+
+        const margin =
+            size;
+
+
+        const x =
+            margin +
+            Math.random() *
+            (
+                boardRect.width -
+                margin * 2
+            );
+
+
+        const y =
+            margin +
+            Math.random() *
+            (
+                boardRect.height -
+                margin * 2
+            );
+
+
+        target.style.left =
+            `${x}px`;
+
+
+        target.style.top =
+            `${y}px`;
+
+
+        target.addEventListener(
+            "pointerdown",
+            hitTarget
+        );
+
+
+        targetBoard.appendChild(
+            target
+        );
+
+
+        difficultyElement.textContent =
+            `NÍVEL ${level}`;
+
+
+        /*
+         * O alvo fica menos tempo
+         * conforme a dificuldade aumenta.
+         */
+
+        const visibleTime =
+            Math.max(
+                420,
+                1150 -
+                (
+                    level * 100
+                )
+            );
+
+
+        targetTimeout =
+            setTimeout(
+                () => {
+
+                    if (!gameRunning) {
+                        return;
+                    }
+
+                    combo = 0;
+
+                    updateUI();
+
+                    moveTarget();
+
+                },
+                visibleTime
+            );
+
+    }
+
+
+    /* =====================================================
+       ACERTO
+    ===================================================== */
+
+    function hitTarget(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        if (!gameRunning) {
+            return;
+        }
+
+
+        clearTimeout(
+            targetTimeout
+        );
+
+
+        const target =
+            event.currentTarget;
+
+
+        const rect =
+            target.getBoundingClientRect();
+
+
+        const boardRect =
+            targetBoard.getBoundingClientRect();
+
+
+        const x =
+            rect.left -
+            boardRect.left +
+            rect.width / 2;
+
+
+        const y =
+            rect.top -
+            boardRect.top;
+
+
+        target.remove();
+
+
+        hits++;
+
+        combo++;
+
+
+        /*
+         * Pontuação baseada no combo.
+         */
+
+        const points =
+            10 +
+            (
+                combo *
+                2
+            );
+
+
+        score += points;
+
+
+        showFloatingScore(
+            x,
+            y,
+            `+${points}`
+        );
+
+
+        if (combo >= 2) {
+
+            comboElement.textContent =
+                `COMBO x${combo}`;
+
+            comboElement.classList.add(
+                "active"
+            );
+
+        }
+
+
+        updateUI();
+
+        moveTarget();
+
+    }
+
+
+    /* =====================================================
+       PONTUAÇÃO FLUTUANTE
+    ===================================================== */
+
+    function showFloatingScore(
+        x,
+        y,
+        text
+    ) {
+
+        const element =
+            document.createElement(
+                "div"
+            );
+
+
+        element.className =
+            "floating-score";
+
+
+        element.textContent =
+            text;
+
+
+        element.style.left =
+            `${x}px`;
+
+
+        element.style.top =
+            `${y}px`;
+
+
+        targetBoard.appendChild(
+            element
+        );
+
+
+        setTimeout(
+            () => {
+
+                element.remove();
+
+            },
+            750
+        );
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAR INTERFACE
+    ===================================================== */
+
+    function updateUI() {
+
+        scoreElement.textContent =
+            score;
+
+
+        hitsElement.textContent =
+            hits;
+
+
+        comboValue.textContent =
+            `x${combo}`;
+
+
+        timerText.textContent =
+            `${timeLeft}s`;
+
+
+        const percentage =
+            (
+                timeLeft /
+                GAME_TIME
+            ) * 100;
+
+
+        timerBar.style.width =
+            `${percentage}%`;
+
+    }
+
+
+    /* =====================================================
+       COMEÇAR
+    ===================================================== */
+
+    function startGame() {
+
+        if (gameRunning) {
+            return;
+        }
+
+
+        score = 0;
+
+        hits = 0;
+
+        combo = 0;
+
+        timeLeft = GAME_TIME;
+
+        gameRunning = true;
+
+
+        resultScreen.classList.remove(
+            "active"
+        );
+
+
+        gameMessage.style.display =
+            "none";
+
+
+        comboElement.classList.remove(
+            "active"
+        );
+
+
+        updateUI();
+
+
+        moveTarget();
+
+
+        timerInterval =
+            setInterval(
+                () => {
+
+                    timeLeft--;
+
+                    updateUI();
+
+
+                    if (
+                        timeLeft <= 0
+                    ) {
+
+                        endGame();
+
+                    }
+
+                },
+                1000
+            );
+
+    }
+
+
+    /* =====================================================
+       FIM DE JOGO
+    ===================================================== */
+
+    function endGame() {
+
+        gameRunning = false;
+
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        clearTimeout(
+            targetTimeout
+        );
+
+
+        const target =
+            document.querySelector(
+                ".target"
+            );
+
+
+        if (target) {
+            target.remove();
+        }
+
+
+        const floatingScores =
+            document.querySelectorAll(
+                ".floating-score"
+            );
+
+
+        floatingScores.forEach(
+            element => {
+                element.remove();
+            }
+        );
+
+
+        if (
+            score >
+            highScore
+        ) {
+
+            highScore =
+                score;
+
+
+            localStorage.setItem(
+                "aldemar_target_highscore",
+                highScore
+            );
+
+
+            recordMessage.textContent =
+                "🔥 NOVO RECORDE! Você superou sua melhor pontuação!";
+
+        } else {
+
+            recordMessage.textContent =
+                `Seu recorde atual é ${highScore} pontos.`;
+
+        }
+
+
+        highScoreElement.textContent =
+            highScore;
+
+
+        finalScore.textContent =
+            `${score} pontos`;
+
+
+        resultScreen.classList.add(
+            "active"
+        );
+
+
+        comboElement.classList.remove(
+            "active"
+        );
+
+    }
+
+
+    /* =====================================================
+       REINICIAR
+    ===================================================== */
+
+    restartButton.addEventListener(
+        "click",
+        () => {
+
+            startGame();
+
+        }
+    );
+
+
+    /* =====================================================
+       BOTÃO INICIAR
+    ===================================================== */
+
+    startButton.addEventListener(
+        "click",
+        () => {
+
+            startGame();
+
+        }
+    );
+
+
+    /* =====================================================
+       VOLTAR
+    ===================================================== */
+
+    backButton.addEventListener(
+        "click",
+        () => {
+
+            /*
+             * Estrutura:
+             *
+             * frontend/passatempo/jogo-01/
+             *
+             * Dashboard:
+             *
+             * frontend/dashboard.html
+             */
+
+            window.location.href =
+                "../../dashboard.html";
+
+        }
+    );
+
+
+    /* =====================================================
+       EVITAR CLIQUE FORA DO ALVO
+    ===================================================== */
+
+    targetBoard.addEventListener(
+        "pointerdown",
+        event => {
+
+            if (!gameRunning) {
+                return;
+            }
+
+
+            if (
+                event.target.classList.contains(
+                    "target"
+                )
+            ) {
+                return;
+            }
+
+
+            /*
+             * Clicar fora do alvo
+             * quebra o combo.
+             */
+
+            combo = 0;
+
+            updateUI();
+
+            comboElement.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       TECLADO
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" &&
+                !gameRunning
+            ) {
+
+                startGame();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INICIALIZAÇÃO
+    ===================================================== */
+
+    updateUI();
+
+</script>
+
+</body>
+
+</html>

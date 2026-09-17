@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>English Farmer</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            #75c9ff,
+            #d9f4ff 55%,
+            #6fc45b 55%,
+            #4f9e45
+        );
+
+    color: #fff;
+
+    touch-action: none;
+}
+
+button {
+    font-family: inherit;
+}
+
+#game {
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   SKY
+========================================================= */
+
+.sky {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            #55b8f5 0%,
+            #bcecff 55%,
+            #82d35e 55%,
+            #4b9c3d 100%
+        );
+
+    z-index: 0;
+}
+
+.sun {
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    right: 8%;
+    top: 8%;
+
+    border-radius: 50%;
+
+    background: #ffe27a;
+
+    box-shadow:
+        0 0 50px rgba(255,226,122,.8);
+}
+
+
+/* =========================================================
+   CLOUDS
+========================================================= */
+
+.cloud {
+    position: absolute;
+
+    width: 130px;
+    height: 35px;
+
+    border-radius: 40px;
+
+    background: rgba(255,255,255,.75);
+
+    animation:
+        cloudMove
+        35s
+        linear
+        infinite;
+}
+
+.cloud::before,
+.cloud::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.8);
+}
+
+.cloud::before {
+    width: 55px;
+    height: 55px;
+
+    left: 20px;
+    bottom: 5px;
+}
+
+.cloud::after {
+    width: 70px;
+    height: 70px;
+
+    right: 15px;
+    bottom: 0;
+}
+
+.cloud.one {
+    top: 15%;
+    left: -160px;
+}
+
+.cloud.two {
+    top: 30%;
+    left: -300px;
+
+    animation-delay: 12s;
+}
+
+@keyframes cloudMove {
+
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(
+            calc(100vw + 500px)
+        );
+    }
+}
+
+
+/* =========================================================
+   FARM
+========================================================= */
+
+.farm {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 0;
+
+    height: 47%;
+
+    background:
+        linear-gradient(
+            #76c853 0 20%,
+            #5eaa48 20% 100%
+        );
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   PATH
+========================================================= */
+
+.path {
+    position: absolute;
+
+    left: 42%;
+
+    bottom: 0;
+
+    width: 25%;
+
+    height: 100%;
+
+    transform:
+        rotate(-8deg);
+
+    background:
+        #c59a63;
+
+    opacity: .85;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.field {
+    position: absolute;
+
+    left: 7%;
+    bottom: 9%;
+
+    width: 65%;
+    height: 62%;
+
+    padding: 12px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    grid-template-rows:
+        repeat(3, 1fr);
+
+    gap: 9px;
+
+    border:
+        8px solid
+        #7b4c27;
+
+    border-radius: 18px;
+
+    background:
+        #704522;
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.25);
+}
+
+
+/* =========================================================
+   SOIL
+========================================================= */
+
+.plot {
+    position: relative;
+
+    border-radius: 9px;
+
+    border:
+        2px solid
+        #4d2e1a;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b572f,
+            #633b21
+        );
+
+    cursor: pointer;
+
+    transition:
+        .2s;
+}
+
+.plot:hover {
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.12);
+}
+
+.plot.selected {
+    outline:
+        3px solid
+        #ffe66d;
+}
+
+
+/* =========================================================
+   PLANTS
+========================================================= */
+
+.plant {
+    position: absolute;
+
+    left: 50%;
+    bottom: 10px;
+
+    transform:
+        translateX(-50%);
+
+    text-align: center;
+
+    font-size: 30px;
+
+    animation:
+        plantGrow
+        .3s
+        ease;
+}
+
+@keyframes plantGrow {
+
+    from {
+        transform:
+            translateX(-50%)
+            scale(.4);
+    }
+
+    to {
+        transform:
+            translateX(-50%)
+            scale(1);
+    }
+}
+
+.plant.ready {
+    animation:
+        readyPulse
+        1s
+        infinite alternate;
+}
+
+@keyframes readyPulse {
+
+    from {
+        transform:
+            translateX(-50%)
+            scale(1);
+    }
+
+    to {
+        transform:
+            translateX(-50%)
+            scale(1.15);
+    }
+}
+
+
+/* =========================================================
+   BARN
+========================================================= */
+
+.barn {
+    position: absolute;
+
+    right: 7%;
+    bottom: 13%;
+
+    width: 190px;
+    height: 150px;
+
+    background:
+        #b94235;
+
+    border:
+        5px solid
+        #74251f;
+
+    border-radius:
+        8px 8px 0 0;
+
+    z-index: 4;
+
+    box-shadow:
+        0 15px 30px rgba(0,0,0,.25);
+}
+
+.barnRoof {
+    position: absolute;
+
+    left: -18px;
+    top: -65px;
+
+    width: 215px;
+    height: 80px;
+
+    background:
+        #7b2d26;
+
+    clip-path:
+        polygon(
+            0 100%,
+            50% 0,
+            100% 100%
+        );
+}
+
+.barnDoor {
+    position: absolute;
+
+    bottom: 0;
+    left: 62px;
+
+    width: 65px;
+    height: 95px;
+
+    background:
+        #5c3522;
+
+    border:
+        4px solid
+        #3e2417;
+}
+
+.barnWindow {
+    position: absolute;
+
+    top: 35px;
+
+    width: 35px;
+    height: 35px;
+
+    background:
+        #a9e9ff;
+
+    border:
+        4px solid
+        #56221d;
+}
+
+.barnWindow.left {
+    left: 18px;
+}
+
+.barnWindow.right {
+    right: 18px;
+}
+
+
+/* =========================================================
+   TRACTOR
+========================================================= */
+
+.tractor {
+    position: absolute;
+
+    right: 31%;
+    bottom: 15%;
+
+    width: 105px;
+    height: 60px;
+
+    z-index: 5;
+}
+
+.tractorBody {
+    position: absolute;
+
+    left: 20px;
+    top: 18px;
+
+    width: 70px;
+    height: 35px;
+
+    border-radius: 8px;
+
+    background:
+        #e63946;
+
+    border:
+        3px solid
+        #8d2028;
+}
+
+.tractorCab {
+    position: absolute;
+
+    left: 45px;
+    top: 0;
+
+    width: 38px;
+    height: 32px;
+
+    border:
+        4px solid
+        #222;
+
+    background:
+        #8ee7ff;
+}
+
+.wheel {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 50%;
+
+    background:
+        #202020;
+
+    border:
+        5px solid
+        #555;
+}
+
+.wheel.big {
+    width: 38px;
+    height: 38px;
+    right: 3px;
+}
+
+.wheel.small {
+    left: 13px;
+}
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+.player {
+    position: absolute;
+
+    right: 19%;
+    bottom: 17%;
+
+    width: 48px;
+    height: 75px;
+
+    z-index: 10;
+
+    transition:
+        .15s;
+}
+
+.playerHead {
+    position: absolute;
+
+    left: 10px;
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 50%;
+
+    background:
+        #f4c095;
+
+    border:
+        2px solid
+        #b6754c;
+}
+
+.playerHat {
+    position: absolute;
+
+    left: 3px;
+    top: -4px;
+
+    width: 40px;
+    height: 12px;
+
+    border-radius:
+        50%;
+
+    background:
+        #d99a3d;
+}
+
+.playerBody {
+    position: absolute;
+
+    left: 8px;
+    top: 28px;
+
+    width: 32px;
+    height: 38px;
+
+    border-radius:
+        8px;
+
+    background:
+        #3b82f6;
+}
+
+.playerLeg {
+    position: absolute;
+
+    top: 62px;
+
+    width: 10px;
+    height: 15px;
+
+    background:
+        #2d3748;
+}
+
+.playerLeg.left {
+    left: 12px;
+}
+
+.playerLeg.right {
+    right: 12px;
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+#hud {
+    position: absolute;
+
+    top: 15px;
+    left: 15px;
+    right: 15px;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 10px;
+
+    z-index: 50;
+}
+
+.hudBox {
+    padding:
+        10px 15px;
+
+    min-width:
+        120px;
+
+    border-radius:
+        14px;
+
+    background:
+        rgba(20,45,24,.88);
+
+    border:
+        2px solid
+        rgba(255,255,255,.15);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.2);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+.hudTitle {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 9px;
+
+    text-transform:
+        uppercase;
+
+    color:
+        #b7e89b;
+
+    font-weight:
+        900;
+}
+
+.hudValue {
+    font-size:
+        17px;
+
+    font-weight:
+        900;
+}
+
+
+/* =========================================================
+   TOP CONTROLS
+========================================================= */
+
+.topButtons {
+    position: absolute;
+
+    top: 82px;
+    left: 15px;
+
+    z-index: 60;
+
+    display: flex;
+
+    gap: 8px;
+}
+
+.topButton {
+    padding:
+        9px 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.2);
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(20,45,24,.85);
+
+    color:
+        white;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+
+    cursor:
+        pointer;
+
+    transition:
+        .2s;
+}
+
+.topButton:hover {
+    transform:
+        translateY(-2px);
+
+    background:
+        #2f7d32;
+}
+
+
+/* =========================================================
+   ACTION BAR
+========================================================= */
+
+.actionBar {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 15px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 50;
+
+    display: flex;
+
+    gap: 8px;
+
+    padding: 8px;
+
+    border-radius:
+        15px;
+
+    background:
+        rgba(20,45,24,.93);
+
+    border:
+        2px solid
+        rgba(255,255,255,.12);
+}
+
+.toolButton {
+    width: 58px;
+    height: 58px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:
+        12px;
+
+    background:
+        #315f32;
+
+    color:
+        white;
+
+    cursor:
+        pointer;
+
+    font-size:
+        23px;
+
+    transition:
+        .2s;
+}
+
+.toolButton:hover {
+    transform:
+        translateY(-3px);
+
+    background:
+        #428b43;
+}
+
+.toolButton.active {
+    background:
+        #e49a24;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255,214,91,.3);
+}
+
+
+/* =========================================================
+   MISSION PANEL
+========================================================= */
+
+#missionPanel {
+    position: absolute;
+
+    right: 15px;
+    top: 85px;
+
+    width: 245px;
+
+    z-index: 60;
+
+    padding: 15px;
+
+    border-radius:
+        15px;
+
+    background:
+        rgba(20,45,24,.92);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,.2);
+}
+
+.missionTitle {
+    color:
+        #ffe66d;
+
+    font-size:
+        11px;
+
+    font-weight:
+        900;
+
+    text-transform:
+        uppercase;
+
+    margin-bottom:
+        7px;
+}
+
+#missionText {
+    font-size:
+        12px;
+
+    line-height:
+        1.5;
+}
+
+.progressBar {
+    width: 100%;
+    height: 7px;
+
+    margin-top:
+        10px;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    overflow:
+        hidden;
+}
+
+#progressFill {
+    width: 0%;
+    height: 100%;
+
+    background:
+        #ffd166;
+
+    transition:
+        .3s;
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.modal {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 200;
+
+    display: none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    background:
+        rgba(0,0,0,.65);
+
+    backdrop-filter:
+        blur(6px);
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modalBox {
+    width:
+        min(520px, 94vw);
+
+    padding:
+        28px;
+
+    border-radius:
+        22px;
+
+    background:
+        #102516;
+
+    border:
+        2px solid
+        rgba(255,255,255,.12);
+
+    text-align:
+        center;
+
+    box-shadow:
+        0 30px 70px
+        rgba(0,0,0,.45);
+}
+
+.modalIcon {
+    font-size:
+        48px;
+
+    margin-bottom:
+        10px;
+}
+
+.modalBox h2 {
+    margin-bottom:
+        10px;
+
+    font-size:
+        27px;
+}
+
+.modalBox p {
+    color:
+        #b9cbbd;
+
+    line-height:
+        1.6;
+
+    font-size:
+        13px;
+
+    margin-bottom:
+        18px;
+}
+
+
+/* =========================================================
+   ENGLISH OPTIONS
+========================================================= */
+
+.answerGrid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:
+        9px;
+}
+
+.answer {
+    min-height:
+        45px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:
+        10px;
+
+    background:
+        #1d3823;
+
+    color:
+        white;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        800;
+}
+
+.answer:hover {
+    background:
+        #2e5b37;
+}
+
+.answer.correct {
+    background:
+        #176b42;
+}
+
+.answer.wrong {
+    background:
+        #8b2e32;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.mainButton {
+    width: 100%;
+
+    min-height:
+        48px;
+
+    border:
+        none;
+
+    border-radius:
+        11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e59f28,
+            #bd701b
+        );
+
+    color:
+        white;
+
+    font-weight:
+        900;
+
+    cursor:
+        pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width: 850px) {
+
+    #missionPanel {
+        display: none;
+    }
+
+    .field {
+        left: 4%;
+        width: 70%;
+    }
+
+    .barn {
+        right: 3%;
+        transform:
+            scale(.75);
+        transform-origin:
+            bottom right;
+    }
+
+    .tractor {
+        right: 28%;
+        transform:
+            scale(.75);
+    }
+
+    .player {
+        right: 14%;
+        transform:
+            scale(.8);
+        transform-origin:
+            bottom;
+    }
+}
+
+@media(max-width: 600px) {
+
+    #hud {
+        top: 8px;
+        left: 8px;
+        right: 8px;
+    }
+
+    .hudBox {
+        min-width:
+            auto;
+
+        padding:
+            7px 9px;
+    }
+
+    .hudTitle {
+        font-size:
+            7px;
+    }
+
+    .hudValue {
+        font-size:
+            12px;
+    }
+
+    .topButtons {
+        top: 65px;
+        left: 8px;
+    }
+
+    .topButton {
+        padding:
+            7px 9px;
+
+        font-size:
+            8px;
+    }
+
+    .field {
+        left: 3%;
+        bottom: 14%;
+        width: 94%;
+        height: 48%;
+
+        grid-template-columns:
+            repeat(5,1fr);
+
+        gap: 5px;
+
+        padding: 7px;
+
+        border-width:
+            5px;
+    }
+
+    .barn,
+    .tractor,
+    .player,
+    .path {
+        display:
+            none;
+    }
+
+    .actionBar {
+        bottom:
+            8px;
+    }
+
+    .toolButton {
+        width:
+            50px;
+
+        height:
+            50px;
+
+        font-size:
+            19px;
+    }
+
+    .answerGrid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .modalBox {
+        padding:
+            22px 17px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+    <div class="sky"></div>
+
+    <div class="sun"></div>
+
+    <div class="cloud one"></div>
+    <div class="cloud two"></div>
+
+    <div class="farm">
+
+        <div class="path"></div>
+
+        <div class="field" id="field"></div>
+
+        <div class="barn">
+
+            <div class="barnRoof"></div>
+
+            <div class="barnDoor"></div>
+
+            <div class="barnWindow left"></div>
+            <div class="barnWindow right"></div>
+
+        </div>
+
+        <div class="tractor">
+
+            <div class="tractorBody"></div>
+            <div class="tractorCab"></div>
+
+            <div class="wheel small"></div>
+            <div class="wheel big"></div>
+
+        </div>
+
+        <div class="player">
+
+            <div class="playerHat"></div>
+            <div class="playerHead"></div>
+            <div class="playerBody"></div>
+
+            <div class="playerLeg left"></div>
+            <div class="playerLeg right"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         HUD
+    ===================================================== -->
+
+    <div id="hud">
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                Level
+            </span>
+
+            <span
+                class="hudValue"
+                id="levelHud"
+            >
+                1 / 10
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                Coins
+            </span>
+
+            <span
+                class="hudValue"
+                id="coinsHud"
+            >
+                🪙 0
+            </span>
+
+        </div>
+
+        <div class="hudBox">
+
+            <span class="hudTitle">
+                Energy
+            </span>
+
+            <span
+                class="hudValue"
+                id="energyHud"
+            >
+                ⚡ 100
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOP BUTTONS
+    ===================================================== -->
+
+    <div class="topButtons">
+
+        <button
+            class="topButton"
+            id="backButton"
+        >
+            ← BACK
+        </button>
+
+        <button
+            class="topButton"
+            id="helpButton"
+        >
+            ❔ HELP
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         MISSION
+    ===================================================== -->
+
+    <div id="missionPanel">
+
+        <div class="missionTitle">
+            🌾 Farm Mission
+        </div>
+
+        <div id="missionText">
+            Plant 3 crops.
+        </div>
+
+        <div class="progressBar">
+
+            <div
+                id="progressFill"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTION BAR
+    ===================================================== -->
+
+    <div class="actionBar">
+
+        <button
+            class="toolButton active"
+            id="seedButton"
+            title="Plant"
+        >
+            🌱
+        </button>
+
+        <button
+            class="toolButton"
+            id="waterButton"
+            title="Water"
+        >
+            💧
+        </button>
+
+        <button
+            class="toolButton"
+            id="harvestButton"
+            title="Harvest"
+        >
+            🌾
+        </button>
+
+        <button
+            class="toolButton"
+            id="hoeButton"
+            title="Prepare soil"
+        >
+            🪓
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         ENGLISH MODAL
+    ===================================================== -->
+
+    <div
+        class="modal"
+        id="questionModal"
+    >
+
+        <div class="modalBox">
+
+            <div class="modalIcon">
+                🇬🇧
+            </div>
+
+            <h2 id="questionTitle">
+                English Challenge
+            </h2>
+
+            <p id="questionText">
+                What does FARM mean?
+            </p>
+
+            <div
+                class="answerGrid"
+                id="answerGrid"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LEVEL COMPLETE
+    ===================================================== -->
+
+    <div
+        class="modal"
+        id="levelModal"
+    >
+
+        <div class="modalBox">
+
+            <div class="modalIcon">
+                🌟
+            </div>
+
+            <h2>
+                Level Complete!
+            </h2>
+
+            <p id="levelMessage">
+                Excellent work!
+            </p>
+
+            <button
+                class="mainButton"
+                id="nextLevelButton"
+            >
+                NEXT LEVEL
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         HELP
+    ===================================================== -->
+
+    <div
+        class="modal"
+        id="helpModal"
+    >
+
+        <div class="modalBox">
+
+            <div class="modalIcon">
+                👨‍🌾
+            </div>
+
+            <h2>
+                How to Play
+            </h2>
+
+            <p>
+                Prepare the soil, plant seeds,
+                water your crops and harvest them.
+                Complete the farm mission and answer
+                the English challenge to advance.
+            </p>
+
+            <p>
+                🌱 Plant &nbsp; 💧 Water &nbsp;
+                🌾 Harvest &nbsp; 🪓 Prepare soil
+            </p>
+
+            <button
+                class="mainButton"
+                id="closeHelpButton"
+            >
+                CONTINUE
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FINAL
+    ===================================================== -->
+
+    <div
+        class="modal"
+        id="finalModal"
+    >
+
+        <div class="modalBox">
+
+            <div class="modalIcon">
+                🏆
+            </div>
+
+            <h2>
+                Farm Master!
+            </h2>
+
+            <p id="finalMessage">
+                You completed all 10 levels!
+            </p>
+
+            <button
+                class="mainButton"
+                id="restartButton"
+            >
+                PLAY AGAIN
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const field =
+    document.getElementById("field");
+
+const levelHud =
+    document.getElementById("levelHud");
+
+const coinsHud =
+    document.getElementById("coinsHud");
+
+const energyHud =
+    document.getElementById("energyHud");
+
+const missionText =
+    document.getElementById("missionText");
+
+const progressFill =
+    document.getElementById("progressFill");
+
+const questionModal =
+    document.getElementById("questionModal");
+
+const questionText =
+    document.getElementById("questionText");
+
+const answerGrid =
+    document.getElementById("answerGrid");
+
+const levelModal =
+    document.getElementById("levelModal");
+
+const levelMessage =
+    document.getElementById("levelMessage");
+
+const helpModal =
+    document.getElementById("helpModal");
+
+const finalModal =
+    document.getElementById("finalModal");
+
+
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let level = 1;
+
+let coins = 0;
+
+let energy = 100;
+
+let selectedTool = "plant";
+
+let questionOpen = false;
+
+let levelComplete = false;
+
+
+/* =========================================================
+   LEVEL DATA
+========================================================= */
+
+const levels = [
+
+    {
+        crop: "🌽",
+        name: "Corn",
+        mission: 3,
+        word: "FARM",
+        question: "What does FARM mean?",
+        options: [
+            "Fazenda",
+            "Escola",
+            "Hospital",
+            "Cidade"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🥕",
+        name: "Carrot",
+        mission: 4,
+        word: "CARROT",
+        question: "What does CARROT mean?",
+        options: [
+            "Cenoura",
+            "Batata",
+            "Milho",
+            "Tomate"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🍅",
+        name: "Tomato",
+        mission: 5,
+        word: "GARDEN",
+        question: "What does GARDEN mean?",
+        options: [
+            "Jardim",
+            "Celeiro",
+            "Campo",
+            "Rio"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🥔",
+        name: "Potato",
+        mission: 5,
+        word: "HARVEST",
+        question: "What does HARVEST mean?",
+        options: [
+            "Colheita",
+            "Chuva",
+            "Plantio",
+            "Semente"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🍓",
+        name: "Strawberry",
+        mission: 6,
+        word: "SEED",
+        question: "What does SEED mean?",
+        options: [
+            "Semente",
+            "Folha",
+            "Fruta",
+            "Raiz"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🌾",
+        name: "Wheat",
+        mission: 6,
+        word: "WATER",
+        question: "What does WATER mean?",
+        options: [
+            "Água",
+            "Terra",
+            "Sol",
+            "Vento"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🍎",
+        name: "Apple",
+        mission: 7,
+        word: "FARMER",
+        question: "What does FARMER mean?",
+        options: [
+            "Fazendeiro",
+            "Motorista",
+            "Médico",
+            "Cozinheiro"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🥬",
+        name: "Lettuce",
+        mission: 7,
+        word: "BARN",
+        question: "What does BARN mean?",
+        options: [
+            "Celeiro",
+            "Casa",
+            "Escola",
+            "Loja"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🍇",
+        name: "Grapes",
+        mission: 8,
+        word: "CROP",
+        question: "What does CROP mean?",
+        options: [
+            "Colheita / Plantação",
+            "Animal",
+            "Ferramenta",
+            "Estrada"
+        ],
+        answer: 0
+    },
+
+    {
+        crop: "🎃",
+        name: "Pumpkin",
+        mission: 10,
+        word: "NATURE",
+        question: "What does NATURE mean?",
+        options: [
+            "Natureza",
+            "Máquina",
+            "Prédio",
+            "Cidade"
+        ],
+        answer: 0
+    }
+
+];
+
+
+/* =========================================================
+   PLOTS
+========================================================= */
+
+const plots = [];
+
+for (
+    let i = 0;
+    i < 15;
+    i++
+) {
+
+    const plot =
+        document.createElement("div");
+
+    plot.className =
+        "plot";
+
+    plot.dataset.index =
+        i;
+
+    plot.dataset.state =
+        "empty";
+
+    plot.dataset.water =
+        "0";
+
+    field.appendChild(
+        plot
+    );
+
+    plots.push(plot);
+
+    plot.addEventListener(
+        "click",
+        () => {
+
+            useTool(plot);
+
+        }
+    );
+}
+
+
+/* =========================================================
+   TOOLS
+========================================================= */
+
+const toolButtons = {
+
+    plant:
+        document.getElementById(
+            "seedButton"
+        ),
+
+    water:
+        document.getElementById(
+            "waterButton"
+        ),
+
+    harvest:
+        document.getElementById(
+            "harvestButton"
+        ),
+
+    hoe:
+        document.getElementById(
+            "hoeButton"
+        )
+
+};
+
+
+Object.entries(
+    toolButtons
+).forEach(
+    ([tool, button]) => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedTool =
+                    tool;
+
+                Object.values(
+                    toolButtons
+                ).forEach(
+                    b =>
+                        b.classList.remove(
+                            "active"
+                        )
+                );
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   USE TOOL
+========================================================= */
+
+function useTool(plot) {
+
+    if (
+        levelComplete ||
+        questionOpen
+    ) {
+        return;
+    }
+
+
+    const state =
+        plot.dataset.state;
+
+
+    /* HOE */
+
+    if (
+        selectedTool === "hoe"
+    ) {
+
+        if (
+            state === "empty"
+        ) {
+
+            plot.dataset.state =
+                "soil";
+
+            plot.style.background =
+                "linear-gradient(135deg,#a96b38,#744421)";
+
+            energy -= 3;
+
+            updateHUD();
+        }
+
+        return;
+    }
+
+
+    /* PLANT */
+
+    if (
+        selectedTool === "plant"
+    ) {
+
+        if (
+            state === "soil"
+        ) {
+
+            plot.dataset.state =
+                "seed";
+
+            plot.dataset.water =
+                "0";
+
+            plot.innerHTML =
+                `<div class="plant">🌱</div>`;
+
+            energy -= 5;
+
+            updateHUD();
+
+            updateMission();
+        }
+
+        return;
+    }
+
+
+    /* WATER */
+
+    if (
+        selectedTool === "water"
+    ) {
+
+        if (
+            state === "seed"
+        ) {
+
+            plot.dataset.water =
+                "1";
+
+            plot.dataset.state =
+                "growing";
+
+            plot.innerHTML =
+                `<div class="plant">🌿</div>`;
+
+            energy -= 3;
+
+            updateHUD();
+
+            setTimeout(
+                () => {
+
+                    if (
+                        plot.dataset.state ===
+                        "growing"
+                    ) {
+
+                        plot.dataset.state =
+                            "ready";
+
+                        plot.innerHTML =
+                            `<div class="plant ready">
+                                ${levels[level - 1].crop}
+                            </div>`;
+
+                        updateMission();
+
+                    }
+
+                },
+                900
+            );
+
+        }
+
+        return;
+    }
+
+
+    /* HARVEST */
+
+    if (
+        selectedTool === "harvest"
+    ) {
+
+        if (
+            state === "ready"
+        ) {
+
+            plot.dataset.state =
+                "empty";
+
+            plot.innerHTML =
+                "";
+
+            plot.style.background =
+                "linear-gradient(135deg,#8b572f,#633b21)";
+
+            coins +=
+                10 + level * 2;
+
+            energy -= 4;
+
+            updateHUD();
+
+            updateMission();
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   MISSION
+========================================================= */
+
+function updateMission() {
+
+    const data =
+        levels[level - 1];
+
+    let completed = 0;
+
+    plots.forEach(
+        plot => {
+
+            if (
+                plot.dataset.state ===
+                "ready"
+            ) {
+
+                completed++;
+
+            }
+
+        }
+    );
+
+
+    missionText.textContent =
+        `Harvest ${data.mission} crops. (${completed}/${data.mission})`;
+
+
+    const progress =
+        Math.min(
+            100,
+            completed /
+            data.mission *
+            100
+        );
+
+
+    progressFill.style.width =
+        progress + "%";
+
+
+    if (
+        completed >=
+        data.mission
+    ) {
+
+        setTimeout(
+            openEnglishChallenge,
+            300
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD() {
+
+    levelHud.textContent =
+        `${level} / 10`;
+
+    coinsHud.textContent =
+        `🪙 ${coins}`;
+
+    energyHud.textContent =
+        `⚡ ${Math.max(0,energy)}`;
+
+}
+
+
+/* =========================================================
+   ENGLISH CHALLENGE
+========================================================= */
+
+function openEnglishChallenge() {
+
+    if (
+        questionOpen ||
+        levelComplete
+    ) {
+        return;
+    }
+
+
+    questionOpen =
+        true;
+
+    const data =
+        levels[level - 1];
+
+
+    questionText.textContent =
+        `${data.question} (${data.word})`;
+
+
+    answerGrid.innerHTML =
+        "";
+
+
+    data.options.forEach(
+        (option,index) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "answer";
+
+            button.textContent =
+                option;
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    answerQuestion(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            answerGrid.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    questionModal.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   ANSWER
+========================================================= */
+
+function answerQuestion(
+    selected,
+    button
+) {
+
+    const data =
+        levels[level - 1];
+
+
+    const buttons =
+        answerGrid.querySelectorAll(
+            ".answer"
+        );
+
+
+    buttons.forEach(
+        b => {
+
+            b.disabled =
+                true;
+
+        }
+    );
+
+
+    if (
+        selected ===
+        data.answer
+    ) {
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        coins +=
+            50;
+
+
+        setTimeout(
+            () => {
+
+                questionModal.classList.remove(
+                    "show"
+                );
+
+                questionOpen =
+                    false;
+
+                completeLevel();
+
+            },
+            700
+        );
+
+    }
+
+    else {
+
+        button.classList.add(
+            "wrong"
+        );
+
+        energy -=
+            15;
+
+        updateHUD();
+
+
+        setTimeout(
+            () => {
+
+                questionModal.classList.remove(
+                    "show"
+                );
+
+                questionOpen =
+                    false;
+
+                updateMission();
+
+            },
+            900
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COMPLETE LEVEL
+========================================================= */
+
+function completeLevel() {
+
+    levelComplete =
+        true;
+
+    coins +=
+        100;
+
+    updateHUD();
+
+
+    if (
+        level >= 10
+    ) {
+
+        document.getElementById(
+            "finalMessage"
+        ).textContent =
+            `Amazing! You completed all 10 farm levels and earned ${coins} coins.`;
+
+        finalModal.classList.add(
+            "show"
+        );
+
+        localStorage.setItem(
+            "englishFarmerCompleted",
+            "true"
+        );
+
+        return;
+
+    }
+
+
+    levelMessage.textContent =
+        `Excellent! You harvested the crops and completed the English challenge. Bonus: +100 coins.`;
+
+    levelModal.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   NEXT LEVEL
+========================================================= */
+
+document
+    .getElementById(
+        "nextLevelButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            level++;
+
+            levelComplete =
+                false;
+
+            energy =
+                Math.min(
+                    100,
+                    energy + 30
+                );
+
+            resetFarm();
+
+            levelModal.classList.remove(
+                "show"
+            );
+
+            updateHUD();
+
+            updateMission();
+
+        }
+    );
+
+
+/* =========================================================
+   RESET FARM
+========================================================= */
+
+function resetFarm() {
+
+    plots.forEach(
+        plot => {
+
+            plot.dataset.state =
+                "empty";
+
+            plot.dataset.water =
+                "0";
+
+            plot.innerHTML =
+                "";
+
+            plot.classList.remove(
+                "selected"
+            );
+
+            plot.style.background =
+                "linear-gradient(135deg,#8b572f,#633b21)";
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   HELP
+========================================================= */
+
+document
+    .getElementById(
+        "helpButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            helpModal.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "closeHelpButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            helpModal.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+document
+    .getElementById(
+        "restartButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            level = 1;
+
+            coins = 0;
+
+            energy = 100;
+
+            levelComplete =
+                false;
+
+            finalModal.classList.remove(
+                "show"
+            );
+
+            resetFarm();
+
+            updateHUD();
+
+            updateMission();
+
+        }
+    );
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            /*
+                Retorna para a página
+                anterior do sistema.
+
+                Como o jogo está dentro
+                da pasta passatempo/jogo-04,
+                history.back() permite que
+                o botão funcione sem
+                precisar fixar um caminho.
+            */
+
+            if (
+                window.history.length > 1
+            ) {
+
+                window.history.back();
+
+            } else {
+
+                window.location.href =
+                    "../../index.html";
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ENERGY RECOVERY
+========================================================= */
+
+setInterval(
+    () => {
+
+        if (
+            !questionOpen &&
+            !levelComplete &&
+            energy < 100
+        ) {
+
+            energy++;
+
+            updateHUD();
+
+        }
+
+    },
+    1200
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateHUD();
+
+updateMission();
+
+</script>
+
+</body>
+</html>

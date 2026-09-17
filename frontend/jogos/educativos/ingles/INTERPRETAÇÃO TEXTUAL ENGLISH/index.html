@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEO ENGLISH // FUTURE MISSION</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cyan: #00eaff;
+    --blue: #3478ff;
+    --purple: #9d4edd;
+    --green: #00ff9d;
+    --red: #ff3864;
+    --yellow: #ffe66d;
+    --bg: #050812;
+    --panel: rgba(8, 17, 34, 0.90);
+    --border: rgba(0, 234, 255, 0.28);
+    --text: #edfaff;
+    --muted: #8fa7bb;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0, 234, 255, .12), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(157, 78, 221, .14), transparent 30%),
+        #050812;
+    overflow-x: hidden;
+}
+
+/* FUNDO FUTURISTA */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(rgba(0,234,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,234,255,.035) 1px, transparent 1px);
+    background-size: 45px 45px;
+    z-index: -3;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,.018),
+        rgba(255,255,255,.018) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    z-index: 20;
+    opacity: .35;
+}
+
+/* ESTRELAS */
+
+.space {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -2;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: .7;
+    animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .15; }
+    to { opacity: .9; }
+}
+
+/* TELA INICIAL */
+
+.screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.start-box {
+    width: min(900px, 100%);
+    text-align: center;
+    padding: 55px 35px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    box-shadow:
+        0 0 40px rgba(0,234,255,.08),
+        inset 0 0 35px rgba(0,234,255,.025);
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.start-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+    animation: scan 3s infinite linear;
+}
+
+@keyframes scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.system-label {
+    color: var(--cyan);
+    letter-spacing: 5px;
+    font-size: 12px;
+    margin-bottom: 18px;
+}
+
+h1 {
+    font-size: clamp(40px, 8vw, 82px);
+    letter-spacing: 5px;
+    line-height: .95;
+    text-shadow: 0 0 25px rgba(0,234,255,.5);
+}
+
+h1 span {
+    color: var(--cyan);
+}
+
+.subtitle {
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 15px;
+    letter-spacing: 2px;
+}
+
+.mission-description {
+    max-width: 650px;
+    margin: 30px auto;
+    line-height: 1.7;
+    color: #c8d7e5;
+}
+
+.rules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 30px 0;
+}
+
+.rule {
+    padding: 17px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(0,234,255,.035);
+}
+
+.rule strong {
+    display: block;
+    color: var(--cyan);
+    font-size: 21px;
+    margin-bottom: 7px;
+}
+
+.rule small {
+    color: var(--muted);
+}
+
+.main-btn {
+    border: 1px solid var(--cyan);
+    background: rgba(0,234,255,.08);
+    color: white;
+    padding: 17px 45px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: .25s;
+    box-shadow: 0 0 20px rgba(0,234,255,.1);
+}
+
+.main-btn:hover {
+    background: var(--cyan);
+    color: #001018;
+    box-shadow: 0 0 35px rgba(0,234,255,.4);
+    transform: translateY(-2px);
+}
+
+/* JOGO */
+
+#gameScreen {
+    display: none;
+    padding: 20px;
+}
+
+.game-container {
+    width: min(1100px, 100%);
+    margin: auto;
+}
+
+/* HUD */
+
+.hud {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.hud-box {
+    min-height: 70px;
+    padding: 12px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(7,17,33,.88);
+}
+
+.hud-label {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.hud-value {
+    font-weight: bold;
+    color: var(--cyan);
+}
+
+.level-display {
+    text-align: center;
+}
+
+.level-number {
+    font-size: 26px;
+    color: white;
+}
+
+.timer {
+    text-align: right;
+}
+
+.timer-value {
+    font-size: 25px;
+}
+
+.timer.warning .timer-value {
+    color: var(--yellow);
+}
+
+.timer.danger .timer-value {
+    color: var(--red);
+    animation: dangerPulse .6s infinite alternate;
+}
+
+@keyframes dangerPulse {
+    from { opacity: .45; }
+    to { opacity: 1; }
+}
+
+/* BARRA */
+
+.progress-wrapper {
+    height: 7px;
+    background: #111b2b;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progress {
+    height: 100%;
+    width: 10%;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    box-shadow: 0 0 15px rgba(0,234,255,.6);
+    transition: width .4s;
+}
+
+/* PAINEL */
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0,0,0,.25);
+}
+
+.panel-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid rgba(0,234,255,.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.chapter {
+    color: var(--cyan);
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+.level-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.difficulty {
+    font-size: 11px;
+    padding: 6px 10px;
+    border: 1px solid var(--purple);
+    color: #d8b4ff;
+    border-radius: 20px;
+}
+
+.content {
+    padding: 30px;
+}
+
+/* TEXTO */
+
+.text-label {
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.story {
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(157,78,221,.35);
+    background:
+        linear-gradient(135deg, rgba(0,234,255,.035), rgba(157,78,221,.05));
+    line-height: 1.8;
+    font-size: 17px;
+    color: #edf7ff;
+    margin-bottom: 30px;
+}
+
+.story p {
+    margin-bottom: 13px;
+}
+
+.story p:last-child {
+    margin-bottom: 0;
+}
+
+/* QUESTÃO */
+
+.question-box {
+    border-top: 1px solid rgba(0,234,255,.13);
+    padding-top: 27px;
+}
+
+.question-number {
+    color: var(--purple);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.question {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.answer {
+    border: 1px solid rgba(143,167,187,.25);
+    background: rgba(255,255,255,.025);
+    color: #eaf6ff;
+    border-radius: 9px;
+    padding: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: .2s;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.answer:hover {
+    border-color: var(--cyan);
+    background: rgba(0,234,255,.07);
+    transform: translateY(-2px);
+}
+
+.answer.correct {
+    border-color: var(--green);
+    background: rgba(0,255,157,.09);
+    color: #caffeb;
+}
+
+.answer.wrong {
+    border-color: var(--red);
+    background: rgba(255,56,100,.09);
+    color: #ffd2dc;
+}
+
+.answer.disabled {
+    pointer-events: none;
+}
+
+.feedback {
+    min-height: 28px;
+    margin-top: 18px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.feedback.correct-text {
+    color: var(--green);
+}
+
+.feedback.wrong-text {
+    color: var(--red);
+}
+
+/* BOTÃO */
+
+.next-area {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.next-btn {
+    display: none;
+    border: 1px solid var(--green);
+    color: var(--green);
+    background: rgba(0,255,157,.06);
+    padding: 13px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.next-btn:hover {
+    background: var(--green);
+    color: #00150d;
+}
+
+/* MÚSICA */
+
+.music-control {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 30;
+}
+
+.music-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    background: rgba(5,8,18,.88);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* FINAL */
+
+#finishScreen {
+    display: none;
+}
+
+.finish-box {
+    width: min(800px, 100%);
+    text-align: center;
+    padding: 50px 30px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+}
+
+.finish-title {
+    font-size: clamp(35px, 7vw, 65px);
+    margin-bottom: 15px;
+}
+
+.final-message {
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 15px auto 30px;
+    max-width: 600px;
+}
+
+.score {
+    font-size: 70px;
+    color: var(--cyan);
+    font-weight: bold;
+    text-shadow: 0 0 25px rgba(0,234,255,.4);
+}
+
+.score-label {
+    color: var(--muted);
+    letter-spacing: 3px;
+    font-size: 11px;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin: 30px 0;
+}
+
+.result-item {
+    padding: 20px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.result-item strong {
+    display: block;
+    font-size: 25px;
+    color: var(--cyan);
+    margin-bottom: 5px;
+}
+
+.result-item span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width: 750px) {
+
+    .rules {
+        grid-template-columns: 1fr;
+    }
+
+    .hud {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .level-display {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    .timer {
+        text-align: left;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .story {
+        font-size: 15px;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="space" id="stars"></div>
+
+<!-- TELA INICIAL -->
+
+<section class="screen" id="startScreen">
+
+    <div class="start-box">
+
+        <div class="system-label">
+            NEO EDUCATION SYSTEM // UNIT 07
+        </div>
+
+        <h1>NEO <span>ENGLISH</span></h1>
+
+        <div class="subtitle">
+            FUTURE READING MISSION
+        </div>
+
+        <p class="mission-description">
+            You are entering the English Learning Station.
+            Read ten short texts, understand the information,
+            identify Simple Present structures and answer the
+            questions before the system timer reaches zero.
+        </p>
+
+        <div class="rules">
+
+            <div class="rule">
+                <strong>10</strong>
+                <small>TEXTS & LEVELS</small>
+            </div>
+
+            <div class="rule">
+                <strong>10</strong>
+                <small>QUESTIONS</small>
+            </div>
+
+            <div class="rule">
+                <strong>10:00</strong>
+                <small>MINUTES</small>
+            </div>
+
+        </div>
+
+        <p style="color:#8fa7bb; font-size:13px; margin-bottom:20px;">
+            SIMPLE PRESENT • READING • INTERPRETATION
+        </p>
+
+        <button class="main-btn" onclick="startGame()">
+            ▶ START MISSION
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- JOGO -->
+
+<section class="screen" id="gameScreen">
+
+    <div class="game-container">
+
+        <div class="hud">
+
+            <div class="hud-box">
+                <div class="hud-label">MISSION STATUS</div>
+                <div class="hud-value" id="statusText">ACTIVE</div>
+            </div>
+
+            <div class="hud-box level-display">
+                <div class="hud-label">CURRENT LEVEL</div>
+                <div class="level-number">
+                    <span id="currentLevel">01</span>
+                    <span style="color:#8fa7bb;"> / 10</span>
+                </div>
+            </div>
+
+            <div class="hud-box timer" id="timerBox">
+                <div class="hud-label">TIME REMAINING</div>
+                <div class="hud-value timer-value" id="timer">
+                    10:00
+                </div>
+            </div>
+
+        </div>
+
+        <div class="progress-wrapper">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="chapter" id="chapter">
+                        TEXT 01
+                    </div>
+
+                    <div class="level-title" id="levelTitle">
+                        The Morning Robot
+                    </div>
+                </div>
+
+                <div class="difficulty" id="difficulty">
+                    A1
+                </div>
+
+            </div>
+
+            <div class="content">
+
+                <div class="text-label">
+                    // READING DATA
+                </div>
+
+                <div class="story" id="story"></div>
+
+                <div class="question-box">
+
+                    <div class="question-number" id="questionNumber">
+                        QUESTION 01 / 10
+                    </div>
+
+                    <div class="question" id="question"></div>
+
+                    <div class="answers" id="answers"></div>
+
+                    <div class="feedback" id="feedback"></div>
+
+                    <div class="next-area">
+                        <button class="next-btn" id="nextBtn" onclick="nextLevel()">
+                            NEXT LEVEL →
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FINAL -->
+
+<section class="screen" id="finishScreen">
+
+    <div class="finish-box">
+
+        <div class="system-label">
+            MISSION REPORT // COMPLETE
+        </div>
+
+        <div class="finish-title">
+            MISSION <span style="color:#00eaff;">COMPLETE</span>
+        </div>
+
+        <div class="score" id="finalScore">
+            0/10
+        </div>
+
+        <div class="score-label">
+            FINAL SCORE
+        </div>
+
+        <p class="final-message" id="finalMessage"></p>
+
+        <div class="result-grid">
+
+            <div class="result-item">
+                <strong id="correctResult">0</strong>
+                <span>CORRECT</span>
+            </div>
+
+            <div class="result-item">
+                <strong id="wrongResult">0</strong>
+                <span>WRONG</span>
+            </div>
+
+            <div class="result-item">
+                <strong id="timeResult">--:--</strong>
+                <span>TIME USED</span>
+            </div>
+
+        </div>
+
+        <button class="main-btn" onclick="location.reload()">
+            ↻ NEW MISSION
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- CONTROLE DE MÚSICA -->
+
+<div class="music-control">
+    <button class="music-btn" id="musicButton" onclick="toggleMusic()">
+        ♪
+    </button>
+</div>
+
+
+<script>
+
+/* =========================================================
+   BANCO DE TEXTOS
+   ========================================================= */
+
+const levels = [
+
+{
+    title: "The Morning Robot",
+    difficulty: "A1",
+    text: `
+        <p>Leo lives in a small smart house in the future. Every morning, his robot wakes him at seven o'clock.</p>
+        <p>Leo gets up and opens the window. He does not drink coffee in the morning. He drinks orange juice.</p>
+        <p>After breakfast, Leo goes to school by electric bus. His robot stays at home and cleans the house.</p>
+    `,
+    question: "What does Leo drink in the morning?",
+    answers: [
+        "Coffee",
+        "Orange juice",
+        "Milk",
+        "Water"
+    ],
+    correct: 1
+},
+
+{
+    title: "Mia and the Space School",
+    difficulty: "A1",
+    text: `
+        <p>Mia studies at a school on Mars. Her classes start at eight o'clock.</p>
+        <p>She likes science and English. She does not like long math tests.</p>
+        <p>During English class, Mia reads short stories and speaks with her classmates. Her teacher asks many questions.</p>
+    `,
+    question: "Which subject does Mia like?",
+    answers: [
+        "Science and English",
+        "Only math",
+        "History and art",
+        "Music and geography"
+    ],
+    correct: 0
+},
+
+{
+    title: "The City of Lights",
+    difficulty: "A1",
+    text: `
+        <p>Neo City has many bright buildings. People use electric cars and clean trains.</p>
+        <p>The city does not use many old buses. Most people travel by train because it is fast.</p>
+        <p>At night, the buildings change colors. Tourists watch the lights and take pictures.</p>
+    `,
+    question: "Why do most people use the train?",
+    answers: [
+        "Because it is cheap",
+        "Because it is very old",
+        "Because it is fast",
+        "Because it is colorful"
+    ],
+    correct: 2
+},
+
+{
+    title: "Alex's Smart Room",
+    difficulty: "A2",
+    text: `
+        <p>Alex has a smart room with automatic lights and a digital window.</p>
+        <p>Every night, the room checks the temperature. If it is cold, the system makes the room warmer.</p>
+        <p>Alex does not control everything with his hands. He usually gives simple voice commands to the computer.</p>
+    `,
+    question: "How does Alex usually control the computer?",
+    answers: [
+        "With voice commands",
+        "With a traditional key",
+        "With a book",
+        "With a television"
+    ],
+    correct: 0
+},
+
+{
+    title: "The Space Garden",
+    difficulty: "A2",
+    text: `
+        <p>Emma works in a space station. She takes care of a small garden.</p>
+        <p>The garden grows tomatoes, lettuce, and strawberries. The plants need water and special lights.</p>
+        <p>Emma checks the plants every morning. She does not use normal soil because the station has a special system.</p>
+    `,
+    question: "What does Emma do every morning?",
+    answers: [
+        "She cooks dinner",
+        "She checks the plants",
+        "She cleans the station",
+        "She studies English"
+    ],
+    correct: 1
+},
+
+{
+    title: "The Digital Library",
+    difficulty: "A2",
+    text: `
+        <p>The digital library opens at nine in the morning. Students visit the library to read and study.</p>
+        <p>The library does not have many paper books. Most books appear on large digital screens.</p>
+        <p>Students can search for a book by typing its title. They can also listen to audio books.</p>
+    `,
+    question: "What can students do in the digital library?",
+    answers: [
+        "Only watch movies",
+        "Only write on paper",
+        "Search for books and listen to audio books",
+        "Buy computers"
+    ],
+    correct: 2
+},
+
+{
+    title: "The Friendly Drone",
+    difficulty: "A2",
+    text: `
+        <p>Sam has a small delivery drone. The drone helps his family with simple tasks.</p>
+        <p>Every afternoon, it carries small packages from the local market to Sam's house.</p>
+        <p>Sam likes the drone because it saves time. The drone does not fly when the weather is dangerous.</p>
+    `,
+    question: "When does the drone carry packages?",
+    answers: [
+        "Every morning",
+        "Every afternoon",
+        "Every night",
+        "Only on weekends"
+    ],
+    correct: 1
+},
+
+{
+    title: "Life on the Moon",
+    difficulty: "A2",
+    text: `
+        <p>People live in small lunar stations on the Moon. They work, study, and exercise there.</p>
+        <p>Life is different from life on Earth. People do not walk outside without special suits.</p>
+        <p>Every day, workers check the station's machines. They also communicate with Earth.</p>
+    `,
+    question: "Why do people need special suits outside?",
+    answers: [
+        "Because the Moon is a school",
+        "Because they work at night",
+        "Because life outside is different and dangerous",
+        "Because they want to exercise"
+    ],
+    correct: 2
+},
+
+{
+    title: "The Future Teacher",
+    difficulty: "A2",
+    text: `
+        <p>Mr. Daniel teaches English in a futuristic classroom. His students use tablets during class.</p>
+        <p>Mr. Daniel asks questions and the students answer them on their screens.</p>
+        <p>The classroom does not use traditional blackboards. A large digital wall shows texts, images, and videos.</p>
+    `,
+    question: "How do the students answer questions?",
+    answers: [
+        "On their tablets",
+        "On paper books",
+        "With a radio",
+        "On a traditional blackboard"
+    ],
+    correct: 0
+},
+
+{
+    title: "The Night Train",
+    difficulty: "A2",
+    text: `
+        <p>The night train travels between two futuristic cities. It leaves at eleven o'clock every night.</p>
+        <p>Passengers usually sleep during the trip. The train moves very quietly and does not need a driver.</p>
+        <p>A computer controls the train and checks the route. Passengers feel safe during the journey.</p>
+    `,
+    question: "Who controls the night train?",
+    answers: [
+        "The passengers",
+        "A teacher",
+        "A computer",
+        "A police officer"
+    ],
+    correct: 2
+}
+
+];
+
+
+/* =========================================================
+   VARIÁVEIS
+   ========================================================= */
+
+let currentLevel = 0;
+let score = 0;
+let wrong = 0;
+
+let totalSeconds = 600;
+let secondsLeft = totalSeconds;
+let timerInterval = null;
+let gameStarted = false;
+let answered = false;
+
+let audioContext = null;
+let musicPlaying = false;
+let musicInterval = null;
+
+
+/* =========================================================
+   ESTRELAS
+   ========================================================= */
+
+function createStars() {
+
+    const container = document.getElementById("stars");
+
+    for (let i = 0; i < 90; i++) {
+
+        const star = document.createElement("div");
+
+        star.className = "star";
+
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+
+        const size = Math.random() * 2 + 1;
+
+        star.style.width = size + "px";
+        star.style.height = size + "px";
+
+        star.style.animationDelay =
+            (Math.random() * 3) + "s";
+
+        container.appendChild(star);
+    }
+}
+
+createStars();
+
+
+/* =========================================================
+   INICIAR
+   ========================================================= */
+
+function startGame() {
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("gameScreen").style.display = "block";
+
+    gameStarted = true;
+
+    startTimer();
+
+    loadLevel();
+
+    startMusic();
+}
+
+
+/* =========================================================
+   CARREGAR NÍVEL
+   ========================================================= */
+
+function loadLevel() {
+
+    answered = false;
+
+    const level = levels[currentLevel];
+
+    document.getElementById("currentLevel").textContent =
+        String(currentLevel + 1).padStart(2, "0");
+
+    document.getElementById("chapter").textContent =
+        "TEXT " + String(currentLevel + 1).padStart(2, "0");
+
+    document.getElementById("levelTitle").textContent =
+        level.title;
+
+    document.getElementById("difficulty").textContent =
+        level.difficulty;
+
+    document.getElementById("story").innerHTML =
+        level.text;
+
+    document.getElementById("questionNumber").textContent =
+        "QUESTION " +
+        String(currentLevel + 1).padStart(2, "0") +
+        " / 10";
+
+    document.getElementById("question").textContent =
+        level.question;
+
+    document.getElementById("feedback").textContent = "";
+
+    document.getElementById("feedback").className =
+        "feedback";
+
+    const answers = document.getElementById("answers");
+
+    answers.innerHTML = "";
+
+    level.answers.forEach((answer, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "answer";
+
+        button.textContent =
+            String.fromCharCode(65 + index) +
+            ". " +
+            answer;
+
+        button.onclick = () =>
+            checkAnswer(index, button);
+
+        answers.appendChild(button);
+
+    });
+
+    document.getElementById("nextBtn").style.display = "none";
+
+    const progress =
+        ((currentLevel) / levels.length) * 100;
+
+    document.getElementById("progress").style.width =
+        Math.max(10, progress) + "%";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   RESPOSTA
+   ========================================================= */
+
+function checkAnswer(selected, button) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const level = levels[currentLevel];
+
+    const buttons =
+        document.querySelectorAll(".answer");
+
+    buttons.forEach(btn => {
+        btn.classList.add("disabled");
+    });
+
+    if (selected === level.correct) {
+
+        score++;
+
+        button.classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            "✓ CORRECT. Mission data accepted.";
+
+        document.getElementById("feedback").className =
+            "feedback correct-text";
+
+    } else {
+
+        wrong++;
+
+        button.classList.add("wrong");
+
+        buttons[level.correct].classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            "✗ NOT CORRECT. Read the text again carefully.";
+
+        document.getElementById("feedback").className =
+            "feedback wrong-text";
+    }
+
+    document.getElementById("nextBtn").style.display =
+        "inline-block";
+
+}
+
+
+/* =========================================================
+   PRÓXIMO NÍVEL
+   ========================================================= */
+
+function nextLevel() {
+
+    if (!answered) return;
+
+    currentLevel++;
+
+    if (currentLevel >= levels.length) {
+
+        finishGame();
+
+        return;
+    }
+
+    loadLevel();
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function startTimer() {
+
+    updateTimer();
+
+    timerInterval = setInterval(() => {
+
+        secondsLeft--;
+
+        updateTimer();
+
+        if (secondsLeft <= 0) {
+
+            clearInterval(timerInterval);
+
+            finishGame(true);
+        }
+
+    }, 1000);
+}
+
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(secondsLeft / 60);
+
+    const seconds =
+        secondsLeft % 60;
+
+    document.getElementById("timer").textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+    const timerBox =
+        document.getElementById("timerBox");
+
+    timerBox.classList.remove(
+        "warning",
+        "danger"
+    );
+
+    if (secondsLeft <= 60) {
+
+        timerBox.classList.add("danger");
+
+    } else if (secondsLeft <= 180) {
+
+        timerBox.classList.add("warning");
+
+    }
+}
+
+
+/* =========================================================
+   FINAL
+   ========================================================= */
+
+function finishGame(timeOut = false) {
+
+    clearInterval(timerInterval);
+
+    stopMusic();
+
+    document.getElementById("gameScreen").style.display =
+        "none";
+
+    document.getElementById("finishScreen").style.display =
+        "flex";
+
+    const timeUsed =
+        totalSeconds - secondsLeft;
+
+    const minutes =
+        Math.floor(timeUsed / 60);
+
+    const seconds =
+        timeUsed % 60;
+
+    document.getElementById("finalScore").textContent =
+        score + "/10";
+
+    document.getElementById("correctResult").textContent =
+        score;
+
+    document.getElementById("wrongResult").textContent =
+        wrong;
+
+    document.getElementById("timeResult").textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+    let message = "";
+
+    if (timeOut) {
+
+        message =
+            "TIME OVER. The mission timer reached zero. " +
+            "Review the Simple Present and try the mission again.";
+
+    } else if (score === 10) {
+
+        message =
+            "EXCELLENT WORK. You completed all ten levels " +
+            "with maximum accuracy. Your English system is ready for the next mission.";
+
+    } else if (score >= 8) {
+
+        message =
+            "VERY GOOD. You understand the main ideas of the texts " +
+            "and use Simple Present structures well.";
+
+    } else if (score >= 6) {
+
+        message =
+            "GOOD MISSION. You understand several simple texts, " +
+            "but more reading practice can improve your accuracy.";
+
+    } else {
+
+        message =
+            "MISSION FINISHED. Read the texts again and practice " +
+            "Simple Present affirmative, negative, and question forms.";
+
+    }
+
+    document.getElementById("finalMessage").textContent =
+        message;
+}
+
+
+/* =========================================================
+   MÚSICA FUTURISTA
+   ========================================================= */
+
+function startMusic() {
+
+    if (musicPlaying) return;
+
+    try {
+
+        audioContext =
+            new (window.AudioContext ||
+                window.webkitAudioContext)();
+
+        musicPlaying = true;
+
+        document.getElementById("musicButton").textContent =
+            "♫";
+
+        playFutureNote();
+
+        musicInterval =
+            setInterval(playFutureNote, 850);
+
+    } catch (error) {
+
+        console.log("Audio not available.");
+
+    }
+}
+
+
+function playFutureNote() {
+
+    if (!audioContext || !musicPlaying) return;
+
+    const now = audioContext.currentTime;
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+    const filter =
+        audioContext.createBiquadFilter();
+
+    oscillator.type = "sine";
+
+    const notes = [
+        110,
+        138.59,
+        164.81,
+        220,
+        246.94,
+        293.66,
+        329.63
+    ];
+
+    const note =
+        notes[Math.floor(Math.random() * notes.length)];
+
+    oscillator.frequency.setValueAtTime(
+        note,
+        now
+    );
+
+    filter.type = "lowpass";
+
+    filter.frequency.setValueAtTime(
+        900,
+        now
+    );
+
+    gain.gain.setValueAtTime(
+        0,
+        now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+        0.045,
+        now + 0.08
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        now + 0.8
+    );
+
+    oscillator.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start(now);
+
+    oscillator.stop(now + 0.82);
+}
+
+
+function toggleMusic() {
+
+    if (!audioContext) {
+
+        startMusic();
+
+        return;
+    }
+
+    if (musicPlaying) {
+
+        stopMusic();
+
+    } else {
+
+        musicPlaying = true;
+
+        document.getElementById("musicButton").textContent =
+            "♫";
+
+        musicInterval =
+            setInterval(playFutureNote, 850);
+
+        playFutureNote();
+    }
+}
+
+
+function stopMusic() {
+
+    musicPlaying = false;
+
+    if (musicInterval) {
+
+        clearInterval(musicInterval);
+
+        musicInterval = null;
+    }
+
+    document.getElementById("musicButton").textContent =
+        "♪";
+}
+
+</script>
+
+</body>
+</html>

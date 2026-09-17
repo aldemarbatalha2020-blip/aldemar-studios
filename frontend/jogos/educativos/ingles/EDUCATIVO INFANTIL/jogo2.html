@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Little English World</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:"Comic Sans MS","Trebuchet MS",sans-serif;
+    min-height:100vh;
+    background:linear-gradient(135deg,#74d8ff,#a8f5c8);
+    color:#263238;
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+}
+
+/* =========================
+TELAS
+========================= */
+
+.screen{
+    display:none;
+    min-height:100vh;
+}
+
+.screen.active{
+    display:flex;
+}
+
+/* =========================
+TELA INICIAL
+========================= */
+
+#homeScreen{
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+}
+
+.home-card{
+    width:min(950px,96%);
+    background:white;
+    border-radius:40px;
+    padding:40px 30px;
+    text-align:center;
+    box-shadow:0 18px 45px rgba(0,0,0,.18);
+}
+
+.logo{
+    font-size:clamp(42px,8vw,76px);
+    font-weight:900;
+    color:#ff7a00;
+    text-shadow:4px 4px #ffd84d;
+}
+
+.subtitle{
+    font-size:25px;
+    color:#20a878;
+    margin-top:5px;
+    margin-bottom:25px;
+}
+
+.home-description{
+    font-size:20px;
+    line-height:1.5;
+    margin-bottom:30px;
+}
+
+.big-animals{
+    font-size:55px;
+    margin:20px 0 30px;
+    letter-spacing:10px;
+}
+
+.start-title{
+    font-size:28px;
+    color:#6c63ff;
+    margin-bottom:20px;
+}
+
+/* =========================
+FAIXAS ETÁRIAS
+========================= */
+
+.age-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.age-card{
+    border:4px solid #e4edf2;
+    background:#f9fcff;
+    border-radius:25px;
+    padding:20px 10px;
+    transition:.2s;
+}
+
+.age-card:hover{
+    transform:translateY(-7px);
+    border-color:#ffd447;
+    background:#fff9df;
+}
+
+.age-icon{
+    font-size:55px;
+}
+
+.age-card h3{
+    margin:8px 0;
+    color:#168a68;
+    font-size:21px;
+}
+
+.age-card p{
+    font-size:14px;
+    min-height:42px;
+    color:#555;
+}
+
+.age-button{
+    margin-top:12px;
+    border:0;
+    border-radius:20px;
+    padding:10px 15px;
+    background:#ff7a00;
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+}
+
+/* =========================
+JOGO
+========================= */
+
+#gameScreen{
+    flex-direction:column;
+    padding:15px;
+}
+
+.topbar{
+    width:min(1100px,100%);
+    margin:auto;
+    background:white;
+    border-radius:25px;
+    padding:13px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+}
+
+.game-name{
+    color:#ff7a00;
+    font-size:23px;
+    font-weight:bold;
+}
+
+.progress-container{
+    flex:1;
+    max-width:450px;
+}
+
+.progress-text{
+    text-align:center;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.progress{
+    height:16px;
+    background:#e9eef1;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:#20c997;
+    transition:.4s;
+}
+
+.score{
+    background:#ffd447;
+    padding:9px 17px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+/* =========================
+SEÇÕES
+========================= */
+
+.game-section{
+    display:none;
+    width:min(1100px,100%);
+    margin:20px auto;
+}
+
+.game-section.active{
+    display:block;
+}
+
+.section-title{
+    color:white;
+    text-align:center;
+    font-size:clamp(30px,6vw,48px);
+    text-shadow:3px 3px #168a68;
+    margin-bottom:15px;
+}
+
+.instruction{
+    background:white;
+    border-radius:20px;
+    padding:15px;
+    text-align:center;
+    font-size:19px;
+    margin-bottom:20px;
+}
+
+/* =========================
+CATEGORIAS
+========================= */
+
+.category-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.category{
+    background:white;
+    border-radius:30px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.13);
+}
+
+.category-icon{
+    font-size:75px;
+}
+
+.category h2{
+    color:#168a68;
+    margin:10px 0;
+}
+
+.category p{
+    color:#666;
+}
+
+/* =========================
+CARTÕES
+========================= */
+
+.cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:18px;
+}
+
+.word-card{
+    background:white;
+    border-radius:25px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+    transition:.2s;
+}
+
+.word-card:hover{
+    transform:translateY(-5px);
+}
+
+.card-emoji{
+    font-size:75px;
+}
+
+.word{
+    color:#ff7a00;
+    font-size:28px;
+    font-weight:bold;
+    margin:8px 0;
+}
+
+.translation{
+    color:#777;
+}
+
+.listen{
+    border:0;
+    background:#6c63ff;
+    color:white;
+    padding:8px 15px;
+    border-radius:20px;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* =========================
+BOTÕES
+========================= */
+
+.center{
+    text-align:center;
+    margin:25px 0;
+}
+
+.main-button{
+    border:0;
+    background:#ff7a00;
+    color:white;
+    padding:16px 35px;
+    border-radius:40px;
+    font-size:21px;
+    font-weight:bold;
+    box-shadow:0 6px #c45c00;
+}
+
+.main-button:active{
+    transform:translateY(4px);
+    box-shadow:0 2px #c45c00;
+}
+
+/* =========================
+QUIZ
+========================= */
+
+.quiz-card{
+    background:white;
+    max-width:850px;
+    margin:auto;
+    border-radius:35px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+.question-number{
+    color:#ff7a00;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.quiz-emoji{
+    font-size:100px;
+    margin:10px;
+}
+
+.question{
+    font-size:clamp(24px,5vw,38px);
+    font-weight:bold;
+    margin:10px 0 25px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.option{
+    border:4px solid #e1eaf0;
+    background:#f8fbfd;
+    border-radius:22px;
+    padding:17px;
+    font-size:21px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.option:hover{
+    background:#fff3bd;
+    border-color:#ffd447;
+}
+
+.option.correct{
+    background:#a9f5c7;
+    border-color:#1ca963;
+}
+
+.option.wrong{
+    background:#ffc4c4;
+    border-color:#e74747;
+}
+
+.feedback{
+    min-height:45px;
+    margin-top:20px;
+    font-size:21px;
+    font-weight:bold;
+}
+
+/* =========================
+RESULTADO
+========================= */
+
+.result-card{
+    background:white;
+    max-width:700px;
+    margin:40px auto;
+    padding:40px 25px;
+    border-radius:40px;
+    text-align:center;
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
+}
+
+.trophy{
+    font-size:100px;
+}
+
+.result-card h1{
+    color:#ff7a00;
+    font-size:45px;
+}
+
+.final-score{
+    color:#168a68;
+    font-size:30px;
+    font-weight:bold;
+    margin:20px;
+}
+
+.stars{
+    font-size:45px;
+    margin:15px;
+}
+
+.result-message{
+    font-size:20px;
+    line-height:1.5;
+}
+
+/* =========================
+RESPONSIVO
+========================= */
+
+@media(max-width:800px){
+
+    .age-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .category-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .topbar{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .progress-container{
+        flex-basis:100%;
+        order:3;
+    }
+
+    .age-grid{
+        grid-template-columns:1fr;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .home-card{
+        padding:30px 18px;
+    }
+
+    .big-animals{
+        font-size:38px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- ==================================
+     HOME
+================================== -->
+
+<section id="homeScreen" class="screen active">
+
+<div class="home-card">
+
+    <div class="logo">
+        🌈 LITTLE ENGLISH WORLD
+    </div>
+
+    <div class="subtitle">
+        Let's Learn English! 🎈
+    </div>
+
+    <p class="home-description">
+        Welcome, little learner! 🧒👧
+        <br>
+        Choose your age and let's play English!
+    </p>
+
+    <div class="big-animals">
+        🔴 🟡 🟢 🔵 🎒 🔢 🧸
+    </div>
+
+    <div class="start-title">
+        👇 Choose your age
+    </div>
+
+    <div class="age-grid">
+
+        <div class="age-card">
+
+            <div class="age-icon">🐣</div>
+
+            <h3>4–5 YEARS</h3>
+
+            <p>
+                Colors, numbers
+                and pictures.
+            </p>
+
+            <button class="age-button"
+                    onclick="chooseAge(1)">
+                PLAY
+            </button>
+
+        </div>
+
+
+        <div class="age-card">
+
+            <div class="age-icon">🐥</div>
+
+            <h3>6–7 YEARS</h3>
+
+            <p>
+                Colors, numbers
+                and objects.
+            </p>
+
+            <button class="age-button"
+                    onclick="chooseAge(2)">
+                PLAY
+            </button>
+
+        </div>
+
+
+        <div class="age-card">
+
+            <div class="age-icon">🦊</div>
+
+            <h3>8–9 YEARS</h3>
+
+            <p>
+                Vocabulary,
+                objects and numbers.
+            </p>
+
+            <button class="age-button"
+                    onclick="chooseAge(3)">
+                PLAY
+            </button>
+
+        </div>
+
+
+        <div class="age-card">
+
+            <div class="age-icon">🦁</div>
+
+            <h3>10–11 YEARS</h3>
+
+            <p>
+                Vocabulary and
+                simple sentences.
+            </p>
+
+            <button class="age-button"
+                    onclick="chooseAge(4)">
+                PLAY
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ==================================
+     GAME
+================================== -->
+
+<section id="gameScreen" class="screen">
+
+<div class="topbar">
+
+    <div class="game-name">
+        🌈 Little English World
+    </div>
+
+    <div class="progress-container">
+
+        <div id="progressText"
+             class="progress-text">
+            Let's learn!
+        </div>
+
+        <div class="progress">
+
+            <div id="progressFill"
+                 class="progress-fill">
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="score">
+        ⭐ <span id="score">0</span>
+    </div>
+
+</div>
+
+
+<!-- ==================================
+     SECTION 1
+================================== -->
+
+<div id="learnSection"
+     class="game-section active">
+
+    <h1 class="section-title">
+        🌈 Let's Learn!
+    </h1>
+
+    <div class="instruction"
+         id="learnInstruction">
+        Look, listen and learn! 👀🔊
+    </div>
+
+    <div class="category-grid">
+
+        <div class="category">
+
+            <div class="category-icon">
+                🎨
+            </div>
+
+            <h2>COLORS</h2>
+
+            <p>
+                Red • Blue • Yellow • Green
+            </p>
+
+        </div>
+
+
+        <div class="category">
+
+            <div class="category-icon">
+                🔢
+            </div>
+
+            <h2>NUMBERS</h2>
+
+            <p>
+                One • Two • Three • Four
+            </p>
+
+        </div>
+
+
+        <div class="category">
+
+            <div class="category-icon">
+                🎒
+            </div>
+
+            <h2>OBJECTS</h2>
+
+            <p>
+                Book • Ball • Pencil • Bag
+            </p>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <div id="cardsGrid"
+         class="cards-grid">
+    </div>
+
+    <div class="center">
+
+        <button class="main-button"
+                onclick="startQuiz()">
+            🎯 LET'S PLAY!
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================
+     QUIZ
+================================== -->
+
+<div id="quizSection"
+     class="game-section">
+
+    <h1 class="section-title">
+        🎯 ENGLISH CHALLENGE
+    </h1>
+
+    <div class="instruction">
+        🤝 Work together and choose the correct answer!
+    </div>
+
+    <div class="quiz-card">
+
+        <div id="questionNumber"
+             class="question-number">
+            Question 1
+        </div>
+
+        <div id="quizEmoji"
+             class="quiz-emoji">
+            🔴
+        </div>
+
+        <div id="question"
+             class="question">
+            What color is this?
+        </div>
+
+        <div id="options"
+             class="options">
+        </div>
+
+        <div id="feedback"
+             class="feedback">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================
+     RESULT
+================================== -->
+
+<div id="resultSection"
+     class="game-section">
+
+    <div class="result-card">
+
+        <div class="trophy">
+            🏆
+        </div>
+
+        <h1>
+            AMAZING!
+        </h1>
+
+        <div id="stars"
+             class="stars">
+            ⭐⭐⭐
+        </div>
+
+        <div id="finalScore"
+             class="final-score">
+            Score: 0 / 10
+        </div>
+
+        <p id="resultMessage"
+           class="result-message">
+        </p>
+
+        <br>
+
+        <button class="main-button"
+                onclick="restartGame()">
+            🔄 PLAY AGAIN
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* ==========================================
+   DADOS
+========================================== */
+
+const content = [
+
+    {
+        word:"RED",
+        pt:"Vermelho",
+        emoji:"🔴",
+        type:"color"
+    },
+
+    {
+        word:"BLUE",
+        pt:"Azul",
+        emoji:"🔵",
+        type:"color"
+    },
+
+    {
+        word:"YELLOW",
+        pt:"Amarelo",
+        emoji:"🟡",
+        type:"color"
+    },
+
+    {
+        word:"GREEN",
+        pt:"Verde",
+        emoji:"🟢",
+        type:"color"
+    },
+
+    {
+        word:"ONE",
+        pt:"Um",
+        emoji:"1️⃣",
+        type:"number"
+    },
+
+    {
+        word:"TWO",
+        pt:"Dois",
+        emoji:"2️⃣",
+        type:"number"
+    },
+
+    {
+        word:"THREE",
+        pt:"Três",
+        emoji:"3️⃣",
+        type:"number"
+    },
+
+    {
+        word:"FOUR",
+        pt:"Quatro",
+        emoji:"4️⃣",
+        type:"number"
+    },
+
+    {
+        word:"BOOK",
+        pt:"Livro",
+        emoji:"📚",
+        type:"object"
+    },
+
+    {
+        word:"BALL",
+        pt:"Bola",
+        emoji:"⚽",
+        type:"object"
+    },
+
+    {
+        word:"PENCIL",
+        pt:"Lápis",
+        emoji:"✏️",
+        type:"object"
+    },
+
+    {
+        word:"BAG",
+        pt:"Mochila",
+        emoji:"🎒",
+        type:"object"
+    }
+
+];
+
+
+/* ==========================================
+   QUESTÕES POR IDADE
+========================================== */
+
+const quizByAge = {
+
+1:[
+    {
+        emoji:"🔴",
+        question:"What color is this?",
+        correct:"RED",
+        options:["RED","BLUE"]
+    },
+
+    {
+        emoji:"🔵",
+        question:"What color is this?",
+        correct:"BLUE",
+        options:["GREEN","BLUE"]
+    },
+
+    {
+        emoji:"🟡",
+        question:"What color is this?",
+        correct:"YELLOW",
+        options:["YELLOW","RED"]
+    },
+
+    {
+        emoji:"1️⃣",
+        question:"What number is this?",
+        correct:"ONE",
+        options:["ONE","TWO"]
+    },
+
+    {
+        emoji:"2️⃣",
+        question:"What number is this?",
+        correct:"TWO",
+        options:["THREE","TWO"]
+    },
+
+    {
+        emoji:"3️⃣",
+        question:"What number is this?",
+        correct:"THREE",
+        options:["ONE","THREE"]
+    },
+
+    {
+        emoji:"4️⃣",
+        question:"What number is this?",
+        correct:"FOUR",
+        options:["FOUR","TWO"]
+    },
+
+    {
+        emoji:"🟢",
+        question:"What color is this?",
+        correct:"GREEN",
+        options:["GREEN","YELLOW"]
+    }
+],
+
+2:[
+    {
+        emoji:"🔴",
+        question:"What color is this?",
+        correct:"RED",
+        options:["RED","BLUE","GREEN"]
+    },
+
+    {
+        emoji:"🔵",
+        question:"What color is this?",
+        correct:"BLUE",
+        options:["YELLOW","BLUE","RED"]
+    },
+
+    {
+        emoji:"🟡",
+        question:"What color is this?",
+        correct:"YELLOW",
+        options:["GREEN","RED","YELLOW"]
+    },
+
+    {
+        emoji:"⚽",
+        question:"What is this?",
+        correct:"BALL",
+        options:["BALL","BOOK","BAG"]
+    },
+
+    {
+        emoji:"📚",
+        question:"What is this?",
+        correct:"BOOK",
+        options:["PENCIL","BOOK","BALL"]
+    },
+
+    {
+        emoji:"🎒",
+        question:"What is this?",
+        correct:"BAG",
+        options:["BAG","BOOK","PENCIL"]
+    },
+
+    {
+        emoji:"1️⃣",
+        question:"What number is this?",
+        correct:"ONE",
+        options:["ONE","THREE","FOUR"]
+    },
+
+    {
+        emoji:"4️⃣",
+        question:"What number is this?",
+        correct:"FOUR",
+        options:["TWO","FOUR","ONE"]
+    }
+],
+
+3:[
+    {
+        emoji:"🔴",
+        question:"What color is this?",
+        correct:"RED",
+        options:["RED","BLUE","GREEN","YELLOW"]
+    },
+
+    {
+        emoji:"🟢",
+        question:"What color is this?",
+        correct:"GREEN",
+        options:["RED","GREEN","BLUE","YELLOW"]
+    },
+
+    {
+        emoji:"✏️",
+        question:"What is this?",
+        correct:"PENCIL",
+        options:["BOOK","PENCIL","BAG","BALL"]
+    },
+
+    {
+        emoji:"🎒",
+        question:"What is this?",
+        correct:"BAG",
+        options:["BALL","BOOK","BAG","PENCIL"]
+    },
+
+    {
+        emoji:"⚽",
+        question:"What is this?",
+        correct:"BALL",
+        options:["BALL","BAG","BOOK","PENCIL"]
+    },
+
+    {
+        emoji:"2️⃣",
+        question:"What number is this?",
+        correct:"TWO",
+        options:["ONE","TWO","THREE","FOUR"]
+    },
+
+    {
+        emoji:"3️⃣",
+        question:"What number is this?",
+        correct:"THREE",
+        options:["FOUR","ONE","THREE","TWO"]
+    },
+
+    {
+        emoji:"📚",
+        question:"What is this?",
+        correct:"BOOK",
+        options:["PENCIL","BALL","BOOK","BAG"]
+    },
+
+    {
+        emoji:"🟡",
+        question:"What color is this?",
+        correct:"YELLOW",
+        options:["BLUE","GREEN","RED","YELLOW"]
+    },
+
+    {
+        emoji:"🔵",
+        question:"What color is this?",
+        correct:"BLUE",
+        options:["GREEN","BLUE","YELLOW","RED"]
+    }
+],
+
+4:[
+    {
+        emoji:"🔴",
+        question:"What color is the circle?",
+        correct:"RED",
+        options:["RED","BLUE","GREEN","YELLOW"]
+    },
+
+    {
+        emoji:"⚽",
+        question:"What is this?",
+        correct:"BALL",
+        options:["BOOK","BALL","BAG","PENCIL"]
+    },
+
+    {
+        emoji:"🎒",
+        question:"What is this?",
+        correct:"BAG",
+        options:["BALL","PENCIL","BAG","BOOK"]
+    },
+
+    {
+        emoji:"3️⃣",
+        question:"What number is this?",
+        correct:"THREE",
+        options:["ONE","FOUR","THREE","TWO"]
+    },
+
+    {
+        emoji:"🟢",
+        question:"What color is this?",
+        correct:"GREEN",
+        options:["GREEN","RED","BLUE","YELLOW"]
+    },
+
+    {
+        emoji:"📚",
+        question:"What is this?",
+        correct:"BOOK",
+        options:["BOOK","BALL","PENCIL","BAG"]
+    },
+
+    {
+        emoji:"✏️",
+        question:"What is this?",
+        correct:"PENCIL",
+        options:["BALL","PENCIL","BOOK","BAG"]
+    },
+
+    {
+        emoji:"4️⃣",
+        question:"What number is this?",
+        correct:"FOUR",
+        options:["TWO","FOUR","ONE","THREE"]
+    },
+
+    {
+        emoji:"🔵",
+        question:"What color is this?",
+        correct:"BLUE",
+        options:["YELLOW","RED","BLUE","GREEN"]
+    },
+
+    {
+        emoji:"🟡",
+        question:"What color is this?",
+        correct:"YELLOW",
+        options:["GREEN","YELLOW","BLUE","RED"]
+    },
+
+    {
+        emoji:"1️⃣",
+        question:"What number is this?",
+        correct:"ONE",
+        options:["THREE","ONE","FOUR","TWO"]
+    },
+
+    {
+        emoji:"2️⃣",
+        question:"What number is this?",
+        correct:"TWO",
+        options:["TWO","FOUR","ONE","THREE"]
+    }
+]
+
+};
+
+
+/* ==========================================
+   VARIÁVEIS
+========================================== */
+
+let selectedAge = 1;
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+
+/* ==========================================
+   ESCOLHER IDADE
+========================================== */
+
+function chooseAge(age){
+
+    selectedAge = age;
+
+    questions = quizByAge[age];
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    document.getElementById("homeScreen")
+        .classList.remove("active");
+
+    document.getElementById("gameScreen")
+        .classList.add("active");
+
+    createCards();
+
+    updateScore();
+
+    updateProgress();
+
+}
+
+
+/* ==========================================
+   CRIAR CARTÕES
+========================================== */
+
+function createCards(){
+
+    const grid =
+        document.getElementById("cardsGrid");
+
+    grid.innerHTML = "";
+
+    let amount = 12;
+
+    if(selectedAge === 1){
+        amount = 8;
+    }
+
+    if(selectedAge === 2){
+        amount = 10;
+    }
+
+    const selected =
+        content.slice(0,amount);
+
+    selected.forEach(item => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "word-card";
+
+        card.innerHTML = `
+
+            <div class="card-emoji">
+                ${item.emoji}
+            </div>
+
+            <div class="word">
+                ${item.word}
+            </div>
+
+            <div class="translation">
+                ${item.pt}
+            </div>
+
+            <button class="listen"
+                    onclick="speak('${item.word}')">
+                🔊 Listen
+            </button>
+
+        `;
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+/* ==========================================
+   VOZ
+========================================== */
+
+function speak(word){
+
+    if(!("speechSynthesis" in window)){
+        return;
+    }
+
+    const utterance =
+        new SpeechSynthesisUtterance(word);
+
+    utterance.lang = "en-US";
+
+    utterance.rate = 0.75;
+
+    speechSynthesis.cancel();
+
+    speechSynthesis.speak(utterance);
+
+}
+
+
+/* ==========================================
+   COMEÇAR QUIZ
+========================================== */
+
+function startQuiz(){
+
+    document.getElementById("learnSection")
+        .classList.remove("active");
+
+    document.getElementById("quizSection")
+        .classList.add("active");
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    updateScore();
+
+    showQuestion();
+
+}
+
+
+/* ==========================================
+   MOSTRAR QUESTÃO
+========================================== */
+
+function showQuestion(){
+
+    answered = false;
+
+    const q =
+        questions[currentQuestion];
+
+    document.getElementById("questionNumber")
+        .textContent =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("quizEmoji")
+        .textContent =
+        q.emoji;
+
+    document.getElementById("question")
+        .textContent =
+        q.question;
+
+    document.getElementById("feedback")
+        .textContent = "";
+
+    const options =
+        document.getElementById("options");
+
+    options.innerHTML = "";
+
+    q.options.forEach(answer => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent = answer;
+
+        button.onclick =
+            () => checkAnswer(button,answer);
+
+        options.appendChild(button);
+
+    });
+
+    updateProgress();
+
+}
+
+
+/* ==========================================
+   RESPOSTA
+========================================== */
+
+function checkAnswer(button,answer){
+
+    if(answered){
+        return;
+    }
+
+    answered = true;
+
+    const q =
+        questions[currentQuestion];
+
+    const feedback =
+        document.getElementById("feedback");
+
+    if(answer === q.correct){
+
+        score++;
+
+        button.classList.add("correct");
+
+        feedback.textContent =
+            "🎉 Great job! Correct!";
+
+        feedback.style.color =
+            "#159447";
+
+        speak(q.correct);
+
+    }else{
+
+        button.classList.add("wrong");
+
+        feedback.textContent =
+            `❌ The answer is ${q.correct}!`;
+
+        feedback.style.color =
+            "#d63232";
+
+        document.querySelectorAll(".option")
+            .forEach(btn => {
+
+                if(btn.textContent === q.correct){
+
+                    btn.classList.add("correct");
+
+                }
+
+            });
+
+    }
+
+    updateScore();
+
+    setTimeout(() => {
+
+        currentQuestion++;
+
+        if(currentQuestion >= questions.length){
+
+            finishGame();
+
+        }else{
+
+            showQuestion();
+
+        }
+
+    },1300);
+
+}
+
+
+/* ==========================================
+   SCORE
+========================================== */
+
+function updateScore(){
+
+    document.getElementById("score")
+        .textContent = score;
+
+}
+
+
+/* ==========================================
+   PROGRESSO
+========================================== */
+
+function updateProgress(){
+
+    if(!questions.length){
+        return;
+    }
+
+    const percentage =
+        (currentQuestion / questions.length) * 100;
+
+    document.getElementById("progressFill")
+        .style.width =
+        percentage + "%";
+
+    document.getElementById("progressText")
+        .textContent =
+        `Question ${currentQuestion} / ${questions.length}`;
+
+}
+
+
+/* ==========================================
+   FINAL
+========================================== */
+
+function finishGame(){
+
+    document.getElementById("quizSection")
+        .classList.remove("active");
+
+    document.getElementById("resultSection")
+        .classList.add("active");
+
+    document.getElementById("progressFill")
+        .style.width = "100%";
+
+    document.getElementById("progressText")
+        .textContent = "🏆 Complete!";
+
+    const total =
+        questions.length;
+
+    document.getElementById("finalScore")
+        .textContent =
+        `Score: ${score} / ${total}`;
+
+    let stars;
+    let message;
+
+    const percentage =
+        score / total;
+
+    if(percentage === 1){
+
+        stars = "⭐⭐⭐⭐⭐";
+
+        message =
+            "WOW! Perfect! You are an English Superstar! 🌟";
+
+    }else if(percentage >= .75){
+
+        stars = "⭐⭐⭐⭐";
+
+        message =
+            "Amazing work! Keep learning English! 🎉";
+
+    }else if(percentage >= .5){
+
+        stars = "⭐⭐⭐";
+
+        message =
+            "Good job! You are learning very well! 😊";
+
+    }else{
+
+        stars = "⭐⭐";
+
+        message =
+            "Good try! Let's practice together! 💪";
+
+    }
+
+    document.getElementById("stars")
+        .textContent = stars;
+
+    document.getElementById("resultMessage")
+        .textContent = message;
+
+}
+
+
+/* ==========================================
+   REINICIAR
+========================================== */
+
+function restartGame(){
+
+    document.getElementById("resultSection")
+        .classList.remove("active");
+
+    document.getElementById("quizSection")
+        .classList.remove("active");
+
+    document.getElementById("gameScreen")
+        .classList.remove("active");
+
+    document.getElementById("homeScreen")
+        .classList.add("active");
+
+    score = 0;
+
+    currentQuestion = 0;
+
+}
+
+</script>
+
+</body>
+</html>

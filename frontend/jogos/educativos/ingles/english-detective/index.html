@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>English Detective | Aldemar Studios</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:#07111f;color:white;padding:25px}
+.game{max-width:950px;margin:auto}
+header{text-align:center;margin-bottom:20px}
+.badge{display:inline-block;padding:7px 14px;border-radius:20px;background:#122a43;color:#65c7ff;font-size:12px;font-weight:bold}
+h1{font-size:42px;margin:12px 0}
+.panel{background:#0d1d30;border:1px solid #25445f;border-radius:20px;padding:25px;margin-bottom:18px}
+.info{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.stat{background:#122a43;padding:10px 15px;border-radius:10px}
+.case{font-size:20px;line-height:1.7;background:#081522;padding:20px;border-radius:15px;margin:20px 0}
+.clues{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.clue{padding:18px;background:#12263c;border:1px solid #31506d;border-radius:14px}
+.options{display:grid;gap:12px;margin-top:20px}
+button{border:0;border-radius:11px;padding:14px 18px;background:#1769aa;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(1.15)}
+.correct{background:#167a4a!important}
+.wrong{background:#a93232!important}
+#feedback{min-height:30px;text-align:center;font-weight:bold;margin:15px}
+</style>
+</head>
+<body>
+<div class="game">
+<header>
+<div class="badge">ALDEMAR STUDIOS • ENGLISH GAMES</div>
+<h1>🕵️ English Detective</h1>
+<p>Investigue as pistas e descubra a resposta.</p>
+</header>
+
+<div class="panel">
+<div class="info">
+<div class="stat">Caso: <span id="caseNo">1</span>/10</div>
+<div class="stat">Pontos: <span id="score">0</span></div>
+<div class="stat">⏱️ <span id="time">30</span>s</div>
+</div>
+
+<div class="case" id="case"></div>
+<div class="clues" id="clues"></div>
+<div class="options" id="options"></div>
+<div id="feedback"></div>
+</div>
+
+<div class="panel" style="text-align:center">
+<button onclick="history.back()">← Voltar</button>
+<button onclick="restart()">🔄 Reiniciar</button>
+</div>
+</div>
+
+<script>
+const cases=[
+{q:"I am thinking of something. You can find me in a classroom. I have pages and students use me to study.",c:["I am not electronic.","I contain words and pictures.","Students can read me."],o:["Book","Chair","Window","Pencil"],a:0},
+{q:"I am thinking of a place. People go there to buy food, clothes and many other things.",c:["It can be very large.","There are many stores.","People usually carry shopping bags."],o:["Hospital","Shopping mall","School","Library"],a:1},
+{q:"I am thinking of an animal. I can fly and I have feathers.",c:["I have wings.","I can make nests.","Some people keep me as a pet."],o:["Dog","Fish","Bird","Horse"],a:2},
+{q:"I am thinking of a person. This person teaches students at school.",c:["This person works with education.","Students listen to this person.","This person can give homework."],o:["Doctor","Teacher","Pilot","Chef"],a:1},
+{q:"I am thinking of something you use when it rains.",c:["You hold me above your head.","I protect you from water.","I can be folded."],o:["Umbrella","Spoon","Blanket","Shoes"],a:0},
+{q:"I am thinking of a place where you can borrow books.",c:["It is usually quiet.","You can read there.","Books are organized on shelves."],o:["Library","Restaurant","Airport","Stadium"],a:0},
+{q:"I am thinking of a vehicle. It has two wheels and people use their legs to move it.",c:["It has no engine.","You can ride me.","I am popular for exercise."],o:["Bus","Bicycle","Train","Boat"],a:1},
+{q:"I am thinking of something people use to tell the time.",c:["It can be on a wall.","It has numbers.","It can have hands."],o:["Clock","Mirror","Door","Table"],a:0},
+{q:"I am thinking of a place where doctors work.",c:["Patients go there.","There are nurses.","People receive medical care."],o:["Museum","Hospital","Cinema","Park"],a:1},
+{q:"I am thinking of a season. It is usually cold and sometimes snowy.",c:["It comes after autumn.","People wear warm clothes.","Christmas happens during this season in many countries."],o:["Summer","Spring","Winter","Autumn"],a:2}
+];
+
+let n=0,score=0,time=30,timer;
+
+function load(){
+clearInterval(timer);time=30;
+document.getElementById("caseNo").textContent=n+1;
+document.getElementById("score").textContent=score;
+document.getElementById("time").textContent=time;
+const x=cases[n];
+document.getElementById("case").textContent=x.q;
+document.getElementById("clues").innerHTML=x.c.map((c,i)=>`<div class="clue"><b>Clue ${i+1}</b><br>${c}</div>`).join("");
+document.getElementById("options").innerHTML=x.o.map((o,i)=>`<button onclick="answer(${i},this)">${o}</button>`).join("");
+document.getElementById("feedback").textContent="";
+timer=setInterval(()=>{time--;document.getElementById("time").textContent=time;if(time<=0){clearInterval(timer);answer(-1,null)}},1000);
+}
+function answer(i,b){
+clearInterval(timer);
+const x=cases[n];
+document.querySelectorAll("#options button").forEach(z=>z.disabled=true);
+if(i===x.a){score+=10;document.getElementById("score").textContent=score;if(b)b.classList.add("correct");document.getElementById("feedback").textContent="✅ Case solved!";}
+else{if(b)b.classList.add("wrong");document.getElementById("feedback").textContent="❌ Investigation failed. Answer: "+x.o[x.a];}
+setTimeout(()=>{n++;if(n<cases.length)load();else finish()},1300);
+}
+function finish(){
+document.getElementById("case").innerHTML=`<h2>🎉 Investigation complete!</h2><p>You scored <strong>${score}</strong> out of ${cases.length*10} points.</p>`;
+document.getElementById("clues").innerHTML="";
+document.getElementById("options").innerHTML=`<button onclick="restart()">🔄 New investigation</button>`;
+}
+function restart(){n=0;score=0;load()}
+load();
+</script>
+</body>
+</html>

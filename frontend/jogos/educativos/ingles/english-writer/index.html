@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#08111f">
+
+    <title>English Writer | Instituto Acutis</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <header class="topbar">
+
+        <a class="brand" href="/dashboard.html">
+            <span class="brand-icon">✍️</span>
+
+            <div>
+                <strong>INSTITUTO ACUTIS</strong>
+                <span>ALDEMAR STUDIOS</span>
+            </div>
+        </a>
+
+        <div class="stats">
+
+            <div class="stat">
+                <small>PONTOS</small>
+                <strong id="score">000</strong>
+            </div>
+
+            <div class="stat">
+                <small>VIDAS</small>
+                <strong id="lives">❤️❤️❤️</strong>
+            </div>
+
+            <div class="stat">
+                <small>NÍVEL</small>
+                <strong id="level">1</strong>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="main">
+
+        <section id="startScreen" class="screen active">
+
+            <div class="hero-card">
+
+                <div class="hero-icon">✍️</div>
+
+                <span class="eyebrow">JOGO EDUCATIVO • ESCRITA</span>
+
+                <h1>English Writer</h1>
+
+                <p>
+                    Construa frases em inglês, complete desafios
+                    e desenvolva sua escrita passo a passo.
+                </p>
+
+                <div class="features">
+
+                    <div>
+                        <span>🧩</span>
+                        <strong>Monte frases</strong>
+                    </div>
+
+                    <div>
+                        <span>📝</span>
+                        <strong>Escreva</strong>
+                    </div>
+
+                    <div>
+                        <span>⭐</span>
+                        <strong>Ganhe pontos</strong>
+                    </div>
+
+                </div>
+
+                <button id="startButton" class="primary-button">
+                    COMEÇAR JOGO
+                </button>
+
+                <a class="back-link" href="/dashboard.html">
+                    ← Voltar ao painel
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section id="gameScreen" class="screen">
+
+            <div class="game-header">
+
+                <div>
+                    <span class="eyebrow">DESAFIO</span>
+                    <h2 id="challengeTitle">Monte a frase</h2>
+                </div>
+
+                <div class="progress-info">
+                    <span id="questionNumber">1 / 10</span>
+                </div>
+
+            </div>
+
+
+            <div class="progress-bar">
+                <div id="progress"></div>
+            </div>
+
+
+            <div class="challenge-card">
+
+                <div class="instruction">
+                    <span>💡</span>
+
+                    <div>
+                        <strong id="instructionTitle">
+                            Organize as palavras
+                        </strong>
+
+                        <p id="instructionText">
+                            Toque nas palavras na ordem correta
+                            para formar uma frase em inglês.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="translation-box">
+
+                    <small>TRADUÇÃO</small>
+
+                    <p id="translation">
+                        Eu estudo inglês todos os dias.
+                    </p>
+
+                </div>
+
+
+                <div class="answer-area">
+
+                    <span class="answer-label">
+                        SUA FRASE
+                    </span>
+
+                    <div id="answer" class="answer">
+                        <span class="placeholder">
+                            Toque nas palavras abaixo...
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div id="words" class="words"></div>
+
+
+                <div class="actions">
+
+                    <button id="clearButton" class="secondary-button">
+                        LIMPAR
+                    </button>
+
+                    <button id="checkButton" class="primary-button">
+                        VERIFICAR
+                    </button>
+
+                </div>
+
+
+                <div id="feedback" class="feedback"></div>
+
+            </div>
+
+        </section>
+
+
+        <section id="resultScreen" class="screen">
+
+            <div class="result-card">
+
+                <div class="result-icon">🏆</div>
+
+                <span class="eyebrow">DESAFIO CONCLUÍDO</span>
+
+                <h1>Excelente trabalho!</h1>
+
+                <p>
+                    Você terminou o English Writer.
+                </p>
+
+                <div class="final-score">
+
+                    <span>SUA PONTUAÇÃO</span>
+
+                    <strong id="finalScore">000</strong>
+
+                </div>
+
+                <div class="result-message" id="resultMessage"></div>
+
+                <div class="result-actions">
+
+                    <button id="restartButton" class="primary-button">
+                        JOGAR NOVAMENTE
+                    </button>
+
+                    <a href="/dashboard.html" class="secondary-button">
+                        VOLTAR AO PAINEL
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        English Writer • Instituto Acutis • Aldemar Studios
+    </footer>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

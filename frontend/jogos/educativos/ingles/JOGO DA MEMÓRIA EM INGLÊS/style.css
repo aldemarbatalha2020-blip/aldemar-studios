@@ -1,0 +1,1401 @@
+/* =========================================================
+   ENGLISH MEMORY
+   INSTITUTO ACUTIS
+   STYLE.CSS
+========================================================= */
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+
+    min-height: 100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #202b6b 0%,
+            #0d112b 48%,
+            #070916 100%
+        );
+
+    color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+}
+
+
+/* =========================================================
+   GAME CONTAINER
+========================================================= */
+
+.game-container {
+
+    width: 100%;
+
+    max-width: 1050px;
+
+    min-height: 720px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #151b40,
+            #090c20
+        );
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius: 28px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.55);
+
+    position: relative;
+
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+
+    min-height: 90px;
+
+    padding:
+        20px 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.logo-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5865f2,
+            #7c5cff
+        );
+
+    box-shadow:
+        0 10px 30px
+        rgba(88,101,242,.30);
+
+}
+
+
+.logo-area h1 {
+
+    font-size: 19px;
+
+    line-height: 1.2;
+
+}
+
+
+.logo-area span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #8d98ff;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.stat {
+
+    min-width: 70px;
+
+    padding:
+        10px 13px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    border:
+        1px solid rgba(255,255,255,.07);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+}
+
+
+.stat span {
+
+    font-size: 16px;
+
+}
+
+
+.stat strong {
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================================
+   GAME INFO
+========================================================= */
+
+.game-info {
+
+    padding:
+        18px 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.06);
+
+}
+
+
+.game-info > div {
+
+    padding:
+        11px 15px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid rgba(255,255,255,.06);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.game-info span {
+
+    color: #7f89ac;
+
+    font-size: 12px;
+
+}
+
+
+.game-info strong {
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.game-content {
+
+    padding:
+        22px 30px 35px;
+
+}
+
+
+/* =========================================================
+   INSTRUCTION
+========================================================= */
+
+.instruction {
+
+    max-width: 750px;
+
+    margin:
+        0 auto 22px;
+
+    padding:
+        14px 17px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(88,101,242,.07);
+
+    border:
+        1px solid rgba(88,101,242,.14);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.instruction > span {
+
+    font-size: 25px;
+
+}
+
+
+.instruction strong {
+
+    font-size: 13px;
+
+    color: #aeb6ff;
+
+}
+
+
+.instruction p {
+
+    margin-top: 4px;
+
+    color: #8992b5;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+}
+
+
+/* =========================================================
+   MEMORY BOARD
+========================================================= */
+
+.memory-board {
+
+    width: 100%;
+
+    max-width: 800px;
+
+    margin:
+        0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 12px;
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.memory-card {
+
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    perspective: 900px;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   CARD INNER
+========================================================= */
+
+.card-inner {
+
+    width: 100%;
+
+    height: 100%;
+
+    position: relative;
+
+    transform-style: preserve-3d;
+
+    transition:
+        transform .55s
+        cubic-bezier(.4,.2,.2,1);
+
+}
+
+
+/* =========================================================
+   VIRADA
+========================================================= */
+
+.memory-card.flipped
+.card-inner {
+
+    transform:
+        rotateY(180deg);
+
+}
+
+
+.memory-card.matched {
+
+    cursor: default;
+
+}
+
+
+.memory-card.matched
+.card-inner {
+
+    transform:
+        rotateY(180deg);
+
+}
+
+
+/* =========================================================
+   FRENTE E VERSO
+========================================================= */
+
+.card-front,
+.card-back {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    border-radius: 16px;
+
+    backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
+
+}
+
+
+/* =========================================================
+   CARD FRONT
+========================================================= */
+
+.card-front {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202965,
+            #111633
+        );
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.22);
+
+}
+
+
+.card-front::before {
+
+    content: "ENGLISH";
+
+    position: absolute;
+
+    top: 10px;
+
+    left: 0;
+
+    right: 0;
+
+    text-align: center;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: #6f79a4;
+
+    font-weight: bold;
+
+}
+
+
+.card-front .card-symbol {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(88,101,242,.15);
+
+    border:
+        1px solid rgba(88,101,242,.20);
+
+    font-size: 21px;
+
+    color: #929cff;
+
+}
+
+
+.card-front small {
+
+    margin-top: 8px;
+
+    color: #6f79a4;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* =========================================================
+   CARD BACK
+========================================================= */
+
+.card-back {
+
+    transform:
+        rotateY(180deg);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 10px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #252f76,
+            #151b47
+        );
+
+    border:
+        1px solid rgba(141,152,255,.30);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.25);
+
+}
+
+
+.card-back .card-content {
+
+    width: 100%;
+
+}
+
+
+.card-back .language {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #7f8be0;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+}
+
+
+.card-back .word {
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 900;
+
+    line-height: 1.2;
+
+    word-break: break-word;
+
+}
+
+
+/* =========================================================
+   ENGLISH CARD
+========================================================= */
+
+.memory-card[data-type="english"]
+.card-back {
+
+    background:
+        linear-gradient(
+            145deg,
+            #252f76,
+            #151b47
+        );
+
+}
+
+
+/* =========================================================
+   PORTUGUESE CARD
+========================================================= */
+
+.memory-card[data-type="portuguese"]
+.card-back {
+
+    background:
+        linear-gradient(
+            145deg,
+            #332766,
+            #191532
+        );
+
+}
+
+
+.memory-card[data-type="portuguese"]
+.card-back .language {
+
+    color: #b19cff;
+
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.memory-card:not(.flipped):not(.matched):hover
+.card-front {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(141,152,255,.35);
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,.35);
+
+}
+
+
+.card-front {
+
+    transition:
+        .2s ease;
+
+}
+
+
+/* =========================================================
+   MATCH
+========================================================= */
+
+.memory-card.matched
+.card-back {
+
+    border-color:
+        rgba(34,197,94,.55);
+
+    box-shadow:
+        0 0 25px
+        rgba(34,197,94,.12);
+
+}
+
+
+.memory-card.matched
+.card-back::after {
+
+    content: "✓";
+
+    position: absolute;
+
+    top: 7px;
+
+    right: 9px;
+
+    width: 20px;
+
+    height: 20px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(34,197,94,.20);
+
+    color: #6ee7a0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+}
+
+
+/* =========================================================
+   ERROR ANIMATION
+========================================================= */
+
+.memory-card.wrong {
+
+    animation:
+        shake .35s ease;
+
+}
+
+
+@keyframes shake {
+
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+
+}
+
+
+/* =========================================================
+   SUCCESS ANIMATION
+========================================================= */
+
+.memory-card.matched {
+
+    animation:
+        matchedCard .45s ease;
+
+}
+
+
+@keyframes matchedCard {
+
+    0% {
+        transform: scale(.95);
+    }
+
+    60% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   RESTART BUTTON
+========================================================= */
+
+.restart-button {
+
+    display: block;
+
+    margin:
+        25px auto 0;
+
+    padding:
+        12px 22px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.07);
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    color: #c0c6e5;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+
+.restart-button:hover {
+
+    background:
+        rgba(88,101,242,.18);
+
+    color: #ffffff;
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   RESULT SCREEN
+========================================================= */
+
+.result-screen {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 20;
+
+    min-height: 100%;
+
+    background:
+        rgba(7,9,24,.98);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 35px;
+
+}
+
+
+.result-icon {
+
+    font-size: 75px;
+
+    animation:
+        trophyFloat 2s infinite ease-in-out;
+
+}
+
+
+@keyframes trophyFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+}
+
+
+.result-screen h2 {
+
+    margin-top: 10px;
+
+    font-size: 32px;
+
+}
+
+
+.result-screen > p {
+
+    margin-top: 7px;
+
+    color: #858eaf;
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   FINAL SCORE
+========================================================= */
+
+.final-score {
+
+    margin:
+        25px 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+.final-score span {
+
+    color: #737c9d;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+}
+
+
+.final-score strong {
+
+    margin-top: 3px;
+
+    color: #929cff;
+
+    font-size: 62px;
+
+    line-height: 1;
+
+}
+
+
+.final-score small {
+
+    margin-top: 5px;
+
+    color: #737c9d;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   RESULT STATS
+========================================================= */
+
+.result-stats {
+
+    display: flex;
+
+    gap: 12px;
+
+}
+
+
+.result-stats > div {
+
+    min-width: 105px;
+
+    padding:
+        14px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    border:
+        1px solid rgba(255,255,255,.07);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+.result-stats strong {
+
+    color: #ffffff;
+
+    font-size: 21px;
+
+}
+
+
+.result-stats span {
+
+    margin-top: 4px;
+
+    color: #777f9f;
+
+    font-size: 10px;
+
+}
+
+
+/* =========================================================
+   PLAY AGAIN
+========================================================= */
+
+.play-again-button {
+
+    margin-top: 28px;
+
+    padding:
+        14px 28px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5865f2,
+            #7657e8
+        );
+
+    color: #ffffff;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 30px
+        rgba(88,101,242,.25);
+
+    transition: .2s;
+
+}
+
+
+.play-again-button:hover {
+
+    transform:
+        translateY(-2px)
+        scale(1.02);
+
+}
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.memory-card.disabled {
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    body {
+
+        padding: 12px;
+
+    }
+
+
+    .game-container {
+
+        min-height: 100vh;
+
+        border-radius: 20px;
+
+    }
+
+
+    .topbar {
+
+        padding:
+            18px 20px;
+
+    }
+
+
+    .game-info {
+
+        padding:
+            15px 20px;
+
+    }
+
+
+    .game-content {
+
+        padding:
+            18px 20px 25px;
+
+    }
+
+
+    .memory-board {
+
+        gap: 9px;
+
+    }
+
+
+    .card-back .word {
+
+        font-size: 12px;
+
+    }
+
+
+    .card-front .card-symbol {
+
+        width: 35px;
+
+        height: 35px;
+
+        font-size: 17px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 550px) {
+
+    .topbar {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+    }
+
+
+    .stats {
+
+        width: 100%;
+
+        justify-content: center;
+
+    }
+
+
+    .stat {
+
+        flex: 1;
+
+    }
+
+
+    .game-info {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .game-info > div {
+
+        padding:
+            9px 13px;
+
+    }
+
+
+    .memory-board {
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 8px;
+
+    }
+
+
+    .card-back .word {
+
+        font-size: 10px;
+
+    }
+
+
+    .card-back .language {
+
+        font-size: 6px;
+
+    }
+
+
+    .card-front::before {
+
+        font-size: 6px;
+
+    }
+
+
+    .card-front .card-symbol {
+
+        width: 30px;
+
+        height: 30px;
+
+        font-size: 14px;
+
+    }
+
+
+    .card-front small {
+
+        font-size: 6px;
+
+    }
+
+
+    .instruction {
+
+        padding: 11px;
+
+    }
+
+
+    .instruction > span {
+
+        font-size: 20px;
+
+    }
+
+
+    .instruction p {
+
+        font-size: 10px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .memory-board {
+
+        gap: 6px;
+
+    }
+
+
+    .card-back {
+
+        padding: 5px;
+
+    }
+
+
+    .card-back .word {
+
+        font-size: 8px;
+
+    }
+
+
+    .card-back .language {
+
+        font-size: 5px;
+
+    }
+
+
+    .card-front .card-symbol {
+
+        width: 25px;
+
+        height: 25px;
+
+        font-size: 12px;
+
+    }
+
+
+    .result-stats {
+
+        gap: 6px;
+
+    }
+
+
+    .result-stats > div {
+
+        min-width: 85px;
+
+        padding: 11px 7px;
+
+    }
+
+}

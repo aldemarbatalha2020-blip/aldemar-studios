@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aula 01 — The House</title>
+
+<link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+<a href="../../index.html" class="btn-voltar-Tela Inicial">
+← Selecionar Módulos
+</a>
+
+<header>
+
+<h1>APRENDENDO INGLÊS COM ALDEMAR</h1>
+
+<p>Instituto Acutis</p>
+
+</header>
+
+<main class="container">
+
+<section class="lesson">
+
+<div class="module">
+Módulo 02 · Aula 01
+</div>
+
+<h2>The House</h2>
+
+<div class="lesson-intro">
+
+<p>
+Aprenda palavras importantes para falar sobre uma casa e seus principais elementos.
+</p>
+
+</div>
+
+<!-- CONTEÚDO -->
+
+<section class="lesson-section">
+
+<h3>📚 1. Conteúdo</h3>
+
+<div class="box">
+
+<h4>🏠 Vocabulário da casa</h4>
+
+<table>
+<tr><th>English</th><th>Português</th></tr>
+<tr><td>House</td><td>Casa</td></tr>
+<tr><td>Home</td><td>Lar / Casa</td></tr>
+<tr><td>Door</td><td>Porta</td></tr>
+<tr><td>Window</td><td>Janela</td></tr>
+<tr><td>Wall</td><td>Parede</td></tr>
+<tr><td>Floor</td><td>Chão / Piso</td></tr>
+<tr><td>Roof</td><td>Telhado</td></tr>
+<tr><td>Garden</td><td>Jardim</td></tr>
+<tr><td>Yard</td><td>Quintal</td></tr>
+</table>
+
+<h4>Exemplos</h4>
+
+<p><strong>This is my house.</strong> — Esta é minha casa.</p>
+
+<p><strong>My house has a big door.</strong> — Minha casa tem uma porta grande.</p>
+
+<p><strong>The windows are clean.</strong> — As janelas estão limpas.</p>
+
+</div>
+
+</section>
+
+<!-- EXPLICAÇÃO -->
+
+<section class="lesson-section">
+
+<h3>🎙️ 2. Explicação do Professor Aldemar</h3>
+
+<div class="box">
+
+<p>
+Em Inglês, usamos <strong>house</strong> para falar da construção física onde uma pessoa mora. A palavra <strong>home</strong> pode transmitir a ideia de lar, o lugar onde alguém vive. Observe também que podemos usar <strong>my</strong>, <strong>your</strong>, <strong>his</strong> e <strong>her</strong> para indicar posse.
+</p>
+
+<p>
+<strong>💡 Dica do Professor:</strong>
+Leia os exemplos lentamente, compreenda o significado e depois
+tente criar frases próprias.
+</p>
+
+</div>
+
+<audio controls style="width:100%; margin-top:15px;">
+<source src="../../audios/modulo-02/aula-01.mp3" type="audio/mpeg">
+Seu navegador não suporta áudio.
+</audio>
+
+</section>
+
+<!-- LEITURA -->
+
+<section class="lesson-section">
+
+<h3>📖 3. Atividade de Leitura</h3>
+
+<div class="box">
+
+<div class="example">
+
+<p><strong>Anna:</strong> Hello, Tom! Welcome to my house.</p>
+
+<p><strong>Tom:</strong> Wow! Your house is beautiful.</p>
+
+<p><strong>Anna:</strong> Thank you! It is small, but very comfortable.</p>
+
+<p><strong>Tom:</strong> I like the big windows.</p>
+
+<p><strong>Anna:</strong> I like them too. There is also a small garden.</p>
+
+</div>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>1.</strong> Is Anna's house big?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(1,"yes","no")'>Yes</button><button onclick='answerQuestion(1,"no","no")'>No</button>
+
+</div>
+
+<p id="feedback1"></p>
+
+</div>
+
+<div class="question">
+
+<p>
+<strong>2.</strong> What does Anna have in her house?
+</p>
+
+<div class="options">
+
+<button onclick='answerQuestion(2,"garden","garden")'>A garden</button><button onclick='answerQuestion(2,"pool","garden")'>A swimming pool</button>
+
+</div>
+
+<p id="feedback2"></p>
+
+</div>
+
+</section>
+
+<!-- ESCRITA -->
+
+<section class="lesson-section">
+
+<h3>✍️ 4. Atividade de Escrita</h3>
+
+<div class="box">
+
+<p>
+Escreva 3 frases descrevendo uma casa. Use palavras como <strong>house, door, window, garden</strong> e <strong>big</strong> ou <strong>small</strong>.
+</p>
+
+<textarea
+id="writing"
+rows="6"
+placeholder="Escreva sua resposta em Inglês..."
+></textarea>
+
+<button onclick="checkWriting()">
+Verificar atividade
+</button>
+
+<p id="writingFeedback"></p>
+
+</div>
+
+</section>
+
+<!-- PRONÚNCIA -->
+
+<section class="lesson-section">
+
+<h3>🗣️ 5. Atividade de Pronúncia</h3>
+
+<div class="box">
+
+<p>
+Leia cada frase em Inglês em voz alta.
+Depois clique no botão para ouvir a pronúncia.
+</p>
+
+<button onclick='speak(This is my house.)'>🔊 This is my house.</button><br><button onclick='speak(My house has big windows.)'>🔊 My house has big windows.</button><br><button onclick='speak(My house is comfortable.)'>🔊 My house is comfortable.</button>
+
+</div>
+
+</section>
+
+<!-- DESAFIO -->
+
+<section class="challenge">
+
+<h3>🎯 Desafio da Aula</h3>
+
+<p>
+Imagine que você está apresentando sua casa para um amigo estrangeiro. Escreva pelo menos 3 frases em Inglês descrevendo sua casa.
+</p>
+
+<textarea
+id="challenge"
+rows="6"
+placeholder="Escreva seu desafio aqui..."
+></textarea>
+
+<button onclick="checkChallenge()">
+Concluir desafio
+</button>
+
+<p id="challengeFeedback"></p>
+
+</section>
+
+<!-- PONTUAÇÃO -->
+
+<div class="lesson-complete">
+
+<h3>🏆 Aula concluída?</h3>
+
+<p>
+Complete as atividades para acompanhar sua evolução.
+</p>
+
+<p>
+<strong>Pontuação:</strong>
+<span id="score">0</span>
+</p>
+
+</div>
+
+<!-- NAVEGAÇÃO -->
+
+<div class="navigation">
+
+<a class='btn home' href='../../index.html'>← Início</a>
+
+<a class='btn' href='aula-02.html'>Próxima aula →</a>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+Instituto Acutis · Aprendendo Inglês com Aldemar
+
+</footer>
+
+<script>
+
+let score = 0;
+
+function updateScore(points) {
+
+    score += points;
+
+    document.getElementById("score").textContent = score;
+
+}
+
+function checkQuestion(number, correct) {
+
+    const buttons = document.querySelectorAll(
+        "#feedback" + number + " ~ button"
+    );
+
+}
+
+function answerQuestion(number, selected, correct) {
+
+    const feedback =
+        document.getElementById("feedback" + number);
+
+    if (selected === correct) {
+
+        feedback.textContent =
+            "✅ Muito bem! Resposta correta.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "❌ Não foi dessa vez. Leia novamente o texto.";
+
+        feedback.style.color = "#ff5555";
+
+    }
+
+}
+
+function checkWriting() {
+
+    const text =
+        document.getElementById("writing").value.trim();
+
+    const feedback =
+        document.getElementById("writingFeedback");
+
+    if (text.length >= 15) {
+
+        feedback.textContent =
+            "✅ Excelente! Sua atividade de escrita foi concluída.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(10);
+
+    } else {
+
+        feedback.textContent =
+            "✍️ Escreva pelo menos uma frase completa em Inglês.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function checkChallenge() {
+
+    const text =
+        document.getElementById("challenge").value.trim();
+
+    const feedback =
+        document.getElementById("challengeFeedback");
+
+    if (text.length >= 20) {
+
+        feedback.textContent =
+            "🏆 Desafio concluído! Excelente trabalho.";
+
+        feedback.style.color = "#00ff88";
+
+        updateScore(20);
+
+    } else {
+
+        feedback.textContent =
+            "🎯 Escreva mais detalhes para concluir o desafio.";
+
+        feedback.style.color = "#ffaa00";
+
+    }
+
+}
+
+function speak(text) {
+
+    if ("speechSynthesis" in window) {
+
+        speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = "en-US";
+
+        utterance.rate = 0.85;
+
+        speechSynthesis.speak(utterance);
+
+    } else {
+
+        alert(
+            "A reprodução de voz não está disponível neste navegador."
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

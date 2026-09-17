@@ -1,0 +1,3161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Coliseum Gladiators 3D</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#050505;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    color:white;
+    touch-action:none;
+}
+
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:#111;
+}
+
+canvas{
+    display:block;
+    width:100%;
+    height:100%;
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.screen{
+    position:absolute;
+    inset:0;
+
+    z-index:100;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(160,70,20,.18),
+            rgba(0,0,0,.96) 72%
+        );
+}
+
+.panel{
+    width:min(650px,94vw);
+
+    padding:35px;
+
+    border:
+        1px solid
+        rgba(255,190,80,.25);
+
+    border-radius:24px;
+
+    background:
+        rgba(15,10,7,.95);
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.7),
+        0 0 60px rgba(180,80,20,.1);
+
+    text-align:center;
+}
+
+.logo{
+    width:85px;
+    height:85px;
+
+    margin:0 auto 18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b45309,
+            #f59e0b
+        );
+
+    font-size:42px;
+
+    box-shadow:
+        0 15px 35px rgba(245,158,11,.25);
+}
+
+h1{
+    margin-bottom:8px;
+
+    font-size:
+        clamp(
+            28px,
+            5vw,
+            48px
+        );
+
+    font-weight:950;
+}
+
+h1 span{
+    color:#f59e0b;
+}
+
+.subtitle{
+    margin-bottom:25px;
+
+    color:#a89b8c;
+
+    line-height:1.7;
+
+    font-size:14px;
+}
+
+
+/* =====================================================
+   TOURNAMENT OPTIONS
+===================================================== */
+
+.tournamentTitle{
+    margin-bottom:12px;
+
+    color:#fbbf24;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:1.5px;
+}
+
+.tournaments{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:9px;
+
+    margin-bottom:22px;
+}
+
+.tournament{
+    min-height:65px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.tournament:hover{
+    border-color:#f59e0b;
+
+    transform:translateY(-2px);
+
+    background:
+        rgba(245,158,11,.08);
+}
+
+.tournament.selected{
+    border-color:#f59e0b;
+
+    background:
+        rgba(245,158,11,.16);
+
+    box-shadow:
+        0 0 20px rgba(245,158,11,.1);
+}
+
+.tournament strong{
+    display:block;
+
+    color:#fbbf24;
+
+    font-size:20px;
+}
+
+.tournament span{
+    color:#a89b8c;
+
+    font-size:9px;
+
+    text-transform:uppercase;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.mainButton{
+    width:100%;
+
+    min-height:52px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b45309,
+            #f59e0b
+        );
+
+    color:white;
+
+    font-weight:950;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 10px 30px rgba(245,158,11,.18);
+
+    transition:.2s;
+}
+
+.mainButton:hover{
+    transform:translateY(-2px);
+
+    filter:brightness(1.1);
+}
+
+.backButton{
+    position:absolute;
+
+    left:18px;
+    top:18px;
+
+    z-index:150;
+
+    padding:10px 15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:9px;
+
+    background:
+        rgba(0,0,0,.65);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:11px;
+
+    font-weight:900;
+}
+
+.backButton:hover{
+    background:
+        rgba(180,83,9,.7);
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+#hud{
+    position:absolute;
+
+    top:15px;
+    left:15px;
+    right:15px;
+
+    z-index:20;
+
+    display:none;
+
+    justify-content:space-between;
+
+    pointer-events:none;
+}
+
+.hudBox{
+    min-width:130px;
+
+    padding:9px 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:10px;
+
+    background:
+        rgba(0,0,0,.65);
+
+    backdrop-filter:blur(8px);
+}
+
+.hudTitle{
+    display:block;
+
+    margin-bottom:4px;
+
+    color:#fbbf24;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+}
+
+.hudValue{
+    font-size:15px;
+
+    font-weight:950;
+}
+
+.bar{
+    width:150px;
+    height:8px;
+
+    margin-top:5px;
+
+    overflow:hidden;
+
+    border-radius:10px;
+
+    background:#261c18;
+}
+
+.barFill{
+    width:100%;
+    height:100%;
+
+    transition:.15s;
+}
+
+#healthFill{
+    background:#dc2626;
+}
+
+#staminaFill{
+    background:#f59e0b;
+}
+
+#bossHealthFill{
+    background:#7c3aed;
+}
+
+
+/* =====================================================
+   CENTER INFO
+===================================================== */
+
+#centerInfo{
+    position:absolute;
+
+    top:18px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:25;
+
+    display:none;
+
+    text-align:center;
+
+    pointer-events:none;
+}
+
+#waveTitle{
+    font-size:11px;
+
+    color:#fbbf24;
+
+    font-weight:950;
+
+    letter-spacing:1px;
+}
+
+#waveText{
+    font-size:19px;
+
+    font-weight:950;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+#message{
+    position:absolute;
+
+    left:50%;
+    bottom:110px;
+
+    transform:translateX(-50%);
+
+    z-index:30;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    background:
+        rgba(0,0,0,.78);
+
+    color:#fbbf24;
+
+    font-size:13px;
+
+    font-weight:900;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+}
+
+#message.show{
+    opacity:1;
+}
+
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+#controls{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:18px;
+
+    z-index:40;
+
+    display:none;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    pointer-events:none;
+}
+
+.controlSide{
+    display:flex;
+
+    gap:9px;
+}
+
+.control{
+    width:58px;
+    height:58px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:16px;
+
+    background:
+        rgba(0,0,0,.68);
+
+    color:white;
+
+    font-size:20px;
+
+    pointer-events:auto;
+
+    user-select:none;
+}
+
+.control:active{
+    transform:scale(.93);
+
+    background:
+        rgba(180,83,9,.75);
+}
+
+
+/* =====================================================
+   PAUSE
+===================================================== */
+
+#pause{
+    position:absolute;
+
+    top:15px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:35;
+
+    display:none;
+
+    padding:7px 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:8px;
+
+    background:
+        rgba(0,0,0,.6);
+
+    color:white;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+#resultScreen{
+    display:none;
+}
+
+.reward{
+    margin:20px 0;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    background:
+        rgba(245,158,11,.08);
+
+    border:
+        1px solid
+        rgba(245,158,11,.15);
+}
+
+.reward strong{
+    display:block;
+
+    color:#fbbf24;
+
+    font-size:24px;
+
+    margin-bottom:5px;
+}
+
+.reward span{
+    color:#a89b8c;
+
+    font-size:11px;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:850px){
+
+    #controls{
+        display:flex;
+    }
+
+    #hud{
+        top:8px;
+        left:8px;
+        right:8px;
+    }
+
+    .hudBox{
+        min-width:auto;
+        padding:7px 9px;
+    }
+
+    .bar{
+        width:95px;
+    }
+
+    #centerInfo{
+        top:8px;
+    }
+
+    .panel{
+        padding:28px 20px;
+    }
+
+    .tournaments{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:500px){
+
+    .tournaments{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .hudBox{
+        font-size:10px;
+    }
+
+    .control{
+        width:53px;
+        height:53px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<canvas id="canvas"></canvas>
+
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
+
+<div
+    class="screen"
+    id="startScreen"
+>
+
+<button
+    class="backButton"
+    id="backStart"
+>
+    ← VOLTAR
+</button>
+
+<div class="panel">
+
+<div class="logo">
+    ⚔️
+</div>
+
+<h1>
+    Coliseum
+    <span>Gladiators</span>
+</h1>
+
+<div class="subtitle">
+    Entre na arena, enfrente guerreiros,
+    sobreviva às ondas e torne-se o campeão
+    do Coliseu.
+</div>
+
+<div class="tournamentTitle">
+    Escolha o torneio
+</div>
+
+<div class="tournaments">
+
+<button
+    class="tournament selected"
+    data-waves="5"
+>
+<strong>5</strong>
+<span>Adversários</span>
+</button>
+
+<button
+    class="tournament"
+    data-waves="10"
+>
+<strong>10</strong>
+<span>Adversários</span>
+</button>
+
+<button
+    class="tournament"
+    data-waves="20"
+>
+<strong>20</strong>
+<span>Adversários</span>
+</button>
+
+<button
+    class="tournament"
+    data-waves="30"
+>
+<strong>30</strong>
+<span>Adversários</span>
+</button>
+
+<button
+    class="tournament"
+    data-waves="40"
+>
+<strong>40</strong>
+<span>Adversários</span>
+</button>
+
+<button
+    class="tournament"
+    data-waves="50"
+>
+<strong>50</strong>
+<span>Adversários</span>
+</button>
+
+</div>
+
+<button
+    class="mainButton"
+    id="startButton"
+>
+ENTRAR NO COLISEU
+</button>
+
+</div>
+</div>
+
+
+<!-- =====================================================
+     HUD
+===================================================== -->
+
+<div id="hud">
+
+<div class="hudBox">
+
+<span class="hudTitle">
+Vida
+</span>
+
+<span
+    class="hudValue"
+    id="healthText"
+>
+100
+</span>
+
+<div class="bar">
+<div
+    class="barFill"
+    id="healthFill"
+></div>
+</div>
+
+</div>
+
+
+<div class="hudBox">
+
+<span class="hudTitle">
+Stamina
+</span>
+
+<span
+    class="hudValue"
+    id="staminaText"
+>
+100
+</span>
+
+<div class="bar">
+<div
+    class="barFill"
+    id="staminaFill"
+></div>
+</div>
+
+</div>
+
+
+<div class="hudBox">
+
+<span class="hudTitle">
+Onda
+</span>
+
+<span
+    class="hudValue"
+    id="waveTextHud"
+>
+1 / 5
+</span>
+
+</div>
+
+
+<div class="hudBox">
+
+<span class="hudTitle">
+Ouro
+</span>
+
+<span
+    class="hudValue"
+    id="goldText"
+>
+0
+</span>
+
+</div>
+
+</div>
+
+
+<div id="centerInfo">
+
+<div id="waveTitle">
+ARENA
+</div>
+
+<div id="waveText">
+PREPARE-SE
+</div>
+
+</div>
+
+
+<button id="pause">
+PAUSAR
+</button>
+
+
+<div id="message">
+Mensagem
+</div>
+
+
+<!-- =====================================================
+     MOBILE CONTROLS
+===================================================== -->
+
+<div id="controls">
+
+<div class="controlSide">
+
+<button
+    class="control"
+    id="left"
+>
+◀
+</button>
+
+<button
+    class="control"
+    id="right"
+>
+▶
+</button>
+
+</div>
+
+<div class="controlSide">
+
+<button
+    class="control"
+    id="dodge"
+>
+↻
+</button>
+
+<button
+    class="control"
+    id="attack"
+>
+⚔
+</button>
+
+<button
+    class="control"
+    id="defend"
+>
+🛡
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     RESULT
+===================================================== -->
+
+<div
+    class="screen"
+    id="resultScreen"
+>
+
+<button
+    class="backButton"
+    id="backResult"
+>
+← VOLTAR
+</button>
+
+<div class="panel">
+
+<div class="logo">
+🏆
+</div>
+
+<h1>
+Campeão do
+<span>Coliseu!</span>
+</h1>
+
+<div class="subtitle">
+Você sobreviveu ao torneio.
+</div>
+
+<div class="reward">
+
+<strong id="finalGold">
++0 OURO
+</strong>
+
+<span>
+Uma recompensa especial foi adicionada
+ao seu inventário.
+</span>
+
+</div>
+
+<button
+    class="mainButton"
+    id="againButton"
+>
+NOVO TORNEIO
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+
+<script type="module">
+
+/* =====================================================
+   THREE.JS
+===================================================== */
+
+import * as THREE from
+"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const canvas =
+document.getElementById("canvas");
+
+const startScreen =
+document.getElementById("startScreen");
+
+const resultScreen =
+document.getElementById("resultScreen");
+
+const hud =
+document.getElementById("hud");
+
+const controls =
+document.getElementById("controls");
+
+const pauseButton =
+document.getElementById("pause");
+
+const centerInfo =
+document.getElementById("centerInfo");
+
+const waveText =
+document.getElementById("waveText");
+
+const waveTextHud =
+document.getElementById("waveTextHud");
+
+const healthText =
+document.getElementById("healthText");
+
+const staminaText =
+document.getElementById("staminaText");
+
+const goldText =
+document.getElementById("goldText");
+
+const healthFill =
+document.getElementById("healthFill");
+
+const staminaFill =
+document.getElementById("staminaFill");
+
+const message =
+document.getElementById("message");
+
+
+/* =====================================================
+   RENDERER
+===================================================== */
+
+const renderer =
+new THREE.WebGLRenderer({
+
+    canvas,
+
+    antialias:true,
+
+    powerPreference:"high-performance"
+
+});
+
+renderer.setPixelRatio(
+Math.min(
+window.devicePixelRatio,
+2
+));
+
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
+
+renderer.shadowMap.enabled = true;
+
+renderer.shadowMap.type =
+THREE.PCFSoftShadowMap;
+
+
+/* =====================================================
+   SCENE
+===================================================== */
+
+const scene =
+new THREE.Scene();
+
+scene.background =
+new THREE.Color(0x120b08);
+
+scene.fog =
+new THREE.Fog(
+0x120b08,
+35,
+110
+);
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+const camera =
+new THREE.PerspectiveCamera(
+60,
+window.innerWidth /
+window.innerHeight,
+0.1,
+300
+);
+
+camera.position.set(
+0,
+6,
+11
+);
+
+
+/* =====================================================
+   LIGHT
+===================================================== */
+
+const ambient =
+new THREE.HemisphereLight(
+0xffe0b2,
+0x22140d,
+1.5
+);
+
+scene.add(ambient);
+
+
+const sun =
+new THREE.DirectionalLight(
+0xffd6a0,
+2.8
+);
+
+sun.position.set(
+-15,
+25,
+10
+);
+
+sun.castShadow = true;
+
+sun.shadow.mapSize.width = 2048;
+sun.shadow.mapSize.height = 2048;
+
+scene.add(sun);
+
+
+const fireLight1 =
+new THREE.PointLight(
+0xff5a1f,
+18,
+25
+);
+
+fireLight1.position.set(
+-17,
+5,
+-12
+);
+
+scene.add(fireLight1);
+
+
+const fireLight2 =
+fireLight1.clone();
+
+fireLight2.position.set(
+17,
+5,
+-12
+);
+
+scene.add(fireLight2);
+
+
+/* =====================================================
+   ARENA
+===================================================== */
+
+const arena =
+new THREE.Group();
+
+scene.add(arena);
+
+
+function material(color){
+
+    return new THREE.MeshStandardMaterial({
+        color,
+        roughness:.85,
+        metalness:.08
+    });
+
+}
+
+
+/* FLOOR */
+
+const floor =
+new THREE.Mesh(
+
+    new THREE.CylinderGeometry(
+        20,
+        20,
+        .7,
+        64
+    ),
+
+    material(0x8a5a36)
+
+);
+
+floor.position.y = -.35;
+
+floor.receiveShadow = true;
+
+arena.add(floor);
+
+
+/* SAND */
+
+const sand =
+new THREE.Mesh(
+
+    new THREE.CylinderGeometry(
+        17.8,
+        17.8,
+        .15,
+        64
+    ),
+
+    material(0xc28b52)
+
+);
+
+sand.position.y=.05;
+
+sand.receiveShadow=true;
+
+arena.add(sand);
+
+
+/* =====================================================
+   COLUMNS
+===================================================== */
+
+function createColumn(
+x,
+z
+){
+
+    const column =
+    new THREE.Mesh(
+
+        new THREE.CylinderGeometry(
+            1.1,
+            1.25,
+            8,
+            16
+        ),
+
+        material(0x9a8775)
+
+    );
+
+    column.position.set(
+        x,
+        4,
+        z
+    );
+
+    column.castShadow=true;
+
+    column.receiveShadow=true;
+
+    arena.add(column);
+
+
+    const top =
+    new THREE.Mesh(
+
+        new THREE.CylinderGeometry(
+            1.5,
+            1.5,
+            .6,
+            16
+        ),
+
+        material(0x766556)
+
+    );
+
+    top.position.set(
+        x,
+        8,
+        z
+    );
+
+    top.castShadow=true;
+
+    arena.add(top);
+
+}
+
+
+createColumn(-18,-16);
+createColumn(18,-16);
+createColumn(-18,16);
+createColumn(18,16);
+
+
+/* =====================================================
+   WALLS
+===================================================== */
+
+function createWall(
+z,
+rotation
+){
+
+    const wall =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            42,
+            13,
+            2
+        ),
+
+        material(0x6b5141)
+
+    );
+
+    wall.position.set(
+        0,
+        6,
+        z
+    );
+
+    wall.rotation.y =
+    rotation;
+
+    wall.castShadow=true;
+
+    wall.receiveShadow=true;
+
+    arena.add(wall);
+
+}
+
+createWall(-21,0);
+createWall(21,0);
+
+
+/* =====================================================
+   ARCHES / STATUES
+===================================================== */
+
+function createArch(
+x
+){
+
+    const group =
+    new THREE.Group();
+
+    const left =
+    new THREE.Mesh(
+        new THREE.BoxGeometry(
+            2,
+            7,
+            2
+        ),
+        material(0x766556)
+    );
+
+    left.position.x=-4;
+
+    const right =
+    left.clone();
+
+    right.position.x=4;
+
+    const top =
+    new THREE.Mesh(
+        new THREE.BoxGeometry(
+            10,
+            2,
+            2
+        ),
+        material(0x766556)
+    );
+
+    top.position.y=3.5;
+
+    group.add(
+        left,
+        right,
+        top
+    );
+
+    group.position.set(
+        x,
+        3.5,
+        -19
+    );
+
+    arena.add(group);
+
+}
+
+createArch(-10);
+createArch(10);
+
+
+/* =====================================================
+   TORCHES
+===================================================== */
+
+function createTorch(
+x,
+z
+){
+
+    const pole =
+    new THREE.Mesh(
+
+        new THREE.CylinderGeometry(
+            .15,
+            .2,
+            3,
+            10
+        ),
+
+        material(0x3b2415)
+
+    );
+
+    pole.position.set(
+        x,
+        2,
+        z
+    );
+
+    arena.add(pole);
+
+
+    const fire =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            .55,
+            12,
+            12
+        ),
+
+        new THREE.MeshStandardMaterial({
+            color:0xff7a18,
+            emissive:0xff3d00,
+            emissiveIntensity:3
+        })
+
+    );
+
+    fire.position.set(
+        x,
+        3.7,
+        z
+    );
+
+    arena.add(fire);
+
+}
+
+createTorch(-18,-19);
+createTorch(18,-19);
+
+
+/* =====================================================
+   PUBLIC
+===================================================== */
+
+const spectators=[];
+
+function createSpectators(){
+
+    for(
+        let row=0;
+        row<4;
+        row++
+    ){
+
+        for(
+            let i=-9;
+            i<=9;
+            i++
+        ){
+
+            const color =
+            new THREE.Color(
+                Math.random(),
+                Math.random()*.7,
+                Math.random()*.35
+            );
+
+            const body =
+            new THREE.Mesh(
+
+                new THREE.CylinderGeometry(
+                    .35,
+                    .45,
+                    1.3,
+                    8
+                ),
+
+                material(color)
+            );
+
+            body.position.set(
+                i*1.9,
+                2 +
+                row*2.1,
+                -15 -
+                row*2
+            );
+
+            body.castShadow=true;
+
+            arena.add(body);
+
+            spectators.push(body);
+
+        }
+
+    }
+
+}
+
+createSpectators();
+
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+const player =
+new THREE.Group();
+
+scene.add(player);
+
+player.position.set(
+0,
+.5,
+7
+);
+
+
+const playerBody =
+new THREE.Mesh(
+
+    new THREE.CapsuleGeometry(
+        .7,
+        1.5,
+        6,
+        12
+    ),
+
+    material(0x2563eb)
+
+);
+
+playerBody.castShadow=true;
+
+playerBody.position.y=1.5;
+
+player.add(playerBody);
+
+
+const helmet =
+new THREE.Mesh(
+
+    new THREE.SphereGeometry(
+        .72,
+        16,
+        12,
+        0,
+        Math.PI*2,
+        0,
+        Math.PI*.55
+    ),
+
+    material(0x777777)
+
+);
+
+helmet.position.y=2.65;
+
+helmet.castShadow=true;
+
+player.add(helmet);
+
+
+/* =====================================================
+   WEAPON
+===================================================== */
+
+const weapon =
+new THREE.Group();
+
+player.add(weapon);
+
+const blade =
+new THREE.Mesh(
+
+    new THREE.BoxGeometry(
+        .16,
+        2.2,
+        .28
+    ),
+
+    new THREE.MeshStandardMaterial({
+        color:0xd8dde3,
+        metalness:.8,
+        roughness:.2
+    })
+
+);
+
+blade.position.y=1.2;
+
+weapon.add(blade);
+
+
+const guard =
+new THREE.Mesh(
+
+    new THREE.BoxGeometry(
+        1,
+        .15,
+        .18
+    ),
+
+    material(0x8b5a2b)
+
+);
+
+guard.position.y=.15;
+
+weapon.add(guard);
+
+
+const handle =
+new THREE.Mesh(
+
+    new THREE.CylinderGeometry(
+        .12,
+        .12,
+        .8,
+        8
+    ),
+
+    material(0x3b2415)
+
+);
+
+handle.position.y=-.3;
+
+weapon.add(handle);
+
+weapon.rotation.z=-.65;
+
+weapon.position.x=.85;
+
+weapon.position.y=.8;
+
+
+/* =====================================================
+   PLAYER DATA
+===================================================== */
+
+let health=100;
+let stamina=100;
+let gold=0;
+
+let attacking=false;
+let defending=false;
+let dodging=false;
+
+let attackCooldown=0;
+
+let selectedTournament=5;
+let currentWave=0;
+
+let enemies=[];
+let particles=[];
+
+let gameRunning=false;
+let paused=false;
+
+
+/* =====================================================
+   ENEMY TYPES
+===================================================== */
+
+const enemyTypes=[
+
+    {
+        name:"Gladiador",
+        color:0x9f1239,
+        health:45,
+        damage:7,
+        speed:2.2,
+        reward:35
+    },
+
+    {
+        name:"Guerreiro",
+        color:0x374151,
+        health:70,
+        damage:10,
+        speed:1.7,
+        reward:60
+    },
+
+    {
+        name:"Elite",
+        color:0x7c3aed,
+        health:100,
+        damage:14,
+        speed:1.5,
+        reward:100
+    },
+
+    {
+        name:"Lendário",
+        color:0xf59e0b,
+        health:180,
+        damage:20,
+        speed:1.2,
+        reward:250
+    },
+
+    {
+        name:"Besta",
+        color:0x16a34a,
+        health:120,
+        damage:17,
+        speed:2.8,
+        reward:150
+    }
+
+];
+
+
+/* =====================================================
+   CREATE ENEMY
+===================================================== */
+
+function createEnemy(type){
+
+    const enemy =
+    new THREE.Group();
+
+    const body =
+    new THREE.Mesh(
+
+        new THREE.CapsuleGeometry(
+            .7,
+            1.3,
+            6,
+            10
+        ),
+
+        material(type.color)
+
+    );
+
+    body.position.y=1.45;
+
+    body.castShadow=true;
+
+    enemy.add(body);
+
+
+    const head =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            .65,
+            12,
+            10
+        ),
+
+        material(0xd4a373)
+
+    );
+
+    head.position.y=2.65;
+
+    head.castShadow=true;
+
+    enemy.add(head);
+
+
+    enemy.position.set(
+
+        (Math.random()-.5)*24,
+
+        0.5,
+
+        -5 -
+        Math.random()*8
+
+    );
+
+
+    enemy.userData={
+
+        type,
+
+        health:type.health,
+
+        maxHealth:type.health,
+
+        damage:type.damage,
+
+        speed:type.speed,
+
+        reward:type.reward,
+
+        attackTimer:
+        Math.random()*2,
+
+        dead:false
+
+    };
+
+
+    scene.add(enemy);
+
+    enemies.push(enemy);
+
+}
+
+
+/* =====================================================
+   WAVE
+===================================================== */
+
+function spawnWave(){
+
+    currentWave++;
+
+    waveTextHud.textContent =
+    `${currentWave} / ${selectedTournament}`;
+
+    waveText.textContent =
+    `ONDA ${currentWave}`;
+
+    centerInfo.style.display="block";
+
+    setTimeout(
+        ()=>{
+            centerInfo.style.display="none";
+        },
+        1300
+    );
+
+
+    let count=1;
+
+    if(currentWave>3)
+        count=2;
+
+    if(currentWave>8)
+        count=3;
+
+    if(currentWave>15)
+        count=4;
+
+    if(currentWave>30)
+        count=5;
+
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        let type;
+
+        const roll=Math.random();
+
+        if(
+            currentWave%10===0 &&
+            i===0
+        ){
+
+            type=enemyTypes[3];
+
+        }else if(
+            roll<.15 &&
+            currentWave>5
+        ){
+
+            type=enemyTypes[2];
+
+        }else if(
+            roll<.35 &&
+            currentWave>8
+        ){
+
+            type=enemyTypes[1];
+
+        }else{
+
+            type=enemyTypes[0];
+
+        }
+
+        createEnemy(type);
+
+    }
+
+
+    /* desafio especial */
+
+    if(
+        currentWave%7===0
+    ){
+
+        createEnemy(
+            enemyTypes[4]
+        );
+
+        showMessage(
+            "⚠ UMA BESTA ENTROU NA ARENA!"
+        );
+
+    }
+
+
+    if(
+        currentWave%10===0
+    ){
+
+        showMessage(
+            "⚔ UM GUERREIRO LENDÁRIO DESAFIA VOCÊ!"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   COLLISION DISTANCE
+===================================================== */
+
+function distance(
+a,
+b
+){
+
+    return a.position.distanceTo(
+        b.position
+    );
+
+}
+
+
+/* =====================================================
+   ATTACK
+===================================================== */
+
+function playerAttack(){
+
+    if(
+        !gameRunning ||
+        paused ||
+        attacking ||
+        attackCooldown>0 ||
+        stamina<12
+    ){
+
+        return;
+    }
+
+    attacking=true;
+
+    stamina-=12;
+
+    attackCooldown=.45;
+
+    weapon.rotation.z=-2.0;
+
+
+    setTimeout(
+        ()=>{
+            weapon.rotation.z=.65;
+        },
+        130
+    );
+
+
+    setTimeout(
+        ()=>{
+            attacking=false;
+        },
+        260
+    );
+
+
+    for(
+        const enemy of enemies
+    ){
+
+        if(
+            enemy.userData.dead
+        )
+            continue;
+
+
+        if(
+            distance(
+                player,
+                enemy
+            )<3.1
+        ){
+
+            enemy.userData.health-=
+            28;
+
+
+            createHitEffect(
+                enemy.position
+            );
+
+
+            if(
+                enemy.userData.health<=0
+            ){
+
+                killEnemy(
+                    enemy
+                );
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   DEFEND
+===================================================== */
+
+function setDefend(
+value
+){
+
+    defending=value;
+
+}
+
+
+/* =====================================================
+   DODGE
+===================================================== */
+
+function dodge(){
+
+    if(
+        !gameRunning ||
+        paused ||
+        dodging ||
+        stamina<25
+    )
+        return;
+
+
+    stamina-=25;
+
+    dodging=true;
+
+
+    const direction =
+    player.rotation.y===0
+        ? 1
+        : -1;
+
+
+    player.position.x +=
+    direction*4;
+
+
+    setTimeout(
+        ()=>{
+            dodging=false;
+        },
+        350
+    );
+
+}
+
+
+/* =====================================================
+   ENEMY AI
+===================================================== */
+
+function updateEnemies(delta){
+
+    for(
+        const enemy of enemies
+    ){
+
+        if(
+            enemy.userData.dead
+        )
+            continue;
+
+
+        const dist =
+        distance(
+            player,
+            enemy
+        );
+
+
+        enemy.lookAt(
+            player.position.x,
+            enemy.position.y,
+            player.position.z
+        );
+
+
+        if(
+            dist>2.4
+        ){
+
+            const direction =
+            new THREE.Vector3()
+            .subVectors(
+                player.position,
+                enemy.position
+            )
+            .normalize();
+
+
+            enemy.position.add(
+                direction.multiplyScalar(
+                    enemy.userData.speed*
+                    delta
+                )
+            );
+
+        }else{
+
+            enemy.userData.attackTimer-=
+            delta;
+
+
+            if(
+                enemy.userData.attackTimer<=0
+            ){
+
+                enemy.userData.attackTimer=
+                1.1+
+                Math.random()*.8;
+
+
+                enemyAttack(
+                    enemy
+                );
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   ENEMY ATTACK
+===================================================== */
+
+function enemyAttack(
+enemy
+){
+
+    if(
+        dodging
+    )
+        return;
+
+
+    let damage =
+    enemy.userData.damage;
+
+
+    if(
+        defending
+    ){
+
+        damage*=.3;
+
+        stamina-=8;
+
+    }
+
+
+    health-=damage;
+
+
+    createHitEffect(
+        player.position
+    );
+
+
+    updateHUD();
+
+
+    if(
+        health<=0
+    ){
+
+        health=0;
+
+        endGame(false);
+
+    }
+
+}
+
+
+/* =====================================================
+   KILL
+===================================================== */
+
+function killEnemy(
+enemy
+){
+
+    enemy.userData.dead=true;
+
+    gold+=
+    enemy.userData.reward;
+
+    updateHUD();
+
+
+    /* recompensa oculta */
+
+    if(
+        Math.random()<.08
+    ){
+
+        gold+=100;
+
+        showMessage(
+            "✨ RECOMPENSA SECRETA ENCONTRADA!"
+        );
+
+    }
+
+
+    setTimeout(
+        ()=>{
+            scene.remove(enemy);
+
+            enemies =
+            enemies.filter(
+                e=>e!==enemy
+            );
+
+            checkWaveComplete();
+        },
+        350
+    );
+
+}
+
+
+/* =====================================================
+   WAVE COMPLETE
+===================================================== */
+
+function checkWaveComplete(){
+
+    const alive =
+    enemies.filter(
+        e=>!e.userData.dead
+    );
+
+
+    if(
+        alive.length>0
+    )
+        return;
+
+
+    if(
+        currentWave>=
+        selectedTournament
+    ){
+
+        endGame(true);
+
+        return;
+
+    }
+
+
+    setTimeout(
+        ()=>{
+            spawnWave();
+        },
+        1200
+    );
+
+}
+
+
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+function createHitEffect(
+position
+){
+
+    for(
+        let i=0;
+        i<8;
+        i++
+    ){
+
+        const particle =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .08,
+                6,
+                6
+            ),
+
+            new THREE.MeshBasicMaterial({
+                color:0xffb020
+            })
+
+        );
+
+        particle.position.copy(
+            position
+        );
+
+        particle.userData.velocity =
+        new THREE.Vector3(
+            (Math.random()-.5)*4,
+            Math.random()*4,
+            (Math.random()-.5)*4
+        );
+
+        scene.add(
+            particle
+        );
+
+        particles.push(
+            particle
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PARTICLES UPDATE
+===================================================== */
+
+function updateParticles(
+delta
+){
+
+    particles.forEach(
+        particle=>{
+
+            particle.position.addScaledVector(
+                particle.userData.velocity,
+                delta
+            );
+
+            particle.userData.velocity.y-=
+            8*delta;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   HUD
+===================================================== */
+
+function updateHUD(){
+
+    healthText.textContent=
+    Math.round(health);
+
+    staminaText.textContent=
+    Math.round(stamina);
+
+    goldText.textContent=
+    gold;
+
+    healthFill.style.width=
+    `${Math.max(0,health)}%`;
+
+    staminaFill.style.width=
+    `${Math.max(0,stamina)}%`;
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+let messageTimer=0;
+
+function showMessage(
+text
+){
+
+    message.textContent=text;
+
+    message.classList.add(
+        "show"
+    );
+
+    messageTimer=2;
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame(){
+
+    startScreen.style.display=
+    "none";
+
+    resultScreen.style.display=
+    "none";
+
+    hud.style.display=
+    "flex";
+
+    controls.style.display=
+    window.innerWidth<=850
+        ?"flex"
+        :"none";
+
+    pauseButton.style.display=
+    "block";
+
+
+    health=100;
+    stamina=100;
+    gold=0;
+
+    currentWave=0;
+
+    enemies.forEach(
+        enemy=>scene.remove(enemy)
+    );
+
+    enemies=[];
+
+
+    gameRunning=true;
+
+    paused=false;
+
+
+    player.position.set(
+        0,
+        .5,
+        7
+    );
+
+
+    spawnWave();
+
+    updateHUD();
+
+}
+
+
+/* =====================================================
+   END
+===================================================== */
+
+function endGame(
+victory
+){
+
+    gameRunning=false;
+
+    pauseButton.style.display=
+    "none";
+
+    controls.style.display=
+    "none";
+
+
+    if(
+        victory
+    ){
+
+        const bonus =
+        selectedTournament*50;
+
+        gold+=bonus;
+
+
+        localStorage.setItem(
+            "gladiatorGold",
+            gold
+        );
+
+        localStorage.setItem(
+            "gladiatorChampion",
+            "true"
+        );
+
+
+        document.getElementById(
+            "finalGold"
+        ).textContent=
+        `+${gold} OURO`;
+
+        resultScreen.style.display=
+        "flex";
+
+    }else{
+
+        showMessage(
+            "VOCÊ FOI DERROTADO!"
+        );
+
+
+        setTimeout(
+            ()=>{
+                resultScreen.style.display=
+                "flex";
+            },
+            1200
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PAUSE
+===================================================== */
+
+pauseButton.addEventListener(
+    "click",
+    ()=>{
+        paused=!paused;
+
+        pauseButton.textContent=
+        paused
+            ?"CONTINUAR"
+            :"PAUSAR";
+    }
+);
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+const keys={};
+
+window.addEventListener(
+"keydown",
+event=>{
+
+    keys[
+        event.key.toLowerCase()
+    ]=true;
+
+
+    if(
+        event.key===" "
+    ){
+
+        event.preventDefault();
+
+        playerAttack();
+
+    }
+
+
+    if(
+        event.key.toLowerCase()==="e"
+    ){
+
+        playerAttack();
+
+    }
+
+
+    if(
+        event.key.toLowerCase()==="q"
+    ){
+
+        dodge();
+
+    }
+
+
+    if(
+        event.key.toLowerCase()==="shift"
+    ){
+
+        setDefend(true);
+
+    }
+
+
+    if(
+        event.key.toLowerCase()==="p"
+    ){
+
+        paused=!paused;
+
+    }
+
+});
+
+
+window.addEventListener(
+"keyup",
+event=>{
+
+    keys[
+        event.key.toLowerCase()
+    ]=false;
+
+
+    if(
+        event.key.toLowerCase()==="shift"
+    ){
+
+        setDefend(false);
+
+    }
+
+});
+
+
+/* =====================================================
+   MOVEMENT
+===================================================== */
+
+function updatePlayer(
+delta
+){
+
+    if(
+        !gameRunning ||
+        paused
+    )
+        return;
+
+
+    const moveSpeed =
+    dodging
+        ? 9
+        : 6;
+
+
+    if(
+        keys["a"] ||
+        keys["arrowleft"]
+    ){
+
+        player.position.x -=
+        moveSpeed*delta;
+
+        player.rotation.y=
+        Math.PI;
+
+    }
+
+
+    if(
+        keys["d"] ||
+        keys["arrowright"]
+    ){
+
+        player.position.x +=
+        moveSpeed*delta;
+
+        player.rotation.y=
+        0;
+
+    }
+
+
+    if(
+        keys["w"] ||
+        keys["arrowup"]
+    ){
+
+        player.position.z -=
+        moveSpeed*delta;
+
+    }
+
+
+    if(
+        keys["s"] ||
+        keys["arrowdown"]
+    ){
+
+        player.position.z +=
+        moveSpeed*delta;
+
+    }
+
+
+    player.position.x=
+    THREE.MathUtils.clamp(
+        player.position.x,
+        -16,
+        16
+    );
+
+
+    player.position.z=
+    THREE.MathUtils.clamp(
+        player.position.z,
+        -15,
+        14
+    );
+
+
+    if(
+        stamina<100
+    ){
+
+        stamina+=
+        delta*
+        (
+            defending
+                ?3
+                :8
+        );
+
+        stamina=
+        Math.min(
+            stamina,
+            100
+        );
+
+    }
+
+
+    if(
+        attackCooldown>0
+    ){
+
+        attackCooldown-=delta;
+
+    }
+
+
+    updateHUD();
+
+}
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+function updateCamera(
+delta
+){
+
+    const target =
+    new THREE.Vector3(
+        player.position.x,
+        player.position.y+2,
+        player.position.z
+    );
+
+
+    const desired =
+    new THREE.Vector3(
+        player.position.x,
+        player.position.y+6,
+        player.position.z+11
+    );
+
+
+    camera.position.lerp(
+        desired,
+        .08
+    );
+
+
+    camera.lookAt(
+        target
+    );
+
+}
+
+
+/* =====================================================
+   BUTTON CONTROLS
+===================================================== */
+
+function holdButton(
+id,
+key
+){
+
+    const button=
+    document.getElementById(id);
+
+
+    button.addEventListener(
+        "pointerdown",
+        e=>{
+            e.preventDefault();
+            keys[key]=true;
+        }
+    );
+
+
+    const release=
+    e=>{
+        e.preventDefault();
+        keys[key]=false;
+    };
+
+
+    button.addEventListener(
+        "pointerup",
+        release
+    );
+
+    button.addEventListener(
+        "pointercancel",
+        release
+    );
+
+}
+
+
+holdButton(
+"left",
+"arrowleft"
+);
+
+holdButton(
+"right",
+"arrowright"
+);
+
+
+document
+.getElementById("attack")
+.addEventListener(
+"pointerdown",
+e=>{
+    e.preventDefault();
+    playerAttack();
+}
+);
+
+
+document
+.getElementById("dodge")
+.addEventListener(
+"pointerdown",
+e=>{
+    e.preventDefault();
+    dodge();
+}
+);
+
+
+document
+.getElementById("defend")
+.addEventListener(
+"pointerdown",
+e=>{
+    e.preventDefault();
+    setDefend(true);
+}
+);
+
+
+document
+.getElementById("defend")
+.addEventListener(
+"pointerup",
+()=>{
+    setDefend(false);
+}
+);
+
+
+/* =====================================================
+   TOURNAMENT SELECT
+===================================================== */
+
+document
+.querySelectorAll(".tournament")
+.forEach(
+button=>{
+
+    button.addEventListener(
+        "click",
+        ()=>{
+
+            document
+            .querySelectorAll(
+                ".tournament"
+            )
+            .forEach(
+                b=>
+                b.classList.remove(
+                    "selected"
+                )
+            );
+
+
+            button.classList.add(
+                "selected"
+            );
+
+
+            selectedTournament=
+            Number(
+                button.dataset.waves
+            );
+
+        }
+    );
+
+});
+
+
+/* =====================================================
+   START BUTTON
+===================================================== */
+
+document
+.getElementById("startButton")
+.addEventListener(
+"click",
+startGame
+);
+
+
+/* =====================================================
+   AGAIN
+===================================================== */
+
+document
+.getElementById("againButton")
+.addEventListener(
+"click",
+()=>{
+    resultScreen.style.display=
+    "none";
+
+    startScreen.style.display=
+    "flex";
+}
+);
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+function goBack(){
+
+    window.location.href=
+    "../../index.html";
+
+}
+
+
+document
+.getElementById("backStart")
+.addEventListener(
+"click",
+goBack
+);
+
+
+document
+.getElementById("backResult")
+.addEventListener(
+"click",
+goBack
+);
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
+window.addEventListener(
+"resize",
+()=>{
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    camera.aspect=
+    window.innerWidth/
+    window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+});
+
+
+/* =====================================================
+   GAME LOOP
+===================================================== */
+
+const clock=
+new THREE.Clock();
+
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    const delta=
+    Math.min(
+        clock.getDelta(),
+        .05
+    );
+
+
+    if(
+        gameRunning &&
+        !paused
+    ){
+
+        updatePlayer(
+            delta
+        );
+
+        updateEnemies(
+            delta
+        );
+
+        updateParticles(
+            delta
+        );
+
+        updateCamera(
+            delta
+        );
+
+
+        if(
+            messageTimer>0
+        ){
+
+            messageTimer-=
+            delta;
+
+            if(
+                messageTimer<=0
+            ){
+
+                message.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* animação do público */
+
+    spectators.forEach(
+        (spectator,index)=>{
+
+            spectator.rotation.z=
+            Math.sin(
+                Date.now()*.001+
+                index
+            )*.04;
+
+        }
+    );
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+animate();
+
+</script>
+
+</body>
+</html>
