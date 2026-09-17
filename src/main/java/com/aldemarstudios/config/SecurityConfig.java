@@ -2,6 +2,7 @@ package com.aldemarstudios.config;
 
 import com.aldemarstudios.security.UsuarioUserDetailsService;
 import org.springframework.context.annotation.Bean;
+import com.vaadin.flow.spring.security.VaadinSecurityConfigurer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,6 +31,11 @@ public class SecurityConfig {
 
         http
             .userDetailsService(usuarioUserDetailsService)
+
+            .with(VaadinSecurityConfigurer.vaadin(), vaadin -> vaadin
+                .enableCsrfConfiguration(true)
+                .enableAuthorizedRequestsConfiguration(false)
+            )
 
             .authorizeHttpRequests(auth -> auth
 
