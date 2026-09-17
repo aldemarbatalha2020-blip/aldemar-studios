@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -15,9 +14,18 @@ public class LegacyDataSourceConfig {
 
     @Bean(name = "legacyDataSource")
     public DataSource legacyDataSource(
-            @Value("${LEGACY_DATABASE_URL:jdbc:mysql://localhost:3306/aldemar_studios?useSSL=true&requireSSL=false&serverTimezone=UTC}") String url,
-            @Value("${LEGACY_DATABASE_USERNAME:${DATABASE_USERNAME:root}}") String username,
-            @Value("${LEGACY_DATABASE_PASSWORD:${DATABASE_PASSWORD:}}") String password) {
+            @Value("${DB_HOST}") String host,
+            @Value("${DB_PORT}") String port,
+            @Value("${DB_NAME}") String database,
+            @Value("${DB_USER}") String username,
+            @Value("${DB_PASSWORD}") String password) {
+
+        String url = "jdbc:mysql://" + host + ":" + port + "/" + database
+                + "?useSSL=true"
+                + "&allowPublicKeyRetrieval=true"
+                + "&serverTimezone=UTC"
+                + "&connectTimeout=10000"
+                + "&socketTimeout=10000";
 
         HikariDataSource dataSource = new HikariDataSource();
 
@@ -40,4 +48,3 @@ public class LegacyDataSourceConfig {
         return new JdbcTemplate(legacyDataSource);
     }
 }
-
