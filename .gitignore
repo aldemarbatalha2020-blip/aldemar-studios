@@ -28,3 +28,5 @@ effective-pom
 
 # Arquivos gerados pelo Vaadin
 src/main/frontend/generated/
+
+database/
