@@ -1,12 +1,12 @@
 ﻿/* =========================================================
-   ALDEMAR STUDIOS â€” DASHBOARD.JS
-   VersÃ£o atualizada
-   Menu responsivo + funÃ§Ãµes do dashboard
+   ALDEMAR STUDIOS — DASHBOARD.JS
+   Versão atualizada
+   Menu responsivo + funções do dashboard
 ========================================================= */
 
 
 /* =========================================================
-   CONFIGURAÃ‡ÃƒO DA API
+   CONFIGURAÇÃO DA API
 ========================================================= */
 
 const API_URL =
@@ -25,7 +25,7 @@ const pageTitle = document.getElementById("pageTitle");
 
 
 /* =========================================================
-   ELEMENTOS DO USUÃRIO
+   ELEMENTOS DO USUÁRIO
 ========================================================= */
 
 const userNameElement = document.getElementById("userName");
@@ -52,7 +52,7 @@ const changePasswordForm = document.getElementById("changePasswordForm");
 
 
 /* =========================================================
-   RECUPERAR USUÃRIO
+   RECUPERAR USUÁRIO
 ========================================================= */
 
 let usuario = null;
@@ -64,7 +64,7 @@ try {
         usuario = JSON.parse(usuarioSession);
     }
 } catch (error) {
-    console.warn("NÃ£o foi possÃ­vel ler o usuÃ¡rio da sessÃ£o:", error);
+    console.warn("Não foi possível ler o usuário da sessão:", error);
 }
 
 if (!usuario) {
@@ -75,19 +75,19 @@ if (!usuario) {
             usuario = JSON.parse(usuarioLocal);
         }
     } catch (error) {
-        console.warn("NÃ£o foi possÃ­vel ler o usuÃ¡rio local:", error);
+        console.warn("Não foi possível ler o usuário local:", error);
     }
 }
 
 if (!usuario) {
     usuario = {
         id: null,
-        nome: "UsuÃ¡rio",
-        name: "UsuÃ¡rio",
+        nome: "Usuário",
+        name: "Usuário",
         email: "",
         nick: "",
-        plano: "GrÃ¡tis",
-        plan: "GrÃ¡tis",
+        plano: "Grátis",
+        plan: "Grátis",
         foto: null,
         photo: null
     };
@@ -95,7 +95,7 @@ if (!usuario) {
 
 
 /* =========================================================
-   FUNÃ‡Ã•ES DE DADOS DO USUÃRIO
+   FUNÇÕES DE DADOS DO USUÁRIO
 ========================================================= */
 
 function getUserId() {
@@ -112,7 +112,7 @@ function getUserName() {
         usuario?.nome ||
         usuario?.name ||
         usuario?.fullName ||
-        "UsuÃ¡rio"
+        "Usuário"
     );
 }
 
@@ -140,13 +140,13 @@ function getUserPlan() {
     return (
         usuario?.plano ||
         usuario?.plan ||
-        "GrÃ¡tis"
+        "Grátis"
     );
 }
 
 
 function firstName(name) {
-    if (!name) return "UsuÃ¡rio";
+    if (!name) return "Usuário";
 
     return name
         .trim()
@@ -263,7 +263,7 @@ function updateUserInterface() {
 
 
 /* =========================================================
-   SALVAR USUÃRIO LOCALMENTE
+   SALVAR USUÁRIO LOCALMENTE
 ========================================================= */
 
 function saveUser() {
@@ -274,7 +274,7 @@ function saveUser() {
         );
     } catch (error) {
         console.warn(
-            "NÃ£o foi possÃ­vel salvar usuÃ¡rio na sessÃ£o:",
+            "Não foi possível salvar usuário na sessão:",
             error
         );
     }
@@ -286,7 +286,7 @@ function saveUser() {
         );
     } catch (error) {
         console.warn(
-            "NÃ£o foi possÃ­vel salvar usuÃ¡rio localmente:",
+            "Não foi possível salvar usuário localmente:",
             error
         );
     }
@@ -309,7 +309,7 @@ function saveOriginalProfileData() {
 
 
 /* =========================================================
-   NAVEGAÃ‡ÃƒO PRINCIPAL
+   NAVEGAÇÃO PRINCIPAL
 ========================================================= */
 
 menuItems.forEach(item => {
@@ -332,7 +332,7 @@ menuItems.forEach(item => {
             this.classList.contains("locked")
         ) {
             showNotification(
-                "Este conteÃºdo estÃ¡ disponÃ­vel apenas em planos superiores.",
+                "Este conteúdo está disponível apenas em planos superiores.",
                 "warning"
             );
 
@@ -363,7 +363,7 @@ menuItems.forEach(item => {
 
 
         /* ---------------------------------------------
-           MINI CURSO DE INGLÃŠS
+           MINI CURSO DE INGLÊS
         --------------------------------------------- */
 
         if (sectionName === "ingles") {
@@ -373,7 +373,7 @@ menuItems.forEach(item => {
 
 
         /* ---------------------------------------------
-           NAVEGAÃ‡ÃƒO NORMAL
+           NAVEGAÇÃO NORMAL
         --------------------------------------------- */
 
         showSection(sectionName);
@@ -386,7 +386,7 @@ menuItems.forEach(item => {
 
 
 /* =========================================================
-   LINKS DE ACESSO ENTRE SEÃ‡Ã•ES
+   LINKS DE ACESSO ENTRE SEÇÕES
 ========================================================= */
 
 document.querySelectorAll("[data-section-link]").forEach(element => {
@@ -409,7 +409,7 @@ document.querySelectorAll("[data-section-link]").forEach(element => {
 
 
 /* =========================================================
-   BOTÃ•ES COM DATA-SECTION
+   BOTÕES COM DATA-SECTION
 ========================================================= */
 
 document.querySelectorAll("[data-section]").forEach(button => {
@@ -427,7 +427,7 @@ document.querySelectorAll("[data-section]").forEach(button => {
             this.classList.contains("locked")
         ) {
             showNotification(
-                "Este conteÃºdo estÃ¡ disponÃ­vel apenas em planos superiores.",
+                "Este conteúdo está disponível apenas em planos superiores.",
                 "warning"
             );
 
@@ -455,7 +455,7 @@ function openCourses() {
 
 
 /* =========================================================
-   ABRIR MINI CURSO DE INGLÃŠS
+   ABRIR MINI CURSO DE INGLÊS
 ========================================================= */
 
 function openMiniCursoIngles() {
@@ -466,7 +466,7 @@ function openMiniCursoIngles() {
 
 
 /* =========================================================
-   ABRIR JOGOS DE INGLÃŠS
+   ABRIR JOGOS DE INGLÊS
 ========================================================= */
 
 function openEnglishGames() {
@@ -481,7 +481,7 @@ function openEnglishGames() {
 
 
 /* =========================================================
-   MOSTRAR SEÃ‡ÃƒO
+   MOSTRAR SEÇÃO
 ========================================================= */
 
 function showSection(sectionName) {
@@ -528,7 +528,7 @@ function showSection(sectionName) {
 
 
     /* ---------------------------------------------
-       ATUALIZAR TÃTULO
+       ATUALIZAR TÍTULO
     --------------------------------------------- */
 
     updatePageTitle(sectionName);
@@ -547,7 +547,7 @@ function showSection(sectionName) {
 
 
 /* =========================================================
-   TÃTULO DA PÃGINA
+   TÍTULO DA PÁGINA
 ========================================================= */
 
 function updatePageTitle(sectionName) {
@@ -556,15 +556,15 @@ function updatePageTitle(sectionName) {
 
     const titles = {
 
-        inicio: "InÃ­cio",
+        inicio: "Início",
 
         jogos: "Central de Jogos",
 
-        ingles: "InglÃªs",
+        ingles: "Inglês",
 
-        musica: "MÃºsica",
+        musica: "Música",
 
-        inclusivos: "ConteÃºdos Inclusivos",
+        inclusivos: "Conteúdos Inclusivos",
 
         materiais: "Materiais",
 
@@ -708,7 +708,7 @@ if (profilePhotoInput) {
             if (file.size > maxSize) {
 
                 showNotification(
-                    "A imagem deve ter no mÃ¡ximo 5 MB.",
+                    "A imagem deve ter no máximo 5 MB.",
                     "error"
                 );
 
@@ -790,7 +790,7 @@ if (saveProfileButton) {
 
 
             /* -----------------------------------------
-               VALIDAÃ‡ÃƒO DO NOME
+               VALIDAÇÃO DO NOME
             ----------------------------------------- */
 
             if (!name) {
@@ -805,7 +805,7 @@ if (saveProfileButton) {
 
 
             /* -----------------------------------------
-               VALIDAÃ‡ÃƒO DO EMAIL
+               VALIDAÇÃO DO EMAIL
             ----------------------------------------- */
 
             if (
@@ -814,7 +814,7 @@ if (saveProfileButton) {
             ) {
 
                 showNotification(
-                    "Digite um e-mail vÃ¡lido.",
+                    "Digite um e-mail válido.",
                     "error"
                 );
 
@@ -837,7 +837,7 @@ if (saveProfileButton) {
 
 
                 /* -------------------------------------
-                   ATUALIZAÃ‡ÃƒO LOCAL
+                   ATUALIZAÇÃO LOCAL
                 ------------------------------------- */
 
                 usuario.nome = name;
@@ -905,7 +905,7 @@ if (saveProfileButton) {
 
                         throw new Error(
                             data?.message ||
-                            "NÃ£o foi possÃ­vel atualizar o perfil."
+                            "Não foi possível atualizar o perfil."
                         );
 
                     }
@@ -971,7 +971,7 @@ if (saveProfileButton) {
 
 
 /* =========================================================
-   CANCELAR EDIÃ‡ÃƒO DO PERFIL
+   CANCELAR EDIÇÃO DO PERFIL
 ========================================================= */
 
 if (cancelProfileEditButton) {
@@ -1069,7 +1069,7 @@ if (changePasswordForm) {
             if (newPassword !== confirmPassword) {
 
                 showNotification(
-                    "As senhas nÃ£o coincidem.",
+                    "As senhas não coincidem.",
                     "error"
                 );
 
@@ -1111,6 +1111,8 @@ if (changePasswordForm) {
 
                             body: JSON.stringify({
 
+                                userId: getUserId(),
+
                                 currentPassword,
 
                                 newPassword
@@ -1128,7 +1130,7 @@ if (changePasswordForm) {
 
                     throw new Error(
                         data?.message ||
-                        "NÃ£o foi possÃ­vel alterar a senha."
+                        "Não foi possível alterar a senha."
                     );
 
                 }
@@ -1176,7 +1178,7 @@ if (changePasswordForm) {
 
 
 /* =========================================================
-   VALIDAÃ‡ÃƒO DE EMAIL
+   VALIDAÇÃO DE EMAIL
 ========================================================= */
 
 function isValidEmail(email) {
@@ -1187,7 +1189,7 @@ function isValidEmail(email) {
 
 
 /* =========================================================
-   FEEDBACK â€” ESTRELAS
+   FEEDBACK — ESTRELAS
 ========================================================= */
 
 const feedbackStars =
@@ -1234,7 +1236,7 @@ feedbackStars.forEach((star, index) => {
 
 
 /* =========================================================
-   BOTÃƒO DE FEEDBACK
+   BOTÃO DE FEEDBACK
 ========================================================= */
 
 document.querySelectorAll(
@@ -1257,7 +1259,7 @@ document.querySelectorAll(
             if (!selectedRating) {
 
                 showNotification(
-                    "Selecione uma avaliaÃ§Ã£o.",
+                    "Selecione uma avaliação.",
                     "warning"
                 );
 
@@ -1350,7 +1352,7 @@ async function parseResponse(response) {
 
 
 /* =========================================================
-   NOTIFICAÃ‡Ã•ES
+   NOTIFICAÇÕES
 ========================================================= */
 
 function showNotification(
@@ -1435,7 +1437,7 @@ document.querySelectorAll("form").forEach(form => {
 
 /* =========================================================
    =========================================================
-   RESPONSIVIDADE â€” MENU MOBILE / TABLET
+   RESPONSIVIDADE — MENU MOBILE / TABLET
    =========================================================
 ========================================================= */
 
@@ -1501,7 +1503,7 @@ function openMobileMenu() {
     );
 
 
-    /* Impede a pÃ¡gina de rolar enquanto o menu estÃ¡ aberto */
+    /* Impede a página de rolar enquanto o menu está aberto */
 
     document.body.style.overflow =
         "hidden";
@@ -1575,7 +1577,7 @@ function closeMobileMenu() {
 
 
 /* ---------------------------------------------------------
-   BOTÃƒO MOBILE
+   BOTÃO MOBILE
 --------------------------------------------------------- */
 
 if (mobileButton) {
@@ -1725,7 +1727,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   PROTEÃ‡ÃƒO DOS BOTÃ•ES BLOQUEADOS
+   PROTEÇÃO DOS BOTÕES BLOQUEADOS
 ========================================================= */
 
 document.querySelectorAll(
@@ -1741,7 +1743,7 @@ document.querySelectorAll(
             event.stopPropagation();
 
             showNotification(
-                "Este recurso estÃ¡ disponÃ­vel em um plano superior.",
+                "Este recurso está disponível em um plano superior.",
                 "warning"
             );
 
@@ -1797,7 +1799,7 @@ document.querySelectorAll(
 
 
 /* =========================================================
-   MINI CURSO â€” COMPATIBILIDADE
+   MINI CURSO — COMPATIBILIDADE
 ========================================================= */
 
 window.openMiniCursoIngles =
@@ -1829,7 +1831,7 @@ window.openMobileMenu =
 
 
 /* =========================================================
-   INICIALIZAÃ‡ÃƒO
+   INICIALIZAÇÃO
 ========================================================= */
 
 document.addEventListener(
@@ -1847,7 +1849,7 @@ showSection(secaoURL || "inicio");
 
 
         /* ---------------------------------------------
-           AVATAR â€” ABRIR PERFIL
+           AVATAR — ABRIR PERFIL
         --------------------------------------------- */
 
         if (userAvatarElement) {
@@ -1908,7 +1910,7 @@ showSection(secaoURL || "inicio");
 
 
 /* =========================================================
-   NAVEGAÃ‡ÃƒO DA CENTRAL DE JOGOS
+   NAVEGAÇÃO DA CENTRAL DE JOGOS
 ========================================================= */
 
 document.querySelectorAll("[data-game-category-open]").forEach(button => {
@@ -1981,7 +1983,7 @@ showSection(secaoURL || "inicio");
 
 
 /* =========================================================
-   PLANOS PREMIUM â€” FUNCIONALIDADE
+   PLANOS PREMIUM — FUNCIONALIDADE
    ========================================================= */
 
 (function () {
@@ -2023,7 +2025,7 @@ showSection(secaoURL || "inicio");
                 if (periodo === "diario") {
                     periodoTexto.textContent = "por dia";
                 } else if (periodo === "mensal") {
-                    periodoTexto.textContent = "por mÃªs";
+                    periodoTexto.textContent = "por mês";
                 } else if (periodo === "anual") {
                     periodoTexto.textContent = "por ano";
                 }
@@ -2099,7 +2101,7 @@ showSection(secaoURL || "inicio");
                 };
 
                 const nomesPeriodos = {
-                    diario: "DiÃ¡rio",
+                    diario: "Diário",
                     mensal: "Mensal",
                     anual: "Anual"
                 };
@@ -2109,12 +2111,12 @@ showSection(secaoURL || "inicio");
                 const valorFormatado = formatarPreco(valor);
 
                 const mensagem =
-                    "OlÃ¡, Aldemar! ðŸ‘‹\n\n" +
+                    "Olá, Aldemar! 👋\n\n" +
                     "Quero assinar um plano do Aldemar Studios.\n\n" +
-                    "â­ Plano: " + nomePlano + "\n" +
-                    "ðŸ“… PerÃ­odo: " + nomePeriodo + "\n" +
-                    "ðŸ’° Valor: R$ " + valorFormatado + "\n\n" +
-                    "Gostaria de receber as informaÃ§Ãµes para realizar o pagamento.";
+                    "⭐ Plano: " + nomePlano + "\n" +
+                    "📅 Período: " + nomePeriodo + "\n" +
+                    "💰 Valor: R$ " + valorFormatado + "\n\n" +
+                    "Gostaria de receber as informações para realizar o pagamento.";
 
                 const numeroWhatsApp = "5582996548511";
 
