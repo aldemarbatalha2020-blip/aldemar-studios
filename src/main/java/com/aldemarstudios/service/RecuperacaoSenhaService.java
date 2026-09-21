@@ -4,6 +4,8 @@ import com.aldemarstudios.model.PasswordResetToken;
 import com.aldemarstudios.model.Usuario;
 import com.aldemarstudios.repository.PasswordResetTokenRepository;
 import com.aldemarstudios.repository.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,6 +20,9 @@ import java.util.UUID;
 
 @Service
 public class RecuperacaoSenhaService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(RecuperacaoSenhaService.class);
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordResetTokenRepository tokenRepository;
@@ -44,7 +49,11 @@ public class RecuperacaoSenhaService {
     @Transactional
     public void solicitarCodigo(String email) {
 
+        log.info("RECUPERACAO: solicitacao recebida.");
+
         if (email == null || email.isBlank()) {
+            log.warn("RECUPERACAO: e-mail vazio ou nulo.");
+
             throw new IllegalArgumentException(
                     "Informe um e-mail válido."
             );
@@ -52,6 +61,10 @@ public class RecuperacaoSenhaService {
 
         String emailNormalizado =
                 email.trim().toLowerCase();
+
+        log.info(
+                "RECUPERACAO: procurando usuario pelo e-mail informado."
+        );
 
         Optional<Usuario> usuarioOptional =
                 usuarioRepository.findByEmail(
@@ -63,18 +76,35 @@ public class RecuperacaoSenhaService {
          * se o e-mail existe ou não.
          */
         if (usuarioOptional.isEmpty()) {
+
+            log.warn(
+                    "RECUPERACAO: nenhum usuario encontrado para o e-mail informado."
+            );
+
             return;
         }
 
         Usuario usuario = usuarioOptional.get();
 
+        log.info(
+                "RECUPERACAO: usuario encontrado. ID={}",
+                usuario.getId()
+        );
+
         if (!usuario.isAtivo()) {
+
+            log.warn(
+                    "RECUPERACAO: usuario encontrado, mas esta inativo. ID={}",
+                    usuario.getId()
+            );
+
             return;
         }
 
-        /*
-         * Remove códigos anteriores desse usuário.
-         */
+        log.info(
+                "RECUPERACAO: usuario ativo. Preparando codigo."
+        );
+
         tokenRepository.deleteByUsuario(usuario);
 
         String codigo =
@@ -106,9 +136,19 @@ public class RecuperacaoSenhaService {
 
         tokenRepository.save(resetToken);
 
+        log.info(
+                "RECUPERACAO: token salvo no banco. ID={}",
+                resetToken.getId()
+        );
+
         enviarEmail(
                 usuario,
                 codigo
+        );
+
+        log.info(
+                "RECUPERACAO: processo de envio concluido. Usuario ID={}.",
+                usuario.getId()
         );
     }
 
@@ -241,6 +281,11 @@ public class RecuperacaoSenhaService {
             Usuario usuario,
             String codigo) {
 
+        log.info(
+                "RECUPERACAO: iniciando envio de e-mail. Usuario ID={}.",
+                usuario.getId()
+        );
+
         SimpleMailMessage mensagem =
                 new SimpleMailMessage();
 
@@ -271,6 +316,23 @@ public class RecuperacaoSenhaService {
                 "Developed by Aldemar Florencio"
         );
 
-        mailSender.send(mensagem);
+        try {
+
+            mailSender.send(mensagem);
+
+            log.info(
+                    "RECUPERACAO: JavaMailSender informou envio realizado com sucesso."
+            );
+
+        } catch (Exception e) {
+
+            log.error(
+                    "RECUPERACAO: ERRO AO ENVIAR E-MAIL: {}",
+                    e.getMessage(),
+                    e
+            );
+
+            throw e;
+        }
     }
 }
