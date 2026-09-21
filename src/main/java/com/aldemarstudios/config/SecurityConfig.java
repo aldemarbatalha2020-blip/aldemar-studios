@@ -51,6 +51,15 @@ public class SecurityConfig {
 
                 .requestMatchers(
                     "/",
+                    "/index.html",
+                    "/*.html",
+                    "/css/**",
+                    "/js/**",
+                    "/img/**",
+                    "/fonts/**",
+                    "/assets/**",
+                    "/videos/**",
+                    "/pdfs/**",
                     "/login",
                     "/login/**",
                     "/cadastro",
@@ -144,3 +153,5 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
+
