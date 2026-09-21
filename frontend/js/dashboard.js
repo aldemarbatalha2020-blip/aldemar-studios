@@ -556,7 +556,7 @@ function updatePageTitle(sectionName) {
 
     const titles = {
 
-        inicio: "Início",
+        inicio: "In\u00EDcio",
 
         jogos: "Central de Jogos",
 
@@ -2143,6 +2143,7 @@ showSection(secaoURL || "inicio");
     }
 
 })();
+
 
 
 
