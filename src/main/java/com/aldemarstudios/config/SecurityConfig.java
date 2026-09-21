@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import com.vaadin.flow.spring.security.VaadinSecurityConfigurer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final UsuarioUserDetailsService usuarioUserDetailsService;
@@ -58,8 +60,6 @@ public class SecurityConfig {
                     "/img/**",
                     "/fonts/**",
                     "/assets/**",
-                    "/videos/**",
-                    "/pdfs/**",
                     "/login",
                     "/login/**",
                     "/cadastro",
@@ -76,6 +76,7 @@ public class SecurityConfig {
                     "/favicon.ico"
                 ).permitAll()
 
+                .requestMatchers("/api/aluno/**").authenticated()
                 .anyRequest().authenticated()
             )
 
