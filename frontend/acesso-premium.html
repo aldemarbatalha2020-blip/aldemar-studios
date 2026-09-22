@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aldemar Studios | Área Premium</title>
+    <title>Aldemar Studios | Ambiente do Aluno</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --bg: #050914;
+            --panel: rgba(12, 20, 38, 0.78);
+            --border: rgba(99, 150, 255, 0.14);
+            --border-hover: rgba(99, 169, 255, 0.38);
+            --text: #f3f7ff;
+            --text-soft: #a8b5ca;
+            --text-muted: #6f7d94;
+            --primary: #5b8cff;
+            --primary-light: #79a6ff;
+            --cyan: #35d9ff;
+            --purple: #9a6cff;
+            --shadow: 0 20px 60px rgba(0,0,0,.35);
+            --glow: 0 0 35px rgba(91,140,255,.14);
+            --radius: 20px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -18,105 +37,194 @@
             align-items: center;
             justify-content: center;
             padding: 30px;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
             background:
-                radial-gradient(circle at 20% 20%, rgba(0, 180, 255, 0.12), transparent 35%),
-                radial-gradient(circle at 80% 80%, rgba(120, 60, 255, 0.12), transparent 35%),
-                #080b14;
-            color: #fff;
+                radial-gradient(circle at 15% 10%, rgba(55,117,255,.12), transparent 30%),
+                radial-gradient(circle at 85% 15%, rgba(140,75,255,.10), transparent 28%),
+                radial-gradient(circle at 70% 90%, rgba(0,215,255,.07), transparent 25%),
+                var(--bg);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .28;
+            background-image:
+                linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, black, transparent);
+            z-index: -1;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 720px;
         }
 
         .card {
-            width: 100%;
-            max-width: 650px;
-            padding: 45px 40px;
+            position: relative;
+            padding: 48px 42px;
+            background: linear-gradient(145deg, rgba(15,25,47,.96), rgba(8,14,29,.94));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow), var(--glow);
             text-align: center;
-            border: 1px solid rgba(0, 200, 255, 0.25);
-            border-radius: 24px;
-            background: rgba(15, 20, 35, 0.92);
-            box-shadow:
-                0 0 40px rgba(0, 180, 255, 0.08),
-                0 25px 80px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
         }
 
-        .icon {
-            width: 82px;
-            height: 82px;
-            margin: 0 auto 25px;
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 70%;
+            height: 1px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, var(--primary), var(--cyan), transparent);
+            box-shadow: 0 0 20px rgba(53,217,255,.45);
+        }
+
+        .icon-wrapper {
+            width: 92px;
+            height: 92px;
+            margin: 0 auto 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            font-size: 38px;
-            background: rgba(0, 180, 255, 0.10);
-            border: 1px solid rgba(0, 200, 255, 0.30);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(91,140,255,.14), rgba(154,108,255,.10));
+            border: 1px solid rgba(99,150,255,.25);
+            box-shadow:
+                0 0 35px rgba(91,140,255,.10),
+                inset 0 0 25px rgba(91,140,255,.05);
+        }
+
+        .icon {
+            font-size: 40px;
+            filter: drop-shadow(0 0 12px rgba(53,217,255,.35));
+        }
+
+        .tag {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(91,140,255,.08);
+            border: 1px solid rgba(99,150,255,.18);
+            color: var(--primary-light);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
         }
 
         h1 {
-            margin-bottom: 22px;
-            font-size: clamp(26px, 5vw, 38px);
-            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            font-size: clamp(27px,5vw,38px);
+            line-height: 1.2;
+            letter-spacing: -.5px;
+        }
+
+        h1 span {
+            background: linear-gradient(90deg, var(--primary-light), var(--cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .description {
-            color: #c8d0df;
-            font-size: 17px;
+            max-width: 560px;
+            margin: 0 auto;
+            color: var(--text-soft);
+            font-size: 16px;
             line-height: 1.75;
-            margin-bottom: 18px;
         }
 
-        .highlight {
-            color: #fff;
-            font-weight: 600;
+        .description strong {
+            color: var(--text);
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .benefit {
+            padding: 16px 10px;
+            background: rgba(255,255,255,.025);
+            border: 1px solid rgba(99,150,255,.10);
+            border-radius: 14px;
+            color: var(--text-soft);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .benefit-icon {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 21px;
         }
 
         .actions {
-            margin-top: 32px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+            margin-top: 32px;
         }
 
         .btn {
             width: 100%;
-            max-width: 340px;
+            max-width: 360px;
             padding: 15px 24px;
-            border: none;
             border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: .4px;
             cursor: pointer;
-            transition: 0.25s ease;
+            transition: .25s ease;
         }
 
         .btn-primary {
             color: #fff;
-            background: linear-gradient(135deg, #008cff, #6845ff);
-            box-shadow: 0 10px 30px rgba(0, 140, 255, 0.20);
+            background: linear-gradient(135deg,#4f83ff,#7955ff);
+            border: 1px solid rgba(121,166,255,.35);
+            box-shadow: 0 10px 30px rgba(91,140,255,.20);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 35px rgba(0, 140, 255, 0.30);
+            box-shadow: 0 15px 38px rgba(91,140,255,.30);
         }
 
         .btn-secondary {
-            color: #aeb9cc;
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: var(--text-soft);
+            background: rgba(255,255,255,.025);
+            border: 1px solid rgba(255,255,255,.09);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
+            transform: translateY(-2px);
+            color: var(--text);
+            background: rgba(255,255,255,.055);
+            border-color: var(--border-hover);
         }
 
         .brand {
             margin-top: 30px;
-            color: #667085;
-            font-size: 13px;
+            color: var(--text-muted);
+            font-size: 12px;
         }
 
         @media (max-width: 600px) {
@@ -125,7 +233,11 @@
             }
 
             .card {
-                padding: 35px 22px;
+                padding: 38px 22px;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
             }
 
             .description {
@@ -137,32 +249,55 @@
 
 <body>
 
-    <main class="card">
+<main class="page">
 
-        <div class="icon">🔒</div>
+    <section class="card">
 
-        <h1>Área exclusiva para alunos Premium</h1>
+        <div class="icon-wrapper">
+            <span class="icon">🔒</span>
+        </div>
+
+        <div class="tag">
+            Acesso Premium
+        </div>
+
+        <h1>
+            Você ainda não assinou<br>
+            <span>seu plano!</span>
+        </h1>
 
         <p class="description">
-            Esta área faz parte da experiência de aprendizagem do
-            <span class="highlight">Aldemar Studios</span> e está disponível
-            exclusivamente para alunos com uma assinatura ativa.
+            Conheça nossos planos e ganhe
+            <strong>acesso premium ao Ambiente do Aluno.</strong>
         </p>
 
-        <p class="description">
-            Ative seu plano e tenha acesso ao seu Ambiente do Aluno,
-            curso de inglês, módulos, atividades, avaliações, materiais
-            e recursos exclusivos.
-        </p>
+        <div class="benefits">
+
+            <div class="benefit">
+                <span class="benefit-icon">📚</span>
+                Cursos e módulos
+            </div>
+
+            <div class="benefit">
+                <span class="benefit-icon">🎮</span>
+                Jogos e atividades
+            </div>
+
+            <div class="benefit">
+                <span class="benefit-icon">⭐</span>
+                Conteúdos exclusivos
+            </div>
+
+        </div>
 
         <div class="actions">
 
             <a href="/dashboard.html?secao=planos" class="btn btn-primary">
-                ✨ CONHECER OS PLANOS
+                ✨ CONHECER PLANOS
             </a>
 
             <a href="/dashboard.html?secao=inicio" class="btn btn-secondary">
-                ← VOLTAR
+                ← VOLTAR AO DASHBOARD
             </a>
 
         </div>
@@ -171,31 +306,9 @@
             Aldemar Studios • Educação, Tecnologia e Aprendizagem
         </div>
 
-    </main>
+    </section>
 
-<script>
-function voltarParaPaginaInicial(event, abrirPlanos) {
+</main>
 
-    if (event) {
-        event.preventDefault();
-    }
-
-    const usuario = sessionStorage.getItem("usuario");
-
-    if (!usuario) {
-        window.location.href = "/";
-        return;
-    }
-
-    if (abrirPlanos) {
-        window.location.href = "/#planos";
-    } else {
-        window.location.href = "/";
-    }
-}
-</script>
 </body>
 </html>
-
-
-
