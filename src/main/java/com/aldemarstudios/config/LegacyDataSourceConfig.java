@@ -36,6 +36,11 @@ public class LegacyDataSourceConfig {
         dataSource.setReadOnly(true);
         dataSource.setMaximumPoolSize(3);
         dataSource.setMinimumIdle(1);
+        dataSource.setConnectionTimeout(15000);
+        dataSource.setValidationTimeout(5000);
+        dataSource.setIdleTimeout(600000);
+        dataSource.setMaxLifetime(1800000);
+        dataSource.setKeepaliveTime(120000);
         dataSource.setPoolName("LegacyReadOnlyPool");
 
         return dataSource;

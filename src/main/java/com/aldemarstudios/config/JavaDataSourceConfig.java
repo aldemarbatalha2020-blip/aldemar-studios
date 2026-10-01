@@ -35,6 +35,11 @@ public class JavaDataSourceConfig {
 
         dataSource.setMaximumPoolSize(10);
         dataSource.setMinimumIdle(2);
+        dataSource.setConnectionTimeout(15000);
+        dataSource.setValidationTimeout(5000);
+        dataSource.setIdleTimeout(600000);
+        dataSource.setMaxLifetime(1800000);
+        dataSource.setKeepaliveTime(120000);
         dataSource.setPoolName("JavaPrimaryPool");
 
         return dataSource;
