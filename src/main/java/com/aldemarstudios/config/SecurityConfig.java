@@ -73,7 +73,8 @@ public class SecurityConfig {
                     "/images/**",
                     "/styles/**",
                     "/line-awesome/**",
-                    "/favicon.ico"
+                    "/favicon.ico",
+                    "/cursos/ingles-gratis/**"
                 ).permitAll()
 
                 .requestMatchers("/api/aluno/**").authenticated()
@@ -154,5 +155,6 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
 
 
