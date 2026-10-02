@@ -3,19 +3,32 @@ package com.aldemarstudios.controller;
 import com.aldemarstudios.dto.CadastroRequest;
 import com.aldemarstudios.dto.LoginRequest;
 import com.aldemarstudios.model.Usuario;
+import com.aldemarstudios.security.UsuarioUserDetails;
 import com.aldemarstudios.service.AutenticacaoService;
 import com.aldemarstudios.service.CadastroService;
 import com.aldemarstudios.service.RecuperacaoSenhaService;
+import com.aldemarstudios.repository.UsuarioRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    private final UsuarioRepository usuarioRepository;
 
     private final CadastroService cadastroService;
     private final AutenticacaoService autenticacaoService;
@@ -24,9 +37,11 @@ public class AuthController {
     public AuthController(
             CadastroService cadastroService,
             AutenticacaoService autenticacaoService,
-            RecuperacaoSenhaService recuperacaoSenhaService) {
+            RecuperacaoSenhaService recuperacaoSenhaService,
+            UsuarioRepository usuarioRepository) {
 
-        this.cadastroService = cadastroService;
+        this.usuarioRepository = usuarioRepository;
+this.cadastroService = cadastroService;
         this.autenticacaoService = autenticacaoService;
         this.recuperacaoSenhaService = recuperacaoSenhaService;
     }
@@ -79,7 +94,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestBody LoginRequest request) {
+            @RequestBody LoginRequest request,
+            HttpServletRequest httpRequest) {
 
         try {
 
@@ -89,19 +105,38 @@ public class AuthController {
                             request.senha()
                     );
 
+            UsuarioUserDetails userDetails =
+                    new UsuarioUserDetails(usuario);
+
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+
+            SecurityContext securityContext =
+                    SecurityContextHolder.createEmptyContext();
+
+            securityContext.setAuthentication(authentication);
+
+            SecurityContextHolder.setContext(securityContext);
+
+            httpRequest
+                    .getSession(true)
+                    .setAttribute(
+                            HttpSessionSecurityContextRepository
+                                    .SPRING_SECURITY_CONTEXT_KEY,
+                            securityContext
+                    );
+
             return ResponseEntity.ok(
                     Map.of(
                             "status", 200,
                             "mensagem",
                             "Login realizado com sucesso.",
-                            "usuario", Map.of(
-                                    "id", usuario.getId(),
-                                    "nome", usuario.getNome(),
-                                    "email", usuario.getEmail(),
-                                    "plano", usuario.getPlano().name(),
-                                    "tipoConta", usuario.getTipoConta(),
-                                    "status", usuario.getStatusConta()
-                            )
+                            "usuario",
+                            montarDadosUsuario(usuario)
                     )
             );
 
@@ -126,8 +161,180 @@ public class AuthController {
         }
     }
 
+    @PutMapping("/profile")
+    @Transactional
+    public ResponseEntity<?> atualizarPerfil(
+            @RequestBody Map<String, Object> request,
+            Authentication authentication) {
+
+        try {
+
+            if (authentication == null
+                    || !authentication.isAuthenticated()) {
+
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of(
+                                "status", 401,
+                                "erro", "NAO_AUTENTICADO"
+                        ));
+            }
+
+            Object principal =
+                    authentication.getPrincipal();
+
+            if (!(principal instanceof UsuarioUserDetails userDetails)) {
+
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of(
+                                "status", 401,
+                                "erro", "USUARIO_INVALIDO"
+                        ));
+            }
+
+            Usuario usuario =
+                    userDetails.getUsuario();
+
+            if (request.containsKey("nome")) {
+
+                String nome =
+                        request.get("nome") == null
+                                ? ""
+                                : request.get("nome").toString().trim();
+
+                if (nome.isBlank()) {
+
+                    return ResponseEntity
+                            .badRequest()
+                            .body(Map.of(
+                                    "status", 400,
+                                    "erro", "Nome obrigatorio."
+                            ));
+                }
+
+                usuario.setNome(nome);
+            }
+
+            if (request.containsKey("nick")) {
+
+                Object nickValue =
+                        request.get("nick");
+
+                usuario.setNick(
+                        nickValue == null
+                                ? null
+                                : nickValue.toString().trim()
+                );
+            }
+
+            if (request.containsKey("email")) {
+
+                String email =
+                        request.get("email") == null
+                                ? ""
+                                : request.get("email").toString().trim().toLowerCase();
+
+                if (email.isBlank()) {
+
+                    return ResponseEntity
+                            .badRequest()
+                            .body(Map.of(
+                                    "status", 400,
+                                    "erro", "E-mail obrigatorio."
+                            ));
+                }
+
+                usuario.setEmail(email);
+            }
+
+            if (request.containsKey("foto")) {
+
+                Object fotoValue =
+                        request.get("foto");
+
+                usuario.setFoto(
+                        fotoValue == null
+                                ? null
+                                : fotoValue.toString()
+                );
+            }
+
+            usuarioRepository.save(usuario);
+
+return ResponseEntity.ok(
+                    Map.of(
+                            "status", 200,
+                            "mensagem",
+                            "Perfil atualizado com sucesso.",
+                            "user",
+                            montarDadosUsuario(usuario)
+                    )
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "status", 500,
+                            "erro",
+                            "Nao foi possivel atualizar o perfil."
+                    ));
+        }
+    }
+
+    private Map<String, Object> montarDadosUsuario(
+            Usuario usuario) {
+
+        Map<String, Object> dados =
+                new LinkedHashMap<>();
+
+        dados.put(
+                "id",
+                usuario.getId()
+        );
+
+        dados.put(
+                "nome",
+                usuario.getNome()
+        );
+
+        dados.put(
+                "nick",
+                usuario.getNick()
+        );
+
+        dados.put(
+                "email",
+                usuario.getEmail()
+        );
+
+        dados.put(
+                "foto",
+                usuario.getFoto()
+        );
+
+        dados.put(
+                "plano",
+                usuario.getPlano().name()
+        );
+
+        dados.put(
+                "tipoConta",
+                usuario.getTipoConta()
+        );
+
+        dados.put(
+                "status",
+                usuario.getStatusConta()
+        );
+
+        return dados;
+    }
+
     // ============================================================
-    // RECUPERAÇÃO DE SENHA
+    // RECUPERACAO DE SENHA
     // ============================================================
 
     @PostMapping("/forgot-password")
@@ -144,7 +351,7 @@ public class AuthController {
                     Map.of(
                             "status", 200,
                             "message",
-                            "Código enviado com sucesso."
+                            "Codigo enviado com sucesso."
                     )
             );
 
@@ -164,7 +371,7 @@ public class AuthController {
                     .body(Map.of(
                             "status", 500,
                             "message",
-                            "Não foi possível enviar o código de recuperação."
+                            "Nao foi possivel enviar o codigo de recuperacao."
                     ));
         }
     }
@@ -188,7 +395,7 @@ public class AuthController {
                     Map.of(
                             "status", 200,
                             "message",
-                            "Código confirmado com sucesso.",
+                            "Codigo confirmado com sucesso.",
                             "token", token
                     )
             );
@@ -209,7 +416,7 @@ public class AuthController {
                     .body(Map.of(
                             "status", 500,
                             "message",
-                            "Não foi possível verificar o código."
+                            "Nao foi possivel verificar o codigo."
                     ));
         }
     }
@@ -252,7 +459,7 @@ public class AuthController {
                     .body(Map.of(
                             "status", 500,
                             "message",
-                            "Não foi possível redefinir a senha."
+                            "Nao foi possivel redefinir a senha."
                     ));
         }
     }
